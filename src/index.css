@@ -1,0 +1,204 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 0 0% 12%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 0% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 70%;
+    --radius: 0.5rem;
+  }
+}
+
+html, body {
+  @apply bg-black text-white h-full overflow-x-hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+#root {
+  height: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.chat-container {
+  @apply backdrop-blur-md bg-black/30 transition-all duration-300;
+  background: linear-gradient(145deg, rgba(20,20,20,0.7) 0%, rgba(0,0,0,0.8) 100%);
+}
+
+.chat-container:focus-within {
+  @apply outline-none border-white/20;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+@keyframes subtle-glow {
+  0% {
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.glow-border {
+  animation: subtle-glow 3s infinite;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeUp 0.7s ease forwards;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.card-bg {
+  @apply bg-black/60 backdrop-blur-md border transition-all duration-300 shadow-xl;
+  background: linear-gradient(145deg, rgba(25,25,30,0.85) 0%, rgba(10,10,15,0.95) 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.hover-card {
+  @apply transition-all duration-500;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hover-card:hover {
+  @apply border-white/20 transform -translate-y-1;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 5px 15px rgba(0, 0, 0, 0.15), 0 0 10px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, rgba(30,30,40,0.85) 0%, rgba(15,15,20,0.95) 100%);
+}
+
+.analysis-bar {
+  height: 4px;
+  background-image: linear-gradient(to right, rgba(155,135,245,0.8), rgba(97,218,251,0.4));
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.progress-container {
+  @apply relative bg-gray-900/70 rounded-full overflow-hidden backdrop-blur-md;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.07);
+}
+
+.progress-bar {
+  @apply absolute top-0 left-0 h-full;
+  background: linear-gradient(90deg, rgba(155,135,245,0.7), rgba(155,135,245,1));
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  transition: width 0.6s ease;
+}
+
+/* PDF Styles */
+@page {
+  size: letter;
+  margin: 2cm;
+}
+
+.pdf-container {
+  font-family: 'Arial', sans-serif;
+}
+
+.pdf-header {
+  text-align: center;
+  font-size: 24pt;
+  margin-bottom: 1cm;
+}
+
+.pdf-section {
+  margin-bottom: 1cm;
+}
+
+.pdf-section-title {
+  font-size: 16pt;
+  margin-bottom: 0.5cm;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.2cm;
+}
+
+/* Select dropdown scrolling fix */
+.select-scroll-area {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Particles animation for analysis progress */
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.analysis-particle {
+  animation: particle-float 2s ease-in-out infinite;
+}
