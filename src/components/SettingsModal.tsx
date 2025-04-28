@@ -36,7 +36,7 @@ const SettingsModal = ({ isOpen, onClose, settings, onSettingsChange }: Settings
         const modelsList = await fetchModels();
         if (modelsList.length > 0) {
           setModels(modelsList);
-          toast.success("Successfully connected to OpenAI");
+          // toast.success("Successfully connected to OpenAI");
           
           // Only set default models if they haven't been set before
           if (!primaryModel) {

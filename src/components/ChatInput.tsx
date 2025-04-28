@@ -110,7 +110,7 @@ const ChatInput = ({
           placeholder="Describe your product or service idea in detail. What problem does it solve? Who is it for? What makes it unique?..." 
           disabled={isAnalyzing} 
           rows={3} 
-          className="flex-1 px-4 py-3 bg-transparent placeholder-gray-400 text-white text-lg min-h-[100px] max-h-[200px] resize-none border-none focus:ring-0 focus:outline-0" 
+          className="flex-1 px-4 py-3 bg-transparent placeholder-gray-400 text-white text-lg min-h-[100px] max-h-[200px] resize-none border-none focus:ring-0 focus:outline-0 " 
         />
         
         <div className="flex justify-between items-center px-2 mt-2">
