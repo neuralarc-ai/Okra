@@ -74,7 +74,8 @@ const Index = () => {
       const simulateProgress = () => {
         let progress = 0;
         const interval = setInterval(() => {
-          progress += Math.random() * 8 + 1;
+          // Slower progress increment (reduced from 8 to 3)
+          progress += Math.random() * 3 + 0.5;
           if (progress > 100) progress = 100;
           
           setAnalysisProgress(Math.floor(progress));
@@ -86,7 +87,7 @@ const Index = () => {
           }
           
           if (progress >= 100) clearInterval(interval);
-        }, 1000);
+        }, 2000); // Increased interval from 1000ms to 2000ms
         return interval;
       };
       
@@ -163,7 +164,7 @@ const Index = () => {
         >
           <div className="text-center mb-2">
             <h1 className="text-4xl font-bold text-white tracking-tight">
-              <span className="text-white">Welcome to Oracle</span>
+              <span className="text-white">Welcome to Okra AI</span>
             </h1>
             <p className="text-gray-300 mt-1">AI Research Analyst for your Products and Services</p>
           </div>

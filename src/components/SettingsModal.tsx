@@ -78,7 +78,7 @@ const SettingsModal = ({ isOpen, onClose, settings, onSettingsChange }: Settings
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md bg-black/90 text-white border border-white/10">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-white">Oracle Settings</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-white">Okra Ai Settings</DialogTitle>
         </DialogHeader>
         
         <div className="grid gap-6 py-4">

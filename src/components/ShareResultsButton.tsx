@@ -15,13 +15,13 @@ const ShareResultsButton: React.FC<ShareResultsButtonProps> = ({ result, prompt 
     if (!result) return;
     
     // Create a simple share text
-    const shareText = `Oracle AI Analysis of "${prompt}" - Validation Score: ${result.validationScore}/100`;
+    const shareText = `Okra Ai Analysis of "${prompt}" - Validation Score: ${result.validationScore}/100`;
     
     // Check if Web Share API is supported
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Oracle AI Analysis',
+          title: 'Okra Ai Analysis',
           text: shareText,
         });
         toast.success('Analysis shared successfully!');
@@ -38,7 +38,7 @@ const ShareResultsButton: React.FC<ShareResultsButtonProps> = ({ result, prompt 
   const fallbackShare = () => {
     try {
       navigator.clipboard.writeText(
-        `Oracle AI Analysis Results\n\nProduct/Service Idea: "${prompt}"\nValidation Score: ${result?.validationScore}/100\n\nSummary: ${result?.summary}`
+        `Okra Ai Analysis Results\n\nProduct/Service Idea: "${prompt}"\nValidation Score: ${result?.validationScore}/100\n\nSummary: ${result?.summary}`
       );
       toast.success('Analysis copied to clipboard');
     } catch (error) {
