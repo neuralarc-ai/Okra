@@ -107,7 +107,7 @@ export const generatePDF = async (result: AnalysisResult, prompt: string) => {
   }
   
   doc.setFontSize(14);
-  doc.text("Potential Clients", 15, newY);
+  doc.text("Target Audience", 15, newY);
   
   const clientData = result.clients.map(client => [
     client.name,
@@ -117,7 +117,7 @@ export const generatePDF = async (result: AnalysisResult, prompt: string) => {
   
   autoTable(doc, {
     startY: newY + 5,
-    head: [['Client', 'Industry', 'Use Case']],
+    head: [['Name', 'Industry', 'Use Case']],
     body: clientData,
     margin: { left: 15 }
   });

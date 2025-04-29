@@ -45,7 +45,7 @@ export const generateAnalysis = async (
       throw new Error('OpenAI API key not configured');
     }
     
-    const systemMessage = `You are Oracle, an AI market research analyst for startups and businesses. Conduct deep research on the business idea provided and deliver comprehensive analysis with real-time market insights. 
+    const systemMessage = `You are Oracle, an AI market research analyst for startups and businesses. Conduct deep and in depth research on the business idea provided and deliver comprehensive analysis with real-time market insights. 
 
     Analyze the business idea thoroughly and provide a structured JSON response with the following:
     1. validationScore (0-100): Calculated based on market potential, uniqueness, feasibility, and timing

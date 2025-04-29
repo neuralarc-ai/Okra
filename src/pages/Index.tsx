@@ -12,7 +12,7 @@ import AnalysisProgress from '@/components/AnalysisProgress';
 import { OracleSettings, AnalysisResult } from '@/types/oracle';
 import { generateAnalysis } from '@/services/openRouterService';
 import { toast } from 'sonner';
-import { Download, Share2 } from 'lucide-react';
+import { Download, Share2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePDF } from '@/services/pdfService';
 
@@ -29,6 +29,7 @@ const Index = () => {
   const [currentSource, setCurrentSource] = useState('');
   const inputContainerRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const [isQueryExpanded, setIsQueryExpanded] = useState(false);
 
   // Load settings from localStorage
   useEffect(() => {
@@ -154,32 +155,32 @@ const Index = () => {
         
         {/* Chat container */}
         {!(isAnalyzing || showResults) && (
-          <div 
-            ref={inputContainerRef} 
-            className={`flex flex-col items-center w-full absolute left-1/2 -translate-x-1/2 transition-all duration-500 ease-in-out z-20 gap-4 ${
+        <div 
+          ref={inputContainerRef} 
+          className={`flex flex-col items-center w-full absolute left-1/2 -translate-x-1/2 transition-all duration-500 ease-in-out z-20 gap-4 ${
               'top-1/2 -translate-y-1/2'
-            }`}
-          >
-            <div className="text-center mb-2">
-              <h1 className="text-4xl font-bold text-white tracking-tight">
-                <span className="text-white">Welcome to Oracle</span>
-              </h1>
-              <p className="text-gray-300 mt-1">AI Research Analyst for your Products and Services</p>
-            </div>
-            
-            <ChatInput onSubmit={handleSubmit} isAnalyzing={isAnalyzing} />
+          }`}
+        >
+          <div className="text-center mb-2">
+            <h1 className="text-4xl font-bold text-white tracking-tight">
+              <span className="text-white">Welcome to Oracle</span>
+            </h1>
+            <p className="text-gray-300 mt-1">AI Research Analyst for your Products and Services</p>
           </div>
+          
+          <ChatInput onSubmit={handleSubmit} isAnalyzing={isAnalyzing} />
+        </div>
         )}
 
         {/* Analysis progress display */}
         {isAnalyzing && (
-          <div className="relative z-10 flex justify-center mt-40">
+        <div className="relative z-10 flex justify-center mt-40">
             <AnalysisProgress 
               progress={analysisProgress} 
               source={currentSource} 
             />
           </div>
-        )}
+          )}
         
         {/* Analysis results section */}
         <div 
@@ -199,33 +200,137 @@ const Index = () => {
           {/* Query display */}
           {userInput && showResults && (
             <div className="container mx-auto px-4 animate-fadeUp">
-              <div className="bg-black/40 backdrop-blur-md p-6 rounded-xl mb-6 flex justify-between items-center border border-white/10 hover:border-white/20 transition-all duration-300 shadow-lg">
-                <div className="flex-1">
-                  <span className="text-gray-300 text-sm font-medium">Your query:</span>
-                  <p className="text-white text-lg">{userInput}</p>
+              <div className="bg-black/40 backdrop-blur-md rounded-xl mb-6 border border-white/10 hover:border-white/20 transition-all duration-300 shadow-lg overflow-hidden">
+                {/* Query Header */}
+                <div 
+                  className="p-6 cursor-pointer flex items-center justify-between"
+                  onClick={() => setIsQueryExpanded(!isQueryExpanded)}
+                >
+                  <div className="flex-1">
+                    <span className="text-gray-300 text-sm font-medium mb-1 block">Your query:</span>
+                    <p className="text-white text-lg line-clamp-2">
+                      {userInput}
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 ml-4">
+                    <Button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDownloadPDF();
+                      }}
+                      variant="outline" 
+                      size="sm"
+                      className="flex items-center gap-1 text-white border-white/20 hover:bg-white/10"
+                    >
+                      <Download size={16} />
+                      <span>PDF</span>
+                    </Button>
+                    
+                    <ShareResultsButton result={result} prompt={userInput} />
+                    
+                    <Button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        resetAnalysis();
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="text-white border-white/20 hover:bg-white/10"
+                    >
+                      New Analysis
+                    </Button>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-white hover:bg-white/10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsQueryExpanded(!isQueryExpanded);
+                      }}
+                    >
+                      {isQueryExpanded ? (
+                        <ChevronUp size={20} />
+                      ) : (
+                        <ChevronDown size={20} />
+                      )}
+                    </Button>
+                  </div>
                 </div>
-                
-                <div className="flex items-center gap-2">
-                  <Button 
-                    onClick={handleDownloadPDF}
-                    variant="outline" 
-                    size="sm"
-                    className="flex items-center gap-1 text-white border-white/20 hover:bg-white/10"
-                  >
-                    <Download size={16} />
-                    <span>PDF</span>
-                  </Button>
-                  
-                  <ShareResultsButton result={result} prompt={userInput} />
-                  
-                  <Button 
-                    onClick={resetAnalysis} 
-                    variant="outline"
-                    size="sm"
-                    className="text-white border-white/20 hover:bg-white/10"
-                  >
-                    New Analysis
-                  </Button>
+
+                {/* Expandable Content with Formatted Sections */}
+                <div 
+                  className={`transition-all duration-300 ${
+                    isQueryExpanded ? 'opacity-100 max-h-[1000px]' : 'opacity-0 max-h-0 overflow-hidden'
+                  }`}
+                >
+                  <div className="px-6 pb-6">
+                    <div className="w-full h-px bg-white/10 mb-4" />
+                    <div className="space-y-4 text-white/80">
+                      {/* Title and Description */}
+                      <div>
+                        <h3 className="font-medium text-white mb-2">{userInput.split('\n\n')[0]}</h3>
+                        <p className="whitespace-pre-wrap">{userInput.split('\n\n')[1]}</p>
+                      </div>
+
+                      {/* Problem & Solution */}
+                      <div>
+                        <h4 className="text-sm font-medium text-white/90 mb-1">Problem & Solution:</h4>
+                        <p className="whitespace-pre-wrap">
+                          {userInput
+                            .split('Problem & Solution:\n')[1]
+                            .split('\n\n')[0]
+                            .trim()}
+                        </p>
+                      </div>
+
+                      {/* Market Opportunity */}
+                      <div>
+                        <h4 className="text-sm font-medium text-white/90 mb-1">Market Opportunity:</h4>
+                        <p className="whitespace-pre-wrap">
+                          {userInput
+                            .split('Market Opportunity:\n')[1]
+                            .split('\n\n')[0]
+                            .trim()}
+                        </p>
+                      </div>
+
+                      {/* Target Audience */}
+                      <div>
+                        <h4 className="text-sm font-medium text-white/90 mb-1">Who it's for:</h4>
+                        <ul className="list-disc list-inside pl-2">
+                          {userInput
+                            .split('Who it\'s for:\n')[1]
+                            .split('\n\n')[0]
+                            .split('\n')
+                            .filter(line => line.trim())
+                            .map((line, index) => (
+                              <li key={index} className="text-white/80">
+                                {line.trim().replace(/^[•-]\s*/, '')}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+
+                      {/* Unique Features */}
+                      <div>
+                        <h4 className="text-sm font-medium text-white/90 mb-1">What makes it unique:</h4>
+                        <ul className="list-disc list-inside pl-2">
+                          {userInput
+                            .split('What makes it unique:\n')[1]
+                            .trim()
+                            .split('\n')
+                            .filter(line => line.trim())
+                            .map((line, index) => (
+                              <li key={index} className="text-white/80">
+                                {line.trim().replace(/^[•-]\s*/, '')}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

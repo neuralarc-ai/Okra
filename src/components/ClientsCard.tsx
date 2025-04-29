@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Client } from "@/types/oracle";
 
@@ -10,7 +9,7 @@ const ClientsCard = ({ clients }: ClientsCardProps) => {
   return (
     <Card className="card-bg hover-card shadow-lg">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-medium">Potential Clients</CardTitle>
+        <CardTitle className="text-xl font-medium">Target Audience</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

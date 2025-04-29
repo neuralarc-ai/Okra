@@ -31,30 +31,30 @@ const SettingsModal = ({ isOpen, onClose, settings, onSettingsChange }: Settings
   // Load models on component mount
   useEffect(() => {
     const loadModels = async () => {
-      setIsLoading(true);
-      try {
+        setIsLoading(true);
+        try {
         const modelsList = await fetchModels();
-        if (modelsList.length > 0) {
-          setModels(modelsList);
+          if (modelsList.length > 0) {
+            setModels(modelsList);
           // toast.success("Successfully connected to OpenAI");
-          
-          // Only set default models if they haven't been set before
-          if (!primaryModel) {
-            setPrimaryModel('gpt-4-turbo-preview');
+            
+            // Only set default models if they haven't been set before
+            if (!primaryModel) {
+              setPrimaryModel('gpt-4-turbo-preview');
+            }
+            
+            if (!fallbackModel) {
+              setFallbackModel('gpt-3.5-turbo');
+            }
+          } else {
+            setModels(defaultModels);
           }
-          
-          if (!fallbackModel) {
-            setFallbackModel('gpt-3.5-turbo');
-          }
-        } else {
+        } catch (error) {
+          toast.error("Error loading models");
           setModels(defaultModels);
-        }
-      } catch (error) {
-        toast.error("Error loading models");
-        setModels(defaultModels);
-        console.error(error);
-      } finally {
-        setIsLoading(false);
+          console.error(error);
+        } finally {
+          setIsLoading(false);
       }
     };
 

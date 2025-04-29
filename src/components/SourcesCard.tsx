@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Link, ExternalLink } from "lucide-react";
+import { BookOpen, ExternalLink } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -26,13 +25,13 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
           {sources.length === 0 ? (
             <div className="p-4 border border-white/5 rounded-lg text-center">
               <p className="text-gray-400 text-sm">No research sources available</p>
             </div>
           ) : (
-            sources.map((source, index) => (
+            sources.slice(0, 20).map((source, index) => (
               <div 
                 key={index} 
                 className="p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5 flex flex-col gap-2"
@@ -42,7 +41,7 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="text-xs border-white/10 hover:bg-white/10 flex items-center gap-1"
+                    className="text-xs border-white/10 hover:bg-white/10 flex items-center gap-1 ml-2"
                     onClick={() => window.open(source.url.startsWith('http') ? source.url : `https://${source.url}`, '_blank')}
                     disabled={source.url === '#'}
                   >

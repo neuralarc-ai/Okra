@@ -8,15 +8,10 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Gradient background overlay */}
-      <div className="absolute inset-0 z-0" style={{
-        background: "radial-gradient(ellipse at top, #f8e7d2 0%, #f7e1e6 20%, #e6e1f7 40%, #b6c6d6 60%, #232323 100%)"
-      }} />
-      {/* Subtle noise overlay for texture */}
-      <div className="absolute inset-0 z-10 pointer-events-none" style={{
-        background: "url('/background.png') center/cover no-repeat",
-        opacity: 0.5
-      }} />
+      {/* Background */}
+      <div 
+        className="fixed inset-0 bg-[url('/background.png')] bg-cover bg-top z-0"
+      />
       <main className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4">
         <div className="flex flex-col items-center gap-6 animate-fadeUp">
           <div className="flex items-center gap-3 mb-2">

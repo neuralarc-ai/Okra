@@ -1,9 +1,9 @@
-
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, MicOff } from "lucide-react";
+import { Send, Mic, MicOff, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
+import { expandPrompt, formatExpandedPrompt } from "@/services/promptService";
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
@@ -16,6 +16,7 @@ const ChatInput = ({
 }: ChatInputProps) => {
   const [message, setMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [isExpanding, setIsExpanding] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -38,6 +39,27 @@ const ChatInput = ({
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
+    }
+  };
+
+  const handleExpandPrompt = async () => {
+    if (!message.trim()) {
+      toast.error("Please enter a basic idea first");
+      return;
+    }
+
+    try {
+      setIsExpanding(true);
+      toast.info("Expanding your idea with AI...");
+      const suggestion = await expandPrompt(message.trim());
+      const expandedPrompt = formatExpandedPrompt(suggestion);
+      setMessage(expandedPrompt);
+      toast.success("Prompt expanded with AI!");
+    } catch (error) {
+      console.error('Error expanding prompt:', error);
+      toast.error("Failed to expand prompt with AI");
+    } finally {
+      setIsExpanding(false);
     }
   };
   
@@ -119,6 +141,17 @@ const ChatInput = ({
           </div>
           
           <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className={`rounded-full bg-transparent border-white/40 text-white hover:bg-white/10 ${isExpanding ? 'opacity-50' : ''}`}
+              onClick={handleExpandPrompt}
+              disabled={isAnalyzing || isExpanding}
+            >
+              <Wand2 size={18} className={isExpanding ? 'animate-pulse' : ''} />
+            </Button>
+
             {speechRecognitionSupported && 
               <Button 
                 type="button" 
@@ -137,7 +170,6 @@ const ChatInput = ({
               className="bg-white text-black hover:bg-gray-200 rounded-full px-6 transition-all duration-300" 
               disabled={!message.trim() || isAnalyzing}
             >
-              <Send size={18} className="mr-2" />
               {isAnalyzing ? 'Analyzing...' : 'Analyze'}
             </Button>
           </div>
