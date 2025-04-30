@@ -64,51 +64,66 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
           ))}
 
           {/* Price trends graph */}
-          <div className="h-[180px] w-full bg-black/20 rounded-lg p-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={trendData}
-                margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                <XAxis
-                  dataKey="date"
-                  stroke="rgba(255,255,255,0.5)"
-                  fontSize={10}
-                  tickLine={false}
-                  tickMargin={5}
-                />
-                <YAxis
-                  stroke="rgba(255,255,255,0.5)"
-                  fontSize={10}
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={5}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'rgba(0,0,0,0.8)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: '6px',
-                    color: 'white'
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="freemium"
-                  stroke={colors.freemium}
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="subscription"
-                  stroke={colors.subscription}
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+          <div className="space-y-2">
+            <div className="h-[180px] w-full bg-black/20 rounded-lg p-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={trendData}
+                  margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <XAxis
+                    dataKey="date"
+                    stroke="rgba(255,255,255,0.5)"
+                    fontSize={10}
+                    tickLine={false}
+                    tickMargin={5}
+                  />
+                  <YAxis
+                    stroke="rgba(255,255,255,0.5)"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={5}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'rgba(0,0,0,0.8)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '6px',
+                      color: 'white'
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="freemium"
+                    stroke={colors.freemium}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="subscription"
+                    stroke={colors.subscription}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex items-center justify-between px-2 text-xs text-gray-400">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors.freemium }} />
+                  <span>Freemium</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors.subscription }} />
+                  <span>Subscription</span>
+                </div>
+              </div>
+              <span className="italic">* AI-powered 30-day price trend prediction</span>
+            </div>
           </div>
 
           {/* Pricing Strategy Section */}
