@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Sparkles, BarChart, Network, Globe, Search, Gauge, Users, Brain } from 'lucide-react';
 
@@ -39,14 +40,12 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source })
 
   // Analysis steps with icons
   const analysisSteps = [
-    { name: 'Initial market research', icon: <Globe size={16} /> },
-    { name: 'Industry trends analysis', icon: <BarChart size={16} /> },
-    { name: 'Competitor landscape', icon: <Network size={16} /> },
-    { name: 'Target audience profiling', icon: <Users size={16} /> },
+    { name: 'Market research', icon: <Globe size={16} /> },
+    { name: 'Competitor analysis', icon: <Network size={16} /> },
+    { name: 'Target audience', icon: <Users size={16} /> },
     { name: 'Business model validation', icon: <Gauge size={16} /> },
     { name: 'Revenue projections', icon: <BarChart size={16} /> },
-    { name: 'Risk assessment', icon: <Brain size={16} /> },
-    { name: 'Market opportunity sizing', icon: <Search size={16} /> }
+    { name: 'Risk assessment', icon: <Brain size={16} /> }
   ];
 
   return (
@@ -100,23 +99,23 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source })
         {analysisSteps.map((step, index) => (
           <div 
             key={step.name} 
-            className={`flex items-center gap-2 p-3 rounded-lg transition-all duration-500 ${
-              progress > (index * 12) ? 'bg-white/10 border border-white/20' : 'bg-transparent border border-white/5'
+            className={`flex items-center gap-2 p-3 rounded-lg transition-all duration-300 ${
+              progress > (index * 15) ? 'bg-white/10 border border-white/20' : 'bg-transparent border border-white/5'
             }`}
           >
             <div 
               className={`flex items-center justify-center ${
-                progress > (index * 12) ? 'text-white' : 'text-white/40'
+                progress > (index * 15) ? 'text-white' : 'text-white/40'
               }`}
             >
               {step.icon}
             </div>
             <span className={`text-xs ${
-              progress > (index * 12) ? 'text-white' : 'text-white/40'
+              progress > (index * 15) ? 'text-white' : 'text-white/40'
             }`}>
               {step.name}
             </span>
-            {progress > (index * 12) && (
+            {progress > (index * 15) && (
               <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             )}
           </div>

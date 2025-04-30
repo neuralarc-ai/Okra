@@ -74,8 +74,7 @@ const Index = () => {
       const simulateProgress = () => {
         let progress = 0;
         const interval = setInterval(() => {
-          // Slower progress increment (reduced from 8 to 3)
-          progress += Math.random() * 3 + 0.5;
+          progress += Math.random() * 8 + 1;
           if (progress > 100) progress = 100;
           
           setAnalysisProgress(Math.floor(progress));
@@ -87,7 +86,7 @@ const Index = () => {
           }
           
           if (progress >= 100) clearInterval(interval);
-        }, 2000); // Increased interval from 1000ms to 2000ms
+        }, 1000);
         return interval;
       };
       
