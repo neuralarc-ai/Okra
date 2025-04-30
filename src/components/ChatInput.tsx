@@ -8,13 +8,15 @@ import { expandPrompt, formatExpandedPrompt } from "@/services/promptService";
 interface ChatInputProps {
   onSubmit: (message: string) => void;
   isAnalyzing: boolean;
+  initialMessage?: string;
 }
 
 const ChatInput = ({
   onSubmit,
-  isAnalyzing
+  isAnalyzing,
+  initialMessage = ""
 }: ChatInputProps) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessage);
   const [isListening, setIsListening] = useState(false);
   const [isExpanding, setIsExpanding] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
@@ -30,6 +32,18 @@ const ChatInput = ({
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 150)}px`;
     }
   }, [message]);
+
+  // Update message when initialMessage changes
+  useEffect(() => {
+    if (initialMessage) {
+      setMessage(initialMessage);
+      // Adjust textarea height
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto";
+        textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 150)}px`;
+      }
+    }
+  }, [initialMessage]);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,7 +146,7 @@ const ChatInput = ({
           placeholder="Describe your product or service idea in detail. What problem does it solve? Who is it for? What makes it unique?..." 
           disabled={isAnalyzing} 
           rows={3} 
-          className="flex-1 px-4 py-3 bg-transparent placeholder-gray-400 text-white text-lg min-h-[100px] max-h-[200px] resize-none border-none focus:ring-0 focus:outline-0 " 
+          className="flex-1 px-4 py-3 bg-transparent placeholder-gray-400 text-white text-lg min-h-[100px] max-h-[200px] resize-none border-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 [&:not(:disabled)]:hover:border-none" 
         />
         
         <div className="flex justify-between items-center px-2 mt-2">

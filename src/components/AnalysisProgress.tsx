@@ -1,6 +1,5 @@
-
 import React, { useEffect, useState } from 'react';
-import { Sparkles, BarChart, Network, Globe, Search, Gauge, Users, Brain } from 'lucide-react';
+import { Sparkles, BarChart, Network, Globe, Search, Gauge, Users, Brain, Clock, Target } from 'lucide-react';
 
 interface AnalysisProgressProps {
   progress: number;
@@ -45,7 +44,9 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source })
     { name: 'Target audience', icon: <Users size={16} /> },
     { name: 'Business model validation', icon: <Gauge size={16} /> },
     { name: 'Revenue projections', icon: <BarChart size={16} /> },
-    { name: 'Risk assessment', icon: <Brain size={16} /> }
+    { name: 'Risk assessment', icon: <Brain size={16} /> },
+    { name: 'Project timeline', icon: <Clock size={16} /> },
+    { name: 'Go-to-market strategy', icon: <Target size={16} /> }
   ];
 
   return (
@@ -87,7 +88,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source })
       
       <div className="flex justify-between items-center mb-6">
         <span className="text-sm text-white/80 font-medium flex items-center gap-1">
-          <Sparkles size={16} className="animate-pulse" /> Okra Ai is researching your idea
+          <Sparkles size={16} className="animate-pulse" /> Okra AI is researching your idea
         </span>
         <span className="text-sm font-medium text-white bg-white/10 px-3 py-1 rounded-full">
           {progress}%
@@ -96,30 +97,34 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source })
       
       {/* Analysis steps */}
       <div className="grid grid-cols-2 gap-3">
-        {analysisSteps.map((step, index) => (
-          <div 
-            key={step.name} 
-            className={`flex items-center gap-2 p-3 rounded-lg transition-all duration-300 ${
-              progress > (index * 15) ? 'bg-white/10 border border-white/20' : 'bg-transparent border border-white/5'
-            }`}
-          >
+        {analysisSteps.map((step, index) => {
+          // Adjust the progress threshold for more steps
+          const stepThreshold = (index * (100 / analysisSteps.length));
+          return (
             <div 
-              className={`flex items-center justify-center ${
-                progress > (index * 15) ? 'text-white' : 'text-white/40'
+              key={step.name} 
+              className={`flex items-center gap-2 p-3 rounded-lg transition-all duration-300 ${
+                progress > stepThreshold ? 'bg-white/10 border border-white/20' : 'bg-transparent border border-white/5'
               }`}
             >
-              {step.icon}
+              <div 
+                className={`flex items-center justify-center ${
+                  progress > stepThreshold ? 'text-white' : 'text-white/40'
+                }`}
+              >
+                {step.icon}
+              </div>
+              <span className={`text-xs ${
+                progress > stepThreshold ? 'text-white' : 'text-white/40'
+              }`}>
+                {step.name}
+              </span>
+              {progress > stepThreshold && (
+                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              )}
             </div>
-            <span className={`text-xs ${
-              progress > (index * 15) ? 'text-white' : 'text-white/40'
-            }`}>
-              {step.name}
-            </span>
-            {progress > (index * 15) && (
-              <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -1,12 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, ExternalLink } from "lucide-react";
-import { Button } from '@/components/ui/button';
+import { BookOpen } from "lucide-react";
 import { Badge } from '@/components/ui/badge';
 
 interface Source {
   title: string;
-  url: string;
   relevance: string;
 }
 
@@ -15,48 +13,71 @@ interface SourcesCardProps {
 }
 
 const SourcesCard = ({ sources }: SourcesCardProps) => {
-  // All sources should be treated as external links - no dummy data
+  // Calculate initial visible height for 4 items (approximately)
+  const initialVisibleHeight = "400px";
+
   return (
-    <Card className="card-bg hover-card">
+    <Card className="card-bg hover-card h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-medium flex items-center gap-2">
-          <BookOpen size={18} className="text-purple-300" />
-          <span>Research Sources</span>
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-xl font-medium flex items-center gap-2">
+            <BookOpen size={18} className="text-gray-400" />
+            Research Sources
+          </CardTitle>
+          <Badge 
+            variant="outline" 
+            className="text-xs bg-[#1c1c1c] text-gray-400 border-white/10"
+          >
+            {sources.length} sources
+          </Badge>
+        </div>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+      <CardContent className="relative">
+        <div 
+          className="space-y-3 overflow-y-auto custom-scrollbar pr-2"
+          style={{
+            maxHeight: initialVisibleHeight,
+            maskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)'
+          }}
+        >
           {sources.length === 0 ? (
             <div className="p-4 border border-white/5 rounded-lg text-center">
               <p className="text-gray-400 text-sm">No research sources available</p>
             </div>
           ) : (
-            sources.slice(0, 20).map((source, index) => (
+            sources.map((source, index) => (
               <div 
                 key={index} 
-                className="p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5 flex flex-col gap-2"
+                className="p-4 bg-[#1c1c1c]/50 rounded-lg transition-all duration-200 hover:bg-[#1c1c1c] group"
               >
-                <div className="flex justify-between items-start">
-                  <h4 className="font-medium text-white flex-1">{source.title}</h4>
-                  <Button 
+                <div className="flex items-start justify-between gap-4 mb-2">
+                  <h4 className="font-medium text-white text-base leading-tight">
+                    {source.title}
+                  </h4>
+                  <Badge 
                     variant="outline" 
-                    size="sm" 
-                    className="text-xs border-white/10 hover:bg-white/10 flex items-center gap-1 ml-2"
-                    onClick={() => window.open(source.url.startsWith('http') ? source.url : `https://${source.url}`, '_blank')}
-                    disabled={source.url === '#'}
+                    className="shrink-0 text-xs bg-[#1c1c1c] text-gray-400 border-white/10 group-hover:bg-[#2c2c2c]"
                   >
-                    <ExternalLink size={12} />
-                    <span>View</span>
-                  </Button>
+                    {String(index + 1).padStart(2, '0')}
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-xs w-fit bg-white/5 hover:bg-white/10">
-                  Research source
-                </Badge>
-                <p className="text-gray-300 text-xs leading-relaxed">{source.relevance}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  {source.relevance}
+                </p>
               </div>
             ))
           )}
         </div>
+        {/* Fade out effect at the bottom */}
+        {sources.length > 4 && (
+          <div 
+            className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, transparent, rgb(16 16 16))'
+            }}
+          />
+        )}
       </CardContent>
     </Card>
   );

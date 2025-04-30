@@ -1,38 +1,25 @@
 export interface AnalysisResult {
   validationScore: number;
-  competitors: Array<{
-    name: string;
-    strengthScore: number;
-    description: string;
-  }>;
-  priceSuggestions: Array<{
-    type: string;
-    value: string;
-    description: string;
-  }>;
+  competitors: Competitor[];
+  priceSuggestions: PriceSuggestion[];
   forecasts: {
     bestCase: {
-      revenue: string;
-      marketShare: string;
-      customers: string;
+      revenue: number;
+      marketShare: number;
+      customers: number;
     };
     worstCase: {
-      revenue: string;
-      marketShare: string;
-      customers: string;
+      revenue: number;
+      marketShare: number;
+      customers: number;
     };
   };
-  clients: Array<{
-    name: string;
-    industry: string;
-    useCase: string;
-  }>;
-  sources: Array<{
-    title: string;
-    url: string;
-    relevance: string;
-  }>;
+  timeline: Timeline;
+  goToMarket: GoToMarket;
+  clients: Client[];
+  sources: Source[];
   summary: string;
+  scoreAnalysis: ScoreAnalysis;
 }
 
 export interface Competitor {
@@ -45,12 +32,18 @@ export interface PriceSuggestion {
   type: string;
   value: string;
   description: string;
+  trends?: PriceTrend[];
+}
+
+export interface PriceTrend {
+  date: string;
+  value: number;
 }
 
 export interface Forecast {
   bestCase: ForecastCase;
   worstCase: ForecastCase;
-  timeframe: string;
+  timeframe?: string;
 }
 
 export interface ForecastCase {
@@ -67,7 +60,6 @@ export interface Client {
 
 export interface Source {
   title: string;
-  url: string;
   relevance: string;
 }
 
@@ -80,4 +72,56 @@ export interface OpenRouterModel {
 export interface OracleSettings {
   primaryModel: string;
   fallbackModel: string;
+}
+
+export interface Timeline {
+  phases: Array<{
+    name: string;
+    duration: string;
+    tasks: string[];
+    milestone: string;
+    risk: 'low' | 'medium' | 'high';
+  }>;
+  totalDuration: string;
+  criticalPath: string[];
+}
+
+export interface GoToMarket {
+  strategy: Array<{
+    name: string;
+    description: string;
+    priority: 'low' | 'medium' | 'high';
+  }>;
+  channels: Array<{
+    name: string;
+    effectiveness: number;
+    cost: string;
+    timeToROI: string;
+  }>;
+  kpis: Array<{
+    metric: string;
+    target: string;
+    timeframe: string;
+  }>;
+}
+
+export interface ScoreAnalysis {
+  category: string;
+  marketPotential: {
+    score: number;
+    status: string;
+  };
+  competition: {
+    level: string;
+    description: string;
+  };
+  marketSize: {
+    status: string;
+    trend: string;
+  };
+  timing: {
+    status: string;
+    description: string;
+  };
+  recommendations: string[];
 }

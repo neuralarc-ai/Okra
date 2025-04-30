@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Competitor } from "@/types/oracle";
@@ -8,6 +7,12 @@ interface CompetitorsCardProps {
 }
 
 const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
+  const getProgressClass = (score: number) => {
+    if (score >= 80) return "bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400";
+    if (score >= 60) return "bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400";
+    return "bg-gradient-to-r from-gray-500 via-gray-400 to-gray-600";
+  };
+
   return (
     <Card className="card-bg hover-card shadow-lg">
       <CardHeader className="pb-2">
@@ -23,12 +28,8 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
               </div>
               <Progress 
                 value={competitor.strengthScore} 
-                className="h-2 bg-gray-800"
-                indicatorClassName={`${
-                  competitor.strengthScore >= 80 ? 'bg-gray-300' : 
-                  competitor.strengthScore >= 60 ? 'bg-gray-400' : 
-                  'bg-white'
-                }`}
+                className="h-2 bg-white/5"
+                indicatorClassName={getProgressClass(competitor.strengthScore)}
               />
               <p className="text-gray-400 text-xs">{competitor.description}</p>
             </div>

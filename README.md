@@ -1,4 +1,4 @@
-# Okra Ai- AI Research Analyst for Startups
+# Okra AI- AI Research Analyst for Startups
 
 ## Project Overview
 This is a React-based web application built with Vite, TypeScript, and shadcn-ui components. The application provides deep research and validation for startup ideas.

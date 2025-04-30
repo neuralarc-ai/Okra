@@ -19,7 +19,7 @@ const Landing = () => {
               <Sparkles className="text-white w-8 h-8 animate-pulse" />
             </span>
             <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg tracking-tight text-center">
-              Okra Ai
+              Okra AI
             </h1>
           </div>
           <h2 className="text-xl md:text-2xl text-white/80 font-medium text-center max-w-2xl">

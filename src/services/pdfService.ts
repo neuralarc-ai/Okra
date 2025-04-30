@@ -1,42 +1,116 @@
 import { AnalysisResult } from "@/types/oracle";
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import autoTable, { RowInput, UserOptions } from "jspdf-autotable";
+
+interface AutoTableExtendedDoc extends jsPDF {
+  lastAutoTable: {
+    finalY: number;
+  };
+}
+
+// Define table styles
+const tableStyles: Partial<UserOptions> = {
+  headStyles: { 
+    fillColor: [37, 99, 235],
+    textColor: 255,
+    fontSize: 10,
+    fontStyle: 'bold' as const,
+  },
+  bodyStyles: { 
+    fontSize: 9,
+  },
+  alternateRowStyles: { 
+    fillColor: [248, 250, 252]
+  },
+};
+
+const addNewPageIfNeeded = (doc: AutoTableExtendedDoc, currentY: number, requiredSpace: number): number => {
+  const pageHeight = doc.internal.pageSize.getHeight();
+  if (currentY + requiredSpace > pageHeight - 20) {
+    doc.addPage();
+    return 20;
+  }
+  return currentY;
+};
 
 export const generatePDF = async (result: AnalysisResult, prompt: string) => {
   // Create a new PDF document
-  const doc = new jsPDF();
+  const doc = new jsPDF() as AutoTableExtendedDoc;
   const pageWidth = doc.internal.pageSize.getWidth();
   
   // Add title
-  doc.setFontSize(22);
+  doc.setFontSize(24);
   doc.setTextColor(0, 0, 0);
-  doc.text("Okra Ai Analysis Report", pageWidth / 2, 20, { align: "center" });
+  doc.text("Okra AI Analysis Report", pageWidth / 2, 20, { align: "center" });
   
   // Add date
   doc.setFontSize(10);
-  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, pageWidth / 2, 27, { align: "center" });
+  doc.setTextColor(128, 128, 128);
+  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, pageWidth / 2, 30, { align: "center" });
   
-  // Add prompt
+  let currentY = 45;
+
+  // Add prompt section
   doc.setFontSize(12);
-  doc.text("Analysis Prompt:", 15, 40);
+  doc.setTextColor(0, 0, 0);
+  doc.text("Analysis Prompt:", 15, currentY);
   doc.setFontSize(11);
-  doc.text(`\"${prompt}\"`, 15, 47);
+  doc.setTextColor(64, 64, 64);
+  const splitPrompt = doc.splitTextToSize(prompt, pageWidth - 30);
+  doc.text(splitPrompt, 15, currentY + 7);
+  
+  currentY += splitPrompt.length * 7 + 15;
   
   // Add validation score
-  doc.setFontSize(14);
-  doc.text(`Validation Score: ${result.validationScore}/100`, 15, 60);
+  doc.setFontSize(16);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`Validation Score: ${result.validationScore}/100`, 15, currentY);
+  
+  currentY += 15;
   
   // Add summary
-  doc.setFontSize(12);
-  doc.text("Executive Summary:", 15, 70);
+  doc.setFontSize(14);
+  doc.text("Executive Summary:", 15, currentY);
   doc.setFontSize(11);
+  doc.setTextColor(64, 64, 64);
   
   const splitSummary = doc.splitTextToSize(result.summary, pageWidth - 30);
-  doc.text(splitSummary, 15, 77);
+  currentY += 7;
+  doc.text(splitSummary, 15, currentY);
+  
+  currentY += splitSummary.length * 7 + 15;
+  
+  // Add score analysis section if available
+  if (result.scoreAnalysis) {
+    currentY = addNewPageIfNeeded(doc, currentY, 80);
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Score Analysis", 15, currentY);
+    
+    const analysisData: RowInput[] = [
+      ['Category', result.scoreAnalysis.category],
+      ['Market Potential', `${result.scoreAnalysis.marketPotential.score}% - ${result.scoreAnalysis.marketPotential.status}`],
+      ['Competition', result.scoreAnalysis.competition.level],
+      ['Market Size', `${result.scoreAnalysis.marketSize.status} (${result.scoreAnalysis.marketSize.trend})`],
+      ['Timing', result.scoreAnalysis.timing.status]
+    ];
+    
+    autoTable(doc, {
+      startY: currentY + 5,
+      head: [['Metric', 'Value']],
+      body: analysisData,
+      ...tableStyles,
+      margin: { left: 15, right: 15 },
+    });
+    
+    currentY = doc.lastAutoTable.finalY + 15;
+  }
   
   // Add competitors table
+  currentY = addNewPageIfNeeded(doc, currentY, 100);
   doc.setFontSize(14);
-  doc.text("Competitive Analysis", 15, 100);
+  doc.setTextColor(0, 0, 0);
+  doc.text("Competitive Analysis", 15, currentY);
   
   const competitorData = result.competitors.map(comp => [
     comp.name,
@@ -45,15 +119,24 @@ export const generatePDF = async (result: AnalysisResult, prompt: string) => {
   ]);
   
   autoTable(doc, {
-    startY: 105,
-    head: [['Competitor', 'Strength Score', 'Description']],
+    startY: currentY + 5,
+    head: [['Competitor', 'Strength', 'Description']],
     body: competitorData,
-    margin: { left: 15 }
+    ...tableStyles,
+    margin: { left: 15, right: 15 },
+    columnStyles: {
+      0: { cellWidth: 40 },
+      1: { cellWidth: 30 },
+      2: { cellWidth: 'auto' }
+    }
   });
   
+  currentY = doc.lastAutoTable.finalY + 15;
+  
   // Add pricing table
-  const currentY = (doc as any).lastAutoTable.finalY + 15;
+  currentY = addNewPageIfNeeded(doc, currentY, 80);
   doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
   doc.text("Price Point Recommendations", 15, currentY);
   
   const pricingData = result.priceSuggestions.map(price => [
@@ -66,20 +149,17 @@ export const generatePDF = async (result: AnalysisResult, prompt: string) => {
     startY: currentY + 5,
     head: [['Tier', 'Price', 'Description']],
     body: pricingData,
-    margin: { left: 15 }
+    ...tableStyles,
+    margin: { left: 15, right: 15 }
   });
   
+  currentY = doc.lastAutoTable.finalY + 15;
+  
   // Add forecast table
-  let newY = (doc as any).lastAutoTable.finalY + 15;
-  
-  // Add a new page if we're getting close to the bottom
-  if (newY > 240) {
-    doc.addPage();
-    newY = 20;
-  }
-  
+  currentY = addNewPageIfNeeded(doc, currentY, 100);
   doc.setFontSize(14);
-  doc.text(`Forecast (${result.forecasts.timeframe})`, 15, newY);
+  doc.setTextColor(0, 0, 0);
+  doc.text("Market Forecast", 15, currentY);
   
   const forecastData = [
     ['Best Case Revenue', `${result.forecasts.bestCase.revenue}`],
@@ -91,23 +171,20 @@ export const generatePDF = async (result: AnalysisResult, prompt: string) => {
   ];
   
   autoTable(doc, {
-    startY: newY + 5,
+    startY: currentY + 5,
     head: [['Metric', 'Projection']],
     body: forecastData,
-    margin: { left: 15 }
+    ...tableStyles,
+    margin: { left: 15, right: 15 }
   });
   
-  // Add clients table
-  newY = (doc as any).lastAutoTable.finalY + 15;
+  currentY = doc.lastAutoTable.finalY + 15;
   
-  // Add a new page if we're getting close to the bottom
-  if (newY > 240) {
-    doc.addPage();
-    newY = 20;
-  }
-  
+  // Add target audience table
+  currentY = addNewPageIfNeeded(doc, currentY, 80);
   doc.setFontSize(14);
-  doc.text("Target Audience", 15, newY);
+  doc.setTextColor(0, 0, 0);
+  doc.text("Target Audience", 15, currentY);
   
   const clientData = result.clients.map(client => [
     client.name,
@@ -116,19 +193,43 @@ export const generatePDF = async (result: AnalysisResult, prompt: string) => {
   ]);
   
   autoTable(doc, {
-    startY: newY + 5,
+    startY: currentY + 5,
     head: [['Name', 'Industry', 'Use Case']],
     body: clientData,
-    margin: { left: 15 }
+    ...tableStyles,
+    margin: { left: 15, right: 15 }
   });
   
+  // Add recommendations if available
+  if (result.scoreAnalysis?.recommendations?.length) {
+    currentY = doc.lastAutoTable.finalY + 15;
+    currentY = addNewPageIfNeeded(doc, currentY, 80);
+    
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Key Recommendations", 15, currentY);
+    
+    const recommendationsData = result.scoreAnalysis.recommendations.map(rec => [rec]);
+    
+    autoTable(doc, {
+      startY: currentY + 5,
+      body: recommendationsData,
+      ...tableStyles,
+      theme: 'plain',
+      margin: { left: 15, right: 15 },
+      styles: { cellPadding: 2 }
+    });
+    
+    currentY = doc.lastAutoTable.finalY + 15;
+  }
+  
   // Footer
-  newY = (doc as any).lastAutoTable.finalY + 15;
+  currentY = addNewPageIfNeeded(doc, currentY, 20);
   doc.setFontSize(10);
-  doc.setTextColor(100, 100, 100);
-  doc.text("Generated by Okra Ai - Startup Analysis Engine", pageWidth / 2, newY, { align: "center" });
+  doc.setTextColor(128, 128, 128);
+  doc.text("Generated by Okra AI - Startup Analysis Engine", pageWidth / 2, currentY, { align: "center" });
   
   // Save the PDF
-  const filename = `Oracle_Analysis_${new Date().toISOString().slice(0, 10)}.pdf`;
+  const filename = `Okra_Analysis_${new Date().toISOString().slice(0, 10)}.pdf`;
   doc.save(filename);
 };

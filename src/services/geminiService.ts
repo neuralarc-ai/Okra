@@ -1,6 +1,46 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
+
+export interface TrendingPrompt {
+  title: string;
+  description: string;
+  category: string;
+  trendScore: number;
+}
+
+export const getTrendingPrompts = async (): Promise<TrendingPrompt[]> => {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    
+    const prompt = `Generate 6 trending startup/business ideas that are currently hot in the market. 
+    Format the response as a JSON array with objects containing:
+    - title (short name)
+    - description (2-3 sentences about the idea)
+    - category (e.g., AI, Health, Fintech)
+    - trendScore (a number between 80-99 indicating how trending it is)
+    
+    Focus on innovative, tech-forward ideas that solve real problems. Return ONLY the JSON array, no markdown formatting or other text.`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    
+    // Clean up the response text to handle potential markdown formatting
+    const cleanJson = text.replace(/^```json\n?/, '')  // Remove opening ```json
+                         .replace(/^```\n?/, '')       // Remove opening ``` if no language specified
+                         .replace(/\n?```$/, '')       // Remove closing ```
+                         .trim();                      // Remove any extra whitespace
+    
+    // Parse the cleaned JSON response
+    const prompts: TrendingPrompt[] = JSON.parse(cleanJson);
+    
+    return prompts;
+  } catch (error) {
+    console.error('Error fetching trending prompts:', error);
+    return [];
+  }
+};
 
 export const generatePromptExpansion = async (basicPrompt: string) => {
   try {
