@@ -21,19 +21,9 @@ export const expandPrompt = async (basicPrompt: string): Promise<PromptSuggestio
 };
 
 export const formatExpandedPrompt = (suggestion: PromptSuggestion): string => {
-  return `${suggestion.title}
-
-${suggestion.description}
-
-Problem & Solution:
-${suggestion.problemSolution}
-
-Market Opportunity:
-${suggestion.marketOpportunity}
-
-Who it's for:
-${suggestion.targetAudience.map(audience => `• ${audience}`).join('\n')}
-
-What makes it unique:
-${suggestion.uniqueFeatures.map(feature => `• ${feature}`).join('\n')}`;
+  // Combine all summary fields
+  const combined = `${suggestion.title}. ${suggestion.description} ${suggestion.problemSolution} ${suggestion.marketOpportunity}`.replace(/\s+/g, ' ').trim();
+  // Extract the first 2 sentences only
+  const sentences = combined.match(/[^.!?]+[.!?]+/g) || [combined];
+  return sentences.slice(0, 2).join(' ').trim();
 }; 

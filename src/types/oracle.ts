@@ -18,7 +18,7 @@ export interface AnalysisResult {
   goToMarket: GoToMarket;
   clients: Client[];
   sources: Source[];
-  summary: string;
+  summary: string; // Keep summary short and crisp (1-2 sentences)
   scoreAnalysis: ScoreAnalysis;
 }
 

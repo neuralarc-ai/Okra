@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Brain, Network, DollarSign } from 'lucide-react';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface AnalystMessage {
   id: number;
@@ -15,9 +16,12 @@ interface AnalystConversationProps {
   userInput?: string;
 }
 
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
+
 const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, userInput = '' }) => {
   const [visibleMessages, setVisibleMessages] = useState<AnalystMessage[]>([]);
   const [typing, setTyping] = useState<string | null>(null);
+  const [lastPrompt, setLastPrompt] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Extract key terms from user input for personalization
@@ -89,118 +93,42 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
       .replace(/\[keyword\]/g, keyTerms.keywords[0] || 'idea');
   };
 
-  // Define the conversation script
-  const generateConversationScript = (): AnalystMessage[] => {
-    return [
-      {
-        id: 1,
-        analyst: 'Emma',
-        message: `Alright team, let's dive into this idea: "${userInput || 'the user\'s business idea'}". I hope it's not another "Uber for llamas"...`,
-        progressThreshold: 3,
-        category: 'market'
-      },
-      {
-        id: 2,
-        analyst: 'Mike',
-        message: `Emma, even llamas need rides! But seriously, this ${keyTerms.type} in the ${keyTerms.industry} sector could be a game changer. I'll start mapping competitors.`,
-        progressThreshold: 8,
-        category: 'competitors'
-      },
-      {
-        id: 3,
-        analyst: 'Scott',
-        message: `If this takes off, I'm buying a llama. But first, let's crunch the numbers. What's the TAM for this ${keyTerms.industry} ${keyTerms.type}?`,
-        progressThreshold: 14,
-        category: 'forecast'
-      },
-      {
-        id: 4,
-        analyst: 'Emma',
-        message: `Market data shows a 14% annual growth. Also, fun fact: 73% of people would try a new ${keyTerms.type} if it came with free coffee.`,
-        progressThreshold: 20,
-        category: 'market'
-      },
-      {
-        id: 5,
-        analyst: 'Mike',
-        message: `Competitor analysis: 3 big players, but none offer coffee or llamas. Our edge? Quirkiness and innovation.`,
-        progressThreshold: 28,
-        category: 'competitors'
-      },
-      {
-        id: 6,
-        analyst: 'Scott',
-        message: `If we capture 5% of the market, that's enough for a coffee subscription for all of us. Numbers look promising!`,
-        progressThreshold: 36,
-        category: 'forecast'
-      },
-      {
-        id: 7,
-        analyst: 'Emma',
-        message: `Demographics show millennials and Gen Z love quirky ${keyTerms.type}s. Psychographics: must love coffee, memes, and innovation.`,
-        progressThreshold: 44,
-        category: 'target'
-      },
-      {
-        id: 8,
-        analyst: 'Mike',
-        message: `Geographically, urban areas are hot. Rural? Maybe if we add tractor support.`,
-        progressThreshold: 52,
-        category: 'competitors'
-      },
-      {
-        id: 9,
-        analyst: 'Scott',
-        message: `Pricing models: tiered, freemium, and... "pay with memes"? Just kidding. But let's keep it creative.`,
-        progressThreshold: 60,
-        category: 'pricing'
-      },
-      {
-        id: 10,
-        analyst: 'Emma',
-        message: `Survey says users would pay $20-50/month for core features, or unlimited llama rides.`,
-        progressThreshold: 68,
-        category: 'pricing'
-      },
-      {
-        id: 11,
-        analyst: 'Scott',
-        message: `At that price, we break even in 14-18 months. Or sooner if we sell llama merch.`,
-        progressThreshold: 76,
-        category: 'forecast'
-      },
-      {
-        id: 12,
-        analyst: 'Mike',
-        message: `Main risk: rapid tech changes. Also, llamas can be unpredictable. We'll need strong R&D.`,
-        progressThreshold: 84,
-        category: 'risk'
-      },
-      {
-        id: 13,
-        analyst: 'Emma',
-        message: `To stay ahead, we should iterate every 6-8 months. And maybe add a meme generator.`,
-        progressThreshold: 90,
-        category: 'risk'
-      },
-      {
-        id: 14,
-        analyst: 'Scott',
-        message: `24-month outlook: strong growth if we execute. If not, at least we'll have good coffee.`,
-        progressThreshold: 96,
-        category: 'forecast'
-      },
-      {
-        id: 15,
-        analyst: 'Mike',
-        message: `Final thoughts: This ${keyTerms.type} in ${keyTerms.industry} is quirky, bold, and has real potential. Let's pitch it—with or without llamas.`,
-        progressThreshold: 100,
-        category: 'competitors'
-      }
-    ];
+  // Helper to pick a random analyst for each message
+  const analystOrder: AnalystMessage["analyst"][] = ["Emma", "Mike", "Scott"];
+
+  // Function to generate a new analyst message using Gemini
+  const generateAnalystMessage = async (idea: string, prevMessages: AnalystMessage[], progress: number) => {
+    const analyst = analystOrder[prevMessages.length % analystOrder.length];
+    const role = analysts[analyst].role;
+    const persona =
+      analyst === "Emma"
+        ? "You are Emma, a witty Data Scientist."
+        : analyst === "Mike"
+        ? "You are Mike, a strategic Business Strategist."
+        : "You are Scott, a humorous Financial Analyst.";
+    const prevContext = prevMessages.map((m) => `${m.analyst} (${analysts[m.analyst].role}): ${m.message}`).join("\n");
+    const prompt = `
+${persona}
+You are part of a 3-person analyst team (Emma, Mike, Scott) discussing a new business idea: "${idea}".
+Your role: ${role}.
+Current progress: ${progress}/100.
+Previous conversation:
+${prevContext || "(none yet)"}
+
+Respond with a single, engaging, and context-aware message as your character. Be insightful, relevant, and occasionally humorous. Reference the user's idea and the team's previous comments. Keep it concise, insightful, and NO LONGER THAN 1 SENTENCE. Respond in 1 sentence only in 20 words. Do not exceed 1 sentence , 20 words. Do NOT mention progress numbers or scores. Be extremely brief. Avoid explanations.`;
+
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = await response.text();
+    return {
+      id: prevMessages.length + 1,
+      analyst,
+      message: text.trim(),
+      progressThreshold: progress,
+      category: "market" // You can enhance this to infer category from Gemini if desired
+    } as AnalystMessage;
   };
-  
-  const conversationScript = generateConversationScript();
 
   // Auto-scroll to bottom when new messages appear
   useEffect(() => {
@@ -209,33 +137,27 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
     }
   }, [visibleMessages, typing]);
 
-  // Show typing indicator before message appears
+  // Generate a new message when userInput or progress changes
   useEffect(() => {
-    // Find the next message that should appear based on progress
-    const nextMessage = conversationScript.find(message => 
-      message.progressThreshold <= progress && 
-      !visibleMessages.some(m => m.id === message.id)
-    );
+    if (!userInput || progress < 3) return;
+    // Limit the maximum number of messages
+    if (visibleMessages.length >= 8) return;
+    // Avoid duplicate prompts for the same progress/idea
+    const promptKey = `${userInput}|${progress}`;
+    if (lastPrompt === promptKey) return;
+    setLastPrompt(promptKey);
 
-    if (nextMessage) {
-      // Show typing indicator
-      setTyping(nextMessage.analyst);
-      
-      // After a longer delay, add the message and remove typing indicator
-      const timeout = setTimeout(() => {
-        // Personalize the message before adding it
-        const personalizedMessage = {
-          ...nextMessage,
-          message: personalizeMessage(nextMessage.message)
-        };
-        
-        setVisibleMessages(prev => [...prev, personalizedMessage]);
-        setTyping(null);
-      }, 1000); // Slowed down for more natural pacing
-      
-      return () => clearTimeout(timeout);
-    }
-  }, [progress, visibleMessages, userInput]);
+    setTimeout(() => {
+      setTyping(analystOrder[visibleMessages.length % analystOrder.length]);
+      generateAnalystMessage(userInput, visibleMessages, progress).then((msg) => {
+        setTimeout(() => {
+          setVisibleMessages((prev) => [...prev, msg]);
+          setTyping(null);
+        }, 5000);
+      });
+    }, 1000);
+    // eslint-disable-next-line
+  }, [userInput, progress]);
 
   // Early return if no messages to show yet
   if (visibleMessages.length === 0 && !typing) {
