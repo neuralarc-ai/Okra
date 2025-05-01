@@ -8,21 +8,27 @@ interface PricingCardProps {
 }
 
 const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
-  // Generate sample trend data if not provided
-  const trendData = Array.from({ length: 30 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (29 - i));
-    return {
-      date: date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' }),
-      freemium: Math.round(0 + (Math.random() * 2 - 1)),
-      subscription: Math.round(7.5 + (Math.random() * 5 - 2.5)),
-    };
+  // Build dynamic trend data from priceSuggestions
+  const allDates = Array.from(new Set(priceSuggestions.flatMap(ps => (ps.trends || []).map(t => t.date)))).sort();
+  const trendData = allDates.map(date => {
+    const entry: any = { date };
+    priceSuggestions.forEach(ps => {
+      const trend = (ps.trends || []).find(t => t.date === date);
+      entry[ps.type] = trend ? trend.value : null;
+    });
+    return entry;
   });
 
-  const colors = {
-    freemium: "#4ade80",
-    subscription: "#f43f5e"
-  };
+  // Assign a color to each unique price type (avoid duplicates)
+  const uniqueTypes = Array.from(new Set(priceSuggestions.map(ps => ps.type)));
+  const colorPalette = ["#4ade80", "#f43f5e", "#6366f1", "#f59e42", "#38bdf8", "#f472b6", "#a3e635", "#facc15"];
+  const typeColors: Record<string, string> = {};
+  uniqueTypes.forEach((type, idx) => {
+    typeColors[type] = colorPalette[idx % colorPalette.length];
+  });
+
+  // Only use the first occurrence of each type for chart lines and legend
+  const uniquePriceSuggestions = uniqueTypes.map(type => priceSuggestions.find(ps => ps.type === type)!);
 
   const strategies = [
     {
@@ -94,35 +100,29 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
                       color: 'white'
                     }}
                   />
-                  <Line
-                    type="monotone"
-                    dataKey="freemium"
-                    stroke={colors.freemium}
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="subscription"
-                    stroke={colors.subscription}
-                    strokeWidth={2}
-                    dot={false}
-                  />
+                  {uniquePriceSuggestions.map((ps) => (
+                    <Line
+                      key={ps.type}
+                      type="monotone"
+                      dataKey={ps.type}
+                      stroke={typeColors[ps.type]}
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  ))}
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-between px-2 text-xs text-gray-400">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors.freemium }} />
-                  <span>Freemium</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors.subscription }} />
-                  <span>Subscription</span>
-                </div>
+            <div className="flex flex-col items-center w-full px-2 text-xs text-gray-400 mt-2">
+              <div className="flex items-center gap-4 mb-1">
+                {uniquePriceSuggestions.map((ps) => (
+                  <div key={ps.type} className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors[ps.type] }} />
+                    <span>{ps.type}</span>
+                  </div>
+                ))}
               </div>
-              <span className="italic">* AI-powered 30-day price trend prediction</span>
+              <span className="italic"></span>
             </div>
           </div>
 

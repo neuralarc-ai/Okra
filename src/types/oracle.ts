@@ -26,6 +26,8 @@ export interface Competitor {
   name: string;
   strengthScore: number;
   description: string;
+  marketShare?: number | string;
+  primaryAdvantage?: string;
 }
 
 export interface PriceSuggestion {
@@ -50,28 +52,24 @@ export interface ForecastCase {
   revenue: string | number;
   marketShare: string | number;
   customers: string | number;
+  period?: string;
 }
 
 export interface Client {
   name: string;
   industry: string;
   useCase: string;
+  targetAudienceType?: string;
+  targetAudienceDefinition: {
+    demographics: string;
+    psychographics: string;
+    geographics: string;
+  };
 }
 
 export interface Source {
   title: string;
   relevance: string;
-}
-
-export interface OpenRouterModel {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface OracleSettings {
-  primaryModel: string;
-  fallbackModel: string;
 }
 
 export interface Timeline {

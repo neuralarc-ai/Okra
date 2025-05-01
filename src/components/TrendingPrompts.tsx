@@ -63,7 +63,7 @@ What makes it unique:
   return (
     <div className={`space-y-4 ${className}`}>
       <div className="flex items-center gap-2 text-white/80">
-        <Sparkles size={16} className="text-purple-400" />
+        <Sparkles size={16} className="text-green-400" />
         <span className="text-sm font-medium">Trending Ideas</span>
       </div>
 
@@ -77,7 +77,7 @@ What makes it unique:
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
-                <TrendingUp size={14} className="text-purple-400 shrink-0" />
+                <TrendingUp size={14} className="text-green-400 shrink-0" />
                 <span className="text-sm font-medium text-white truncate">
                   {prompt.title}
                 </span>
@@ -89,7 +89,7 @@ What makes it unique:
                 <span className="text-[10px] font-medium bg-white/10 text-white/80 px-2 py-0.5 rounded-full">
                   {prompt.category}
                 </span>
-                <span className="text-[10px] font-medium bg-purple-400/10 text-purple-400 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-medium bg-green-400/10 text-green-400 px-2 py-0.5 rounded-full">
                   {prompt.trendScore}% trending
                 </span>
               </div>

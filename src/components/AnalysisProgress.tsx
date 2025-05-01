@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Sparkles, BarChart, Network, Globe, Search, Gauge, Users, Brain, Clock, Target } from 'lucide-react';
+import AnalystConversation from './AnalystConversation';
 
 interface AnalysisProgressProps {
   progress: number;
   source: string;
+  userInput?: string;
 }
 
-const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source }) => {
+const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, userInput }) => {
   const [particles, setParticles] = useState<Array<{id: number, x: number, size: number, speed: number, opacity: number, color: string}>>([]);
   
   // Generate random particles for the animation
@@ -126,6 +128,8 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source })
           );
         })}
       </div>
+      {/* Analyst conversation below progress UI */}
+      <AnalystConversation progress={progress} userInput={userInput} />
     </div>
   );
 };

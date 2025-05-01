@@ -20,16 +20,19 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
     <Card className="card-bg hover-card h-full">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl font-medium flex items-center gap-2">
-            <BookOpen size={18} className="text-gray-400" />
-            Research Sources
-          </CardTitle>
-          <Badge 
-            variant="outline" 
-            className="text-xs bg-[#1c1c1c] text-gray-400 border-white/10"
+          <div>
+            <CardTitle className="text-xl font-medium flex items-center gap-2">
+              <BookOpen size={18} className="text-yellow-400" />
+              Research Sources
+            </CardTitle>
+            <div className="text-xs text-gray-400 mt-1">{sources.length} verified sources analyzed</div>
+          </div>
+          <button
+            className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-white hover:bg-white/10 transition font-medium shadow-sm"
+            style={{ minWidth: 140 }}
           >
-            {sources.length} sources
-          </Badge>
+            Deep Research Mode
+          </button>
         </div>
       </CardHeader>
       <CardContent className="relative">
@@ -38,7 +41,9 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
           style={{
             maxHeight: initialVisibleHeight,
             maskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)'
+            WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
+            scrollbarWidth: 'none', // Firefox
+            msOverflowStyle: 'none', // IE and Edge
           }}
         >
           {sources.length === 0 ? (
@@ -55,12 +60,6 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
                   <h4 className="font-medium text-white text-base leading-tight">
                     {source.title}
                   </h4>
-                  <Badge 
-                    variant="outline" 
-                    className="shrink-0 text-xs bg-[#1c1c1c] text-gray-400 border-white/10 group-hover:bg-[#2c2c2c]"
-                  >
-                    {String(index + 1).padStart(2, '0')}
-                  </Badge>
                 </div>
                 <p className="text-gray-400 text-sm leading-relaxed">
                   {source.relevance}

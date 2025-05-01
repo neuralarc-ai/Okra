@@ -69,11 +69,11 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
     }
   ];
 
-  const ChartCard = ({ title, data, prefix = '' }: { title: string; data: any[]; prefix?: string }) => (
+  const ChartCard = ({ title, data, prefix = '', period }: { title: string; data: any[]; prefix?: string; period?: string }) => (
     <Card className="card-bg hover-card shadow-lg">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-medium">
-          {title} {forecast.timeframe ? `(${forecast.timeframe})` : ''}
+          {title} {period ? `(${period})` : forecast.timeframe ? `(${forecast.timeframe})` : ''}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -96,12 +96,12 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
             <h4 className="text-sm font-medium text-white">Best Case</h4>
-            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[0]["Best Case"])}</p>
+            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[0]["Best Case"])} {forecast.bestCase.period ? `(${forecast.bestCase.period})` : ''}</p>
             <p className="text-xs text-gray-400">Market Share: {formatValue(forecast.bestCase.marketShare)}</p>
           </div>
           <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
             <h4 className="text-sm font-medium text-gray-400">Worst Case</h4>
-            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[0]["Worst Case"])}</p>
+            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[0]["Worst Case"])} {forecast.worstCase.period ? `(${forecast.worstCase.period})` : ''}</p>
             <p className="text-xs text-gray-400">Market Share: {formatValue(forecast.worstCase.marketShare)}</p>
           </div>
         </div>
@@ -111,8 +111,8 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
 
   return (
     <div className="space-y-6">
-      <ChartCard title="Revenue Forecast" data={revenueData} prefix="$" />
-      <ChartCard title="Customer Forecast" data={customerData} />
+      <ChartCard title="Revenue Forecast" data={revenueData} prefix="$" period={forecast.bestCase.period || forecast.worstCase.period} />
+      <ChartCard title="Customer Forecast" data={customerData} period={forecast.bestCase.period || forecast.worstCase.period} />
     </div>
   );
 };

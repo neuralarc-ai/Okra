@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatInput from '@/components/ChatInput';
-import SettingsButton from '@/components/SettingsButton';
 import ScoreCard from '@/components/ScoreCard';
 import CompetitorsCard from '@/components/CompetitorsCard';
 import PricingCard from '@/components/PricingCard';
@@ -9,7 +8,7 @@ import ClientsCard from '@/components/ClientsCard';
 import SourcesCard from '@/components/SourcesCard';
 import ShareResultsButton from '@/components/ShareResultsButton';
 import AnalysisProgress from '@/components/AnalysisProgress';
-import { OracleSettings, AnalysisResult } from '@/types/oracle';
+import { AnalysisResult } from '@/types/oracle';
 import { generateAnalysis } from '@/services/openRouterService';
 import { toast } from 'sonner';
 import { Download, Share2, ChevronDown, ChevronUp } from 'lucide-react';
@@ -20,10 +19,6 @@ import GoToMarketCard from '@/components/GoToMarketCard';
 import TrendingPrompts from '@/components/TrendingPrompts';
 
 const Index = () => {
-  const [settings, setSettings] = useState<OracleSettings>({
-    primaryModel: '',
-    fallbackModel: ''
-  });
   const [userInput, setUserInput] = useState('');
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -33,19 +28,6 @@ const Index = () => {
   const inputContainerRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const [isQueryExpanded, setIsQueryExpanded] = useState(false);
-
-  // Load settings from localStorage
-  useEffect(() => {
-    const savedSettings = localStorage.getItem('oracleSettings');
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        setSettings(parsedSettings);
-      } catch (error) {
-        console.error('Error parsing saved settings', error);
-      }
-    }
-  }, []);
 
   // Analysis sources with clear research steps
   const analysisSources = [
@@ -101,7 +83,7 @@ const Index = () => {
       const progressInterval = simulateProgress();
       
       // Generate analysis
-      const analysis = await generateAnalysis(message, settings);
+      const analysis = await generateAnalysis(message, {});
       clearInterval(progressInterval);
       
       if (!analysis) {
@@ -192,9 +174,6 @@ const Index = () => {
       
       {/* Main content */}
       <div className="relative z-10 flex flex-col min-h-screen w-full">
-        {/* Settings */}
-        <SettingsButton settings={settings} onSettingsChange={setSettings} />
-        
         {/* Chat container */}
         {!(isAnalyzing || showResults) && (
         <div 
@@ -232,6 +211,7 @@ const Index = () => {
             <AnalysisProgress 
               progress={analysisProgress} 
               source={currentSource} 
+              userInput={userInput}
             />
           </div>
           )}

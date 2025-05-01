@@ -24,8 +24,8 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
   };
 
   const getEffectivenessClass = (effectiveness: number) => {
-    if (effectiveness >= 80) return "bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400";
-    if (effectiveness >= 60) return "bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400";
+    if (effectiveness >= 80) return "bg-gradient-to-r from-green-400 via-blue-400 to-pink-400";
+    if (effectiveness >= 60) return "bg-gradient-to-r from-blue-400 via-green-400 to-pink-400";
     return "bg-gradient-to-r from-gray-500 via-gray-400 to-gray-600";
   };
 
