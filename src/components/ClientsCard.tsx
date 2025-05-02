@@ -50,7 +50,7 @@ const ClientsCard = ({ clients }: ClientsCardProps) => {
                   {client.targetAudienceType && (
                     <Badge 
                       variant="outline" 
-                      className="text-xs bg-purple-700/20 text-purple-300 border-purple-700/30 font-semibold"
+                      className="text-xs bg-pink-700/20 text-pink-300 border-pink-700/30 font-semibold"
                     >
                       {client.targetAudienceType}
                     </Badge>
@@ -102,7 +102,7 @@ const ClientsCard = ({ clients }: ClientsCardProps) => {
                         <Badge 
                           key={i}
                           variant="outline" 
-                          className="text-xs bg-blue-700/20 text-blue-300 border-blue-700/30"
+                          className="text-xs bg-green-700/20 text-green-300 border-green-700/30"
                         >
                           {need}
                         </Badge>

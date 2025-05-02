@@ -153,7 +153,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
         setTimeout(() => {
           setVisibleMessages((prev) => [...prev, msg]);
           setTyping(null);
-        }, 5000);
+        }, 3000);
       });
     }, 1000);
     // eslint-disable-next-line

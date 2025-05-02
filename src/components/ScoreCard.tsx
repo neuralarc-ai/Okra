@@ -81,9 +81,9 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               {/* Progress arc with gradient */}
               <defs>
                 <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#3be8b0" />
-                  <stop offset="60%" stopColor="#ffe66d" />
-                  <stop offset="100%" stopColor="#ff5e62" />
+                  <stop offset="0%" stopColor="#2B5C4F" />
+                  <stop offset="60%" stopColor="#FCEC3B" />
+                  <stop offset="100%" stopColor="#FFADDF" />
                 </linearGradient>
               </defs>
               <path
@@ -92,7 +92,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 strokeWidth={stroke}
                 fill="none"
                 strokeLinecap="round"
-                style={{ filter: 'drop-shadow(0 0 8px #ff5e62aa)' }}
+                style={{ filter: 'drop-shadow(0 0 8px #090101aa)' }}
               />
               {/* Knob at the end of the arc */}
               <circle
@@ -100,14 +100,14 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 cy={knob.y}
                 r={stroke / 1.5}
                 fill="#fff"
-                stroke="#ff5e62"
+                stroke="#070101"
                 strokeWidth={3}
-                style={{ filter: 'drop-shadow(0 0 6px #ff5e62)' }}
+                
               />
             </svg>
             {/* Centered Score and Label */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-              <span className="text-4xl font-extrabold text-white drop-shadow-lg">{score}</span>
+              <span className="text-6xl font-extrabold text-white drop-shadow-lg">{score}</span>
               <span className={`mt-2 px-3 py-1 rounded-full text-xs font-bold ${getScoreCategoryColor(scoreAnalysis.category)}`}>{scoreAnalysis.category}</span>
             </div>
           </div>

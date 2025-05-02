@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Forecast } from "@/types/oracle";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, CartesianGrid, XAxis } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface ForecastCardProps {
   forecast: Forecast;
@@ -55,21 +56,34 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
 
   const revenueData = [
     {
-      name: "Revenue",
-      "Best Case": parseValue(forecast.bestCase.revenue),
-      "Worst Case": parseValue(forecast.worstCase.revenue)
-    }
+      name: "Best Case",
+      value: parseValue(forecast.bestCase.revenue),
+    },
+    {
+      name: "Worst Case",
+      value: parseValue(forecast.worstCase.revenue),
+    },
   ];
 
   const customerData = [
     {
-      name: "Customers",
-      "Best Case": parseValue(forecast.bestCase.customers),
-      "Worst Case": parseValue(forecast.worstCase.customers)
-    }
+      name: "Best Case",
+      value: parseValue(forecast.bestCase.customers),
+    },
+    {
+      name: "Worst Case",
+      value: parseValue(forecast.worstCase.customers),
+    },
   ];
 
-  const ChartCard = ({ title, data, prefix = '', period }: { title: string; data: any[]; prefix?: string; period?: string }) => (
+  const chartConfig = {
+    value: {
+      label: "Value",
+      color: "#38bdf8", // Modern blue
+    },
+  };
+
+  const ModernBarChart = ({ data, title, prefix = "", period }: { data: any[]; title: string; prefix?: string; period?: string }) => (
     <Card className="card-bg hover-card shadow-lg">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-medium">
@@ -77,31 +91,29 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-            <XAxis dataKey="name" stroke="#aaa" />
-            <YAxis stroke="#aaa" tickFormatter={formatValue} />
-            <Tooltip 
-              contentStyle={{ backgroundColor: "#111", borderColor: "#444", color: "white" }}
-              labelStyle={{ color: "white" }}
-              formatter={(value: number) => prefix + formatValue(value)}
+        <ChartContainer config={chartConfig}>
+          <BarChart data={data} barCategoryGap={60} barGap={24} height={180} width={220}>
+            <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#222" />
+            <XAxis
+              dataKey="name"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              stroke="#aaa"
             />
-            <Legend />
-            <Bar dataKey="Best Case" fill="#fff" />
-            <Bar dataKey="Worst Case" fill="#555" />
+            <ChartTooltip cursor={{ fill: 'rgba(56,189,248,0.08)' }} content={<ChartTooltipContent />} />
+            <Bar dataKey="value" fill="#9BDCE1" radius={8} />
           </BarChart>
-        </ResponsiveContainer>
-
+        </ChartContainer>
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
             <h4 className="text-sm font-medium text-white">Best Case</h4>
-            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[0]["Best Case"])} {forecast.bestCase.period ? `(${forecast.bestCase.period})` : ''}</p>
+            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[0].value)} {forecast.bestCase.period ? `(${forecast.bestCase.period})` : ''}</p>
             <p className="text-xs text-gray-400">Market Share: {formatValue(forecast.bestCase.marketShare)}</p>
           </div>
           <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
             <h4 className="text-sm font-medium text-gray-400">Worst Case</h4>
-            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[0]["Worst Case"])} {forecast.worstCase.period ? `(${forecast.worstCase.period})` : ''}</p>
+            <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(data[1].value)} {forecast.worstCase.period ? `(${forecast.worstCase.period})` : ''}</p>
             <p className="text-xs text-gray-400">Market Share: {formatValue(forecast.worstCase.marketShare)}</p>
           </div>
         </div>
@@ -111,8 +123,8 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
 
   return (
     <div className="space-y-6">
-      <ChartCard title="Revenue Forecast" data={revenueData} prefix="$" period={forecast.bestCase.period || forecast.worstCase.period} />
-      <ChartCard title="Customer Forecast" data={customerData} period={forecast.bestCase.period || forecast.worstCase.period} />
+      <ModernBarChart title="Revenue Forecast" data={revenueData} prefix="$" period={forecast.bestCase.period || forecast.worstCase.period} />
+      <ModernBarChart title="Customer Forecast" data={customerData} period={forecast.bestCase.period || forecast.worstCase.period} />
     </div>
   );
 };

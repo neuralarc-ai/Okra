@@ -21,7 +21,7 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
 
   // Assign a color to each unique price type (avoid duplicates)
   const uniqueTypes = Array.from(new Set(priceSuggestions.map(ps => ps.type)));
-  const colorPalette = ["#4ade80", "#f43f5e", "#6366f1", "#f59e42", "#38bdf8", "#f472b6", "#a3e635", "#facc15"];
+  const colorPalette = ["#4ade80", "#FFADDF", "#6366f1", "#f59e42", "#38bdf8", "#f472b6", "#a3e635", "#facc15"];
   const typeColors: Record<string, string> = {};
   uniqueTypes.forEach((type, idx) => {
     typeColors[type] = colorPalette[idx % colorPalette.length];
@@ -63,7 +63,7 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
             >
               <div className="flex justify-between items-center mb-1">
                 <h4 className="text-sm font-medium text-gray-300">{price.type}</h4>
-                <span className="text-xl font-bold text-white bg-white/10 px-2 py-0.5 rounded">{price.value}</span>
+                <span className=" font-bold text-white bg-white/10 px-2 py-0.5 rounded">{price.value}</span>
               </div>
               <p className="text-gray-400 text-sm">{price.description}</p>
             </div>

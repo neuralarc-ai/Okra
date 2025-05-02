@@ -6,7 +6,14 @@ interface RevenueModelCardProps {
   revenueModel?: RevenueModel;
 }
 
-const COLORS = ['#4ade80', '#f59e42', '#f43f5e', '#6366f1', '#38bdf8', '#f472b6'];
+const COLORS =[
+    "#8b7cf6", // purple
+    "#FFADDF", // pink
+    "#FCEC3B", // yellow
+    "#fbbf24", // orange
+    "#34d399", // green
+    "#60a5fa", // blue
+  ];
 
 function describeArc(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
   const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => {

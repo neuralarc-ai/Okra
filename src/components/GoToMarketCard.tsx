@@ -82,7 +82,7 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                 {/* Effectiveness bar */}
                 <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                   <div
-                    className={`h-full rounded-full ${getEffectivenessClass(channel.effectiveness)}`}
+                    className="h-full rounded-full bg-gradient-to-r from-green-400 via-blue-400 to-pink-400"
                     style={{ width: getEffectivenessWidth(channel.effectiveness) }}
                   />
                 </div>

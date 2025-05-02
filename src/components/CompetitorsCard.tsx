@@ -9,8 +9,8 @@ interface CompetitorsCardProps {
 
 const COLORS = [
   "#8b7cf6", // purple
-  "#5eead4", // teal
-  "#fde68a", // yellow
+  "#FFADDF", // pink
+  "#FCEC3B", // yellow
   "#fbbf24", // orange
   "#34d399", // green
   "#60a5fa", // blue
@@ -53,10 +53,8 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
 }
 
 // Helper for progress bar gradient
-const getProgressGradient = (score: number) => {
-  if (score >= 80) return "bg-gradient-to-r from-green-400 via-blue-400 to-pink-400";
-  if (score >= 60) return "bg-gradient-to-r from-blue-400 via-green-400 to-pink-400";
-  return "bg-gradient-to-r from-gray-500 via-gray-400 to-gray-600";
+const getProgressGradient = () => {
+  return "bg-gradient-to-r from-green-400 via-blue-400 to-pink-400";
 };
 
 const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
@@ -141,7 +139,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
             if (!competitor) return null;
             return (
               <div key={entry.name} className="space-y-2 p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-                <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center">
                   <span className="font-medium flex items-center gap-1">
                     {competitor.name}
                     {competitor.strengthScore > 80 && (
@@ -154,20 +152,20 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                     </span>
                     <span className="text-sm">{competitor.strengthScore}/100</span>
                   </div>
-                </div>
-                <Progress 
-                  value={competitor.strengthScore} 
-                  className="h-2 bg-gray-800"
-                  indicatorClassName={getProgressGradient(competitor.strengthScore)}
-                />
-                <p className="text-gray-400 text-xs">{competitor.description}</p>
+              </div>
+              <Progress 
+                value={competitor.strengthScore} 
+                className="h-2 bg-gray-800"
+                indicatorClassName={getProgressGradient()}
+              />
+              <p className="text-gray-400 text-xs">{competitor.description}</p>
                 {competitor.primaryAdvantage && (
                   <div className="mt-1">
                     <span className="text-xs text-gray-400">Key Advantage:</span>
                     <span className="text-xs text-white ml-1 font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span>
                   </div>
                 )}
-              </div>
+            </div>
             );
           })}
         </div>

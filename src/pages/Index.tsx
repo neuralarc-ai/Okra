@@ -234,9 +234,9 @@ const Index = () => {
             {showResults && result && (
               <>
                 <div className="flex flex-col items-center mb-8 animate-fadeUp">
-                  <div className="w-24 h-2 rounded-full bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400 mb-4 opacity-70" />
-                  <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Analysis Results</h2>
-                  <p className="text-gray-400 text-base max-w-xl text-center">Here are your AI-powered insights and research. Scroll down for detailed breakdowns and actionable recommendations.</p>
+                  <div />
+                  <h2 className="text-3xl font-bold text-black mb-2 tracking-tight">Analysis Results</h2>
+                  <p className="text-black text-base max-w-xl text-center">Here are your AI-powered insights and research. Scroll down for detailed breakdowns and actionable recommendations.</p>
                 </div>
 
             {/* Query display */}
