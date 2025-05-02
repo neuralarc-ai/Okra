@@ -2,43 +2,73 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Competitor } from "@/types/oracle";
 import { ChartBar, Award } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 interface CompetitorsCardProps {
   competitors: Competitor[];
 }
 
-const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
-  // Prepare data for the pie chart - market share
-  const getMarketShareData = () => {
-    // Sort competitors by marketShare descending for consistent order
-    const filteredCompetitors = competitors
-      .filter(comp => comp.marketShare !== undefined && !isNaN(Number(String(comp.marketShare).replace('%', ''))))
-      .sort((a, b) => Number(String(b.marketShare).replace('%', '')) - Number(String(a.marketShare).replace('%', '')))
-      .slice(0, 5);
+const COLORS = [
+  "#8b7cf6", // purple
+  "#5eead4", // teal
+  "#fde68a", // yellow
+  "#fbbf24", // orange
+  "#34d399", // green
+  "#60a5fa", // blue
+];
 
-    if (filteredCompetitors.length < 2) return null;
-    
-    return filteredCompetitors.map(comp => ({
+function getMarketShareData(competitors: Competitor[]) {
+  return competitors
+    .filter(
+      (comp) =>
+        comp.marketShare !== undefined &&
+        !isNaN(Number(String(comp.marketShare).replace("%", "")))
+    )
+    .sort(
+      (a, b) =>
+        Number(String(b.marketShare).replace("%", "")) -
+        Number(String(a.marketShare).replace("%", ""))
+    )
+    .slice(0, 5)
+    .map((comp) => ({
       name: comp.name,
-      value: Number(String(comp.marketShare).replace('%', ''))
+      value: Number(String(comp.marketShare).replace("%", "")),
     }));
-  };
+}
 
-  const marketShareData = getMarketShareData();
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088fe', '#00C49F'];
-  
-  // Custom legend for better clarity
-  const renderCustomLegend = (data: any[]) => (
-    <div className="flex flex-wrap justify-center gap-4 mt-2">
-      {data.map((entry, idx) => (
-        <div key={entry.name} className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full block" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
-          <span className="text-xs text-white/80">{entry.name}</span>
-        </div>
-      ))}
-    </div>
-  );
+function describeArc(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
+  const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => {
+    const a = ((angle - 90) * Math.PI) / 180.0;
+    return {
+      x: cx + r * Math.cos(a),
+      y: cy + r * Math.sin(a),
+    };
+  };
+  const start = polarToCartesian(cx, cy, r, endAngle);
+  const end = polarToCartesian(cx, cy, r, startAngle);
+  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+  return [
+    "M", start.x, start.y,
+    "A", r, r, 0, largeArcFlag, 0, end.x, end.y,
+  ].join(" ");
+}
+
+// Helper for progress bar gradient
+const getProgressGradient = (score: number) => {
+  if (score >= 80) return "bg-gradient-to-r from-green-400 via-blue-400 to-pink-400";
+  if (score >= 60) return "bg-gradient-to-r from-blue-400 via-green-400 to-pink-400";
+  return "bg-gradient-to-r from-gray-500 via-gray-400 to-gray-600";
+};
+
+const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
+  const marketShareData = getMarketShareData(competitors);
+  const total = marketShareData.reduce((sum, d) => sum + d.value, 0);
+  const radius = 90;
+  const stroke = 22;
+  const gapAngle = 16; // degrees between segments
+  const cx = radius + stroke;
+  const cy = radius + stroke;
+  const chartCircum = 360;
+  let currentAngle = -90; // Start at top
 
   // Helper to clean up primaryAdvantage (remove extra asterisks)
   const cleanAdvantage = (adv?: string) => {
@@ -55,37 +85,54 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-4 mt-4">
           {marketShareData && marketShareData.length >= 2 && (
-            <div className="h-[220px] mb-2 flex flex-col items-center">
+            <div className="h-[260px] mb-2 flex flex-col items-center justify-center">
               <h4 className="text-sm text-gray-400 mb-2 text-center">Market Share Distribution</h4>
-              <ResponsiveContainer width="100%" height={180}>
-                <PieChart>
-                  <Pie
-                    data={marketShareData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    fill="#8884d8"
-                    paddingAngle={2}
-                    dataKey="value"
-                    label={({ name }) => `${name}`}
-                    labelLine={false}
+              <div className="relative flex items-center justify-center" style={{ minHeight: 2 * (radius + stroke) }}>
+                <svg width={2 * (radius + stroke)} height={2 * (radius + stroke)} style={{ display: 'block' }}>
+                  {marketShareData.map((entry, idx) => {
+                    const valueAngle = (entry.value / total) * (chartCircum - gapAngle * marketShareData.length);
+                    const startAngle = currentAngle + gapAngle / 2;
+                    const endAngle = startAngle + valueAngle;
+                    const path = describeArc(cx, cy, radius, startAngle, endAngle);
+                    currentAngle = endAngle + gapAngle / 2;
+                    return (
+                      <path
+                        key={entry.name}
+                        d={path}
+                        stroke={COLORS[idx % COLORS.length]}
+                        strokeWidth={stroke}
+                        fill="none"
+                        strokeLinecap="round"
+                        filter="drop-shadow(0 0 8px #0003)"
+                      />
+                    );
+                  })}
+                  {/* Center label */}
+                  <text
+                    x="50%"
+                    y="50%"
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontSize="2.4rem"
+                    fontWeight="bold"
+                    fill="#e5e7eb"
+                    style={{ fontFamily: 'inherit' }}
                   >
-                    {marketShareData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    formatter={(value) => [`${value}%`, 'Market Share']}
-                    contentStyle={{ backgroundColor: '#111', borderColor: '#333' }}
-                    itemStyle={{ color: '#fff' }}
-                  />
-                  {/* Hide default legend */}
-                </PieChart>
-              </ResponsiveContainer>
-              {renderCustomLegend(marketShareData)}
+                    {total}
+                    <tspan fontSize="1.1rem" x="50%" dy="1.5em" fill="#aaa">Total</tspan>
+                  </text>
+                </svg>
+              </div>
+              <div className="flex flex-wrap justify-center gap-4 mt-2">
+                {marketShareData.map((entry, idx) => (
+                  <div key={entry.name} className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full block" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
+                    <span className="text-xs text-white/80">{entry.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -111,11 +158,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 <Progress 
                   value={competitor.strengthScore} 
                   className="h-2 bg-gray-800"
-                  indicatorClassName={`$${
-                    competitor.strengthScore >= 80 ? 'bg-blue-400' : 
-                    competitor.strengthScore >= 60 ? 'bg-blue-300' : 
-                    'bg-blue-200'
-                  }`}
+                  indicatorClassName={getProgressGradient(competitor.strengthScore)}
                 />
                 <p className="text-gray-400 text-xs">{competitor.description}</p>
                 {competitor.primaryAdvantage && (

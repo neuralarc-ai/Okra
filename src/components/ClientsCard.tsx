@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Client } from "@/types/oracle";
-import { Users } from "lucide-react";
+import { Users, Target, MapPin, TrendingUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface ClientsCardProps {
@@ -24,9 +24,9 @@ const ClientsCard = ({ clients }: ClientsCardProps) => {
       </CardHeader>
       <CardContent className="relative">
         <div 
-          className="space-y-3 overflow-y-auto custom-scrollbar pr-2"
+          className="space-y-4 overflow-y-auto custom-scrollbar pr-2"
           style={{
-            maxHeight: '400px',
+            maxHeight: '500px',
             maskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             scrollbarWidth: 'none',
@@ -36,17 +36,17 @@ const ClientsCard = ({ clients }: ClientsCardProps) => {
           {clients.map((client, index) => (
             <div 
               key={index} 
-              className="p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5"
+              className="p-4 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5"
             >
-              <div className="flex justify-between items-center mb-2">
-                <h4 className="text-sm font-medium text-white">{client.name}</h4>
-                <div className="flex items-center gap-2">
-                  <Badge 
-                    variant="outline" 
-                    className="text-xs bg-white/5 text-gray-400 border-white/10"
-                  >
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <h4 className="text-sm font-medium text-white mb-1">{client.name}</h4>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <Target className="w-3 h-3" />
                     {client.industry}
-                  </Badge>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2">
                   {client.targetAudienceType && (
                     <Badge 
                       variant="outline" 
@@ -55,45 +55,82 @@ const ClientsCard = ({ clients }: ClientsCardProps) => {
                       {client.targetAudienceType}
                     </Badge>
                   )}
+                  {client.segment?.priority && (
+                    <Badge 
+                      variant="outline" 
+                      className={`text-xs ${
+                        client.segment.priority === 'high' 
+                          ? 'bg-green-700/20 text-green-300 border-green-700/30'
+                          : client.segment.priority === 'medium'
+                          ? 'bg-yellow-700/20 text-yellow-300 border-yellow-700/30'
+                          : 'bg-gray-700/20 text-gray-300 border-gray-700/30'
+                      }`}
+                    >
+                      {client.segment.priority} priority
+                    </Badge>
+                  )}
                 </div>
               </div>
-              <div className="flex items-start gap-2 mb-1">
-                <span className="text-xs text-gray-400 shrink-0">Use Case:</span>
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  {client.useCase}
-                </p>
-              </div>
-              <div className="flex flex-col gap-1 mt-1">
-                <div className="flex items-start gap-2">
-                  <span className="text-xs text-gray-400 shrink-0">Demographics:</span>
-                  <span className="text-xs text-gray-200">{
-                    typeof client.targetAudienceDefinition?.demographics === 'object' && client.targetAudienceDefinition?.demographics !== null
-                      ? Object.values(client.targetAudienceDefinition.demographics).join(', ')
-                      : client.targetAudienceDefinition?.demographics
-                  }</span>
+
+              <div className="space-y-3">
+                <div className="text-sm">
+                  <p className="text-gray-300">{client.useCase}</p>
                 </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-xs text-gray-400 shrink-0">Psychographics:</span>
-                  <span className="text-xs text-gray-200">{
-                    typeof client.targetAudienceDefinition?.psychographics === 'object' && client.targetAudienceDefinition?.psychographics !== null
-                      ? Object.values(client.targetAudienceDefinition.psychographics).join(', ')
-                      : client.targetAudienceDefinition?.psychographics
-                  }</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-xs text-gray-400 shrink-0">Geographics:</span>
-                  <span className="text-xs text-gray-200">{
-                    typeof client.targetAudienceDefinition?.geographics === 'object' && client.targetAudienceDefinition?.geographics !== null
-                      ? Object.values(client.targetAudienceDefinition.geographics).join(', ')
-                      : client.targetAudienceDefinition?.geographics
-                  }</span>
+
+                <div className="grid grid-cols-1 gap-3 mt-3">
+                  {/* Demographics Section */}
+                  <div className="space-y-1">
+                    <h5 className="text-xs font-medium text-gray-400">Demographics</h5>
+                    <div className="flex flex-wrap gap-1">
+                      {client.targetAudienceDefinition.demographics.primary.map((demo, i) => (
+                        <Badge 
+                          key={i}
+                          variant="outline" 
+                          className="text-xs bg-white/5 text-gray-200 border-white/10"
+                        >
+                          {demo}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Needs Section */}
+                  <div className="space-y-1">
+                    <h5 className="text-xs font-medium text-gray-400">Key Needs</h5>
+                    <div className="flex flex-wrap gap-1">
+                      {client.targetAudienceDefinition.psychographics.needs.map((need, i) => (
+                        <Badge 
+                          key={i}
+                          variant="outline" 
+                          className="text-xs bg-blue-700/20 text-blue-300 border-blue-700/30"
+                        >
+                          {need}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Location & Growth */}
+                  <div className="flex items-center justify-between text-xs text-gray-400 mt-2">
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-3 h-3" />
+                      {client.targetAudienceDefinition.geographics.location}, 
+                      {client.targetAudienceDefinition.geographics.coverage}
+                    </div>
+                    {client.segment?.growth && (
+                      <div className="flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3" />
+                        {client.segment.growth} growth
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
         {/* Fade out effect at the bottom */}
-        {clients.length > 4 && (
+        {clients.length > 3 && (
           <div 
             className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
             style={{

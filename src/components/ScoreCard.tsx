@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Target, TrendingUp, Users, DollarSign } from "lucide-react";
 import { ScoreAnalysis } from "@/types/oracle";
 
 interface ScoreCardProps {
@@ -15,55 +15,100 @@ const getScoreCategoryColor = (category: string) => {
     case "Fair": return "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md";
     default: return "bg-gradient-to-r from-gray-500 to-gray-700 text-white shadow-md";
   }
-};
-
+  };
+  
 const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
-  // Circular progress SVG
+  // Arc Progress SVG (2/3 circle)
   const radius = 95;
-  const stroke = 7;
+  const stroke = 14;
   const normalizedRadius = radius - stroke / 2;
-  const circumference = normalizedRadius * 2 * Math.PI;
+  const arcStartAngle = 225; // rotated so open ends are at the bottom
+  const arcEndAngle = 495; // 225 + 270 (2/3 circle)
+  const arcAngle = arcEndAngle - arcStartAngle; // 270 degrees
+  const arcLength = (arcAngle / 360) * 2 * Math.PI * normalizedRadius;
   const progress = Math.max(0, Math.min(100, score));
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const progressLength = (progress / 100) * arcLength;
+
+  // Helper to convert polar to cartesian
+  const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => {
+    const a = ((angle - 90) * Math.PI) / 180.0;
+    return {
+      x: cx + r * Math.cos(a),
+      y: cy + r * Math.sin(a),
+    };
+  };
+
+  // Arc path for background
+  const describeArc = (cx: number, cy: number, r: number, startAngle: number, endAngle: number) => {
+    const start = polarToCartesian(cx, cy, r, endAngle);
+    const end = polarToCartesian(cx, cy, r, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return [
+      "M", start.x, start.y,
+      "A", r, r, 0, largeArcFlag, 0, end.x, end.y
+    ].join(" ");
+  };
+  
+  // Arc path for progress
+  const progressAngle = arcStartAngle + (arcAngle * progress) / 100;
+  const progressPath = describeArc(radius, radius, normalizedRadius, arcStartAngle, progressAngle);
+
+  // Knob position
+  const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
     <Card className="card-bg hover-card h-full">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-semibold flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-green-300" />
-          <span>Idea Validation Score</span>
+            <span>Idea Validation Score</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {/* Top Section: Circular Progress, Badge, and Summary */}
+        {/* Top Section: Arc Progress, Badge, and Summary */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8 mt-4 p-4 animate-fadeUp">
-          {/* Circular Progress with Glow */}
+          {/* Arc Progress with Gradient and Knob */}
           <div className="relative flex flex-col items-center justify-center">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full bg-green-400/10 blur-2xl z-0" />
             <svg height={radius * 2} width={radius * 2} className="block z-10">
-              <circle
-                stroke="#222"
-                fill="transparent"
+              {/* Background arc */}
+              <path
+                d={describeArc(radius, radius, normalizedRadius, arcStartAngle, arcEndAngle)}
+                stroke="#3a3b3c"
                 strokeWidth={stroke}
-                r={normalizedRadius}
-                cx={radius}
-                cy={radius}
-              />
-              <circle
-                stroke="#22c55e"
-                fill="transparent"
-                strokeWidth={stroke}
+                fill="none"
                 strokeLinecap="round"
-                strokeDasharray={circumference + ' ' + circumference}
-                style={{ strokeDashoffset, transition: 'stroke-dashoffset 0.7s' }}
-                r={normalizedRadius}
-                cx={radius}
-                cy={radius}
+              />
+              {/* Progress arc with gradient */}
+              <defs>
+                <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#3be8b0" />
+                  <stop offset="60%" stopColor="#ffe66d" />
+                  <stop offset="100%" stopColor="#ff5e62" />
+                </linearGradient>
+              </defs>
+              <path
+                d={progressPath}
+                stroke="url(#arc-gradient)"
+                strokeWidth={stroke}
+                fill="none"
+                strokeLinecap="round"
+                style={{ filter: 'drop-shadow(0 0 8px #ff5e62aa)' }}
+              />
+              {/* Knob at the end of the arc */}
+              <circle
+                cx={knob.x}
+                cy={knob.y}
+                r={stroke / 1.5}
+                fill="#fff"
+                stroke="#ff5e62"
+                strokeWidth={3}
+                style={{ filter: 'drop-shadow(0 0 6px #ff5e62)' }}
               />
             </svg>
+            {/* Centered Score and Label */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
               <span className="text-4xl font-extrabold text-white drop-shadow-lg">{score}</span>
-              <span className="text-xs text-gray-300">out of 100</span>
+              <span className={`mt-2 px-3 py-1 rounded-full text-xs font-bold ${getScoreCategoryColor(scoreAnalysis.category)}`}>{scoreAnalysis.category}</span>
             </div>
           </div>
           {/* Badge and Summary */}
@@ -74,7 +119,50 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             </p>
           </div>
         </div>
-        {/* Detailed Analysis (unchanged) */}
+
+        {/* Key Metrics Dashboard */}
+        <div className="grid grid-cols-2 gap-2 mb-6">
+          <div className="p-3 bg-white/5 rounded-lg flex flex-col justify-between min-h-[70px]">
+            <div className="text-xs text-gray-400 mb-1 flex items-center gap-2">
+              <Target className="h-4 w-4 text-blue-400" />
+              Market Size
+            </div>
+            <div className="text-lg md:text-xl font-bold text-white">{scoreAnalysis.keyMetrics.marketSize}</div>
+          </div>
+          <div className="p-3 bg-white/5 rounded-lg flex flex-col justify-between min-h-[70px]">
+            <div className="text-xs text-gray-400 mb-1 flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-green-400" />
+              Growth Rate
+            </div>
+            <div className="text-lg md:text-xl font-bold text-white">{scoreAnalysis.keyMetrics.growthRate}</div>
+          </div>
+          <div className="p-3 bg-white/5 rounded-lg flex flex-col justify-between min-h-[70px]">
+            <div className="text-xs text-gray-400 mb-1 flex items-center gap-2">
+              <Users className="h-4 w-4 text-purple-400" />
+              Target Audience
+            </div>
+            <div className="text-lg md:text-xl font-bold text-white whitespace-pre-line break-words leading-tight">
+              {scoreAnalysis.keyMetrics.targetAudience}
+            </div>
+          </div>
+          <div className="p-3 bg-white/5 rounded-lg flex flex-col justify-between min-h-[70px]">
+            <div className="text-xs text-gray-400 mb-1 flex items-center gap-2">
+              <DollarSign className="h-4 w-4 text-yellow-400" />
+              Initial Investment
+            </div>
+            <div className="text-lg md:text-xl font-bold text-white">{scoreAnalysis.keyMetrics.initialInvestment}</div>
+          </div>
+        </div>
+
+        {/* Executive Summary */}
+        <div className="mb-6 p-4 bg-black/40 rounded-lg">
+          <h3 className="text-sm font-medium text-gray-400 mb-2">Executive Summary</h3>
+          <p className="text-white text-sm leading-relaxed">
+            {scoreAnalysis.executiveSummary}
+          </p>
+        </div>
+
+        {/* Detailed Analysis */}
         <div className="space-y-3 mt-4">
           {/* Key Metrics */}
           <div className="grid grid-cols-2 gap-2">
