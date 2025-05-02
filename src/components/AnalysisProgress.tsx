@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Sparkles, BarChart, Network, Globe, Search, Gauge, Users, Brain, Clock, Target } from 'lucide-react';
 import AnalystConversation from './AnalystConversation';
+import ScoreCard from './ScoreCard';
+import ClientsCard from './ClientsCard';
+import CompetitorsCard from './CompetitorsCard';
+import PricingCard from './PricingCard';
+import ForecastCard from './ForecastCard';
+import GoToMarketCard from './GoToMarketCard';
+import MilestonesCard from './MilestonesCard';
+import FinancialPlanCard from './FinancialPlanCard';
+import FundingRequirementsCard from './FundingRequirementsCard';
+import RevenueModelCard from './RevenueModelCard';
+import SourcesCard from './SourcesCard';
+import { AnalysisResult } from '@/types/oracle';
 
 interface AnalysisProgressProps {
   progress: number;
   source: string;
   userInput?: string;
+  result?: AnalysisResult | null;
 }
 
-const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, userInput }) => {
+const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, userInput, result }) => {
   const [particles, setParticles] = useState<Array<{id: number, x: number, size: number, speed: number, opacity: number, color: string}>>([]);
   
   // Generate random particles for the animation
@@ -48,7 +61,11 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
     { name: 'Revenue projections', icon: <BarChart size={16} /> },
     { name: 'Risk assessment', icon: <Brain size={16} /> },
     { name: 'Project timeline', icon: <Clock size={16} /> },
-    { name: 'Go-to-market strategy', icon: <Target size={16} /> }
+    { name: 'Go-to-market strategy', icon: <Target size={16} /> },
+    { name: 'Funding requirements', icon: <BarChart size={16} className="text-pink-400" /> },
+    { name: 'Financial plan', icon: <Gauge size={16} className="text-green-400" /> },
+    { name: 'Milestones', icon: <Clock size={16} className="text-yellow-400" /> },
+    { name: 'Revenue model', icon: <BarChart size={16} className="text-blue-400" /> },
   ];
 
   return (
@@ -130,6 +147,22 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
       </div>
       {/* Analyst conversation below progress UI */}
       <AnalystConversation progress={progress} userInput={userInput} />
+      {/* Render all cards if result is available and progress is 100 */}
+      {result && progress >= 100 && (
+        <div className="space-y-6 mt-8">
+          <ScoreCard score={result.validationScore} summary={result.summary} scoreAnalysis={result.scoreAnalysis} />
+          <ClientsCard clients={result.clients} />
+          <CompetitorsCard competitors={result.competitors} />
+          <PricingCard priceSuggestions={result.priceSuggestions} />
+          <ForecastCard forecast={result.forecasts} />
+          <GoToMarketCard goToMarket={result.goToMarket} />
+          <MilestonesCard milestones={result.milestones} />
+          <FinancialPlanCard financialPlan={result.financialPlan} />
+          <FundingRequirementsCard fundingRequirements={result.fundingRequirements} />
+          <RevenueModelCard revenueModel={result.revenueModel} />
+          <SourcesCard sources={result.sources} />
+        </div>
+      )}
     </div>
   );
 };

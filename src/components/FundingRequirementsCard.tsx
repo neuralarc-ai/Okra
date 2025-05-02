@@ -114,7 +114,7 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
                     isAnimationActive={false}
                   >
                     <LabelList dataKey="name" position="insideLeft" content={renderCategoryLabel} />
-                    <LabelList dataKey="amount" position="right" content={renderValueLabel} />
+                    {/* <LabelList dataKey="amount" position="right" content={renderValueLabel} /> */}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>

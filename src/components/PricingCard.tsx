@@ -10,8 +10,9 @@ interface PricingCardProps {
 const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
   // Build dynamic trend data from priceSuggestions
   const allDates = Array.from(new Set(priceSuggestions.flatMap(ps => (ps.trends || []).map(t => t.date)))).sort();
-  const trendData = allDates.map(date => {
-    const entry: any = { date };
+  type TrendEntry = { date: string } & { [type: string]: number | null | string };
+  const trendData: TrendEntry[] = allDates.map(date => {
+    const entry: TrendEntry = { date };
     priceSuggestions.forEach(ps => {
       const trend = (ps.trends || []).find(t => t.date === date);
       entry[ps.type] = trend ? trend.value : null;
@@ -51,7 +52,10 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-medium">Suggested Price Points</CardTitle>
+        <CardTitle className="text-xl font-medium">User Adoption by Price Model</CardTitle>
+        <p className="text-gray-400 text-xs mt-1">
+          Predicted number of users/customers for each pricing model over time.
+        </p>
       </CardHeader>
       <CardContent className="p-4">
         <div className="space-y-4">
@@ -91,6 +95,7 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
                     tickLine={false}
                     axisLine={false}
                     tickMargin={5}
+                    label={{ value: 'Users', angle: -90, position: 'insideLeft', fill: '#fff' }}
                   />
                   <Tooltip
                     contentStyle={{
@@ -99,6 +104,7 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
                       borderRadius: '6px',
                       color: 'white'
                     }}
+                    formatter={(value) => value != null ? `${value} users` : ''}
                   />
                   {uniquePriceSuggestions.map((ps) => (
                     <Line

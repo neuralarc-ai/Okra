@@ -9,7 +9,7 @@ export const generateAnalysis = async (
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // or "gemini-2.0-flash-grounding" if available
     
-    const systemPrompt = `You are Oracle, an AI market research analyst for startups and businesses. Conduct deep research on the business idea provided and deliver comprehensive analysis with real-time market insights. Spend 2-3 minutes on deep market analysis before responding. \n\n    Analyze the business idea thoroughly and provide a structured JSON response with the following:\n    1. validationScore (0-100): Calculated based on market potential, uniqueness, feasibility, and timing\n    2. competitors (array): For each competitor, include:\n       - name: Competitor name\n       - strengthScore: 0-100\n       - description: 1-2 sentence description\n       - marketShare: Percentage of market share (number, e.g. 45 for 45%)\n       - primaryAdvantage: Short, bold key advantage (e.g. 'Extensive network and brand recognition')\n    3. priceSuggestions (array): For each price suggestion, include:\n       - type: Pricing type (e.g., Commission-Based, Subscription, etc.)\n       - value: Suggested price or range\n       - description: Description of the pricing model\n       - trends: REQUIRED. An array of 30 objects, each with:\n         - date: Date string (MM/DD or YYYY-MM-DD)\n         - value: Numeric value for that day\n       This trends array must be present for every price suggestion, and all arrays must cover the same 30-day period.\n    4. forecasts (object with bestCase and worstCase scenarios, each containing revenue, marketShare, customers, and a period field such as 'per year' or 'per month' for each value. Always specify the period in the JSON, and prefer annual (per year) unless the business is typically monthly):\n       - bestCase: { revenue, marketShare, customers, period }\n       - worstCase: { revenue, marketShare, customers, period }\n    5. timeline (object with phases and criticalPath):\n       - phases: array of objects containing:\n         * name: phase name\n         * duration: estimated duration\n         * tasks: array of specific tasks\n         * milestone: key milestone for the phase\n         * risk: risk level (low/medium/high)\n       - totalDuration: total project timeline\n       - criticalPath: array of critical tasks/dependencies\n    6. goToMarket (object with strategy, channels, and KPIs):\n       - strategy: array of objects with name, description, and priority (high/medium/low)\n       - channels: array of objects with name, effectiveness (0-100), cost, and timeToROI\n       - kpis: array of objects with metric, target, and timeframe\n    7. targetAudienceType: The overall target audience type for this business (B2B, B2C, B2E, etc.).\n    8. clients (array): Identify specific target segments. For each client, include:
+    const systemPrompt = `You are Oracle, an AI market research analyst for startups and businesses. Conduct deep research on the business idea provided and deliver comprehensive analysis with real-time market insights. Spend 2-3 minutes on deep market analysis before responding. \n\n    Analyze the business idea thoroughly and provide a structured JSON response with the following:\n    1. validationScore (0-100): Calculated based on market potential, uniqueness, feasibility, and timing\n    2. competitors (array): For each competitor, include:\n       - name: Competitor name\n       - strengthScore: 0-100\n       - description: 1-2 sentence description\n       - marketShare: Percentage of market share (number, e.g. 45 for 45%)\n       - primaryAdvantage: Short, bold key advantage (e.g. 'Extensive network and brand recognition')\n    3. priceSuggestions (array): For each price suggestion, include:\n       - type: Pricing type (e.g., Commission-Based, Subscription, etc.)\n       - value: Suggested price or range\n       - description: Description of the pricing model\n       - trends: REQUIRED. An array of 30 objects, each with:\n         - date: Date string (MM/DD) for each of the next 30 consecutive days starting from today (the current date, e.g., if today is 06/10, the array should be 06/10, 06/11, ..., 07/09)\n         - value: Numeric value for that day (IMPORTANT: this value must represent the predicted number of users/customers adopting this price model on that date, NOT the price itself. The Y-axis is users/customers, not price.)\n       This trends array must be present for every price suggestion, and all arrays must cover the same 30-day period.\n    4. forecasts (object with bestCase and worstCase scenarios, each containing revenue, marketShare, customers, and a period field such as 'per year' or 'per month' for each value. Always specify the period in the JSON, and prefer annual (per year) unless the business is typically monthly):\n       - bestCase: { revenue, marketShare, customers, period }\n       - worstCase: { revenue, marketShare, customers, period }\n    5. timeline (object with phases and criticalPath):\n       - phases: array of objects containing:\n         * name: phase name\n         * duration: estimated duration\n         * tasks: array of specific tasks\n         * milestone: key milestone for the phase\n         * risk: risk level (low/medium/high)\n       - totalDuration: total project timeline\n       - criticalPath: array of critical tasks/dependencies\n    6. goToMarket (object with strategy, channels, and KPIs):\n       - strategy: array of objects with name, description, and priority (high/medium/low)\n       - channels: array of objects with name, effectiveness (0-100), cost, and timeToROI\n       - kpis: array of objects with metric, target, and timeframe\n    7. targetAudienceType: The overall target audience type for this business (B2B, B2C, B2E, etc.).\n    8. clients (array): Identify specific target segments. For each client, include:
        - name: Potential client name/segment name
        - industry: Industry or sector
        - useCase: How they will use the product/service
@@ -47,17 +47,38 @@ export const generateAnalysis = async (
       .replace(/\n?```$/, '')
       .trim();
 
-    // Remove any trailing commas before closing brackets/braces
-    jsonString = jsonString.replace(/,(\s*[}\]])/g, '$1');
-
+    // Remove any trailing commas before closing brackets/braces (robust)
+    jsonString = jsonString.replace(/,\s*([\]}])/g, '$1');
+    // Remove double commas
+    jsonString = jsonString.replace(/,,+/g, ',');
+    // Remove newlines in string values (between quotes)
+    jsonString = jsonString.replace(/"([^"\\]*(?:\\.[^"\\]*)*)\n([^"\\]*)"/g, (match, p1, p2) => {
+      return `"${p1} ${p2}"`;
+    });
     // Try to extract just the JSON part if there's other content
     const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       jsonString = jsonMatch[0];
     }
-
-    const resultObj = JSON.parse(jsonString);
-    return resultObj as AnalysisResult;
+    // Auto-close brackets/braces if the output is truncated (last-resort hack)
+    function autoCloseJson(str) {
+      const openCurly = (str.match(/\{/g) || []).length;
+      const closeCurly = (str.match(/\}/g) || []).length;
+      const openSquare = (str.match(/\[/g) || []).length;
+      const closeSquare = (str.match(/\]/g) || []).length;
+      let fixed = str;
+      if (openCurly > closeCurly) fixed += '}'.repeat(openCurly - closeCurly);
+      if (openSquare > closeSquare) fixed += ']'.repeat(openSquare - closeSquare);
+      return fixed;
+    }
+    jsonString = autoCloseJson(jsonString);
+    try {
+      const resultObj = JSON.parse(jsonString);
+      return resultObj as AnalysisResult;
+    } catch (err) {
+      console.error('Gemini JSON parse error. Cleaned string:', jsonString);
+      throw err;
+    }
   } catch (error) {
     console.error('Error generating analysis (Gemini):', error);
     throw error;

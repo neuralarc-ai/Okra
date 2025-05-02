@@ -62,58 +62,61 @@ const Index = () => {
     setShowResults(false);
     
     try {
-      // Move input to top of screen
       if (inputContainerRef.current) {
         inputContainerRef.current.classList.add('translate-y-0', 'top-6');
         inputContainerRef.current.classList.remove('top-1/2', '-translate-y-1/2');
       }
 
       // Simulate progressive analysis with sources
-      const simulateProgress = () => {
         let progress = 0;
+      let lastSourceIndex = 0;
+      const simulateProgress = (onDone: () => void) => {
         const interval = setInterval(() => {
+          if (progress < 99) {
           progress += Math.random() * 8 + 1;
-          if (progress > 100) progress = 100;
-          
+            if (progress > 99) progress = 99;
+          } else {
+            progress = 99;
+          }
           setAnalysisProgress(Math.floor(progress));
-          
           // Update current source being analyzed
           const sourceIndex = Math.floor((progress / 100) * analysisSources.length);
           if (sourceIndex < analysisSources.length) {
             setCurrentSource(analysisSources[sourceIndex]);
+            lastSourceIndex = sourceIndex;
           }
-          
-          if (progress >= 100) clearInterval(interval);
+          if (progress >= 99) {
+            clearInterval(interval);
+            onDone();
+          }
         }, 1000);
         return interval;
       };
       
-      const progressInterval = simulateProgress();
+      // Wait for progress to reach 99%
+      await new Promise<void>(resolve => {
+        simulateProgress(resolve);
+      });
       
-      // Generate analysis
+      // Now actually call the API (while showing 99%)
       const analysis = await generateAnalysis(message);
-      clearInterval(progressInterval);
-      
+
+      // Set to 100% and show the last step for at least 2 seconds
+      setAnalysisProgress(100);
+      setCurrentSource('Compiling comprehensive analysis...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       if (!analysis) {
         throw new Error("Failed to generate analysis - no data received");
       }
-
-      // Validate required fields
       if (typeof analysis.validationScore !== 'number' || 
           !Array.isArray(analysis.competitors) || 
           !Array.isArray(analysis.priceSuggestions) ||
           !analysis.scoreAnalysis) {
         throw new Error("Invalid analysis data received");
       }
-
-      // Set result and show with delay for smooth animation
         setResult(analysis);
-      
-      // Use Promise to ensure proper timing
-      await new Promise(resolve => setTimeout(resolve, 500));
           setShowResults(true);
-      
-      // Scroll to results after they're shown
       await new Promise(resolve => setTimeout(resolve, 500));
       if (resultsRef.current) {
         resultsRef.current.scrollIntoView({ 
@@ -121,7 +124,6 @@ const Index = () => {
           block: 'start'
         });
       }
-
     } catch (error) {
       console.error("Error during analysis:", error);
       toast.error(error instanceof Error ? error.message : "An error occurred during analysis");
@@ -182,21 +184,21 @@ const Index = () => {
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         {/* Main content */}
         <div className="flex-1 flex flex-col">
-          {/* Chat container */}
+        {/* Chat container */}
           {!(isAnalyzing || showResults) && (
-          <div 
-            ref={inputContainerRef} 
-            className={`flex flex-col items-center w-full absolute left-1/2 -translate-x-1/2 transition-all duration-500 ease-in-out z-20 gap-4 ${
+        <div 
+          ref={inputContainerRef} 
+          className={`flex flex-col items-center w-full absolute left-1/2 -translate-x-1/2 transition-all duration-500 ease-in-out z-20 gap-4 ${
                 'top-1/2 -translate-y-1/2'
-            }`}
-          >
-            <div className="text-center mb-2">
-              <h1 className="text-4xl font-bold text-white tracking-tight">
+          }`}
+        >
+          <div className="text-center mb-2">
+            <h1 className="text-4xl font-bold text-white tracking-tight">
                 <span className="text-white">Welcome to Okra AI</span>
-              </h1>
-              <p className="text-gray-300 mt-1">AI Research Analyst for your Products and Services</p>
-            </div>
-            
+            </h1>
+            <p className="text-gray-300 mt-1">AI Research Analyst for your Products and Services</p>
+          </div>
+          
             <ChatInput 
               onSubmit={handleSubmit} 
               isAnalyzing={isAnalyzing}
@@ -210,27 +212,27 @@ const Index = () => {
                 className="animate-fadeUp"
               />
             </div>
-          </div>
+        </div>
           )}
 
-          {/* Analysis progress display */}
+        {/* Analysis progress display */}
           {isAnalyzing && (
           <div className="relative z-10 flex justify-center mt-40">
-              <AnalysisProgress 
-                progress={analysisProgress} 
-                source={currentSource} 
+            <AnalysisProgress 
+              progress={analysisProgress} 
+              source={currentSource} 
                 userInput={userInput}
-              />
+            />
             </div>
-            )}
-          
-          {/* Analysis results section */}
-          <div 
-            ref={resultsRef} 
-            className={`${
-              showResults ? 'opacity-100' : 'opacity-0'
+          )}
+        
+        {/* Analysis results section */}
+        <div 
+          ref={resultsRef} 
+          className={`${
+            showResults ? 'opacity-100' : 'opacity-0'
             } transition-all duration-700 ease-in-out relative z-10 mt-12`}
-          >
+        >
             {showResults && result && (
               <>
                 <div className="flex flex-col items-center mb-8 animate-fadeUp">
@@ -238,7 +240,7 @@ const Index = () => {
                   <h2 className="text-3xl font-bold text-black mb-2 tracking-tight">Analysis Results</h2>
                   <p className="text-black text-base max-w-xl text-center">Here are your AI-powered insights and research. Scroll down for detailed breakdowns and actionable recommendations.</p>
                 </div>
-
+                
             {/* Query display */}
                 <div 
                   className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-8"
@@ -253,32 +255,32 @@ const Index = () => {
                   </div>
                   
                     <div className="flex items-center gap-2 ml-4">
-                    <Button 
+                  <Button 
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDownloadPDF();
                         }}
-                      variant="outline" 
-                      size="sm"
-                      className="flex items-center gap-1 text-white border-white/20 hover:bg-white/10"
-                    >
-                      <Download size={16} />
-                      <span>PDF</span>
-                    </Button>
-                    
-                    <ShareResultsButton result={result} prompt={userInput} />
-                    
-                    <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex items-center gap-1 text-white border-white/20 hover:bg-white/10"
+                  >
+                    <Download size={16} />
+                    <span>PDF</span>
+                  </Button>
+                  
+                  <ShareResultsButton result={result} prompt={userInput} />
+                  
+                  <Button 
                         onClick={(e) => {
                           e.stopPropagation();
                           resetAnalysis();
                         }}
-                      variant="outline"
-                      size="sm"
-                      className="text-white border-white/20 hover:bg-white/10"
-                    >
-                      New Analysis
-                    </Button>
+                    variant="outline"
+                    size="sm"
+                    className="text-white border-white/20 hover:bg-white/10"
+                  >
+                    New Analysis
+                  </Button>
 
                       <Button
                         variant="ghost"
@@ -361,8 +363,8 @@ const Index = () => {
               </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <PricingCard priceSuggestions={result.priceSuggestions} />
-                  <ForecastCard forecast={result.forecasts} />
+                <PricingCard priceSuggestions={result.priceSuggestions} />
+                <ForecastCard forecast={result.forecasts} />
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -381,12 +383,12 @@ const Index = () => {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <ClientsCard clients={result.clients} />
+                <ClientsCard clients={result.clients} />
                     <SourcesCard sources={result.sources} />
-                  </div>
-                </div>
+              </div>
+            </div>
               </>
-            )}
+          )}
           </div>
         </div>
         <Footer 
@@ -398,7 +400,7 @@ const Index = () => {
           onClose={() => setPrivacyOpen(false)}
           title="Privacy Policy"
         >
-          {`Effective Date: [Insert Date]
+          {`Effective Date: May 2, 2025
 
 Okra (“Platform,” “we,” “us,” or “our”) is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you visit our Platform, including any AI-based tools or services we provide.
 
@@ -456,7 +458,7 @@ Depending on your jurisdiction, you may have the following rights:
 - Withdrawal of consent
 - Lodging a complaint with a regulatory authority
 
-For inquiries, contact us at: [Insert Contact Email]
+For inquiries, contact us at: support@neuralarc.ai
 `}
         </PrivacyModal>
         <PrivacyModal

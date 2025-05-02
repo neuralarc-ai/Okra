@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface AnalystMessage {
   id: number;
-  analyst: 'Emma' | 'Mike' | 'Scott' | 'Manager';
+  analyst: 'Emma' | 'Mike' | 'Scott' | 'David';
   message: string;
   progressThreshold: number;
   category: 'market' | 'competitors' | 'pricing' | 'forecast' | 'target' | 'risk';
@@ -28,23 +28,16 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
   const extractKeyTerms = (input: string): { industry: string, type: string, keywords: string[] } => {
     const lowercaseInput = input.toLowerCase();
     const defaultResult = { industry: 'business', type: 'product', keywords: ['idea'] };
-    
     if (!input) return defaultResult;
-    
-    // Basic pattern matching for industry and business type
     const industries = ['tech', 'food', 'healthcare', 'finance', 'retail', 'education', 'manufacturing'];
     const types = ['app', 'service', 'product', 'platform', 'software', 'startup', 'business'];
-    
     const foundIndustry = industries.find(ind => lowercaseInput.includes(ind)) || defaultResult.industry;
     const foundType = types.find(type => lowercaseInput.includes(type)) || defaultResult.type;
-    
-    // Extract possibly important words (nouns and adjectives) - very simplistic approach
     const words = lowercaseInput.split(/\s+/);
     const keywords = words.filter(word => 
       word.length > 4 && 
       !['about', 'would', 'could', 'should', 'their', 'there'].includes(word)
     );
-    
     return {
       industry: foundIndustry,
       type: foundType,
@@ -62,7 +55,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
       border: "border-[#9b87f5]/30",
       text: "text-white",
       icon: <Brain size={16} className="text-[#9b87f5]" />,
-      image: "/emma-profile.png" // Path to Emma's image
+      image: "/emma-profile.png"
     },
     Mike: {
       role: "Business Strategist",
@@ -70,7 +63,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
       border: "border-[#33C3F0]/30",
       text: "text-white",
       icon: <Network size={16} className="text-[#33C3F0]" />,
-      image: "/mike-profile.png" // Path to Mike's image
+      image: "/mike-profile.png"
     },
     Scott: {
       role: "Financial Analyst",
@@ -78,9 +71,9 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
       border: "border-[#F97316]/30",
       text: "text-white",
       icon: <DollarSign size={16} className="text-[#F97316]" />,
-      image: "/scott-profile.png" // Path to Scott's image
+      image: "/scott-profile.png"
     },
-    Manager: {
+    David: {
       role: "Manager",
       color: "bg-[#22d3ee]/10",
       border: "border-[#22d3ee]/30",
@@ -93,21 +86,25 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
   // Helper function to personalize messages
   const personalizeMessage = (message: string) => {
     if (!userInput) return message;
-    
-    // Replace placeholder terms with extracted terms from user input
     return message
       .replace(/\[industry\]/g, keyTerms.industry)
       .replace(/\[type\]/g, keyTerms.type)
       .replace(/\[keyword\]/g, keyTerms.keywords[0] || 'idea');
   };
 
-  // Helper to pick the next analyst (Manager always first)
-  const analystOrder: AnalystMessage["analyst"][] = ["Manager", "Emma", "Mike", "Scott"];
+  // Manager always first, then Emma, Mike, Scott
+  const analystOrder: AnalystMessage["analyst"][] = ["David", "Emma", "Mike", "Scott"];
 
   // Function to generate a new analyst message using Gemini
   const generateAnalystMessage = async (idea: string, prevMessages: AnalystMessage[], progress: number) => {
-    const idx = prevMessages.length % (analystOrder.length - 1);
-    const analyst = prevMessages.length === 0 ? "Manager" : analystOrder[(idx + 1) % analystOrder.length] as AnalystMessage["analyst"];
+    let analyst: AnalystMessage["analyst"];
+    if (prevMessages.length === 0) {
+      analyst = "David";
+    } else {
+      // Rotate only Emma, Mike, Scott after David
+      const idx = (prevMessages.length - 1) % 3;
+      analyst = analystOrder[idx + 1];
+    }
     const role = analysts[analyst].role;
     const persona =
       analyst === "Emma"
@@ -116,11 +113,11 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
         ? "You are Mike, a strategic Business Strategist."
         : analyst === "Scott"
         ? "You are Scott, a humorous Financial Analyst."
-        : "You are the Manager, a wise and concise team leader.";
+        : "You are David, a wise and concise team leader.";
     const prevContext = prevMessages.map((m) => `${m.analyst} (${analysts[m.analyst].role}): ${m.message}`).join("\n");
     const prompt = `
 ${persona}
-You are part of a 4-person analyst team (Manager, Emma, Mike, Scott) discussing a new business idea: "${idea}".
+You are part of a 4-person analyst team (David, Emma, Mike, Scott) discussing a new business idea: "${idea}".
 Your role: ${role}.
 Current progress: ${progress}/100.
 Previous conversation:
@@ -151,28 +148,30 @@ Respond with a single, engaging, and context-aware message as your character. Be
   // Generate a new message when userInput or progress changes
   useEffect(() => {
     if (!userInput || progress < 3) return;
-    // Limit the maximum number of messages
-    if (visibleMessages.length >= 8) return;
-    // Avoid duplicate prompts for the same progress/idea
     const promptKey = `${userInput}|${progress}`;
     if (lastPrompt === promptKey) return;
     setLastPrompt(promptKey);
-
+    const thinkingDelay = 1200 + Math.random() * 600; // 1.2s to 1.8s
+    const typingDelay = 1800 + Math.random() * 1000;  // 1.8s to 2.8s
     setTimeout(() => {
-      const idx = visibleMessages.length % (analystOrder.length - 1);
-      const nextAnalyst = visibleMessages.length === 0 ? "Manager" : analystOrder[(idx + 1) % analystOrder.length];
+      let nextAnalyst: AnalystMessage["analyst"];
+      if (visibleMessages.length === 0) {
+        nextAnalyst = "David";
+      } else {
+        const idx = (visibleMessages.length - 1) % 3;
+        nextAnalyst = analystOrder[idx + 1];
+      }
       setTyping(nextAnalyst);
       generateAnalystMessage(userInput, visibleMessages, progress).then((msg) => {
         setTimeout(() => {
           setVisibleMessages((prev) => [...prev, msg]);
           setTyping(null);
-        }, 4000); // slower
+        }, typingDelay);
       });
-    }, 1500);
+    }, thinkingDelay);
     // eslint-disable-next-line
   }, [userInput, progress]);
 
-  // Early return if no messages to show yet
   if (visibleMessages.length === 0 && !typing) {
     return null;
   }
@@ -182,10 +181,10 @@ Respond with a single, engaging, and context-aware message as your character. Be
       ref={containerRef}
       className="mt-6 max-h-[300px] overflow-y-auto custom-scrollbar"
     >
-      {visibleMessages.map((message) => (
+      {visibleMessages.map((message, idx) => (
         <div 
-          key={message.id}
-          className={`flex gap-3 mb-4 animate-fadeUp ${message.analyst === 'Manager' ? 'flex-row-reverse justify-end' : ''}`}
+          key={`${message.id}-${message.analyst}-${idx}`}
+          className={`flex gap-3 mb-4 animate-fadeUp ${message.analyst === 'David' ? 'flex-row-reverse justify-end' : ''}`}
           style={{ animationDuration: '0.5s' }}
         >
           <Avatar className={`h-8 w-8 ${analysts[message.analyst].color} ${analysts[message.analyst].border} border flex items-center justify-center`}>
@@ -194,7 +193,6 @@ Respond with a single, engaging, and context-aware message as your character. Be
               {analysts[message.analyst].icon}
             </AvatarFallback>
           </Avatar>
-          
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <span className="font-medium text-white">
@@ -204,9 +202,8 @@ Respond with a single, engaging, and context-aware message as your character. Be
                 {analysts[message.analyst].role}
               </span>
             </div>
-            
             <div 
-              className={`mt-1 p-3 rounded-lg ${analysts[message.analyst].color} ${analysts[message.analyst].border} border ${message.analyst === 'Manager' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg ${analysts[message.analyst].color} ${analysts[message.analyst].border} border ${message.analyst === 'David' ? 'text-right' : ''}`}
             >
               <p className={`text-sm ${analysts[message.analyst].text}`}>
                 {message.message}
@@ -215,17 +212,18 @@ Respond with a single, engaging, and context-aware message as your character. Be
           </div>
         </div>
       ))}
-      
       {/* Typing indicator with profile image */}
       {typing && (
-        <div className={`flex gap-3 mb-4 animate-fadeUp ${typing === 'Manager' ? 'flex-row-reverse justify-end' : ''}`}>
+        <div
+          key={`typing-${typing}-${visibleMessages.length}`}
+          className={`flex gap-3 mb-4 animate-fadeUp ${typing === 'David' ? 'flex-row-reverse justify-end' : ''}`}
+        >
           <Avatar className={`h-8 w-8 ${analysts[typing].color} ${analysts[typing].border} border flex items-center justify-center`}>
             <AvatarImage src={analysts[typing].image} alt={typing} />
             <AvatarFallback className="bg-transparent">
               {analysts[typing].icon}
             </AvatarFallback>
           </Avatar>
-          
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <span className="font-medium text-white">
@@ -235,9 +233,8 @@ Respond with a single, engaging, and context-aware message as your character. Be
                 {analysts[typing].role}
               </span>
             </div>
-            
             <div 
-              className={`mt-1 p-3 rounded-lg ${analysts[typing].color} ${analysts[typing].border} border ${typing === 'Manager' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg ${analysts[typing].color} ${analysts[typing].border} border ${typing === 'David' ? 'text-right' : ''}`}
             >
               <div className="flex gap-1 items-center h-4 justify-end">
                 <span className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></span>
