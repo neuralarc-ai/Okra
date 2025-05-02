@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface AnalystMessage {
   id: number;
-  analyst: 'Emma' | 'Mike' | 'Scott';
+  analyst: 'Emma' | 'Mike' | 'Scott' | 'Manager';
   message: string;
   progressThreshold: number;
   category: 'market' | 'competitors' | 'pricing' | 'forecast' | 'target' | 'risk';
@@ -79,6 +79,14 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
       text: "text-white",
       icon: <DollarSign size={16} className="text-[#F97316]" />,
       image: "/scott-profile.png" // Path to Scott's image
+    },
+    Manager: {
+      role: "Manager",
+      color: "bg-[#22d3ee]/10",
+      border: "border-[#22d3ee]/30",
+      text: "text-white",
+      icon: <Brain size={16} className="text-[#22d3ee]" />,
+      image: "/manager-profile.png"
     }
   };
 
@@ -93,23 +101,26 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
       .replace(/\[keyword\]/g, keyTerms.keywords[0] || 'idea');
   };
 
-  // Helper to pick a random analyst for each message
-  const analystOrder: AnalystMessage["analyst"][] = ["Emma", "Mike", "Scott"];
+  // Helper to pick the next analyst (Manager always first)
+  const analystOrder: AnalystMessage["analyst"][] = ["Manager", "Emma", "Mike", "Scott"];
 
   // Function to generate a new analyst message using Gemini
   const generateAnalystMessage = async (idea: string, prevMessages: AnalystMessage[], progress: number) => {
-    const analyst = analystOrder[prevMessages.length % analystOrder.length];
+    const idx = prevMessages.length % (analystOrder.length - 1);
+    const analyst = prevMessages.length === 0 ? "Manager" : analystOrder[(idx + 1) % analystOrder.length] as AnalystMessage["analyst"];
     const role = analysts[analyst].role;
     const persona =
       analyst === "Emma"
         ? "You are Emma, a witty Data Scientist."
         : analyst === "Mike"
         ? "You are Mike, a strategic Business Strategist."
-        : "You are Scott, a humorous Financial Analyst.";
+        : analyst === "Scott"
+        ? "You are Scott, a humorous Financial Analyst."
+        : "You are the Manager, a wise and concise team leader.";
     const prevContext = prevMessages.map((m) => `${m.analyst} (${analysts[m.analyst].role}): ${m.message}`).join("\n");
     const prompt = `
 ${persona}
-You are part of a 3-person analyst team (Emma, Mike, Scott) discussing a new business idea: "${idea}".
+You are part of a 4-person analyst team (Manager, Emma, Mike, Scott) discussing a new business idea: "${idea}".
 Your role: ${role}.
 Current progress: ${progress}/100.
 Previous conversation:
@@ -126,7 +137,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
       analyst,
       message: text.trim(),
       progressThreshold: progress,
-      category: "market" // You can enhance this to infer category from Gemini if desired
+      category: "market"
     } as AnalystMessage;
   };
 
@@ -148,14 +159,16 @@ Respond with a single, engaging, and context-aware message as your character. Be
     setLastPrompt(promptKey);
 
     setTimeout(() => {
-      setTyping(analystOrder[visibleMessages.length % analystOrder.length]);
+      const idx = visibleMessages.length % (analystOrder.length - 1);
+      const nextAnalyst = visibleMessages.length === 0 ? "Manager" : analystOrder[(idx + 1) % analystOrder.length];
+      setTyping(nextAnalyst);
       generateAnalystMessage(userInput, visibleMessages, progress).then((msg) => {
         setTimeout(() => {
           setVisibleMessages((prev) => [...prev, msg]);
           setTyping(null);
-        }, 3000);
+        }, 4000); // slower
       });
-    }, 1000);
+    }, 1500);
     // eslint-disable-next-line
   }, [userInput, progress]);
 
@@ -172,7 +185,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
       {visibleMessages.map((message) => (
         <div 
           key={message.id}
-          className="flex gap-3 mb-4 animate-fadeUp"
+          className={`flex gap-3 mb-4 animate-fadeUp ${message.analyst === 'Manager' ? 'flex-row-reverse justify-end' : ''}`}
           style={{ animationDuration: '0.5s' }}
         >
           <Avatar className={`h-8 w-8 ${analysts[message.analyst].color} ${analysts[message.analyst].border} border flex items-center justify-center`}>
@@ -193,7 +206,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
             </div>
             
             <div 
-              className={`mt-1 p-3 rounded-lg ${analysts[message.analyst].color} ${analysts[message.analyst].border} border`}
+              className={`mt-1 p-3 rounded-lg ${analysts[message.analyst].color} ${analysts[message.analyst].border} border ${message.analyst === 'Manager' ? 'text-right' : ''}`}
             >
               <p className={`text-sm ${analysts[message.analyst].text}`}>
                 {message.message}
@@ -205,7 +218,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
       
       {/* Typing indicator with profile image */}
       {typing && (
-        <div className="flex gap-3 mb-4 animate-fadeUp">
+        <div className={`flex gap-3 mb-4 animate-fadeUp ${typing === 'Manager' ? 'flex-row-reverse justify-end' : ''}`}>
           <Avatar className={`h-8 w-8 ${analysts[typing].color} ${analysts[typing].border} border flex items-center justify-center`}>
             <AvatarImage src={analysts[typing].image} alt={typing} />
             <AvatarFallback className="bg-transparent">
@@ -224,9 +237,9 @@ Respond with a single, engaging, and context-aware message as your character. Be
             </div>
             
             <div 
-              className={`mt-1 p-3 rounded-lg ${analysts[typing].color} ${analysts[typing].border} border`}
+              className={`mt-1 p-3 rounded-lg ${analysts[typing].color} ${analysts[typing].border} border ${typing === 'Manager' ? 'text-right' : ''}`}
             >
-              <div className="flex gap-1 items-center h-4">
+              <div className="flex gap-1 items-center h-4 justify-end">
                 <span className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></span>
                 <span className="w-2 h-2 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: '0.15s' }}></span>
                 <span className="w-2 h-2 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></span>

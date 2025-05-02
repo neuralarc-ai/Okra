@@ -110,16 +110,16 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                   {/* Center label */}
                   <text
                     x="50%"
-                    y="50%"
+                    y="45%"
                     textAnchor="middle"
                     dominantBaseline="central"
-                    fontSize="2.4rem"
+                    fontSize="3.0rem"
                     fontWeight="bold"
                     fill="#e5e7eb"
                     style={{ fontFamily: 'inherit' }}
                   >
                     {total}
-                    <tspan fontSize="1.1rem" x="50%" dy="1.5em" fill="#aaa">Total</tspan>
+                    <tspan fontSize="1.1rem" x="50%" dy="2.5em" fill="#aaa">Total</tspan>
                   </text>
                 </svg>
               </div>
