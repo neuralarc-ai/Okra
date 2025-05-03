@@ -22,7 +22,6 @@ import RevenueModelCard from '@/components/RevenueModelCard';
 import MilestonesCard from '@/components/MilestonesCard';
 import TrendingPrompts from '@/components/TrendingPrompts';
 import Footer from '@/components/Footer';
-import PrivacyModal from '@/components/PrivacyModal';
 
 const Index = () => {
   const [userInput, setUserInput] = useState('');
@@ -34,8 +33,6 @@ const Index = () => {
   const inputContainerRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const [isQueryExpanded, setIsQueryExpanded] = useState(false);
-  const [privacyOpen, setPrivacyOpen] = useState(false);
-  const [ethicsOpen, setEthicsOpen] = useState(false);
 
   // Analysis sources with clear research steps
   const analysisSources = [
@@ -391,162 +388,7 @@ const Index = () => {
           )}
           </div>
         </div>
-        <Footer 
-          onPrivacyClick={() => setPrivacyOpen(true)} 
-          onEthicsClick={() => setEthicsOpen(true)}
-        />
-        <PrivacyModal
-          open={privacyOpen}
-          onClose={() => setPrivacyOpen(false)}
-          title="Privacy Policy"
-        >
-          {`Effective Date: May 2, 2025
-
-Okra (“Platform,” “we,” “us,” or “our”) is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you visit our Platform, including any AI-based tools or services we provide.
-
-1. Information We Collect
-We may collect the following types of information:
-
-a. Personal Information
-Information you voluntarily provide, such as:
-- Name
-- Email address
-- Any additional contact details
-- Content or inputs provided to AI tools (if associated with a user identity)
-
-b. Usage Data
-Automatically collected information such as:
-- IP address
-- Browser type and version
-- Operating system
-- Date and time of your visit
-- Pages viewed and time spent
-- Referring/exit pages
-- Clickstream data
-
-c. Cookies and Tracking Technologies
-We use cookies, pixels, and similar technologies for analytics and functionality. You can disable cookies through your browser settings.
-
-2. How We Use Your Information
-We use collected information for the following purposes:
-- To operate, manage, and maintain the Platform.
-- To improve the performance and accuracy of AI systems.
-- To personalize your experience.
-- To respond to queries or support requests.
-- For data analysis and system monitoring.
-- To comply with legal obligations.
-
-3. Sharing and Disclosure
-We do not sell your data. However, we may share your data in the following situations:
-- With service providers who support our infrastructure, under strict data protection agreements.
-- With law enforcement or government agencies when required by law.
-- In case of business transitions, such as mergers or acquisitions.
-
-4. Data Storage and Security
-We employ industry-standard security practices including:
-- SSL encryption
-- Access control protocols
-- Regular vulnerability scans
-Despite our efforts, no digital transmission or storage system is completely secure. Use at your own discretion.
-
-5. Your Rights
-Depending on your jurisdiction, you may have the following rights:
-- Access to your data
-- Correction of inaccurate data
-- Deletion or restriction of processing
-- Data portability
-- Withdrawal of consent
-- Lodging a complaint with a regulatory authority
-
-For inquiries, contact us at: support@neuralarc.ai
-`}
-        </PrivacyModal>
-        <PrivacyModal
-          open={ethicsOpen}
-          onClose={() => setEthicsOpen(false)}
-          title="Responsible AI & Disclaimer"
-        >
-          {`
-Responsible AI Use Policy
-We are committed to developing and deploying AI responsibly. AI technologies hosted on https://okra-woad.vercel.app are designed to augment human decision-making, not replace it.
-
-Our Principles
-1. Transparency
-- Clear communication when users are interacting with AI.
-- Explanation of how results are generated wherever feasible.
-
-2. Human Oversight
-- AI suggestions or outputs should be reviewed by a qualified human.
-- Critical or sensitive decisions (e.g., legal or health matters) must not be made solely based on AI output.
-
-3. Robustness and Safety
-- We test AI systems to identify and minimize errors and unintended consequences.
-- Feedback mechanisms are built to report inappropriate or harmful behavior.
-
-4. Privacy-Aware Design
-- Minimal collection of personal data.
-- Short-term retention of user inputs (only if necessary).
-
-5. Purpose Limitation
-- AI tools are deployed only for clearly defined, ethical, and socially beneficial use cases.
-
-Ethical AI Guidelines
-We believe AI should benefit all users and be governed by principles that uphold fairness, accountability, and human dignity.
-
-Key Values
-1. Fairness & Non-Discrimination
-- Our AI models are evaluated to reduce bias and promote inclusive use.
-- Discriminatory or harmful content generation is actively monitored and filtered.
-
-2. Accountability
-- We accept responsibility for the behavior and consequences of our AI systems.
-- We encourage users to report concerns via [Insert Contact Email].
-
-3. Autonomy
-- Users are empowered to understand and control their interaction with AI.
-- AI should never manipulate, coerce, or deceive.
-
-4. Do No Harm
-- We design AI tools with safeguards to prevent misuse, harm, or exploitation.
-- Malicious use of AI tools is prohibited.
-
-5. Accessibility
-- We strive to make the Platform accessible and usable by people of all backgrounds and abilities.
-
- Disclaimer
-Please read this Disclaimer carefully before using the Platform.
-
-The tools and content available at https://okra-woad.vercel.app are provided "as is" and are intended for informational and experimental purposes only. By using the Platform, you acknowledge and agree to the following:
-
-1. No Professional Advice
-The AI-generated outputs are not a substitute for professional advice in:
-- Legal
-- Medical
-- Financial
-- Psychological
-or any other regulated domain. Always consult a licensed professional.
-
-2. Limitation of Liability
-We shall not be held liable for:
-- Any direct or indirect loss or damage arising from reliance on AI outputs.
-- Errors, inaccuracies, or omissions in the AI-generated content.
-- Unintended consequences or misuse of AI tools.
-
-3. User Responsibility
-You are solely responsible for:
-- The content you input into the system.
-- How you use and interpret the output.
-- Ensuring your use complies with applicable laws and ethical norms.
-
-4. AI Limitations
-Our AI tools may:
-- Generate incorrect or misleading results.
-- Fail to understand context or nuance.
-- Produce biased or inappropriate content.
-
-Use discretion and critical judgment when using the Platform.
-`}
-        </PrivacyModal>
+        <Footer />
       </div>
     </div>
   );

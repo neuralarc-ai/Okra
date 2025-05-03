@@ -54,9 +54,9 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
   let currentAngle = -90;
 
   return (
-    <Card className="bg-black/40 backdrop-blur-md border-white/10">
+    <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-white">Financial Plan</CardTitle>
+        <CardTitle className="text-xl font-medium text-white">Financial Plan</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Startup Costs */}
@@ -65,8 +65,8 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
           <div className="space-y-2">
             {(financialPlan.startupCosts || []).map((cost, index) => (
               <div key={`startup-${index}`} className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">{cost.category}</span>
-                <span className="text-white">{formatCurrency(cost.amount)}</span>
+                <span className="text-sm text-gray-400">{cost.category}</span>
+                <span className="text-sm text-white">{formatCurrency(cost.amount)}</span>
               </div>
             ))}
           </div>
@@ -106,7 +106,6 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
                     fontSize="2.0rem"
                     fontWeight="bold"
                     fill="#e5e7eb"
-                    
                     style={{ fontFamily: 'inherit' }}
                   >
                     {formatCurrency(total)}
@@ -116,9 +115,9 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
               </div>
               <div className="flex flex-wrap justify-center gap-4 mt-2">
                 {expenseData.map((entry, idx) => (
-                  <div key={entry.name} className="flex items-center gap-2 text-xs">
+                  <div key={entry.name} className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full block" style={{ backgroundColor: entry.color }}></span>
-                    <span className="text-gray-400">{entry.name}</span>
+                    <span className="text-xs text-gray-400">{entry.name}</span>
                   </div>
                 ))}
               </div>
@@ -131,20 +130,23 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
           <div>
             <h4 className="text-sm font-medium text-white mb-2">Break-even Analysis</h4>
             <div className="space-y-2">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Time to Break-even</span>
-                <span className="text-white">{financialPlan.breakEvenAnalysis.timeToBreakEven}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-400">Time to Break-even</span>
+                <span className="text-sm text-white">{financialPlan.breakEvenAnalysis.timeToBreakEven}</span>
               </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Monthly Break-even Point</span>
-                <span className="text-white">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint)}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-400">Monthly Break-even Point</span>
+                <span className="text-sm text-white">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint)}</span>
               </div>
             </div>
-            <div className="mt-2 text-xs text-gray-500">
-              <strong className="text-gray-400">Key Assumptions:</strong>
-              <ul className="list-disc list-inside mt-1">
+            <div className="mt-2">
+              <strong className="text-xs text-gray-400">Key Assumptions:</strong>
+              <ul className="space-y-1 mt-1">
                 {(financialPlan.breakEvenAnalysis.assumptions || []).map((assumption, index) => (
-                  <li key={`assumption-${index}`}>{assumption}</li>
+                  <li key={`assumption-${index}`} className="text-sm text-gray-400 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
+                    {assumption}
+                  </li>
                 ))}
               </ul>
             </div>

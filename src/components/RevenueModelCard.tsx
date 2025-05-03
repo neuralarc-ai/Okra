@@ -51,9 +51,9 @@ const RevenueModelCard = ({ revenueModel }: RevenueModelCardProps) => {
   let currentAngle = -90;
 
   return (
-    <Card className="bg-black/40 backdrop-blur-md border-white/10">
+    <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-white">Revenue Model</CardTitle>
+        <CardTitle className="text-xl font-medium text-white">Revenue Model</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Revenue Streams Distribution */}
@@ -100,7 +100,7 @@ const RevenueModelCard = ({ revenueModel }: RevenueModelCardProps) => {
               {pieData.map((entry, idx) => (
                 <div key={entry.name} className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full block" style={{ backgroundColor: entry.color }}></span>
-                  <span className="text-xs text-white/80">{entry.name}</span>
+                  <span className="text-xs text-gray-400">{entry.name}</span>
                 </div>
               ))}
             </div>
@@ -133,9 +133,12 @@ const RevenueModelCard = ({ revenueModel }: RevenueModelCardProps) => {
                   <span className="text-sm font-medium text-white">{strategy.phase}</span>
                   <span className="text-xs text-gray-400">{strategy.timeline}</span>
                 </div>
-                <ul className="list-disc list-inside text-xs text-gray-400 space-y-1">
+                <ul className="space-y-1 mb-2">
                   {strategy.tactics.map((tactic, i) => (
-                    <li key={`tactic-${index}-${i}`}>{tactic}</li>
+                    <li key={`tactic-${index}-${i}`} className="text-sm text-gray-400 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                      {tactic}
+                    </li>
                   ))}
                 </ul>
               </div>

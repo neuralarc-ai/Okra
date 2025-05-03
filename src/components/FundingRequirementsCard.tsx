@@ -65,15 +65,15 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
   };
 
   return (
-    <Card className="bg-black/40 backdrop-blur-md border-white/10">
+    <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-white">Funding Requirements</CardTitle>
+        <CardTitle className="text-xl font-medium text-white">Funding Requirements</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-10">
         {/* Total Required */}
         {typeof fundingRequirements.totalRequired === 'number' && (
-          <div className="flex flex-col items-center">
-            <span className="text-gray-400 text-sm">Total Funding Required</span>
+          <div className="flex flex-col items-center mb-6">
+            <span className="text-sm text-gray-400">Total Funding Required</span>
             <span className="text-3xl font-bold text-white mt-1">
               {formatCurrency(fundingRequirements.totalRequired)}
             </span>
@@ -82,7 +82,7 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
 
         {/* Use of Funds */}
         {useOfFundsData.length > 0 && (
-          <div>
+          <div className="mt-8">
             <h4 className="text-sm font-medium text-white mb-4">Use of Funds</h4>
             <div className="h-[220px] w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -124,17 +124,17 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
 
         {/* Funding Stages */}
         {(fundingRequirements.fundingStages || []).length > 0 && (
-          <div>
+          <div className="mt-8">
             <h4 className="text-sm font-medium text-white mb-2">Funding Stages</h4>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {fundingRequirements.fundingStages.map((stage, index) => (
                 <div key={`stage-${index}`} className="space-y-1">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-white">{stage.stage}</span>
-                    <span className="text-gray-400">{formatCurrency(stage.amount)}</span>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-white">{stage.stage}</span>
+                    <span className="text-sm text-gray-400">{formatCurrency(stage.amount)}</span>
                   </div>
-                  <div className="text-xs text-gray-500">{stage.timeline}</div>
-                  <div className="text-xs text-gray-400">{stage.purpose}</div>
+                  <div className="text-xs text-gray-400">{stage.timeline}</div>
+                  <div className="text-sm text-gray-400">{stage.purpose}</div>
                 </div>
               ))}
             </div>
@@ -143,9 +143,9 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
 
         {/* Funding Sources */}
         {(fundingRequirements.fundingSources || []).length > 0 && (
-          <div>
+          <div className="mt-8">
             <h4 className="text-sm font-medium text-white mb-2">Potential Funding Sources</h4>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {fundingRequirements.fundingSources.map((source, index) => (
                 <div key={`source-${index}`} className="space-y-1">
                   <div className="flex justify-between items-center">
@@ -157,17 +157,23 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
                       <span className="text-green-400">Pros:</span>
-                      <ul className="list-disc list-inside text-gray-400 mt-1">
+                      <ul className="space-y-1 mt-1">
                         {(source.pros || []).map((pro, i) => (
-                          <li key={`pro-${index}-${i}`}>{pro}</li>
+                          <li key={`pro-${index}-${i}`} className="text-sm text-gray-400 flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
+                            {pro}
+                          </li>
                         ))}
                       </ul>
                     </div>
                     <div>
                       <span className="text-red-400">Cons:</span>
-                      <ul className="list-disc list-inside text-gray-400 mt-1">
+                      <ul className="space-y-1 mt-1">
                         {(source.cons || []).map((con, i) => (
-                          <li key={`con-${index}-${i}`}>{con}</li>
+                          <li key={`con-${index}-${i}`} className="text-sm text-gray-400 flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
+                            {con}
+                          </li>
                         ))}
                       </ul>
                     </div>

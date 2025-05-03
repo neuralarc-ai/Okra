@@ -23,9 +23,9 @@ const MilestonesCard = ({ milestones }: MilestonesCardProps) => {
   };
 
   return (
-    <Card className="bg-black/40 backdrop-blur-md border-white/10">
+    <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-white">Milestones</CardTitle>
+        <CardTitle className="text-xl font-medium text-white">Milestones</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Quarterly Objectives */}
@@ -54,7 +54,7 @@ const MilestonesCard = ({ milestones }: MilestonesCardProps) => {
                         </span>
                       </div>
                     </div>
-                    <p className="text-xs text-gray-400">{objective.description}</p>
+                    <p className="text-sm text-gray-400">{objective.description}</p>
                     
                     {/* Metrics */}
                     {objective.metrics.length > 0 && (
@@ -62,7 +62,7 @@ const MilestonesCard = ({ milestones }: MilestonesCardProps) => {
                         {objective.metrics.map((metric, metricIndex) => (
                           <div 
                             key={`metric-${index}-${objIndex}-${metricIndex}`}
-                            className="px-2 py-1 bg-white/5 rounded text-xs"
+                            className="px-2 py-1 bg-white/5 rounded text-xs flex items-center gap-1"
                           >
                             <span className="text-gray-400">{metric.name}:</span>
                             <span className="text-white ml-1">{metric.target}</span>
@@ -81,8 +81,9 @@ const MilestonesCard = ({ milestones }: MilestonesCardProps) => {
                   {quarter.keyDeliverables.map((deliverable, delIndex) => (
                     <li 
                       key={`del-${index}-${delIndex}`}
-                      className="text-xs text-gray-300"
+                      className="text-sm text-gray-400 flex items-center gap-2"
                     >
+                      <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
                       {deliverable}
                     </li>
                   ))}
@@ -105,18 +106,18 @@ const MilestonesCard = ({ milestones }: MilestonesCardProps) => {
                   <span className="text-sm text-white">{milestone.name}</span>
                   <span className="text-xs text-gray-400">{milestone.date}</span>
                 </div>
-                <p className="text-xs text-gray-400">{milestone.importance}</p>
-                <div className="space-y-1">
+                <p className="text-sm text-gray-400">{milestone.importance}</p>
+                <ul className="space-y-1">
                   {milestone.successCriteria.map((criteria, criteriaIndex) => (
-                    <div 
+                    <li 
                       key={`criteria-${index}-${criteriaIndex}`}
-                      className="text-xs text-gray-300 flex items-center gap-2"
+                      className="text-sm text-gray-400 flex items-center gap-2"
                     >
-                      <div className="w-1 h-1 bg-white/30 rounded-full" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
                       {criteria}
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             ))}
           </div>

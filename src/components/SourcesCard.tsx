@@ -13,8 +13,8 @@ interface SourcesCardProps {
 }
 
 const SourcesCard = ({ sources }: SourcesCardProps) => {
-  // Calculate initial visible height for 4 items (approximately)
-  const initialVisibleHeight = "400px";
+  // Set maxHeight to match ClientsCard (500px)
+  const maxHeight = "500px";
 
   return (
     <Card className="card-bg hover-card h-full">
@@ -39,7 +39,7 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
         <div 
           className="space-y-3 overflow-y-auto custom-scrollbar pr-2"
           style={{
-            maxHeight: initialVisibleHeight,
+            maxHeight,
             maskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             scrollbarWidth: 'none', // Firefox
@@ -68,15 +68,13 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
             ))
           )}
         </div>
-        {/* Fade out effect at the bottom */}
-        {sources.length > 4 && (
-          <div 
-            className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to bottom, transparent, rgb(16 16 16))'
-            }}
-          />
-        )}
+        {/* Fade out effect at the bottom if content overflows */}
+        <div 
+          className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, transparent, rgb(16 16 16))'
+          }}
+        />
       </CardContent>
     </Card>
   );
