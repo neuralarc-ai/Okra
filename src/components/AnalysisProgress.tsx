@@ -115,14 +115,14 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
               </span>
             </div>
             {/* Analysis steps */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               {analysisSteps.map((step, index) => {
                 // Adjust the progress threshold for more steps
                 const stepThreshold = (index * (100 / analysisSteps.length));
                 return (
                   <div 
                     key={step.name} 
-                    className={`flex items-center gap-2 p-3 rounded-lg transition-all duration-300 ${
+                    className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-300 ${
                       progress > stepThreshold ? 'bg-white/10 border border-white/20' : 'bg-transparent border border-white/5'
                     }`}
                   >
@@ -150,7 +150,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
           <div className="flex-1 max-w-xl p-4 md:p-8 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-full flex flex-col">
             {/* Meet the Analyst Team section */}
             <div className="mb-6">
-              <div className="text-white/80 text-sm font-medium mb-2">Meet your analyst team</div>
+              <div className="text-white/80 text-sm font-medium mb-2">Meet our analyst team</div>
               <div className="flex gap-3 flex-nowrap">
                 {/* Analyst Avatars and Roles */}
                 {[
@@ -161,14 +161,14 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                 ].map(a => (
                   <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border}`} style={{ minWidth: 0 }}>
                     <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-white/10 object-cover" />
-                    <div className="flex flex-col min-w-0">
+                    <div className="flex flex-col min-w-0 max-w-[120px]">
                       <span className="text-xs font-semibold text-white truncate">{a.name}</span>
-                      <span className="text-[11px] text-white/60 truncate">{a.role}</span>
+                      <span className="text-[11px] text-white/60 whitespace-nowrap">{a.role}</span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="text-xs text-white/50 mt-2">This analysis is a collaborative team effort by our team of analysts.</div>
+              <div className="text-xs text-white/50 mt-2">This analysis is a collaborative team effort by our analysts.</div>
             </div>
             <AnalystConversation progress={progress} userInput={userInput} />
           </div>

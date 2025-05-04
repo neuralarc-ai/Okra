@@ -179,7 +179,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
   return (
     <div 
       ref={containerRef}
-      className="mt-6 max-h-[300px] overflow-y-auto custom-scrollbar"
+      className="mt-6 h-[400px] overflow-y-auto custom-scrollbar"
     >
       {visibleMessages.map((message, idx) => (
         <div 

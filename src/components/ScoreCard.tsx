@@ -57,7 +57,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
-    <Card className="card-bg hover-card h-full">
+    <Card className="card-bg hover-card shadow-lg max-h-[810px] overflow-y-auto hide-scrollbar">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-semibold flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-green-300" />

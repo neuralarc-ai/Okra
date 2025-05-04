@@ -113,7 +113,8 @@ const Index = () => {
         throw new Error("Invalid analysis data received");
       }
         setResult(analysis);
-          setShowResults(true);
+        setShowResults(true);
+        setIsQueryExpanded(false);
       await new Promise(resolve => setTimeout(resolve, 500));
       if (resultsRef.current) {
         resultsRef.current.scrollIntoView({ 
@@ -135,6 +136,7 @@ const Index = () => {
     setShowResults(false);
     setResult(null);
     setUserInput('');
+    setIsQueryExpanded(false);
     if (inputContainerRef.current) {
       inputContainerRef.current.classList.remove('translate-y-0', 'top-6');
       inputContainerRef.current.classList.add('top-1/2', '-translate-y-1/2');
@@ -246,7 +248,7 @@ const Index = () => {
                   <div className="flex items-center justify-between p-4 bg-black/40 backdrop-blur-md rounded-xl border border-white/10">
                   <div className="flex-1">
                       <h3 className="text-sm font-medium text-white">Analyzed Business Idea</h3>
-                      <p className="mt-1 text-sm text-gray-400 line-clamp-1">
+                      <p className="mt-1 text-sm text-gray line-clamp-1">
                         {userInput}
                       </p>
                   </div>
@@ -305,45 +307,7 @@ const Index = () => {
                   >
                     <div className="px-6 pb-6">
                       <div className="w-full h-px bg-white/10 mb-4" />
-                      <div className="space-y-4 text-white/80">
-                        {/* Title and Description */}
-                        <div>
-                          <h4 className="text-sm font-medium text-white/90 mb-1">Problem & Solution:</h4>
-                          <p className="whitespace-pre-wrap">{getSectionContent('Problem & Solution:')}</p>
-                        </div>
-
-                        {/* Market Opportunity */}
-                        <div>
-                          <h4 className="text-sm font-medium text-white/90 mb-1">Market Opportunity:</h4>
-                          <p className="whitespace-pre-wrap">{getSectionContent('Market Opportunity:')}</p>
-                        </div>
-
-                        {/* Target Audience */}
-                        <div>
-                          <h4 className="text-sm font-medium text-white/90 mb-1">Who it's for:</h4>
-                          <ul className="list-disc list-inside pl-2">
-                            {getSectionContent("Who it's for:")
-                              .split('\n')
-                              .filter(line => line.trim())
-                              .map((line, index) => (
-                                <li key={index} className="text-white/80">{line.trim().replace(/^[•-]\s*/, '')}</li>
-                              ))}
-                          </ul>
-                        </div>
-
-                        {/* Unique Features */}
-                        <div>
-                          <h4 className="text-sm font-medium text-white/90 mb-1">What makes it unique:</h4>
-                          <ul className="list-disc list-inside pl-2">
-                            {getSectionContent('What makes it unique:')
-                              .split('\n')
-                              .filter(line => line.trim())
-                              .map((line, index) => (
-                                <li key={index} className="text-white/80">{line.trim().replace(/^[•-]\s*/, '')}</li>
-                              ))}
-                          </ul>
-                        </div>
-                      </div>
+                      <div className="whitespace-pre-wrap break-words text-white/90 bg-black/20 rounded-lg p-4 text-base font-normal">{userInput}</div>
                     </div>
                   </div>
                 </div>

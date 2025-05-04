@@ -75,7 +75,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
   };
 
   return (
-    <Card className="card-bg hover-card shadow-lg">
+    <Card className="card-bg hover-card shadow-lg max-h-[810px] overflow-y-auto hide-scrollbar">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-medium flex items-center gap-2">
           <ChartBar size={18} className="text-blue-300" />
