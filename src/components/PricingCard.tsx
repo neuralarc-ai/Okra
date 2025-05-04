@@ -67,7 +67,7 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
             >
               <div className="flex justify-between items-center mb-1">
                 <h4 className="text-sm font-medium text-gray-300">{price.type}</h4>
-                <span className=" font-bold text-white bg-white/10 px-2 py-0.5 rounded">{price.value}</span>
+                <span className="font-bold text-white bg-white/10 px-2 py-0.5 rounded text-[10px] md:text-xs">{price.value}</span>
               </div>
               <p className="text-gray-400 text-sm">{price.description}</p>
             </div>
