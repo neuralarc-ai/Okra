@@ -149,9 +149,9 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
           {/* Right: Analyst Conversation */}
           <div className="flex-1 max-w-xl p-4 md:p-8 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-full flex flex-col">
             {/* Meet the Analyst Team section */}
-            <div className="mb-6">
+            <div className="mb-1">
               <div className="text-white/80 text-sm font-medium mb-2">Meet our analyst team</div>
-              <div className="flex gap-3 flex-nowrap">
+              <div className="flex gap-3 flex-wrap justify-start">
                 {/* Analyst Avatars and Roles */}
                 {[
                   { name: 'David', role: 'Manager', img: '/manager-profile.png', color: 'bg-[#22d3ee]/10', border: 'border-[#22d3ee]/30' },
@@ -159,11 +159,11 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                   { name: 'Mike', role: 'Business Strategist', img: '/mike-profile.png', color: 'bg-[#33C3F0]/10', border: 'border-[#33C3F0]/30' },
                   { name: 'Scott', role: 'Financial Analyst', img: '/scott-profile.png', color: 'bg-[#F97316]/10', border: 'border-[#F97316]/30' },
                 ].map(a => (
-                  <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border}`} style={{ minWidth: 0 }}>
-                    <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-white/10 object-cover" />
-                    <div className="flex flex-col min-w-0 max-w-[120px]">
-                      <span className="text-xs font-semibold text-white truncate">{a.name}</span>
-                      <span className="text-[11px] text-white/60 whitespace-nowrap">{a.role}</span>
+                  <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border} min-w-[160px]`}>
+                    <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-white/10 object-cover flex-shrink-0" />
+                    <div className="flex flex-col flex-1">
+                      <span className="text-xs font-semibold text-white block">{a.name}</span>
+                      <span className="text-[11px] text-white/60 block">{a.role}</span>
                     </div>
                   </div>
                 ))}

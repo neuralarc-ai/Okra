@@ -2,64 +2,66 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FundingRequirements } from '@/types/oracle';
 import { formatCurrency } from '@/lib/utils';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, LabelList, Tooltip as RechartsTooltip, ResponsiveContainer, LabelProps } from 'recharts';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, LabelList, Tooltip as RechartsTooltip, ResponsiveContainer, LabelProps, Cell } from 'recharts';
 
 interface FundingRequirementsCardProps {
   fundingRequirements?: FundingRequirements;
 }
+
+// Purple gradient from dark to light
+const PURPLE_GRADIENT = [
+  '#7C3AED', // darkest
+  '#8B5CF6',
+  '#A78BFA',
+  '#C4B5FD',
+  '#DDD6FE',
+  '#EDE9FE', // lightest
+];
 
 const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCardProps) => {
   if (!fundingRequirements) {
     return null;
   }
 
-  // Prepare data for the bar chart
-  const useOfFundsData = (fundingRequirements.useOfFunds || []).map(item => ({
-    name: item.category,
-    amount: item.amount,
-    priority: item.priority
-  }));
+  // Prepare data for the bar chart, sorted descending by amount
+  const useOfFundsData = [...(fundingRequirements.useOfFunds || [])]
+    .sort((a, b) => b.amount - a.amount)
+    .map((item, idx) => ({
+      name: item.category,
+      amount: item.amount,
+      priority: item.priority,
+      color: PURPLE_GRADIENT[idx % PURPLE_GRADIENT.length],
+    }));
 
-  const priorityColors = {
-    high: '#f43f5e',
-    medium: '#f59e42',
-    low: '#4ade80'
-  };
-
-  // Custom label for inside left (category) or outside if bar is short
+  // Custom label for inside right, truncate if too long
   const renderCategoryLabel = (props: LabelProps) => {
-    const { x, y, value, height, width } = props;
-    const xNum = Number(x);
-    const yNum = Number(y);
-    const widthNum = Number(width);
-    const heightNum = Number(height);
-    const threshold = 120; // px
-    if (widthNum < threshold) {
-      // Render outside, left of the bar
-      return (
-        <text x={xNum - 8} y={yNum + heightNum / 2 + 5} fill="#fff" fontSize={13} fontWeight="500" alignmentBaseline="middle" textAnchor="end">
-          {value}
-        </text>
-      );
-    }
-    // Render inside
-    return (
-      <text x={xNum + 8} y={yNum + heightNum / 2 + 5} fill="#fff" fontSize={13} fontWeight="500" alignmentBaseline="middle">
-        {value}
-      </text>
-    );
-  };
-
-  // Custom label for value (right side)
-  const renderValueLabel = (props: LabelProps) => {
     const { x, y, value, width, height } = props;
     const xNum = Number(x);
     const yNum = Number(y);
     const widthNum = Number(width);
     const heightNum = Number(height);
+    const maxLabelWidth = widthNum - 24; // px, more padding from right
+    let label = String(value);
+    // Truncate if too long
+    const context = document.createElement('canvas').getContext('2d');
+    if (context) {
+      context.font = '500 15px sans-serif';
+      while (context.measureText(label).width > maxLabelWidth && label.length > 3) {
+        label = label.slice(0, -2) + '...';
+      }
+    }
     return (
-      <text x={xNum + widthNum + 8} y={yNum + heightNum / 2 + 5} fill="#fff" fontSize={13} fontWeight="600" alignmentBaseline="middle">
-        {typeof value === 'number' ? formatCurrency(value) : value}
+      <text
+        x={xNum + widthNum - 12}
+        y={yNum + heightNum / 2}
+        fill="#fff"
+        fontSize={15}
+        fontWeight="600"
+        alignmentBaseline="middle"
+        textAnchor="end"
+        style={{ pointerEvents: 'none', dominantBaseline: 'middle' }}
+      >
+        {label}
       </text>
     );
   };
@@ -89,6 +91,7 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
                 <BarChart
                   data={useOfFundsData}
                   layout="vertical"
+                  barCategoryGap={0}
                   margin={{ right: 16, left: 0, top: 0, bottom: 0 }}
                 >
                   <CartesianGrid horizontal={true} vertical={false} strokeDasharray="3 3" stroke="#222" />
@@ -103,18 +106,20 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
                   <XAxis dataKey="amount" type="number" hide />
                   <RechartsTooltip
                     cursor={false}
-                    contentStyle={{ background: '#1a1a1a', border: 'none', color: '#fff' }}
+                    contentStyle={{ background: '#7d8edc', border: 'none', color: '#fff' }}
                     formatter={(value: number) => formatCurrency(value)}
                   />
                   <Bar
                     dataKey="amount"
                     layout="vertical"
                     radius={6}
-                    fill="#4ade80"
                     isAnimationActive={false}
+                    barSize={38}
                   >
-                    <LabelList dataKey="name" position="insideLeft" content={renderCategoryLabel} />
-                    {/* <LabelList dataKey="amount" position="right" content={renderValueLabel} /> */}
+                    {useOfFundsData.map((entry, idx) => (
+                      <Cell key={`cell-${idx}`} fill={entry.color} />
+                    ))}
+                    <LabelList dataKey="name" position="insideRight" content={renderCategoryLabel} />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>

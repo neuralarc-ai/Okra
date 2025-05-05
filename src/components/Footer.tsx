@@ -6,7 +6,7 @@ const Footer = () => {
   const [ethicsOpen, setEthicsOpen] = useState(false);
 
   return (
-  <footer className="w-full py-4 px-2 bg-black border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-gray-400">
+  <footer className="w-full py-4 px-2 bg-black border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-gray-400 z-50">
     <div className="flex items-center gap-2">
       <span className="font-bold text-white">Okra</span>
       <span className="hidden md:inline">© {new Date().getFullYear()} All rights reserved.</span>

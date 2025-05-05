@@ -3,9 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Footer from '@/components/Footer';
+import PrivacyModal from '@/components/PrivacyModal';
+import { supabase } from '@/lib/supabaseClient';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const [privacyOpen, setPrivacyOpen] = React.useState(false);
+  const [ethicsOpen, setEthicsOpen] = React.useState(false);
 
   return (
     <div className="min-h-screen w-full flex flex-col relative overflow-hidden">
@@ -14,7 +18,7 @@ const Landing = () => {
         className="fixed inset-0 bg-[url('/background.png')] bg-cover bg-top z-0"
       />
       <div className="relative z-10 flex flex-col min-h-screen w-full">
-        <main className="flex-1 flex flex-col items-center justify-center px-4">
+        <main className="flex-1 flex flex-col items-center justify-center px-4 mb-6">
           <div className="flex flex-col items-center gap-6 animate-fadeUp">
             <div className="flex items-center gap-3 mb-2">
               <span className="inline-flex items-center justify-center rounded-full bg-white/10 p-3">
@@ -30,7 +34,14 @@ const Landing = () => {
             <Button
               size="lg"
               className="mt-4 bg-white text-black font-semibold text-lg px-8 py-4 rounded-full shadow-lg hover:bg-gray-200 transition-all duration-300"
-              onClick={() => navigate("/app")}
+              onClick={async () => {
+                const { data } = await supabase.auth.getSession();
+                if (data.session) {
+                  navigate("/app");
+                } else {
+                  navigate("/auth");
+                }
+              }}
             >
               Get Started
             </Button>
@@ -53,6 +64,20 @@ const Landing = () => {
           </div>
         </main>
         <Footer />
+        <PrivacyModal
+          open={privacyOpen}
+          onClose={() => setPrivacyOpen(false)}
+          title="Privacy Policy"
+        >
+          {`[Insert your Privacy Policy text here, as in Index.tsx]`}
+        </PrivacyModal>
+        <PrivacyModal
+          open={ethicsOpen}
+          onClose={() => setEthicsOpen(false)}
+          title="Responsible AI & Disclaimer"
+        >
+          {`[Insert your Responsible AI & Disclaimer text here, as in Index.tsx]`}
+        </PrivacyModal>
       </div>
     </div>
   );
