@@ -151,7 +151,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
             {/* Meet the Analyst Team section */}
             <div className="mb-1">
               <div className="text-white/80 text-sm font-medium mb-2">Meet our analyst team</div>
-              <div className="flex gap-3 flex-wrap justify-start">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md mx-auto items-stretch">
                 {/* Analyst Avatars and Roles */}
                 {[
                   { name: 'David', role: 'Manager', img: '/manager-profile.png', color: 'bg-[#22d3ee]/10', border: 'border-[#22d3ee]/30' },
@@ -159,11 +159,11 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                   { name: 'Mike', role: 'Business Strategist', img: '/mike-profile.png', color: 'bg-[#33C3F0]/10', border: 'border-[#33C3F0]/30' },
                   { name: 'Scott', role: 'Financial Analyst', img: '/scott-profile.png', color: 'bg-[#F97316]/10', border: 'border-[#F97316]/30' },
                 ].map(a => (
-                  <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border} min-w-[160px]`}>
-                    <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-white/10 object-cover flex-shrink-0" />
+                  <div key={a.name} className={`flex items-center gap-2 px-3 py-2 border rounded-lg ${a.color} ${a.border} w-full min-w-0`}>
+                    <img src={a.img} alt={a.name} className="w-8 h-8 rounded-full border border-white/10 object-cover flex-shrink-0" />
                     <div className="flex flex-col flex-1">
-                      <span className="text-xs font-semibold text-white block">{a.name}</span>
-                      <span className="text-[11px] text-white/60 block">{a.role}</span>
+                      <span className="text-sm font-semibold text-white block">{a.name}</span>
+                      <span className="text-xs text-white/60 block">{a.role}</span>
                     </div>
                   </div>
                 ))}

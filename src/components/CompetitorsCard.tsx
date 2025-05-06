@@ -86,7 +86,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
         <div className="space-y-4 mt-4">
           {marketShareData && marketShareData.length >= 2 && (
             <div className="h-[260px] mb-2 flex flex-col items-center justify-center">
-              <h4 className="text-sm text-gray-400 mb-2 text-center">Market Share Distribution</h4>
+             
               <div className="relative flex items-center justify-center" style={{ minHeight: 2 * (radius + stroke) }}>
                 <svg width={2 * (radius + stroke)} height={2 * (radius + stroke)} style={{ display: 'block' }}>
                   {marketShareData.map((entry, idx) => {
