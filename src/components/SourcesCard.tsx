@@ -13,11 +13,8 @@ interface SourcesCardProps {
 }
 
 const SourcesCard = ({ sources }: SourcesCardProps) => {
-  // Set maxHeight to match ClientsCard (500px)
-  const maxHeight = "500px";
-
   return (
-    <Card className="card-bg hover-card h-full">
+    <Card className="card-bg hover-card">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
@@ -39,7 +36,6 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
         <div 
           className="space-y-3 overflow-y-auto custom-scrollbar pr-2"
           style={{
-            maxHeight,
             maskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             scrollbarWidth: 'none', // Firefox

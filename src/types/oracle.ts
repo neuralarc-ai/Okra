@@ -149,6 +149,24 @@ export interface ScoreAnalysis {
     initialInvestment: string;
   };
   executiveSummary: string;
+  swot?: {
+    strengths: string[];
+    weaknesses: string[];
+    opportunities: string[];
+    threats: string[];
+  };
+  marketTrends?: Array<{
+    trend: string;
+    impact: string;
+  }>;
+  regulatoryAndRisks?: Array<{
+    risk: string;
+    mitigation: string;
+  }>;
+  competitivePositioning?: {
+    position: string;
+    mapDescription: string;
+  };
 }
 
 export interface FinancialPlan {

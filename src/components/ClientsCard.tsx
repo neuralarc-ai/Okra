@@ -26,7 +26,6 @@ const ClientsCard = ({ clients }: ClientsCardProps) => {
         <div 
           className="space-y-4 overflow-y-auto custom-scrollbar pr-2"
           style={{
-            maxHeight: '500px',
             maskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
             scrollbarWidth: 'none',

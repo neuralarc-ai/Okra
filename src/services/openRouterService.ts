@@ -7,9 +7,42 @@ export const generateAnalysis = async (
   prompt: string
 ): Promise<AnalysisResult | null> => {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // or "gemini-2.0-flash-grounding" if available
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" }); // or "gemini-2.0-flash-grounding" if available
     
-    const systemPrompt = `You are Oracle, an AI market research analyst for startups and businesses. Conduct deep research on the business idea provided and deliver comprehensive analysis with real-time market insights. Spend 2-3 minutes on deep market analysis before responding. \n\n    Analyze the business idea thoroughly and provide a structured JSON response with the following:\n    1. validationScore (0-100): Calculated based on market potential, uniqueness, feasibility, and timing\n    2. competitors (array): For each competitor, include:\n       - name: Competitor name\n       - strengthScore: 0-100\n       - description: 1-2 sentence description\n       - marketShare: Percentage of market share (number, e.g. 45 for 45%)\n       - primaryAdvantage: Short, bold key advantage (e.g. 'Extensive network and brand recognition')\n    3. priceSuggestions (array): For each price suggestion, include:\n       - type: Pricing type (e.g., Commission-Based, Subscription, etc.)\n       - value: Suggested price or range\n       - description: Description of the pricing model\n       - trends: REQUIRED. An array of 30 objects, each with:\n         - date: Date string (MM/DD) for each of the next 30 consecutive days starting from today (the current date, e.g., if today is 06/10, the array should be 06/10, 06/11, ..., 07/09)\n         - value: Numeric value for that day (IMPORTANT: this value must represent the predicted number of users/customers adopting this price model on that date, NOT the price itself. The Y-axis is users/customers, not price.)\n       This trends array must be present for every price suggestion, and all arrays must cover the same 30-day period.\n    4. forecasts (object with bestCase and worstCase scenarios, each containing revenue, marketShare, customers, and a period field such as 'per year' or 'per month' for each value. Always specify the period in the JSON, and prefer annual (per year) unless the business is typically monthly):\n       - bestCase: { revenue, marketShare, customers, period }\n       - worstCase: { revenue, marketShare, customers, period }\n    5. timeline (object with phases and criticalPath):\n       - phases: array of objects containing:\n         * name: phase name\n         * duration: estimated duration\n         * tasks: array of specific tasks\n         * milestone: key milestone for the phase\n         * risk: risk level (low/medium/high)\n       - totalDuration: total project timeline\n       - criticalPath: array of critical tasks/dependencies\n    6. goToMarket (object with strategy, channels, and KPIs):\n       - strategy: array of objects with name, description, and priority (high/medium/low)\n       - channels: array of objects with name, effectiveness (0-100), cost, and timeToROI\n       - kpis: array of objects with metric, target, and timeframe\n    7. targetAudienceType: The overall target audience type for this business (B2B, B2C, B2E, etc.).\n    8. clients (array): Identify specific target segments. For each client, include:
+    const systemPrompt = `You are Oracle, an AI market research analyst for startups and businesses. Conduct deep research on the business idea provided and deliver comprehensive analysis with real-time market insights. Spend 2-3 minutes on deep market analysis before responding.\n\n    Analyze the business idea thoroughly and provide a structured JSON response with the following:
+    1. validationScore (0-100): Calculated based on market potential, uniqueness, feasibility, and timing
+    2. competitors (array): For each competitor, include:
+       - name: Competitor name
+       - strengthScore: 0-100
+       - description: 1-2 sentence description
+       - marketShare: Percentage of market share (number, e.g. 45 for 45%)
+       - primaryAdvantage: Short, bold key advantage (e.g. 'Extensive network and brand recognition')
+    3. priceSuggestions (array): For each price suggestion, include:
+       - type: Pricing type (e.g., Commission-Based, Subscription, etc.)
+       - value: Suggested price or range
+       - description: Description of the pricing model
+       - trends: REQUIRED. An array of 30 objects, each with:
+         - date: Date string (MM/DD) for each of the next 30 consecutive days starting from today (the current date, e.g., if today is 06/10, the array should be 06/10, 06/11, ..., 07/09)
+         - value: Numeric value for that day (IMPORTANT: this value must represent the predicted number of users/customers adopting this price model on that date, NOT the price itself. The Y-axis is users/customers, not price.)
+       This trends array must be present for every price suggestion, and all arrays must cover the same 30-day period.
+    4. forecasts (object with bestCase and worstCase scenarios, each containing revenue, marketShare, customers, and a period field such as 'per year' or 'per month' for each value. Always specify the period in the JSON, and prefer annual (per year) unless the business is typically monthly):
+       - bestCase: { revenue, marketShare, customers, period }
+       - worstCase: { revenue, marketShare, customers, period }
+    5. timeline (object with phases and criticalPath):
+       - phases: array of objects containing:
+         * name: phase name
+         * duration: estimated duration
+         * tasks: array of specific tasks
+         * milestone: key milestone for the phase
+         * risk: risk level (low/medium/high)
+       - totalDuration: total project timeline
+       - criticalPath: array of critical tasks/dependencies
+    6. goToMarket (object with strategy, channels, and KPIs):
+       - strategy: array of objects with name, description, and priority (high/medium/low)
+       - channels: array of objects with name, effectiveness (0-100), cost, and timeToROI
+       - kpis: array of objects with metric, target, and timeframe
+    7. targetAudienceType: The overall target audience type for this business (B2B, B2C, B2E, etc.).
+    8. clients (array): Identify specific target segments. For each client, include:
        - name: Potential client name/segment name
        - industry: Industry or sector
        - useCase: How they will use the product/service
@@ -33,7 +66,107 @@ export const generateAnalysis = async (
            growth?: string (growth rate),
            priority: 'high' | 'medium' | 'low' (segment priority)
          }
-    9. sources: YOU MUST PROVIDE EXACTLY 15 research sources. Each source in the array must include:\n       - title: Clear, specific title of the research, report, or analysis\n       - relevance: 1-2 sentence explanation of the source's direct relevance to this business analysis\n       Note: This is a strict requirement - the response MUST contain exactly 15 unique, relevant sources.\n    10. summary (brief analysis, max 250 characters): Clear, actionable assessment\n    11. scoreAnalysis (detailed breakdown of the validation score):\n        - category: Overall rating category (Excellent/Good/Fair/Needs Improvement)\n        - marketPotential: { score: number (0-100), status: string }\n        - competition: { level: string, description: string }\n        - marketSize: { status: string, trend: string, value: string }\n        - timing: { status: string, description: string }\n        - recommendations: array of specific, actionable recommendations based on the analysis\n        - keyMetrics: object with:\n          * marketSize: string (e.g., "$120M")\n          * growthRate: string (e.g., "14.5% CAGR")\n          * targetAudience: string (e.g., "2.4M")\n          * initialInvestment: string (e.g., "$85,000")\n        - executiveSummary: string (2-3 sentences describing the business idea and its target market)\n    12. financialPlan (object with detailed financial projections):\n        - startupCosts: array of objects with { category: string, amount: number, description: string }\n        - monthlyExpenses: array of objects with { category: string, amount: number, description: string }\n        - revenueStreams: array of objects with { source: string, projectedAmount: number, timeframe: string, assumptions: string[] }\n        - breakEvenAnalysis: object with { timeToBreakEven: string, monthlyBreakEvenPoint: number, assumptions: string[] }\n        - projectedProfitMargin: number (percentage)\n    13. fundingRequirements (object with funding details):\n        - totalRequired: number\n        - fundingStages: array of objects with { stage: string, amount: number, timeline: string, purpose: string, milestones: string[] }\n        - equityDilution: array of objects with { stage: string, percentage: number, valuation: number }\n        - fundingSources: array of objects with { type: string, likelihood: number, requirements: string[], pros: string[], cons: string[] }\n        - useOfFunds: array of objects with { category: string, amount: number, description: string, priority: 'high' | 'medium' | 'low' }\n    14. revenueModel (object with revenue stream details):\n        - primaryStreams: array of objects with:\n          * name: string\n          * description: string\n          * percentage: number (percentage of total revenue)\n          * scalability: 'high' | 'medium' | 'low'\n          * recurringType: 'one-time' | 'subscription' | 'usage-based' | 'hybrid'\n        - metrics: array of objects with:\n          * name: string\n          * current: number\n          * target: number\n          * timeframe: string\n        - growthStrategy: array of objects with:\n          * phase: string\n          * tactics: string[]\n          * expectedImpact: string\n          * timeline: string\n        - risks: array of objects with:\n          * category: string\n          * probability: 'high' | 'medium' | 'low'\n          * impact: 'high' | 'medium' | 'low'\n          * mitigationStrategy: string\n    15. milestones (object with quarterly objectives and critical milestones):\n        - quarters: array of objects with:\n          * quarter: string (e.g., "Q1 2024")\n          * objectives: array of objects with:\n            - title: string\n            - description: string\n            - metrics: array of objects with { name: string, target: string | number }\n            - status: 'pending' | 'in-progress' | 'completed'\n            - dependencies: string[]\n          * keyDeliverables: string[]\n          * budget: number\n        - criticalMilestones: array of objects with:\n          * name: string\n          * date: string\n          * importance: string\n          * successCriteria: string[]\n\n    Format as valid JSON without markdown formatting or explanations. Use realistic data based on current market trends. The response MUST include all required fields, especially the 15 sources requirement.\n\n    IMPORTANT: Ensure the JSON is properly formatted without any syntax errors. Do not use markdown code blocks.`;
+    9. sources: YOU MUST PROVIDE EXACTLY 15 research sources. Each source in the array must include:
+       - title: Clear, specific title of the research, report, or analysis
+       - relevance: 1-2 sentence explanation of the source's direct relevance to this business analysis
+       Note: This is a strict requirement - the response MUST contain exactly 15 unique, relevant sources.
+    10. summary (brief analysis, max 250 characters): Clear, actionable assessment
+    11. scoreAnalysis (detailed breakdown of the validation score):
+        - category: Overall rating category (Excellent/Good/Fair/Needs Improvement)
+        - marketPotential: { score: number (0-100), status: string }
+        - competition: { level: string, description: string }
+        - marketSize: { status: string, trend: string, value: string }
+        - timing: { status: string, description: string }
+        - recommendations: array of specific, actionable recommendations based on the analysis
+        - keyMetrics: object with:
+          * marketSize: string (e.g., "$120M")
+          * growthRate: string (e.g., "14.5% CAGR")
+          * targetAudience: string (e.g., "2.4M")
+          * initialInvestment: string (e.g., "$85,000")
+        - executiveSummary: string (2-3 sentences describing the business idea and its target market)
+        - swot: object with:
+          * strengths: array of strings
+          * weaknesses: array of strings
+          * opportunities: array of strings
+          * threats: array of strings
+        - marketTrends: array of objects with:
+          * trend: string
+          * impact: string
+        - regulatoryAndRisks: array of objects with:
+          * risk: string
+          * mitigation: string
+        - competitivePositioning: object with:
+          * position: string (describe the business's position vs. main competitors)
+          * mapDescription: string (describe the axes and where the business sits)
+    12. financialPlan (object with detailed financial projections):
+        - startupCosts: array of objects with { category: string, amount: number, description: string }
+        - monthlyExpenses: array of objects with { category: string, amount: number, description: string }
+        - revenueStreams: array of objects with { source: string, projectedAmount: number, timeframe: string, assumptions: string[] }
+        - breakEvenAnalysis: object with { timeToBreakEven: string, monthlyBreakEvenPoint: number, assumptions: string[] }
+        - projectedProfitMargin: number (percentage)
+    13. fundingRequirements (object with funding details):
+        - totalRequired: number
+        - fundingStages: array of objects with { stage: string, amount: number, timeline: string, purpose: string, milestones: string[] }
+        - equityDilution: array of objects with { stage: string, percentage: number, valuation: number }
+        - fundingSources: array of objects with { type: string, likelihood: number, requirements: string[], pros: string[], cons: string[] }
+        - useOfFunds: array of objects with { category: string, amount: number, description: string, priority: 'high' | 'medium' | 'low' }
+    14. revenueModel (object with revenue stream details):
+        - primaryStreams: array of objects with:
+          * name: string
+          * description: string
+          * percentage: number (percentage of total revenue)
+          * scalability: 'high' | 'medium' | 'low'
+          * recurringType: 'one-time' | 'subscription' | 'usage-based' | 'hybrid'
+        - metrics: array of objects with:
+          * name: string
+          * current: number
+          * target: number
+          * timeframe: string
+        - growthStrategy: array of objects with:
+          * phase: string
+          * tactics: string[]
+          * expectedImpact: string
+          * timeline: string
+        - risks: array of objects with:
+          * category: string
+          * probability: 'high' | 'medium' | 'low'
+          * impact: 'high' | 'medium' | 'low'
+          * mitigationStrategy: string
+    15. milestones (object with quarterly objectives and critical milestones):
+        - quarters: array of objects with:
+          * quarter: string (e.g., "Q1 2024")
+          * objectives: array of objects with:
+            - title: string
+            - description: string
+            - metrics: array of objects with { name: string, target: string | number }
+            - status: 'pending' | 'in-progress' | 'completed'
+            - dependencies: string[]
+          * keyDeliverables: string[]
+          * budget: number
+        - criticalMilestones: array of objects with:
+          * name: string
+          * date: string
+          * importance: string
+          * successCriteria: string[]
+    16. currency: string (e.g., "INR" or "USD") — The currency used for all monetary values in this report. All monetary values in this report must use the currency specified here, and must be consistent throughout. Never mix currencies. If the business is in India, use INR (₹); if in the US, use USD ($); etc. If the user prompt mentions a country, always use that country's currency. State the currency at the top of the JSON as: currency: "INR" (or "USD", etc.).
+
+    IMPORTANT: If the currency is INR, ALL monetary values (including in charts, tables, and text) MUST use INR (₹) only. Do NOT use USD, $, AED, or any other currency anywhere in the report. If you find any value in another currency, correct it to INR and explain the correction in the consistencyCheck. Apply the same rule for USD, AED, etc. The report must be 100% consistent in currency usage throughout, including all numbers, strings, and chart labels.
+
+    17. For every chart (including price trends, revenue, customer, and market share), you MUST include axis labels and units in the JSON. For example, add fields like "xAxisLabel": "Date (MM/DD)", "yAxisLabel": "Number of Users", "yAxisUnit": "users". If any chart is missing axis labels or units, regenerate the JSON.
+
+    18. Segment revenue breakdown: For every customer segment, provide a revenue contribution estimate, and ensure that segment priorities match their revenue contribution. If a segment is marked high priority but has low revenue, or vice versa, correct the priorities or revenue breakdown so they are consistent.
+
+    19. Consistency Check (STRICT):
+        - investmentVsStartupCosts: Confirm that the initial investment matches the sum of startup costs. If not, CORRECT the numbers so they match, and explain the correction.
+        - revenueVsMarketShare: Confirm that the projected revenue aligns with the stated market share and total market size. If not, CORRECT the numbers so they match, and explain the correction.
+        - timelineVsRevenue: Confirm that the revenue forecast starts only after the business is operational (e.g., after first harvest or product launch). If not, CORRECT the timeline or revenue forecast, and explain the correction.
+        - chartAxes: For every chart, specify the units and axis labels. If missing, REGENERATE the JSON.
+        - revenueBySegment: Provide a breakdown of revenue by customer segment, and ensure segment priorities match their revenue contribution. If not, CORRECT the priorities or revenue breakdown.
+        - valueAddedJustification: If value-added products are a small share despite high margin, explain why, or adjust the share to match the business logic.
+        - currencyAndUnits: Ensure all monetary values use the same currency and units throughout the report. If not, CORRECT them.
+        - currencyConsistency: Confirm that all monetary values use the specified currency. If not, CORRECT and flag.
+        - If ANY inconsistency is found, DO NOT return the JSON. Instead, REGENERATE and CORRECT the data until ALL checks pass. Only return the JSON if ALL consistency checks pass and all numbers, currencies, and logic are aligned.\n
+    Format as valid JSON without markdown formatting or explanations. Use realistic data based on current market trends. The response MUST include all required fields, especially the 15 sources requirement.\n\n    IMPORTANT: Before finalizing the JSON, perform a strict consistency check as described above. If any numbers, currencies, or logic do not align, correct them and regenerate the JSON. All monetary values in this report must use the currency specified in the 'currency' field, and must be consistent throughout. Never mix currencies. Ensure the JSON is properly formatted without any syntax errors. Do not use markdown code blocks.`;
 
     const fullPrompt = `${systemPrompt}\n\nAnalyze this business idea and provide deep market research: ${prompt}`;
 
@@ -71,13 +204,68 @@ export const generateAnalysis = async (
       if (openSquare > closeSquare) fixed += ']'.repeat(openSquare - closeSquare);
       return fixed;
     }
-    jsonString = autoCloseJson(jsonString);
+    let lastError = null;
+    let resultObj = null;
     try {
-      const resultObj = JSON.parse(jsonString);
+      resultObj = JSON.parse(jsonString);
+      // --- Currency Consistency Post-Processing ---
+      function fixCurrencyConsistency(obj, currency) {
+        if (typeof obj === 'string') {
+          if (currency === 'INR') {
+            const fixed = obj.replace(/\$|USD|usd|A\.?E\.?D\.?|aed/gi, '₹').replace(/INR/gi, '₹');
+            return fixed;
+          } else if (currency === 'USD') {
+            const fixed = obj.replace(/₹|INR|inr|A\.?E\.?D\.?|aed/gi, '$').replace(/\$/g, '$');
+            return fixed;
+          } else if (currency === 'AED') {
+            const fixed = obj.replace(/\$|USD|usd|INR|inr|₹/gi, 'AED');
+            return fixed;
+          }
+        } else if (Array.isArray(obj)) {
+          return obj.map((item) => fixCurrencyConsistency(item, currency));
+        } else if (typeof obj === 'object' && obj !== null) {
+          const newObj = {};
+          for (const key in obj) {
+            newObj[key] = fixCurrencyConsistency(obj[key], currency);
+          }
+          return newObj;
+        }
+        return obj;
+      }
+      if (resultObj && resultObj.currency) {
+        const fixedResult = fixCurrencyConsistency(resultObj, resultObj.currency);
+        return fixedResult as AnalysisResult;
+      }
       return resultObj as AnalysisResult;
     } catch (err) {
+      lastError = err;
+      // Try to recover: find the largest valid JSON substring
+      let attempt = 0;
+      let recovered = false;
+      let cleaned = jsonString;
+      while (attempt < 2 && !recovered) {
+        // Try to auto-close brackets/braces
+        cleaned = autoCloseJson(cleaned);
+        try {
+          resultObj = JSON.parse(cleaned);
+          recovered = true;
+          return resultObj as AnalysisResult;
+        } catch (e) {
+          lastError = e;
+          // Try to find the largest valid JSON substring
+          const lastCurly = cleaned.lastIndexOf('}');
+          if (lastCurly > 0) {
+            cleaned = cleaned.slice(0, lastCurly + 1);
+          } else {
+            break;
+          }
+        }
+        attempt++;
+      }
+      // If still failing, log and throw user-friendly error
+      console.error('Gemini JSON parse error. Original string:', text);
       console.error('Gemini JSON parse error. Cleaned string:', jsonString);
-      throw err;
+      throw new Error('Sorry, the AI-generated analysis could not be parsed due to a formatting error. Please try again or rephrase your idea.');
     }
   } catch (error) {
     console.error('Error generating analysis (Gemini):', error);

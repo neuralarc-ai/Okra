@@ -57,7 +57,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
-    <Card className="card-bg hover-card shadow-lg max-h-[810px] overflow-y-auto hide-scrollbar">
+    <Card className="card-bg hover-card shadow-lg overflow-y-auto hide-scrollbar">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-semibold flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-green-300" />
@@ -204,6 +204,76 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               ))}
             </ul>
           </div>
+
+          {/* SWOT Analysis */}
+          {scoreAnalysis.swot && (
+            <div className="p-4 border border-purple-500/20 rounded-lg mt-4">
+              <h3 className="text-sm font-bold text-purple-300 mb-2">SWOT Analysis</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-xs font-semibold text-green-300 mb-1">Strengths</h4>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.strengths.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-rose-300 mb-1">Weaknesses</h4>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-blue-300 mb-1">Opportunities</h4>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.opportunities.map((o, i) => <li key={i}>{o}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-yellow-300 mb-1">Threats</h4>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.threats.map((t, i) => <li key={i}>{t}</li>)}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Market Trends */}
+          {scoreAnalysis.marketTrends && scoreAnalysis.marketTrends.length > 0 && (
+            <div className="p-4 border border-blue-500/20 rounded-lg mt-4">
+              <h3 className="text-sm font-bold text-blue-300 mb-2">Market Trends</h3>
+              <ul className="space-y-2">
+                {scoreAnalysis.marketTrends.map((trend, i) => (
+                  <li key={i} className="text-sm text-white/90">
+                    <span className="font-semibold text-blue-200">{trend.trend}:</span> {trend.impact}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Regulatory & Risks */}
+          {scoreAnalysis.regulatoryAndRisks && scoreAnalysis.regulatoryAndRisks.length > 0 && (
+            <div className="p-4 border border-amber-500/20 rounded-lg mt-4">
+              <h3 className="text-sm font-bold text-amber-300 mb-2">Regulatory & Risks</h3>
+              <ul className="space-y-2">
+                {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
+                  <li key={i} className="text-sm text-white/90">
+                    <span className="font-semibold text-amber-200">{risk.risk}:</span> <span className="text-amber-100">Mitigation:</span> {risk.mitigation}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Competitive Positioning */}
+          {scoreAnalysis.competitivePositioning && (
+            <div className="p-4 border border-pink-500/20 rounded-lg mt-4">
+              <h3 className="text-sm font-bold text-pink-300 mb-2">Competitive Positioning</h3>
+              <div className="text-white/90 text-sm mb-1"><span className="font-semibold text-pink-200">Position:</span> {scoreAnalysis.competitivePositioning.position}</div>
+              <div className="text-white/70 text-xs"><span className="font-semibold text-pink-200">Map:</span> {scoreAnalysis.competitivePositioning.mapDescription}</div>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

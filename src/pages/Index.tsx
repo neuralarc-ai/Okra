@@ -22,6 +22,7 @@ import RevenueModelCard from '@/components/RevenueModelCard';
 import MilestonesCard from '@/components/MilestonesCard';
 import TrendingPrompts from '@/components/TrendingPrompts';
 import Footer from '@/components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const [userInput, setUserInput] = useState('');
@@ -33,6 +34,7 @@ const Index = () => {
   const inputContainerRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const [isQueryExpanded, setIsQueryExpanded] = useState(false);
+  const navigate = useNavigate();
 
   // Analysis sources with clear research steps
   const analysisSources = [
@@ -65,12 +67,12 @@ const Index = () => {
       }
 
       // Simulate progressive analysis with sources
-        let progress = 0;
+      let progress = 0;
       let lastSourceIndex = 0;
       const simulateProgress = (onDone: () => void) => {
         const interval = setInterval(() => {
           if (progress < 99) {
-          progress += Math.random() * 8 + 1;
+            progress += Math.random() * 8 + 1;
             if (progress > 99) progress = 99;
           } else {
             progress = 99;
@@ -112,16 +114,8 @@ const Index = () => {
           !analysis.scoreAnalysis) {
         throw new Error("Invalid analysis data received");
       }
-        setResult(analysis);
-        setShowResults(true);
-        setIsQueryExpanded(false);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      if (resultsRef.current) {
-        resultsRef.current.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start'
-        });
-      }
+      // Instead of showing results here, navigate to /analysis with state
+      navigate('/analysis', { state: { result: analysis, userInput: message } });
     } catch (error) {
       console.error("Error during analysis:", error);
       toast.error(error instanceof Error ? error.message : "An error occurred during analysis");
