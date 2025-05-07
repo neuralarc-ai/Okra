@@ -2,19 +2,31 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FinancialPlan } from '@/types/oracle';
 import { formatCurrency } from '@/lib/utils';
+import { RadarChart, Radar, PolarAngleAxis, PolarGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 
 interface FinancialPlanCardProps {
   financialPlan?: FinancialPlan;
 }
 
-const COLORS = [
-    "#8b7cf6", // purple
-    "#FFADDF", // pink
-    "#FCEC3B", // yellow
-    "#fbbf24", // orange
-    "#34d399", // green
-    "#60a5fa", // blue
-  ];
+const GRADIENT_COLORS = [
+  { id: "gradPurple", start: "#8b7cf6", end: "#5f3dc4" },
+  { id: "gradPink", start: "#FFADDF", end: "#ff3b82" },
+  { id: "gradYellow", start: "#FCEC3B", end: "#f59e42" },
+  { id: "gradOrange", start: "#fbbf24", end: "#ea580c" },
+  { id: "gradGreen", start: "#34d399", end: "#059669" },
+  { id: "gradBlue", start: "#60a5fa", end: "#2563eb" },
+];
+
+const RADIAL_COLORS = [
+  "#8b7cf6", // purple
+  "#FFADDF", // pink
+  "#FCEC3B", // yellow
+  "#fbbf24", // orange
+  "#34d399", // green
+  "#60a5fa", // blue
+];
+
+const RADAR_COLOR = "#8b7cf6"; // Use a visually distinct app color (purple)
 
 function describeArc(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
   const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => {
@@ -39,19 +51,11 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
   }
 
   // Prepare data for the doughnut chart
-  const expenseData = financialPlan.monthlyExpenses?.map((expense, idx) => ({
-    name: expense.category,
+  const expenseData = financialPlan.monthlyExpenses?.map((expense) => ({
+    category: expense.category,
     value: expense.amount,
-    color: COLORS[idx % COLORS.length],
   })) || [];
   const total = expenseData.reduce((sum, d) => sum + d.value, 0);
-  const radius = 90;
-  const stroke = 22;
-  const gapAngle = 16;
-  const cx = radius + stroke;
-  const cy = radius + stroke;
-  const chartCircum = 360;
-  let currentAngle = -90;
 
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
@@ -76,50 +80,28 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
         {expenseData.length > 0 && (
           <div>
             <h4 className="text-sm font-medium text-white mb-4">Monthly Expenses Breakdown</h4>
-            <div className="h-[260px] flex flex-col items-center justify-center">
-              <div className="relative flex items-center justify-center" style={{ minHeight: 2 * (radius + stroke) }}>
-                <svg width={2 * (radius + stroke)} height={2 * (radius + stroke)} style={{ display: 'block' }}>
-                  {expenseData.map((entry, idx) => {
-                    const valueAngle = (entry.value / total) * (chartCircum - gapAngle * expenseData.length);
-                    const startAngle = currentAngle + gapAngle / 2;
-                    const endAngle = startAngle + valueAngle;
-                    const path = describeArc(cx, cy, radius, startAngle, endAngle);
-                    currentAngle = endAngle + gapAngle / 2;
-                    return (
-                      <path
-                        key={entry.name}
-                        d={path}
-                        stroke={entry.color}
-                        strokeWidth={stroke}
-                        fill="none"
-                        strokeLinecap="round"
-                        filter="drop-shadow(0 0 8px #0003)"
-                      />
-                    );
-                  })}
-                  {/* Center label */}
-                  <text
-                    x="50%"
-                    y="50%"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize="2.0rem"
-                    fontWeight="bold"
-                    fill="#e5e7eb"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    {formatCurrency(total)}
-                    <tspan fontSize="1.1rem" x="50%" dy="2.0em"  fill="#aaa">Total</tspan>
-                  </text>
-                </svg>
-              </div>
-              <div className="flex flex-wrap justify-center gap-4 mt-2">
-                {expenseData.map((entry, idx) => (
-                  <div key={entry.name} className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full block" style={{ backgroundColor: entry.color }}></span>
-                    <span className="text-xs text-gray-400">{entry.name}</span>
-                  </div>
-                ))}
+            <div className="w-full max-w-[800px] mx-auto flex flex-col items-center justify-center" style={{ overflow: 'visible' }}>
+              <ResponsiveContainer width="100%" >
+                <RadarChart data={expenseData} outerRadius="55%">
+                  <PolarGrid stroke="#222" />
+                  <PolarAngleAxis dataKey="category" tick={{ fill: '#fff', fontSize: 12, fontWeight: 500 }} />
+                  <Radar
+                    dataKey="value"
+                    fill={RADAR_COLOR}
+                    fillOpacity={0.6}
+                    stroke={RADAR_COLOR}
+                    dot={{ r: 4, fill: RADAR_COLOR, fillOpacity: 1 }}
+                  />
+                  <RechartsTooltip
+                    cursor={false}
+                    contentStyle={{ background: '#18181b', border: 'none', color: '#f9fafb' }}
+                    formatter={(value: number) => formatCurrency(value)}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+              <div className="mt-2 text-center">
+                <span className="text-lg font-bold text-white">{formatCurrency(total)}</span>
+                <span className="block text-xs text-gray-400">Total Monthly Expenses</span>
               </div>
             </div>
           </div>

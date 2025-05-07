@@ -26,6 +26,15 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
     low: '#4ade80'
   };
 
+  const GRADIENT_COLORS = [
+    { id: "gradPurple", start: "#8b7cf6", end: "#5f3dc4" },
+    { id: "gradPink", start: "#FFADDF", end: "#ff3b82" },
+    { id: "gradYellow", start: "#FCEC3B", end: "#f59e42" },
+    { id: "gradOrange", start: "#fbbf24", end: "#ea580c" },
+    { id: "gradGreen", start: "#34d399", end: "#059669" },
+    { id: "gradBlue", start: "#60a5fa", end: "#2563eb" },
+  ];
+
   // Custom label for inside left (category) or outside if bar is short
   const renderCategoryLabel = (props: LabelProps) => {
     const { x, y, value, height, width } = props;
@@ -64,6 +73,24 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
     );
   };
 
+  // Helper for donut chart arc
+  function describeArc(cx, cy, r, startAngle, endAngle) {
+    const polarToCartesian = (cx, cy, r, angle) => {
+      const a = ((angle - 90) * Math.PI) / 180.0;
+      return {
+        x: cx + r * Math.cos(a),
+        y: cy + r * Math.sin(a),
+      };
+    };
+    const start = polarToCartesian(cx, cy, r, endAngle);
+    const end = polarToCartesian(cx, cy, r, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return [
+      "M", start.x, start.y,
+      "A", r, r, 0, largeArcFlag, 0, end.x, end.y
+    ].join(" ");
+  }
+
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
@@ -84,40 +111,72 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
         {useOfFundsData.length > 0 && (
           <div className="mt-8">
             <h4 className="text-sm font-medium text-white mb-4">Use of Funds</h4>
-            <div className="h-[220px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={useOfFundsData}
-                  layout="vertical"
-                  margin={{ right: 16, left: 0, top: 0, bottom: 0 }}
-                >
-                  <CartesianGrid horizontal={true} vertical={false} strokeDasharray="3 3" stroke="#222" />
-                  <YAxis
-                    dataKey="name"
-                    type="category"
-                    tickLine={false}
-                    axisLine={false}
-                    tick={false}
-                    hide
-                  />
-                  <XAxis dataKey="amount" type="number" hide />
-                  <RechartsTooltip
-                    cursor={false}
-                    contentStyle={{ background: '#1a1a1a', border: 'none', color: '#fff' }}
-                    formatter={(value: number) => formatCurrency(value)}
-                  />
-                  <Bar
-                    dataKey="amount"
-                    layout="vertical"
-                    radius={6}
-                    fill="#4ade80"
-                    isAnimationActive={false}
+            <div className="flex flex-col items-center justify-center">
+              {/* Donut Chart */}
+              <div className="relative flex items-center justify-center" style={{ minHeight: 240 }}>
+                <svg width={240} height={240} style={{ display: 'block' }}>
+                  <defs>
+                    {GRADIENT_COLORS.map((gradient) => (
+                      <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor={gradient.start} />
+                        <stop offset="100%" stopColor={gradient.end} />
+                      </linearGradient>
+                    ))}
+                  </defs>
+                  {(() => {
+                    const total = useOfFundsData.reduce((sum, d) => sum + d.amount, 0);
+                    const radius = 90;
+                    const stroke = 32;
+                    const cx = 120;
+                    const cy = 120;
+                    const gapAngle = 8;
+                    let currentAngle = -90;
+                    return useOfFundsData.map((entry, idx) => {
+                      const valueAngle = (entry.amount / total) * (360 - gapAngle * useOfFundsData.length);
+                      const startAngle = currentAngle + gapAngle / 2;
+                      const endAngle = startAngle + valueAngle;
+                      const path = describeArc(cx, cy, radius, startAngle, endAngle);
+                      currentAngle = endAngle + gapAngle / 2;
+                      const gradient = GRADIENT_COLORS[idx % GRADIENT_COLORS.length];
+                      return (
+                        <path
+                          key={entry.name}
+                          d={path}
+                          stroke={`url(#${gradient.id})`}
+                          strokeWidth={stroke}
+                          fill="none"
+                          strokeLinecap="round"
+                          filter="drop-shadow(0 0 8px #0003)"
+                        />
+                      );
+                    });
+                  })()}
+                  {/* Center label */}
+                  <circle cx={120} cy={120} r={60} fill="#18181b" />
+                  <text
+                    x="50%"
+                    y="50%"
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontSize="1.3rem"
+                    fontWeight="bold"
+                    fill="#e5e7eb"
+                    style={{ fontFamily: 'inherit' }}
                   >
-                    <LabelList dataKey="name" position="insideLeft" content={renderCategoryLabel} />
-                    {/* <LabelList dataKey="amount" position="right" content={renderValueLabel} /> */}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+                    {formatCurrency(fundingRequirements.totalRequired)}
+                    <tspan fontSize="0.9rem" x="50%" dy="2.0em" fill="#aaa">Total</tspan>
+                  </text>
+                </svg>
+              </div>
+              {/* Legend */}
+              <div className="flex flex-wrap justify-center gap-4 mt-4">
+                {useOfFundsData.map((entry, idx) => (
+                  <div key={entry.name} className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full block" style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}></span>
+                    <span className="text-xs font-semibold" style={{ color: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}>{entry.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}

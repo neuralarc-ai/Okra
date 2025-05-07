@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Forecast } from "@/types/oracle";
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, LabelList, Tooltip as RechartsTooltip, ResponsiveContainer, LabelProps } from "recharts";
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, LabelList, Tooltip as RechartsTooltip, ResponsiveContainer, LabelProps, LineChart, Line, AreaChart, Area, Cell } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface ForecastCardProps {
@@ -67,7 +67,112 @@ const renderCategoryLabel = (props: LabelProps) => {
   );
 };
 
-const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase, worstCase, valueLabel }: any) => (
+const REVENUE_GRADIENTS = [
+  { id: "revBarBest", from: "#1e293b", to: "#2563eb" },   // darkest blue (Best Case)
+  { id: "revBarAvg", from: "#2563eb", to: "#60a5fa" },    // medium blue (Average Case)
+  { id: "revBarWorst", from: "#60a5fa", to: "#dbeafe" },  // lightest blue (Worst Case)
+];
+
+// Custom label renderer for inside-left bar labels
+const renderInsideLeftLabel = (props: any) => {
+  const { x, y, width, height, value } = props;
+  // Add padding from the left edge of the bar
+  const padding = 8;
+  return (
+    <text
+      x={x + padding}
+      y={y + height / 2}
+      fill="#f9fafb"
+      fontSize={13}
+      fontWeight={600}
+      alignmentBaseline="middle"
+      dominantBaseline="middle"
+      textAnchor="start"
+      pointerEvents="none"
+    >
+      {value}
+    </text>
+  );
+};
+
+const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase, worstCase, valueLabel }: any) => {
+  // Attach a custom fill to each data entry
+  const dataWithFill = data.map((entry: any, idx: number) => ({
+    ...entry,
+    fill: `url(#${REVENUE_GRADIENTS[data.length - 1 - idx].id})`,
+  }));
+  return (
+    <Card className="card-bg hover-card shadow-lg">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-xl font-medium">
+          {title} {period ? `(${period})` : ''}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-[220px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={dataWithFill}
+              layout="vertical"
+              margin={{ right: 16, left: -60, top: 0, bottom: 0 }}
+            >
+              <defs>
+                {REVENUE_GRADIENTS.map((g, idx) => (
+                  <linearGradient key={g.id} id={g.id} x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor={g.from} />
+                    <stop offset="100%" stopColor={g.to} />
+                  </linearGradient>
+                ))}
+              </defs>
+              <CartesianGrid horizontal={true} vertical={false} strokeDasharray="3 3" stroke="#222" />
+              <YAxis
+                dataKey="name"
+                type="category"
+                tickLine={false}
+                axisLine={false}
+                tick={false}
+              />
+              <XAxis dataKey="value" type="number" hide />
+              <RechartsTooltip
+                cursor={false}
+                contentStyle={{ background: '#1a1a1a', border: 'none', color: '#f9fafb' }}
+                formatter={(value: number) => valueLabel ? valueLabel(value) : formatValue(value)}
+              />
+              <Bar
+                dataKey="value"
+                barSize={32}
+                radius={6}
+                isAnimationActive={false}
+              >
+                <LabelList dataKey="name" content={renderInsideLeftLabel} />
+                <LabelList dataKey="value" position="right" fill="#fff" fontSize={13} fontWeight={500} formatter={valueLabel} />
+                {dataWithFill.map((entry: any, idx: number) => (
+                  <Cell key={`cell-${idx}`} fill={entry.fill} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
+            <h4 className="text-sm font-medium text-white">Best Case</h4>
+            <p className="text-xs text-gray-400">{title}: {formatWithPrefix(prefix, bestCase)} {period ? `(${period})` : ''}</p>
+          </div>
+          <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
+            <h4 className="text-sm font-medium text-white">Average Case</h4>
+            <p className="text-xs text-gray-400">{title}: {formatWithPrefix(prefix, avgCase)} {period ? `(${period})` : ''}</p>
+          </div>
+          <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
+            <h4 className="text-sm font-medium text-white">Worst Case</h4>
+            <p className="text-xs text-gray-400">{title}: {formatWithPrefix(prefix, worstCase)} {period ? `(${period})` : ''}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
   <Card className="card-bg hover-card shadow-lg">
     <CardHeader className="pb-2">
       <CardTitle className="text-xl font-medium">
@@ -77,55 +182,62 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
     <CardContent>
       <div className="h-[220px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
+          <AreaChart
             data={data}
-            layout="vertical"
-            margin={{ right: 16, left: 0, top: 0, bottom: 0 }}
+            margin={{ top: 16, right: 16, left: 16, bottom: 16 }}
           >
-            <CartesianGrid horizontal={true} vertical={false} strokeDasharray="3 3" stroke="#222" />
-            <YAxis
-              dataKey="name"
-              type="category"
-              tickLine={false}
-              axisLine={false}
-              tick={false}
-              hide
-            />
-            <XAxis dataKey="value" type="number" hide />
+            <defs>
+              <linearGradient id="customerBlueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#60a5fa" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#2563eb" stopOpacity={0.2} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#222" />
+            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }} />
+            <YAxis dataKey="value" axisLine={false} tickLine={false} tick={false} hide />
             <RechartsTooltip
               cursor={false}
-              contentStyle={{ background: '#1a1a1a', border: 'none', color: '#fff' }}
+              contentStyle={{ background: '#1a1a1a', border: 'none', color: '#f9fafb' }}
               formatter={(value: number) => valueLabel ? valueLabel(value) : formatValue(value)}
             />
-            <Bar
+            <Area
+              type="monotone"
               dataKey="value"
-              layout="vertical"
-              radius={6}
-              fill="#4ade80"
+              stroke="#2563eb"
+              strokeWidth={3}
+              fill="url(#customerBlueGradient)"
+              dot={{ r: 6, fill: '#60a5fa', stroke: '#2563eb', strokeWidth: 2 }}
+              activeDot={{ r: 8, fill: '#2563eb', stroke: '#60a5fa', strokeWidth: 2 }}
               isAnimationActive={false}
-            >
-              <LabelList dataKey="name" position="insideLeft" content={props => renderCategoryLabel({ ...props, fill: '#fff' })} />
-            </Bar>
-          </BarChart>
+            />
+            <LabelList dataKey="value" position="top" fill="#fff" fontSize={13} fontWeight={500} formatter={valueLabel} />
+          </AreaChart>
         </ResponsiveContainer>
       </div>
       <div className="grid grid-cols-3 gap-4 mt-4">
         <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
           <h4 className="text-sm font-medium text-white">Best Case</h4>
-          <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(bestCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-400">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
         </div>
         <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
           <h4 className="text-sm font-medium text-white">Average Case</h4>
-          <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(avgCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-400">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
         </div>
         <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
           <h4 className="text-sm font-medium text-white">Worst Case</h4>
-          <p className="text-xs text-gray-400">{title}: {prefix}{formatValue(worstCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-400">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
         </div>
       </div>
     </CardContent>
   </Card>
 );
+
+// Helper to avoid double $ in summary cards
+const formatWithPrefix = (prefix: string, value: string | number) => {
+  const formatted = formatValue(value);
+  if (prefix && formatted.startsWith(prefix)) return formatted;
+  return prefix + formatted;
+};
 
 const ForecastCard = ({ forecast }: ForecastCardProps) => {
   // Revenue
@@ -162,7 +274,7 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         worstCase={worstRevenue}
         valueLabel={formatValue}
       />
-      <ForecastBarChart
+      <ForecastAreaChart
         title="Customer Forecast"
         data={customerData}
         period={period}
