@@ -193,45 +193,85 @@ export const generateAnalysis = async (
     if (jsonMatch) {
       jsonString = jsonMatch[0];
     }
-    // Auto-close brackets/braces if the output is truncated (last-resort hack)
+    // Auto-close brackets/braces and unterminated strings if the output is truncated (last-resort hack)
     function autoCloseJson(str) {
-      const openCurly = (str.match(/\{/g) || []).length;
-      const closeCurly = (str.match(/\}/g) || []).length;
-      const openSquare = (str.match(/\[/g) || []).length;
-      const closeSquare = (str.match(/\]/g) || []).length;
       let fixed = str;
+      // Fix unterminated strings
+      const quoteCount = (fixed.match(/"/g) || []).length;
+      if (quoteCount % 2 !== 0) {
+        // If there's an odd number of quotes, try to find the last unescaped quote
+        // and see if the string ends right after it or with a comma/bracket missing a quote
+        let lastQuoteIndex = -1;
+        let inString = false;
+        for (let i = 0; i < fixed.length; i++) {
+          if (fixed[i] === '"' && (i === 0 || fixed[i-1] !== '\\')) {
+            inString = !inString;
+            if (!inString) lastQuoteIndex = i;
+          }
+        }
+        // If the string ends while inString is true, or the last quote is very near the end
+        // and the content looks like a truncated string value.
+        if (inString || (fixed.length - lastQuoteIndex < 5 && !fixed.substring(lastQuoteIndex+1).match(/[\[\],:]/)) ) {
+            // Check if the string looks like it's cut off: "key": "value...
+            // Basic check: ends with alphanumeric or space, not a quote
+            if (/[a-zA-Z0-9\s]$/.test(fixed)) {
+                 fixed += '"'; 
+            }
+        } else if (quoteCount % 2 !== 0 && !inString) { 
+            // Odd number of quotes, but we are not currently "inString"
+            // This can happen if the truncation occurred like: "key": "value" , "anotherKey": "value...
+            // Or if a quote is genuinely missing. A simple fix is to append one,
+            // hoping the rest of the structure is fine or will be fixed by bracket closing.
+            if (/[a-zA-Z0-9\s]$/.test(fixed)) {
+                 fixed += '"';
+            }
+        }
+      }
+
+      const openCurly = (fixed.match(/\{/g) || []).length;
+      const closeCurly = (fixed.match(/\}/g) || []).length;
+      const openSquare = (fixed.match(/\[/g) || []).length;
+      const closeSquare = (fixed.match(/\]/g) || []).length;
+      
       if (openCurly > closeCurly) fixed += '}'.repeat(openCurly - closeCurly);
       if (openSquare > closeSquare) fixed += ']'.repeat(openSquare - closeSquare);
       return fixed;
     }
+
     let lastError = null;
     let resultObj = null;
+    
+    // Apply auto-closing early, before the first parse attempt in the robust error handling
+    jsonString = autoCloseJson(jsonString);
+
+    // --- Currency Consistency Post-Processing ---
+    // Define fixCurrencyConsistency in a scope accessible by both try/catch blocks below
+    function fixCurrencyConsistency(obj, currency) {
+      if (typeof obj === 'string') {
+        if (currency === 'INR') {
+          const fixed = obj.replace(/\$|USD|usd|A\.?E\.?D\.?|aed/gi, '₹').replace(/INR/gi, '₹');
+          return fixed;
+        } else if (currency === 'USD') {
+          const fixed = obj.replace(/₹|INR|inr|A\.?E\.?D\.?|aed/gi, '$').replace(/\$/g, '$');
+          return fixed;
+        } else if (currency === 'AED') {
+          const fixed = obj.replace(/\$|USD|usd|INR|inr|₹/gi, 'AED');
+          return fixed;
+        }
+      } else if (Array.isArray(obj)) {
+        return obj.map((item) => fixCurrencyConsistency(item, currency));
+      } else if (typeof obj === 'object' && obj !== null) {
+        const newObj = {};
+        for (const key in obj) {
+          newObj[key] = fixCurrencyConsistency(obj[key], currency);
+        }
+        return newObj;
+      }
+      return obj;
+    }
+
     try {
       resultObj = JSON.parse(jsonString);
-      // --- Currency Consistency Post-Processing ---
-      function fixCurrencyConsistency(obj, currency) {
-        if (typeof obj === 'string') {
-          if (currency === 'INR') {
-            const fixed = obj.replace(/\$|USD|usd|A\.?E\.?D\.?|aed/gi, '₹').replace(/INR/gi, '₹');
-            return fixed;
-          } else if (currency === 'USD') {
-            const fixed = obj.replace(/₹|INR|inr|A\.?E\.?D\.?|aed/gi, '$').replace(/\$/g, '$');
-            return fixed;
-          } else if (currency === 'AED') {
-            const fixed = obj.replace(/\$|USD|usd|INR|inr|₹/gi, 'AED');
-            return fixed;
-          }
-        } else if (Array.isArray(obj)) {
-          return obj.map((item) => fixCurrencyConsistency(item, currency));
-        } else if (typeof obj === 'object' && obj !== null) {
-          const newObj = {};
-          for (const key in obj) {
-            newObj[key] = fixCurrencyConsistency(obj[key], currency);
-          }
-          return newObj;
-        }
-        return obj;
-      }
       if (resultObj && resultObj.currency) {
         const fixedResult = fixCurrencyConsistency(resultObj, resultObj.currency);
         return fixedResult as AnalysisResult;
@@ -242,30 +282,52 @@ export const generateAnalysis = async (
       // Try to recover: find the largest valid JSON substring
       let attempt = 0;
       let recovered = false;
-      let cleaned = jsonString;
+      // No need to re-assign jsonString to cleaned if it's already processed by autoCloseJson once.
+      // let cleaned = jsonString; 
       while (attempt < 2 && !recovered) {
-        // Try to auto-close brackets/braces
-        cleaned = autoCloseJson(cleaned);
         try {
-          resultObj = JSON.parse(cleaned);
+          // We already tried parsing jsonString once. If it failed, now try more recovery.
+          if (attempt > 0 || !resultObj) { // resultObj would be null if first parse failed
+            jsonString = autoCloseJson(jsonString); // Re-apply in case previous fix was insufficient for complex cases
+            resultObj = JSON.parse(jsonString);
+          }
           recovered = true;
+          // Currency consistency logic was here, it's fine to keep it after successful parse
+          if (resultObj && resultObj.currency) {
+            const fixedResult = fixCurrencyConsistency(resultObj, resultObj.currency);
+            return fixedResult as AnalysisResult;
+          }
           return resultObj as AnalysisResult;
         } catch (e) {
           lastError = e;
-          // Try to find the largest valid JSON substring
-          const lastCurly = cleaned.lastIndexOf('}');
-          if (lastCurly > 0) {
-            cleaned = cleaned.slice(0, lastCurly + 1);
+          // Try to find the largest valid JSON substring by removing the last unterminated part
+          const lastCurly = jsonString.lastIndexOf('}');
+          const lastSquare = jsonString.lastIndexOf(']');
+          
+          let cutIndex = Math.max(lastCurly, lastSquare);
+
+          if (cutIndex > 0) {
+            // Check if the cut point is inside a string
+            let tempStr = jsonString.substring(0, cutIndex + 1);
+            let quoteCountCheck = (tempStr.match(/"/g) || []).length;
+            if(quoteCountCheck % 2 !== 0){
+                //If odd number of quotes, try to find previous valid ending.
+                const lastComma = tempStr.lastIndexOf(',');
+                if(lastComma > 0) tempStr = tempStr.substring(0, lastComma);
+            }
+            jsonString = tempStr;
+
           } else {
-            break;
+            // No more structural elements to cut back to.
+            break; 
           }
         }
         attempt++;
       }
       // If still failing, log and throw user-friendly error
       console.error('Gemini JSON parse error. Original string:', text);
-      console.error('Gemini JSON parse error. Cleaned string:', jsonString);
-      throw new Error('Sorry, the AI-generated analysis could not be parsed due to a formatting error. Please try again or rephrase your idea.');
+      // console.error('Gemini JSON parse error. Cleaned string for final attempt:', jsonString); // Log the state of jsonString before the last throw
+      throw new Error('Sorry, the AI-generated analysis could not be parsed due to a formatting error (even after recovery attempts). Please try again or rephrase your idea.');
     }
   } catch (error) {
     console.error('Error generating analysis (Gemini):', error);
