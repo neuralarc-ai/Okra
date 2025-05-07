@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Competitor } from "@/types/oracle";
-import { ChartBar, Award } from "lucide-react";
+import { ChartBar, Award, ChevronDown, ChevronUp, MapPin, Users, TrendingUp, Building2, Star, ThumbsDown, Globe, Store } from "lucide-react";
+import { useState } from "react";
 
 interface CompetitorsCardProps {
   competitors: Competitor[];
@@ -58,6 +59,7 @@ const getProgressGradient = () => {
 };
 
 const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
+  const [expandedCompetitor, setExpandedCompetitor] = useState<string | null>(null);
   const marketShareData = getMarketShareData(competitors);
   const total = marketShareData.reduce((sum, d) => sum + d.value, 0);
   const radius = 90;
@@ -74,11 +76,37 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
     return adv.replace(/^\*+|\*+$/g, '').trim();
   };
 
+  const toggleCompetitor = (name: string) => {
+    setExpandedCompetitor(expandedCompetitor === name ? null : name);
+  };
+
+  const renderDetailItem = (icon: React.ReactNode, title: string, content: string | string[]) => {
+    if (!content || (Array.isArray(content) && content.length === 0)) return null;
+    
+    return (
+      <div className="space-y-1">
+        <div className="flex items-center gap-2 text-gray-400">
+          {icon}
+          <span className="text-xs font-medium">{title}</span>
+        </div>
+        {Array.isArray(content) ? (
+          <ul className="list-disc list-inside space-y-1">
+            {content.map((item, idx) => (
+              <li key={idx} className="text-xs text-white/80 ml-4">{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-xs text-white/80 ml-6">{content}</p>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <Card className="card-bg hover-card shadow-lg max-h-[810px] overflow-y-auto hide-scrollbar">
+    <Card className="card-bg hover-card shadow-lg overflow-y-auto hide-scrollbar">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-medium flex items-center gap-2">
-          <ChartBar size={18} className="text-blue-300" />
+          <ChartBar size={18} className="text-gray-400" />
           <span>Competitive Analysis</span>
         </CardTitle>
       </CardHeader>
@@ -137,9 +165,14 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
           {marketShareData && marketShareData.map((entry, idx) => {
             const competitor = competitors.find(c => c.name === entry.name);
             if (!competitor) return null;
+            const isExpanded = expandedCompetitor === competitor.name;
+
             return (
               <div key={entry.name} className="space-y-2 p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-              <div className="flex justify-between items-center">
+                <div 
+                  className="flex justify-between items-center cursor-pointer"
+                  onClick={() => toggleCompetitor(competitor.name)}
+                >
                   <span className="font-medium flex items-center gap-1">
                     {competitor.name}
                     {competitor.strengthScore > 80 && (
@@ -151,21 +184,42 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       {entry.value}% Share
                     </span>
                     <span className="text-sm">{competitor.strengthScore}/100</span>
+                    {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
                   </div>
-              </div>
-              <Progress 
-                value={competitor.strengthScore} 
-                className="h-2 bg-gray-800"
-                indicatorClassName={getProgressGradient()}
-              />
-              <p className="text-gray-400 text-xs">{competitor.description}</p>
+                </div>
+                <Progress 
+                  value={competitor.strengthScore} 
+                  className="h-2 bg-gray-800"
+                  indicatorClassName={getProgressGradient()}
+                />
+                <p className="text-gray-400 text-xs">{competitor.description}</p>
                 {competitor.primaryAdvantage && (
                   <div className="mt-1">
                     <span className="text-xs text-gray-400">Key Advantage:</span>
-                    <span className="text-xs text-white ml-1 font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span>
+                    <span className="text-xs text-white ml-1 font-medium">{cleanAdvantage(competitor.primaryAdvantage)}</span>
                   </div>
                 )}
-            </div>
+
+                {isExpanded && competitor.detailedAnalysis && (
+                  <div className="mt-4 space-y-4 pt-4 border-t border-white/5">
+                    {renderDetailItem(<TrendingUp size={14} />, "Market Position", competitor.detailedAnalysis.marketPosition)}
+                    {renderDetailItem(<Users size={14} />, "Target Audience", competitor.detailedAnalysis.targetAudience)}
+                    {renderDetailItem(<Building2 size={14} />, "Pricing Strategy", competitor.detailedAnalysis.pricingStrategy)}
+                    {renderDetailItem(<Star size={14} />, "Strengths", competitor.detailedAnalysis.strengths)}
+                    {renderDetailItem(<ThumbsDown size={14} />, "Weaknesses", competitor.detailedAnalysis.weaknesses)}
+                    {renderDetailItem(<Globe size={14} />, "Geographic Reach", competitor.detailedAnalysis.marketReach?.geographic)}
+                    {renderDetailItem(<Store size={14} />, "Distribution Channels", competitor.detailedAnalysis.marketReach?.channels)}
+                    {renderDetailItem(<MapPin size={14} />, "Recent Developments", competitor.detailedAnalysis.recentDevelopments)}
+                    
+                    {competitor.detailedAnalysis.customerFeedback && (
+                      <div className="space-y-2">
+                        {renderDetailItem(<Star size={14} />, "Positive Feedback", competitor.detailedAnalysis.customerFeedback.positive)}
+                        {renderDetailItem(<ThumbsDown size={14} />, "Negative Feedback", competitor.detailedAnalysis.customerFeedback.negative)}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
