@@ -90,7 +90,7 @@ const Analysis = () => {
           </div>
           <div className="w-full max-w-6xl mx-auto bg-black/40 rounded-xl p-6 border border-white/10 shadow-lg animate-fadeUp">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="w-full flex flex-wrap justify-center mb-6">
+              <TabsList className="w-full flex flex-wrap justify-between mb-6">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="competitors">Competitors</TabsTrigger>
                 <TabsTrigger value="pricing-revenue">Pricing & Revenue</TabsTrigger>
@@ -108,7 +108,7 @@ const Analysis = () => {
               <TabsContent value="competitors">
                 <CompetitorsCard competitors={result.competitors} />
               </TabsContent>
-              <TabsContent value="pricing-revenue">
+              <TabsContent value="pricing-revenue" className="flex flex-col gap-4">
                 <PricingCard priceSuggestions={result.priceSuggestions} />
                 <RevenueModelCard revenueModel={result.revenueModel} />
               </TabsContent>

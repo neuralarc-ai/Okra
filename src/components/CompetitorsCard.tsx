@@ -16,6 +16,15 @@ const COLORS = [
   "#60a5fa", // blue
 ];
 
+const GRADIENT_COLORS = [
+  { id: "gradPurple", start: "#8b7cf6", end: "#a99ff7" },
+  { id: "gradPink", start: "#FFADDF", end: "#ffc7e8" },
+  { id: "gradYellow", start: "#FCEC3B", end: "#fdf38d" },
+  { id: "gradOrange", start: "#fbbf24", end: "#fcd26d" },
+  { id: "gradGreen", start: "#34d399", end: "#6fe3b5" },
+  { id: "gradBlue", start: "#60a5fa", end: "#8ac0fb" },
+];
+
 function getMarketShareData(competitors: Competitor[]) {
   return competitors
     .filter(
@@ -75,7 +84,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
   };
 
   return (
-    <Card className="card-bg hover-card shadow-lg max-h-[810px] overflow-y-auto hide-scrollbar">
+    <Card className="card-bg hover-card shadow-lg">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-medium flex items-center gap-2">
           <ChartBar size={18} className="text-blue-300" />
@@ -89,17 +98,26 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
               <h4 className="text-sm text-gray-400 mb-2 text-center">Market Share Distribution</h4>
               <div className="relative flex items-center justify-center" style={{ minHeight: 2 * (radius + stroke) }}>
                 <svg width={2 * (radius + stroke)} height={2 * (radius + stroke)} style={{ display: 'block' }}>
+                  <defs>
+                    {GRADIENT_COLORS.map((gradient) => (
+                      <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor={gradient.start} />
+                        <stop offset="100%" stopColor={gradient.end} />
+                      </linearGradient>
+                    ))}
+                  </defs>
                   {marketShareData.map((entry, idx) => {
                     const valueAngle = (entry.value / total) * (chartCircum - gapAngle * marketShareData.length);
                     const startAngle = currentAngle + gapAngle / 2;
                     const endAngle = startAngle + valueAngle;
                     const path = describeArc(cx, cy, radius, startAngle, endAngle);
                     currentAngle = endAngle + gapAngle / 2;
+                    const gradient = GRADIENT_COLORS[idx % GRADIENT_COLORS.length];
                     return (
                       <path
                         key={entry.name}
                         d={path}
-                        stroke={COLORS[idx % COLORS.length]}
+                        stroke={`url(#${gradient.id})`}
                         strokeWidth={stroke}
                         fill="none"
                         strokeLinecap="round"
@@ -123,10 +141,13 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                   </text>
                 </svg>
               </div>
-              <div className="flex flex-wrap justify-center gap-4 mt-2">
+              <div className="flex flex-wrap justify-center gap-4 mt-4"> {/* Increased mt for better spacing */}
                 {marketShareData.map((entry, idx) => (
                   <div key={entry.name} className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full block" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
+                    <span 
+                      className="w-3 h-3 rounded-full block" 
+                      style={{ backgroundColor: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}
+                    ></span>
                     <span className="text-xs text-white/80">{entry.name}</span>
                   </div>
                 ))}
