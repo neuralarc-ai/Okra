@@ -30,8 +30,29 @@ export interface Competitor {
   name: string;
   strengthScore: number;
   description: string;
-  marketShare?: number | string;
+  marketShare?: string;
   primaryAdvantage?: string;
+  detailedAnalysis?: {
+    strengths: string[];
+    weaknesses: string[];
+    marketPosition: string;
+    targetAudience: string[];
+    pricingStrategy: string;
+    uniqueSellingPoints: string[];
+    recentDevelopments: string[];
+    growthRate: string;
+    fundingStatus?: string;
+    technologyStack?: string[];
+    partnerships?: string[];
+    customerFeedback?: {
+      positive: string[];
+      negative: string[];
+    };
+    marketReach?: {
+      geographic: string[];
+      channels: string[];
+    };
+  };
 }
 
 export interface PriceSuggestion {
@@ -39,6 +60,47 @@ export interface PriceSuggestion {
   value: string;
   description: string;
   trends?: PriceTrend[];
+  detailedAnalysis?: {
+    targetSegment: string[];
+    competitiveAdvantage: string;
+    revenuePotential: {
+      shortTerm: string;
+      longTerm: string;
+      assumptions: string[];
+    };
+    adoptionBarriers: string[];
+    successMetrics: {
+      keyMetrics: string[];
+      targets: string[];
+    };
+    implementationStrategy: {
+      phases: string[];
+      timeline: string;
+      resources: string[];
+    };
+    riskAnalysis: {
+      risks: string[];
+      mitigations: string[];
+    };
+    marketFit: {
+      idealCustomers: string[];
+      marketConditions: string[];
+      competitiveLandscape: string;
+    };
+  };
+  pricingStrategy?: {
+    approach: string;
+    rationale: string;
+    keyConsiderations: string[];
+    flexibility: string;
+    scalability: string;
+  };
+  customerFeedback?: {
+    expectedReactions: string[];
+    valueProposition: string;
+    objections: string[];
+    responses: string[];
+  };
 }
 
 export interface PriceTrend {
@@ -227,28 +289,119 @@ export interface RevenueModel {
   primaryStreams: Array<{
     name: string;
     description: string;
-    percentage: number; // Percentage of total revenue
+    percentage: number;
     scalability: 'high' | 'medium' | 'low';
     recurringType: 'one-time' | 'subscription' | 'usage-based' | 'hybrid';
+    detailedAnalysis?: {
+      targetMarket: string[];
+      competitiveAdvantage: string;
+      growthPotential: {
+        shortTerm: string;
+        longTerm: string;
+        assumptions: string[];
+      };
+      implementationRequirements: {
+        resources: string[];
+        timeline: string;
+        dependencies: string[];
+      };
+      riskFactors: {
+        risks: string[];
+        mitigations: string[];
+      };
+      marketConditions: {
+        current: string;
+        trends: string[];
+        opportunities: string[];
+      };
+      customerValue: {
+        valueProposition: string;
+        painPoints: string[];
+        willingnessToPay: string;
+      };
+    };
   }>;
   metrics: Array<{
     name: string;
     current: number;
     target: number;
     timeframe: string;
+    detailedMetrics?: {
+      definition: string;
+      calculation: string;
+      importance: string;
+      industryBenchmark: string;
+      improvementStrategy: string;
+    };
   }>;
   growthStrategy: Array<{
     phase: string;
     tactics: string[];
     expectedImpact: string;
     timeline: string;
+    detailedStrategy?: {
+      objectives: string[];
+      keyActivities: string[];
+      successCriteria: string[];
+      resourceRequirements: string[];
+      riskAssessment: {
+        risks: string[];
+        mitigations: string[];
+      };
+      marketAnalysis: {
+        targetSegments: string[];
+        competitivePosition: string;
+        growthOpportunities: string[];
+      };
+    };
   }>;
   risks: Array<{
     category: string;
     probability: 'high' | 'medium' | 'low';
     impact: 'high' | 'medium' | 'low';
     mitigationStrategy: string;
+    detailedRisk?: {
+      description: string;
+      triggers: string[];
+      earlyWarningSigns: string[];
+      contingencyPlans: string[];
+      monitoringMetrics: string[];
+    };
   }>;
+  marketAnalysis?: {
+    totalAddressableMarket: string;
+    serviceableAddressableMarket: string;
+    serviceableObtainableMarket: string;
+    marketGrowthRate: string;
+    competitiveLandscape: {
+      competitors: string[];
+      marketShare: string;
+      competitiveAdvantages: string[];
+    };
+    marketTrends: {
+      current: string[];
+      emerging: string[];
+      impact: string;
+    };
+  };
+  financialProjections?: {
+    revenueGrowth: {
+      year1: string;
+      year2: string;
+      year3: string;
+      assumptions: string[];
+    };
+    profitMargins: {
+      current: string;
+      target: string;
+      improvementStrategy: string;
+    };
+    breakEvenAnalysis: {
+      point: string;
+      timeline: string;
+      assumptions: string[];
+    };
+  };
 }
 
 export interface Milestones {

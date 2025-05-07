@@ -17,14 +17,75 @@ export const generateAnalysis = async (
        - description: 1-2 sentence description
        - marketShare: Percentage of market share (number, e.g. 45 for 45%)
        - primaryAdvantage: Short, bold key advantage (e.g. 'Extensive network and brand recognition')
+       - detailedAnalysis: {
+           strengths: string[] (list of key strengths)
+           weaknesses: string[] (list of key weaknesses)
+           marketPosition: string (e.g., "Market Leader", "Challenger", "Niche Player")
+           targetAudience: string[] (specific audience segments)
+           pricingStrategy: string (description of their pricing approach)
+           uniqueSellingPoints: string[] (key differentiators)
+           recentDevelopments: string[] (recent news or changes)
+           growthRate: string (e.g., "15% YoY")
+           fundingStatus: string (if applicable)
+           technologyStack: string[] (if applicable)
+           partnerships: string[] (key partnerships or collaborations)
+           customerFeedback: {
+             positive: string[] (key positive feedback points)
+             negative: string[] (key negative feedback points)
+           }
+           marketReach: {
+             geographic: string[] (regions/countries)
+             channels: string[] (distribution channels)
+           }
+         }
     3. priceSuggestions (array): For each price suggestion, include:
        - type: Pricing type (e.g., Commission-Based, Subscription, etc.)
        - value: Suggested price or range
        - description: Description of the pricing model
        - trends: REQUIRED. An array of 30 objects, each with:
-         - date: Date string (MM/DD) for each of the next 30 consecutive days starting from today (the current date, e.g., if today is 06/10, the array should be 06/10, 06/11, ..., 07/09)
-         - value: Numeric value for that day (IMPORTANT: this value must represent the predicted number of users/customers adopting this price model on that date, NOT the price itself. The Y-axis is users/customers, not price.)
-       This trends array must be present for every price suggestion, and all arrays must cover the same 30-day period.
+         - date: Date string (MM/DD) for each of the next 30 consecutive days starting from today
+         - value: Numeric value for that day (predicted number of users/customers)
+       - detailedAnalysis: {
+           targetSegment: string[] (specific customer segments this pricing model targets)
+           competitiveAdvantage: string (how this pricing model differentiates from competitors)
+           revenuePotential: {
+             shortTerm: string (3-6 months projection)
+             longTerm: string (1-2 years projection)
+             assumptions: string[] (key assumptions for projections)
+           }
+           adoptionBarriers: string[] (potential challenges to adoption)
+           successMetrics: {
+             keyMetrics: string[] (metrics to track success)
+             targets: string[] (specific targets for each metric)
+           }
+           implementationStrategy: {
+             phases: string[] (implementation steps)
+             timeline: string (estimated implementation time)
+             resources: string[] (required resources)
+           }
+           riskAnalysis: {
+             risks: string[] (potential risks)
+             mitigations: string[] (risk mitigation strategies)
+           }
+           marketFit: {
+             idealCustomers: string[] (description of ideal customers)
+             marketConditions: string[] (favorable market conditions)
+             competitiveLandscape: string (how this pricing fits in the market)
+           }
+         }
+       - pricingStrategy: {
+           approach: string (overall pricing strategy)
+           rationale: string (reasoning behind the strategy)
+           keyConsiderations: string[] (important factors considered)
+           flexibility: string (how flexible/adaptable the pricing is)
+           scalability: string (how well it scales with growth)
+         }
+       - customerFeedback: {
+           expectedReactions: string[] (anticipated customer responses)
+           valueProposition: string (how customers perceive the value)
+           objections: string[] (potential customer objections)
+           responses: string[] (how to address objections)
+         }
     4. forecasts (object with bestCase and worstCase scenarios, each containing revenue, marketShare, customers, and a period field such as 'per year' or 'per month' for each value. Always specify the period in the JSON, and prefer annual (per year) unless the business is typically monthly):
        - bestCase: { revenue, marketShare, customers, period }
        - worstCase: { revenue, marketShare, customers, period }
@@ -117,21 +178,112 @@ export const generateAnalysis = async (
           * percentage: number (percentage of total revenue)
           * scalability: 'high' | 'medium' | 'low'
           * recurringType: 'one-time' | 'subscription' | 'usage-based' | 'hybrid'
+          * detailedAnalysis: {
+              targetMarket: string[] (specific market segments)
+              competitiveAdvantage: string (how this revenue stream differentiates)
+              growthPotential: {
+                shortTerm: string (3-6 months projection)
+                longTerm: string (1-2 years projection)
+                assumptions: string[] (key assumptions)
+              }
+              implementationRequirements: {
+                resources: string[] (required resources)
+                timeline: string (implementation timeline)
+                dependencies: string[] (prerequisites)
+              }
+              riskFactors: {
+                risks: string[] (potential risks)
+                mitigations: string[] (risk mitigation strategies)
+              }
+              marketConditions: {
+                current: string (current market state)
+                trends: string[] (market trends affecting this stream)
+                opportunities: string[] (growth opportunities)
+              }
+              customerValue: {
+                valueProposition: string (customer benefits)
+                painPoints: string[] (problems solved)
+                willingnessToPay: string (customer price sensitivity)
+              }
+            }
         - metrics: array of objects with:
           * name: string
           * current: number
           * target: number
           * timeframe: string
+          * detailedMetrics: {
+              definition: string (metric definition)
+              calculation: string (how it's calculated)
+              importance: string (why it matters)
+              industryBenchmark: string (industry standard)
+              improvementStrategy: string (how to improve)
+            }
         - growthStrategy: array of objects with:
           * phase: string
           * tactics: string[]
           * expectedImpact: string
           * timeline: string
+          * detailedStrategy: {
+              objectives: string[] (specific goals)
+              keyActivities: string[] (required actions)
+              successCriteria: string[] (how to measure success)
+              resourceRequirements: string[] (needed resources)
+              riskAssessment: {
+                risks: string[] (potential risks)
+                mitigations: string[] (risk mitigation strategies)
+              }
+              marketAnalysis: {
+                targetSegments: string[] (focus areas)
+                competitivePosition: string (market position)
+                growthOpportunities: string[] (expansion possibilities)
+              }
+            }
         - risks: array of objects with:
           * category: string
           * probability: 'high' | 'medium' | 'low'
           * impact: 'high' | 'medium' | 'low'
           * mitigationStrategy: string
+          * detailedRisk: {
+              description: string (detailed risk description)
+              triggers: string[] (risk triggers)
+              earlyWarningSigns: string[] (indicators)
+              contingencyPlans: string[] (backup plans)
+              monitoringMetrics: string[] (metrics to track)
+            }
+        - marketAnalysis: {
+            totalAddressableMarket: string (TAM)
+            serviceableAddressableMarket: string (SAM)
+            serviceableObtainableMarket: string (SOM)
+            marketGrowthRate: string
+            competitiveLandscape: {
+              competitors: string[] (key competitors)
+              marketShare: string (your market share)
+              competitiveAdvantages: string[] (your advantages)
+            }
+            marketTrends: {
+              current: string[] (current trends)
+              emerging: string[] (emerging trends)
+              impact: string (impact on revenue)
+            }
+          }
+        - financialProjections: {
+            revenueGrowth: {
+              year1: string
+              year2: string
+              year3: string
+              assumptions: string[]
+            }
+            profitMargins: {
+              current: string
+              target: string
+              improvementStrategy: string
+            }
+            breakEvenAnalysis: {
+              point: string
+              timeline: string
+              assumptions: string[]
+            }
+          }
     15. milestones (object with quarterly objectives and critical milestones):
         - quarters: array of objects with:
           * quarter: string (e.g., "Q1 2024")
@@ -188,6 +340,7 @@ export const generateAnalysis = async (
     jsonString = jsonString.replace(/"([^"\\]*(?:\\.[^"\\]*)*)\n([^"\\]*)"/g, (match, p1, p2) => {
       return `"${p1} ${p2}"`;
     });
+
     // Try to extract just the JSON part if there's other content
     const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
@@ -329,6 +482,8 @@ export const generateAnalysis = async (
       // console.error('Gemini JSON parse error. Cleaned string for final attempt:', jsonString); // Log the state of jsonString before the last throw
       throw new Error('Sorry, the AI-generated analysis could not be parsed due to a formatting error (even after recovery attempts). Please try again or rephrase your idea.');
     }
+
+    return resultObj as AnalysisResult;
   } catch (error) {
     console.error('Error generating analysis (Gemini):', error);
     throw error;
