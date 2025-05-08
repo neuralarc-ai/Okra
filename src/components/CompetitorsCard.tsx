@@ -220,14 +220,18 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                   className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-4 py-3 cursor-pointer group"
                   onClick={() => toggleCompetitor(competitor.name)}
                 >
-                  <div className="flex flex-col gap-1 md:gap-0 md:flex-row md:items-center">
+                  <div className="flex flex-col gap-0.5">
                     <span className="text-lg font-semibold text-white flex items-center gap-1">
                       {competitor.name}
                       {competitor.strengthScore > 80 && (
                         <Award size={15} className="text-yellow-300 ml-1" />
                       )}
                     </span>
-                    <span className="ml-0 md:ml-4 text-xs text-gray-400 font-medium">Key Advantage: <span className="text-white font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span></span>
+                    {competitor.primaryAdvantage && (
+                      <span className="text-xs text-gray-400 font-medium mt-0.5">
+                        Key Advantage: <span className="text-white font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span>
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-4 mt-2 md:mt-0">
                     <div className="flex flex-col items-center">
@@ -235,7 +239,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       <span className="text-base font-semibold text-white">{entry.value}%</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <span className="text-xs text-gray-400">Score</span>
+                      <span className="text-xs text-gray-400" title="Strength Score is a 0-100 rating of this competitor's overall market strength, brand, and execution.">Strength Score</span>
                       <span className="text-base font-semibold text-white">{competitor.strengthScore}/100</span>
                     </div>
                     <span>{isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}</span>
