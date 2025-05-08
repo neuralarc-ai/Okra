@@ -4,27 +4,70 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 const Footer = () => {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [ethicsOpen, setEthicsOpen] = useState(false);
+  const [disclaimerOpen, setDisclaimerOpen] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   return (
-  <footer className="w-full py-4 px-2 bg-black border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-gray-400">
-    <div className="flex items-center gap-2">
-      <span className="font-bold text-white">Okra</span>
-      <span className="hidden md:inline">© {new Date().getFullYear()} All rights reserved.</span>
-        <span className="hidden md:inline mx-2">|</span>
-        <a
-          href="https://neuralarc.ai"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 hover:text-white transition"
-        >
-          <span>A thing by Neural Arc</span>
-          <img src="/neural-footer.png" alt="Neural Arc Logo" style={{ height: 20 }} className="ml-1" />
-        </a>
-    </div>
-    <div className="flex items-center gap-4">
+    <footer className="w-full py-3 px-2 bg-black border-t border-white/10 flex items-center justify-center text-xs text-gray-400 rounded-b-2xl shadow-lg">
+      <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
+        <button className="underline hover:text-white transition" onClick={() => setTermsOpen(true)}>{'Terms of use'}</button>
+        <span className="mx-1 text-gray-500">•</span>
         <button className="underline hover:text-white transition" onClick={() => setPrivacyOpen(true)}>Privacy Policy</button>
-        <button className="underline hover:text-white transition" onClick={() => setEthicsOpen(true)}>Responsible AI & Disclaimer</button>
+        <span className="mx-1 text-gray-500">•</span>
+        <button className="underline hover:text-white transition" onClick={() => setDisclaimerOpen(true)}>Disclaimer</button>
+        <span className="mx-1 text-gray-500">•</span>
+        <button className="underline hover:text-white transition" onClick={() => setEthicsOpen(true)}>Responsible AI</button>
+        <span className="mx-1 text-gray-500">•</span>
+        <span className="text-white/80">Copyright © 2025. All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;Okra AI, a thing by{'  '}
+          <a href="https://neuralarc.ai" target="_blank" rel="noopener noreferrer" className="inline-flex ml-1 items-center underline hover:text-white transition">
+            Neural Arc
+            <img src="/neural-footer.png" alt="Neural Arc Logo" style={{ height: 18 }} className="ml-2 inline-block align-middle" />
+          </a>
+        </span>
       </div>
+      {/* Terms of Use Modal */}
+      <Dialog open={termsOpen} onOpenChange={setTermsOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-black/90 text-white/80 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white">Terms of Use</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2 text-sm">
+            <h4 className="text-white font-medium">Welcome to Okra AI</h4>
+            <p>By accessing or using https://okra.neuralpaths.ai (the "Platform"), you agree to be bound by these Terms of Use. If you do not agree, please do not use the Platform.</p>
+            <ol className="list-decimal list-inside ml-4 space-y-2">
+              <li>
+                <span className="text-white/90">Use of Platform</span>
+                <p>The Platform is provided for informational and experimental purposes only. You agree to use it in compliance with all applicable laws and regulations.</p>
+              </li>
+              <li>
+                <span className="text-white/90">User Content</span>
+                <p>You are responsible for any content you input or generate using the Platform. Do not submit unlawful, harmful, or infringing content.</p>
+              </li>
+              <li>
+                <span className="text-white/90">Intellectual Property</span>
+                <p>All content, trademarks, and intellectual property on the Platform are owned by Okra AI or its licensors. You may not copy, reproduce, or distribute any part of the Platform without permission.</p>
+              </li>
+              <li>
+                <span className="text-white/90">Disclaimer of Warranties</span>
+                <p>The Platform is provided "as is" without warranties of any kind. We do not guarantee the accuracy, completeness, or reliability of any content or output.</p>
+              </li>
+              <li>
+                <span className="text-white/90">Limitation of Liability</span>
+                <p>We are not liable for any damages arising from your use of the Platform, including direct, indirect, incidental, or consequential damages.</p>
+              </li>
+              <li>
+                <span className="text-white/90">Changes to Terms</span>
+                <p>We may update these Terms of Use at any time. Continued use of the Platform constitutes acceptance of the revised terms.</p>
+              </li>
+              <li>
+                <span className="text-white/90">Contact</span>
+                <p>For questions, contact us at: support@neuralarc.ai</p>
+              </li>
+            </ol>
+            <p>Last updated: May 2025</p>
+          </div>
+        </DialogContent>
+      </Dialog>
       {/* Privacy Policy Modal */}
       <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-black/90 text-white/80 border-white/10">
@@ -113,8 +156,8 @@ const Footer = () => {
             <DialogTitle className="text-white">Responsible AI & Disclaimer</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 text-sm">
-            <h3 className="text-white font-medium">Responsible AI Use Policy</h3>
-            <p>We are committed to developing and deploying AI responsibly. AI technologies hosted on https://okra-woad.vercel.app are designed to augment human decision-making, not replace it.</p>
+           
+            <p>We are committed to developing and deploying AI responsibly. AI technologies hosted on https://okra.neuralpaths.ai are designed to augment human decision-making, not replace it.</p>
             <div className="space-y-2">
               <h4 className="text-white font-medium">Our Principles</h4>
               <ol className="list-decimal list-inside ml-4 space-y-2">
@@ -195,57 +238,66 @@ const Footer = () => {
                 </li>
               </ol>
             </div>
-            <div className="space-y-2">
-              <h4 className="text-white font-medium">Disclaimer</h4>
-              <p>Please read this Disclaimer carefully before using the Platform.</p>
-              <p>The tools and content available at https://okra-woad.vercel.app are provided "as is" and are intended for informational and experimental purposes only. By using the Platform, you acknowledge and agree to the following:</p>
-              <ol className="list-decimal list-inside ml-4 space-y-2">
-                <li>
-                  <span className="text-white/90">No Professional Advice</span>
-                  <p>The AI-generated outputs are not a substitute for professional advice in:</p>
-                  <ul className="list-disc list-inside ml-4">
-                    <li>Legal</li>
-                    <li>Medical</li>
-                    <li>Financial</li>
-                    <li>Psychological</li>
-                  </ul>
-                  <p>or any other regulated domain. Always consult a licensed professional.</p>
-                </li>
-                <li>
-                  <span className="text-white/90">Limitation of Liability</span>
-                  <p>We shall not be held liable for:</p>
-                  <ul className="list-disc list-inside ml-4">
-                    <li>Any direct or indirect loss or damage arising from reliance on AI outputs.</li>
-                    <li>Errors, inaccuracies, or omissions in the AI-generated content.</li>
-                    <li>Unintended consequences or misuse of AI tools.</li>
-                  </ul>
-                </li>
-                <li>
-                  <span className="text-white/90">User Responsibility</span>
-                  <p>You are solely responsible for:</p>
-                  <ul className="list-disc list-inside ml-4">
-                    <li>The content you input into the system.</li>
-                    <li>How you use and interpret the output.</li>
-                    <li>Ensuring your use complies with applicable laws and ethical norms.</li>
-                  </ul>
-                </li>
-                <li>
-                  <span className="text-white/90">AI Limitations</span>
-                  <p>Our AI tools may:</p>
-                  <ul className="list-disc list-inside ml-4">
-                    <li>Generate incorrect or misleading results.</li>
-                    <li>Fail to understand context or nuance.</li>
-                    <li>Produce biased or inappropriate content.</li>
-                  </ul>
-                </li>
-              </ol>
-              <p>Use discretion and critical judgment when using the Platform.</p>
-            </div>
-    </div>
+            
+          </div>
         </DialogContent>
       </Dialog>
-  </footer>
-);
+      {/* Disclaimer Modal */}
+      <Dialog open={disclaimerOpen} onOpenChange={setDisclaimerOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-black/90 text-white/80 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white">Disclaimer</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2">
+            
+            <p>Please read this Disclaimer carefully before using the Platform.</p>
+            <p>The tools and content available at https://okra.neuralpaths.ai are provided "as is" and are intended for informational and experimental purposes only. By using the Platform, you acknowledge and agree to the following:</p>
+            <ol className="list-decimal list-inside ml-4 space-y-2">
+              <li>
+                <span className="text-white/90">No Professional Advice</span>
+                <p>The AI-generated outputs are not a substitute for professional advice in:</p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>Legal</li>
+                  <li>Medical</li>
+                  <li>Financial</li>
+                  <li>Psychological</li>
+                </ul>
+                <p>or any other regulated domain. Always consult a licensed professional.</p>
+              </li>
+              <li>
+                <span className="text-white/90">Limitation of Liability</span>
+                <p>We shall not be held liable for:</p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>Any direct or indirect loss or damage arising from reliance on AI outputs.</li>
+                  <li>Errors, inaccuracies, or omissions in the AI-generated content.</li>
+                  <li>Unintended consequences or misuse of AI tools.</li>
+                </ul>
+              </li>
+              <li>
+                <span className="text-white/90">User Responsibility</span>
+                <p>You are solely responsible for:</p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>The content you input into the system.</li>
+                  <li>How you use and interpret the output.</li>
+                  <li>Ensuring your use complies with applicable laws and ethical norms.</li>
+                </ul>
+              </li>
+              <li>
+                <span className="text-white/90">AI Limitations</span>
+                <p>Our AI tools may:</p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>Generate incorrect or misleading results.</li>
+                  <li>Fail to understand context or nuance.</li>
+                  <li>Produce biased or inappropriate content.</li>
+                </ul>
+              </li>
+            </ol>
+            <p>Use discretion and critical judgment when using the Platform.</p>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </footer>
+  );
 };
 
 export default Footer; 

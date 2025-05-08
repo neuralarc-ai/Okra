@@ -10,13 +10,13 @@ interface RevenueModelCardProps {
 }
 
 const COLORS = [
-  "#8b7cf6", // purple
-  "#FFADDF", // pink
-  "#FCEC3B", // yellow
-  "#fbbf24", // orange
-  "#34d399", // green
-  "#60a5fa", // blue
-];
+    "#8b7cf6", // purple
+    "#FFADDF", // pink
+    "#FCEC3B", // yellow
+    "#fbbf24", // orange
+    "#34d399", // green
+    "#60a5fa", // blue
+  ];
 
 const GRADIENT_COLORS = [
   { id: "gradPurple", start: "#8b7cf6", end: "#5f3dc4" },
@@ -25,7 +25,7 @@ const GRADIENT_COLORS = [
   { id: "gradOrange", start: "#fbbf24", end: "#ea580c" },
   { id: "gradGreen", start: "#34d399", end: "#059669" },
   { id: "gradBlue", start: "#60a5fa", end: "#2563eb" },
-];
+  ];
 
 function describeArc(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
   const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => {
@@ -301,11 +301,11 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     className="flex justify-between items-center cursor-pointer"
                     onClick={() => setExpandedStream(isExpanded ? null : stream.name)}
                   >
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: stream.scalability === 'high' ? COLORS[0] : stream.scalability === 'medium' ? COLORS[1] : COLORS[2] }}
-                      />
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: stream.scalability === 'high' ? COLORS[0] : stream.scalability === 'medium' ? COLORS[1] : COLORS[2] }}
+                  />
                       <span className="text-base font-bold text-white">{stream.name}</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -469,7 +469,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     className="flex justify-between items-center cursor-pointer"
                     onClick={() => setExpandedRisk(isExpanded ? null : risk.category)}
                   >
-                    <div>
+                <div>
                       <span className="text-base font-bold text-white">{risk.category}</span>
                       <div className="flex items-center gap-2 mt-1">
                         <span className={`text-xs px-2 py-0.5 rounded-full ${
@@ -498,7 +498,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                       {renderDetailItem(<AlertCircle size={14} />, "Early Warning Signs", risk.detailedRisk.earlyWarningSigns)}
                       {renderDetailItem(<Shield size={14} />, "Contingency Plans", risk.detailedRisk.contingencyPlans)}
                       {renderDetailItem(<BarChart3 size={14} />, "Monitoring Metrics", risk.detailedRisk.monitoringMetrics)}
-                    </div>
+                </div>
                   )}
                 </div>
               );

@@ -186,10 +186,11 @@ const Index = () => {
           }`}
         >
           <div className="text-center mb-2">
-            <h1 className="text-4xl font-bold text-white tracking-tight">
-                <span className="text-white">Welcome to Okra AI</span>
-            </h1>
-            <p className="text-gray-300 mt-1">AI Research Analyst for your Products and Services</p>
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-white text-4xl font-bold">Welcome to</span>
+              <img src="/okra.png" alt="Okra AI Logo" style={{ height: '40px', width: 'auto' }} className="inline-block align-middle" />
+            </div>
+            <p className="text-white mt-1">AI Research Analyst for your Products and Services</p>
           </div>
           
             <ChatInput 
