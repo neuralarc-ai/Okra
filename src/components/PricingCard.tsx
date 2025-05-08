@@ -99,11 +99,13 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-semibold">Pricing Analysis</CardTitle>
-        <p className="text-gray-400 text-xs mt-1">Key pricing models and their projected adoption. Expand for detailed analysis.</p>
+        <CardTitle className="text-2xl font-extrabold text-white flex items-center gap-3 tracking-tight">
+          <BarChart3 className="h-6 w-6 text-blue-300" /> Pricing Analysis
+        </CardTitle>
+        <p className="text-gray-400 text-sm mt-2">Key pricing models and their projected adoption. Expand for detailed analysis.</p>
       </CardHeader>
-      <CardContent className="p-4">
-        <div className="space-y-4">
+      <CardContent className="p-6">
+        <div className="space-y-6">
           {priceSuggestions.map((price, index) => {
             const isExpanded = expandedPrice === price.type;
             // Only show 2-3 key points in collapsed view
@@ -114,30 +116,32 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             ].filter(Boolean).slice(0, 3);
             return (
             <div 
-              key={index} 
-              className="p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5"
+              key={index}
+              className="p-5 border border-white/10 rounded-2xl bg-white/5 transition-all duration-200 hover:border-blue-400/30 hover:bg-blue-400/5 shadow-sm group"
             >
                 <div 
-                  className="flex justify-between items-center mb-1 cursor-pointer"
+                  className="flex justify-between items-center mb-2 cursor-pointer"
                   onClick={() => togglePrice(price.type)}
                 >
-                  <h4 className="text-sm font-semibold text-white flex items-center gap-2">{price.type}</h4>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <Zap className="h-4 w-4 text-yellow-300" /> {price.type}
+                  </h4>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white bg-white/10 px-2 py-0.5 rounded text-xs">{formatPriceValue(price.value, currency)}</span>
-                    {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
+                    <span className="font-bold text-blue-700 bg-blue-200/80 px-3 py-1 rounded-full text-xs shadow-sm border border-blue-300/40">{formatPriceValue(price.value, currency)}</span>
+                    {isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
                   </div>
                 </div>
                 {/* Collapsed: show only key points */}
                 {!isExpanded && (
                   <ul className="list-disc list-inside text-xs text-gray-300 ml-2 mt-1 space-y-1">
-                    {keyPoints.map((point, i) => <li key={i}>{point}</li>)}
+                    {keyPoints.map((point, i) => <li key={i} className="leading-relaxed">{point}</li>)}
                   </ul>
                 )}
                 {/* Expanded: show detailed summary/analysis */}
                 {isExpanded && (
-                  <div className="mt-3 pt-3 border-t border-white/10">
-                    <div className="text-sm text-white mb-2 font-semibold">Detailed Analysis</div>
-                    <div className="text-xs text-gray-200 whitespace-pre-line">
+                  <div className="mt-4 pt-4 border-t border-blue-400/10">
+                    <div className="text-base text-white mb-2 font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-yellow-300" /> Detailed Analysis</div>
+                    <div className="text-sm text-gray-200 whitespace-pre-line mb-2">
                       {price.detailedAnalysis?.summary || price.description}
                     </div>
                     {/* Optionally, show a few more details if available */}
@@ -161,7 +165,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
           })}
           {/* Price trends graph */}
           <div className="space-y-2">
-            <div className="h-[180px] w-full bg-black/20 rounded-lg p-2">
+            <div className="h-[200px] w-full bg-gradient-to-br from-blue-900/30 to-blue-400/10 rounded-2xl p-4 shadow-inner border border-blue-400/10">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={trendData}
@@ -205,15 +209,13 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex flex-col items-center w-full px-2 text-xs text-gray-400 mt-2">
-              <div className="flex items-center gap-4 mb-1">
-                {uniquePriceSuggestions.map((ps) => (
-                  <div key={ps.type} className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors[ps.type] }} />
-                    <span>{ps.type}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="flex flex-row items-center justify-center w-full px-2 text-xs text-gray-400 mt-3 gap-6">
+              {uniquePriceSuggestions.map((ps) => (
+                <div key={ps.type} className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full shadow-sm border border-white/10">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors[ps.type] }} />
+                  <span className="font-semibold text-white">{ps.type}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
