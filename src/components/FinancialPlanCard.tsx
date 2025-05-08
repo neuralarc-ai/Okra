@@ -81,8 +81,8 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
           <div>
             <h4 className="text-sm font-medium text-white mb-4">Monthly Expenses Breakdown</h4>
             <div className="w-full max-w-[800px] mx-auto flex flex-col items-center justify-center" style={{ overflow: 'visible' }}>
-              <ResponsiveContainer width="100%" >
-                <RadarChart data={expenseData} outerRadius="55%">
+              <ResponsiveContainer width="100%" height={300}>
+                <RadarChart data={expenseData}>
                   <PolarGrid stroke="#222" />
                   <PolarAngleAxis dataKey="category" tick={{ fill: '#fff', fontSize: 12, fontWeight: 500 }} />
                   <Radar

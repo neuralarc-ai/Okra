@@ -151,7 +151,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
             {/* Meet the Analyst Team section */}
             <div className="mb-6">
               <div className="text-white/80 text-sm font-medium mb-2">Meet our analyst team</div>
-              <div className="flex gap-3 flex-nowrap">
+              <div className="grid grid-cols-2 gap-3">
                 {/* Analyst Avatars and Roles */}
                 {[
                   { name: 'David', role: 'Manager', img: '/manager-profile.png', color: 'bg-[#22d3ee]/10', border: 'border-[#22d3ee]/30' },
@@ -162,8 +162,8 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                   <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border}`} style={{ minWidth: 0 }}>
                     <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-white/10 object-cover" />
                     <div className="flex flex-col min-w-0 max-w-[120px]">
-                      <span className="text-xs font-semibold text-white truncate">{a.name}</span>
-                      <span className="text-[11px] text-white/60 whitespace-nowrap">{a.role}</span>
+                      <span className="text-sm font-semibold text-white truncate">{a.name}</span>
+                      <span className="text-xs text-white/60 whitespace-nowrap">{a.role}</span>
                     </div>
                   </div>
                 ))}
@@ -182,7 +182,14 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
               <ClientsCard clients={result.clients} />
               <CompetitorsCard competitors={result.competitors} />
               <PricingCard priceSuggestions={result.priceSuggestions} />
-              <ForecastCard forecast={result.forecasts} />
+              <ForecastCard forecast={{
+                ...result.forecasts,
+                averageCase: {
+                  revenue: (result.forecasts.bestCase.revenue + result.forecasts.worstCase.revenue) / 2,
+                  marketShare: (result.forecasts.bestCase.marketShare + result.forecasts.worstCase.marketShare) / 2,
+                  customers: (result.forecasts.bestCase.customers + result.forecasts.worstCase.customers) / 2
+                }
+              }} />
               <GoToMarketCard goToMarket={result.goToMarket} />
               <MilestonesCard milestones={result.milestones} />
               <FinancialPlanCard financialPlan={result.financialPlan} />

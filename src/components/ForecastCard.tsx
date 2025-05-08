@@ -91,9 +91,9 @@ const renderCategoryLabel = (props: LabelProps) => {
 };
 
 const REVENUE_GRADIENTS = [
-  { id: "revBarBest", from: "#1e293b", to: "#2563eb" },   // darkest blue (Best Case)
-  { id: "revBarAvg", from: "#2563eb", to: "#60a5fa" },    // medium blue (Average Case)
-  { id: "revBarWorst", from: "#60a5fa", to: "#dbeafe" },  // lightest blue (Worst Case)
+  { id: "revBarBest", from: "#4ade80", to: "#059669" },   // green (Best Case)
+  { id: "revBarAvg", from: "#fbbf24", to: "#ea580c" },    // orange (Average Case)
+  { id: "revBarWorst", from: "#f43f5e", to: "#be123c" },  // red (Worst Case)
 ];
 
 // Custom label renderer for inside-left bar labels
@@ -124,6 +124,10 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
     ...entry,
     fill: `url(#${REVENUE_GRADIENTS[data.length - 1 - idx].id})`,
   }));
+
+  // Calculate the minimum width needed for the 'Worst Case' text
+  const minWidth = 120; // Adjust this value as needed
+
   return (
     <Card className="card-bg hover-card shadow-lg">
       <CardHeader className="pb-2">
@@ -132,7 +136,7 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[220px] w-full">
+        <div className="h-[220px] w-[600px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={dataWithFill}
@@ -155,10 +159,18 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
                 axisLine={false}
                 tick={false}
               />
-              <XAxis dataKey="value" type="number" hide />
+              <XAxis 
+                dataKey="name" 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }}
+                interval={0}
+                height={50}
+                padding={{ left: 30, right: 30 }}
+              />
               <RechartsTooltip
                 cursor={false}
-                contentStyle={{ background: '#1a1a1a', border: 'none', color: '#f9fafb' }}
+                contentStyle={{ background: 'rgba(255, 255, 255, 1)', border: 'none', color: '#ffffff', fill: '#ffffff', borderRadius: '10px' }}
                 formatter={(value: number) => valueLabel ? valueLabel(value) : formatValue(value)}
               />
               <Bar
@@ -216,7 +228,15 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#222" />
-            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }} />
+            <XAxis 
+              dataKey="name" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }}
+              interval={0}
+              height={50}
+              padding={{ left: 30, right: 30 }}
+            />
             <YAxis dataKey="value" axisLine={false} tickLine={false} tick={false} hide />
             <RechartsTooltip
               cursor={false}
@@ -283,6 +303,74 @@ const convertCurrency = (value: string | number, fromCurrency: string, toCurrenc
   return toCurrency === 'USD' ? inUSD : inUSD * rates[toCurrency];
 };
 
+const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
+  <Card className="card-bg hover-card shadow-lg">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-xl font-medium">
+        {title} {period ? `(${period})` : ''}
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="h-[220px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={data}
+            margin={{ top: 16, right: 16, left: 16, bottom: 16 }}
+          >
+            <defs>
+              <linearGradient id="revenueGreenGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#4ade80" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#059669" stopOpacity={0.2} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#222" />
+            <XAxis 
+              dataKey="name" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }}
+              interval={0}
+              height={50}
+              padding={{ left: 30, right: 30 }}
+            />
+            <YAxis dataKey="value" axisLine={false} tickLine={false} tick={false} hide />
+            <RechartsTooltip
+              cursor={false}
+              contentStyle={{ background: '#1a1a1a', border: 'none', color: '#f9fafb' }}
+              formatter={(value: number) => valueLabel ? valueLabel(value) : formatValue(value)}
+            />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#4ade80"
+              strokeWidth={3}
+              fill="url(#revenueGreenGradient)"
+              dot={{ r: 6, fill: '#4ade80', stroke: '#059669', strokeWidth: 2 }}
+              activeDot={{ r: 8, fill: '#059669', stroke: '#4ade80', strokeWidth: 2 }}
+              isAnimationActive={false}
+            />
+            <LabelList dataKey="value" position="top" fill="#fff" fontSize={13} fontWeight={500} formatter={valueLabel} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="grid grid-cols-3 gap-4 mt-4">
+        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
+          <h4 className="text-sm font-medium text-white">Best Case</h4>
+          <p className="text-xs text-gray-400">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
+        </div>
+        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
+          <h4 className="text-sm font-medium text-white">Average Case</h4>
+          <p className="text-xs text-gray-400">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
+        </div>
+        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
+          <h4 className="text-sm font-medium text-white">Worst Case</h4>
+          <p className="text-xs text-gray-400">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
 const ForecastCard = ({ forecast }: ForecastCardProps) => {
   // Revenue
   const bestRevenue = forecast.bestCase.revenue;
@@ -317,10 +405,9 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
 
   return (
     <div className="space-y-6">
-      <ForecastBarChart
+      <ForecastLineChart
         title="Revenue Forecast"
         data={revenueData}
-        prefix={currency === 'INR' ? '₹' : '$'}
         period={period}
         bestCase={bestRevenueFormatted}
         avgCase={avgRevenueFormatted}
