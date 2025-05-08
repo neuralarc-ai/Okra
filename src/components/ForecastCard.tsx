@@ -328,9 +328,11 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         valueLabel={formatValue}
       />
       {/* Revenue Forecast Summary */}
-      <div className="text-sm text-gray-300 mb-2">
-        <strong>Revenue Summary:</strong> No summary available.
-      </div>
+      {forecast.revenueSummary && (
+        <div className="text-sm text-gray-300 mb-2">
+          <strong>Revenue Summary:</strong> {forecast.revenueSummary}
+        </div>
+      )}
       <ForecastAreaChart
         title="Customer Forecast"
         data={customerData}
@@ -341,9 +343,11 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         valueLabel={formatValue}
       />
       {/* Customer Forecast Summary */}
-      <div className="text-sm text-gray-300">
-        <strong>Customer Summary:</strong> No summary available.
-      </div>
+      {forecast.customerSummary && (
+        <div className="text-sm text-gray-300">
+          <strong>Customer Summary:</strong> {forecast.customerSummary}
+        </div>
+      )}
     </div>
   );
 };

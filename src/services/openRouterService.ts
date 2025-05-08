@@ -306,7 +306,9 @@ export const generateAnalysis = async (
         - If ANY inconsistency is found, DO NOT return the JSON. Instead, REGENERATE and CORRECT the data until ALL checks pass. Only return the JSON if ALL consistency checks pass and all numbers, currencies, and logic are aligned.
     Format as valid JSON without markdown formatting or explanations. Use realistic data based on current market trends. The response MUST include all required fields, especially the 15 sources requirement.
 
-    IMPORTANT: Before finalizing the JSON, perform a strict consistency check as described above. If any numbers, currencies, or logic do not align, correct them and regenerate the JSON. All monetary values in this report must use the currency specified in the 'currency' field, and must be consistent throughout. Never mix currencies. Ensure the JSON is properly formatted without any syntax errors. Do not use markdown code blocks.`;
+    IMPORTANT: Before finalizing the JSON, perform a strict consistency check as described above. If any numbers, currencies, or logic do not align, correct them and regenerate the JSON. All monetary values in this report must use the currency specified in the 'currency' field, and must be consistent throughout. Never mix currencies. Ensure the JSON is properly formatted without any syntax errors. Do not use markdown code blocks.
+
+    IMPORTANT: All string values must be concise (max 200 characters). Never return incomplete or truncated JSON. Always close all brackets and quotes.`;
 
     const fullPrompt = `${systemPrompt}\n\nAnalyze this business idea and provide deep market research: ${prompt}`;
 

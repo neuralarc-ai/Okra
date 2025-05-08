@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Sparkles, BarChart, Network, Globe, Search, Gauge, Users, Brain, Clock, Target } from 'lucide-react';
+import { Sparkles, BarChart, Network, Globe, Search, Gauge, Users, Brain, Clock, Target, DollarSign, Calendar } from 'lucide-react';
 import AnalystConversation from './AnalystConversation';
 import ScoreCard from './ScoreCard';
 import ClientsCard from './ClientsCard';
@@ -62,10 +62,10 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
     { name: 'Risk assessment', icon: <Brain size={16} /> },
     { name: 'Project timeline', icon: <Clock size={16} /> },
     { name: 'Go-to-market strategy', icon: <Target size={16} /> },
-    { name: 'Funding requirements', icon: <BarChart size={16} className="text-pink-400" /> },
-    { name: 'Financial plan', icon: <Gauge size={16} className="text-green-400" /> },
-    { name: 'Milestones', icon: <Clock size={16} className="text-yellow-400" /> },
-    { name: 'Revenue model', icon: <BarChart size={16} className="text-blue-400" /> },
+    { name: 'Funding requirements', icon: <DollarSign size={16} /> },
+    { name: 'Financial plan', icon: <Gauge size={16} /> },
+    { name: 'Milestones', icon: <Calendar size={16} /> },
+    { name: 'Revenue model', icon: <BarChart size={16} /> },
   ];
 
   return (
@@ -149,7 +149,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
           {/* Right: Analyst Conversation */}
           <div className="flex-1 max-w-xl p-4 md:p-8 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-full flex flex-col">
             {/* Meet the Analyst Team section */}
-            <div className="mb-6">
+            <div className="mb-3">
               <div className="text-white/80 text-sm font-medium mb-2">Meet our analyst team</div>
               <div className="flex gap-3 flex-nowrap">
                 {/* Analyst Avatars and Roles */}
@@ -182,7 +182,13 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
               <ClientsCard clients={result.clients} />
               <CompetitorsCard competitors={result.competitors} />
               <PricingCard priceSuggestions={result.priceSuggestions} />
-              <ForecastCard forecast={result.forecasts} />
+              <ForecastCard forecast={{
+                bestCase: result.forecasts.bestCase,
+                worstCase: result.forecasts.worstCase,
+                averageCase: (result.forecasts as any).averageCase || result.forecasts.bestCase,
+                timeframe: (result.forecasts as any).timeframe,
+                currency: (result.forecasts as any).currency
+              }} />
               <GoToMarketCard goToMarket={result.goToMarket} />
               <MilestonesCard milestones={result.milestones} />
               <FinancialPlanCard financialPlan={result.financialPlan} />

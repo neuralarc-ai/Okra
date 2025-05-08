@@ -319,7 +319,10 @@ const Index = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <PricingCard priceSuggestions={result.priceSuggestions} />
-                <ForecastCard forecast={result.forecasts} />
+                <ForecastCard forecast={{
+                  ...result.forecasts,
+                  averageCase: (result.forecasts as any).averageCase || result.forecasts.bestCase
+                }} />
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

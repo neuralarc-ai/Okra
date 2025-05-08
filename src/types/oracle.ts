@@ -68,6 +68,7 @@ export interface PriceSuggestion {
       shortTerm: string;
       longTerm: string;
     };
+    adoptionBarriers?: string[];
   };
 }
 

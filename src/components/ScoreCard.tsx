@@ -57,9 +57,9 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
-    <Card className="card-bg hover-card shadow-lg overflow-y-auto hide-scrollbar">
+    <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-2xl font-bold flex items-center gap-2 tracking-wide">
+        <CardTitle className="text-xl font-semibold text-white flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-yellow-300" />
           <span>Idea Validation Report</span>
         </CardTitle>
@@ -74,7 +74,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 {/* Background arc */}
                 <path
                   d={describeArc(radius, radius, normalizedRadius, arcStartAngle, arcEndAngle)}
-                  stroke="#3a3b3c"
+                  stroke="#23272e"
                   strokeWidth={stroke}
                   fill="none"
                   strokeLinecap="round"
@@ -108,7 +108,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               {/* Centered Score and Label */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
                 <span className="text-6xl font-extrabold text-white drop-shadow-lg">{score}</span>
-                <span className={`mt-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase ${getScoreCategoryColor(scoreAnalysis.category)}`}>{scoreAnalysis.category}</span>
+                <span className={`mt-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${getScoreCategoryColor(scoreAnalysis.category)}`}>{scoreAnalysis.category}</span>
               </div>
             </div>
             {/* Badge and Summary */}
@@ -246,13 +246,22 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {scoreAnalysis.regulatoryAndRisks && scoreAnalysis.regulatoryAndRisks.length > 0 && (
           <section className="mb-8">
             <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">Regulatory & Risks</h3>
-            <ul className="space-y-2">
+            <div className="grid gap-4">
               {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
-                <li key={i} className="text-base text-white/90">
-                  <span className="font-semibold text-red-200">{risk.risk}:</span> <span className="text-gray-400">Mitigation:</span> {risk.mitigation}
-                </li>
+                <div
+                  key={i}
+                  className="bg-white/5 border border-white/10 rounded-lg p-4 flex flex-col gap-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-base text-white">{risk.risk}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400 font-medium">Mitigation:</span>
+                    <span className="text-white/90">{risk.mitigation}</span>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </section>
         )}
 

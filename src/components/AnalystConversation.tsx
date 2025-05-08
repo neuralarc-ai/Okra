@@ -263,7 +263,7 @@ Respond with a single, concise, and professional message as your character.
               className={`mt-1 p-3 rounded-lg ${analysts[message.analyst].color} ${analysts[message.analyst].border} border ${message.analyst === 'David' ? 'text-right' : ''}`}
             >
               <p className={`text-sm ${analysts[message.analyst].text}`}>
-                {message.message}
+                {message.message.replace(/\s*\[[a-z]+ complete\]$/i, '')}
               </p>
             </div>
           </div>
