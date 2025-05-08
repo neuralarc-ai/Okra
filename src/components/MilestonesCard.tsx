@@ -23,49 +23,84 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
     }
   };
 
+  const getCriticalColor = (importance: string) => {
+    switch ((importance || '').toLowerCase()) {
+      case 'low':
+        return {
+          border: 'border-emerald-300/20',
+          bg: 'bg-emerald-400/5',
+          badge: 'bg-emerald-300/10 text-emerald-400',
+          text: 'text-emerald-300',
+        };
+      case 'medium':
+        return {
+          border: 'border-amber-300/20',
+          bg: 'bg-amber-400/5',
+          badge: 'bg-amber-300/10 text-amber-400',
+          text: 'text-amber-300',
+        };
+      case 'high':
+        return {
+          border: 'border-orange-400/20',
+          bg: 'bg-orange-400/5',
+          badge: 'bg-orange-400/10 text-orange-400',
+          text: 'text-orange-400',
+        };
+      case 'critical':
+        return {
+          border: 'border-rose-400/20',
+          bg: 'bg-rose-400/5',
+          badge: 'bg-rose-400/10 text-rose-400',
+          text: 'text-rose-400',
+        };
+      default:
+        return {
+          border: 'border-amber-300/20',
+          bg: 'bg-amber-400/5',
+          badge: 'bg-amber-300/10 text-amber-400',
+          text: 'text-amber-300',
+        };
+    }
+  };
+
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-xl font-medium text-white">Milestones</CardTitle>
+        <CardTitle className="text-2xl font-bold text-white flex items-center gap-3 tracking-tight">
+          <CheckCircle2 className="w-6 h-6 text-green-300" /> Milestones
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8 p-6">
         {/* Quarterly Milestones */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {milestones.quarters.map((quarter, index) => (
-            <div key={`quarter-${index}`} className="space-y-3">
-              <div className="flex justify-between items-center">
-                <h4 className="text-sm font-medium text-white">{quarter.quarter}</h4>
-                <span className="text-xs text-gray-400">
-                  Budget: {formatCurrency(quarter.budget, currency)}
-                </span>
+            <div key={`quarter-${index}`} className="space-y-4">
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="text-lg font-bold text-blue-300">{quarter.quarter}</h4>
+                <span className="text-xs text-gray-400 bg-white/10 px-3 py-1 rounded-full">Budget: {formatCurrency(quarter.budget, currency)}</span>
               </div>
-              
               {/* Objectives */}
-              <div className="space-y-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {quarter.objectives.map((objective, objIndex) => (
                   <div 
                     key={`obj-${index}-${objIndex}`}
-                    className="p-3 border border-white/5 rounded-lg space-y-2"
+                    className="p-4 border border-white/10 rounded-xl bg-white/5 flex flex-col gap-2 shadow-sm"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {getStatusIcon(objective.status)}
-                        <span className="text-sm font-medium text-white">
-                          {objective.title}
-                        </span>
-                      </div>
+                    <div className="flex items-center gap-2 mb-1">
+                      {getStatusIcon(objective.status)}
+                      <span className="text-base font-semibold text-white">{objective.title}</span>
+                      <span className="px-2 py-0.5 rounded-full text-xs font-bold border border-white/10 bg-white/10 text-gray-300 ml-auto">{objective.status.replace('-', ' ').toUpperCase()}</span>
                     </div>
-                    <p className="text-sm text-gray-400">{objective.description}</p>
-                    
+                    <p className="text-sm text-gray-400 leading-relaxed">{objective.description}</p>
                     {/* Metrics */}
                     {objective.metrics.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2">
                         {objective.metrics.map((metric, metricIndex) => (
                           <div 
                             key={`metric-${index}-${objIndex}-${metricIndex}`}
-                            className="px-2 py-1 bg-white/5 rounded text-xs flex items-center gap-1"
+                            className="px-2 py-1 bg-blue-900/20 rounded text-xs flex items-center gap-1"
                           >
-                            <span className="text-gray-400">{metric.name}:</span>
+                            <span className="text-blue-300 font-semibold">{metric.name}:</span>
                             <span className="text-white ml-1">
                               {typeof metric.target === 'number' 
                                 ? formatCurrency(metric.target, currency)
@@ -78,17 +113,16 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                   </div>
                 ))}
               </div>
-
               {/* Key Deliverables */}
-              <div className="pl-4 border-l border-white/10">
-                <h5 className="text-xs font-medium text-gray-400 mb-2">Key Deliverables</h5>
+              <div className="pl-2 border-l-4 border-blue-300/20 mt-2">
+                <h5 className="text-xs font-semibold text-blue-300 mb-2">Key Deliverables</h5>
                 <ul className="space-y-1">
                   {quarter.keyDeliverables.map((deliverable, delIndex) => (
                     <li 
                       key={`del-${index}-${delIndex}`}
-                      className="text-sm text-gray-400 flex items-center gap-2"
+                      className="text-sm text-gray-300 flex items-center gap-2"
                     >
-                      <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
+                      <CheckCircle2 className="w-3 h-3 text-blue-300" />
                       {deliverable}
                     </li>
                   ))}
@@ -100,30 +134,31 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
 
         {/* Critical Milestones */}
         <div>
-          <h4 className="text-sm font-medium text-white mb-3">Critical Milestones</h4>
+          <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2 tracking-tight"><AlertCircle className="h-5 w-5 text-amber-300" /> Critical Milestones</h4>
           <div className="space-y-4">
-            {milestones.criticalMilestones.map((milestone, index) => (
-              <div key={`critical-${index}`} className="flex items-start gap-3">
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h5 className="text-sm font-medium text-white">{milestone.name}</h5>
-                    <span className="text-xs text-gray-400">{milestone.date}</span>
+            {milestones.criticalMilestones.map((milestone, index) => {
+              const color = getCriticalColor(milestone.importance);
+              return (
+                <div key={`critical-${index}`} className={`p-4 border ${color.border} rounded-xl ${color.bg} flex flex-col gap-2 shadow-sm`}>
+                  <div className="flex justify-between items-center mb-1">
+                    <h5 className={`text-base font-semibold ${color.text}`}>{milestone.name}</h5>
+                    <span className="text-xs text-gray-400 bg-white/10 px-2 py-0.5 rounded-full">{milestone.date}</span>
                   </div>
                   {milestone.importance && (
-                    <span className="inline-block mt-1 mb-1 px-2 py-0.5 rounded-full bg-blue-900/40 text-xs text-blue-300 font-semibold">
+                    <span className={`inline-block px-2 py-0.5 rounded-full ${color.badge} text-xs font-semibold w-fit`}>
                       {milestone.importance}
                     </span>
                   )}
                   {milestone.successCriteria && milestone.successCriteria.length > 0 && (
-                    <ul className="list-disc list-inside text-xs text-gray-300 ml-4 mt-1">
+                    <ul className={`list-disc list-inside text-xs ml-4 mt-1 ${color.text}`}>
                       {milestone.successCriteria.map((crit, i) => (
                         <li key={i}>{crit}</li>
                       ))}
                     </ul>
                   )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </CardContent>

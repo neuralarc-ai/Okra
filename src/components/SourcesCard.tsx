@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
-import { Badge } from '@/components/ui/badge';
 
 interface Source {
   title: string;
@@ -14,50 +13,43 @@ interface SourcesCardProps {
 
 const SourcesCard = ({ sources }: SourcesCardProps) => {
   return (
-    <Card className="card-bg hover-card">
+    <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl font-medium flex items-center gap-2">
-              <BookOpen size={18} className="text-yellow-400" />
-              Research Sources
+            <CardTitle className="text-2xl font-semibold text-white flex items-center gap-3 tracking-tight">
+              <BookOpen size={22} className="text-yellow-300" /> Research Sources
             </CardTitle>
-            <div className="text-xs text-gray-400 mt-1">{sources.length} verified sources analyzed</div>
+            <div className="text-xs text-yellow-200 mt-1 font-medium">{sources.length} verified sources analyzed</div>
           </div>
           <button
-            className="px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-white hover:bg-white/10 transition font-medium shadow-sm"
+            className="px-4 py-1 rounded-full border border-yellow-200/10 bg-yellow-200/5 text-xs text-yellow-200 hover:bg-yellow-200/10 transition font-medium shadow-sm"
             style={{ minWidth: 140 }}
           >
             Deep Research Mode
           </button>
         </div>
       </CardHeader>
-      <CardContent className="relative">
+      <CardContent className="relative p-6">
         <div 
-          className="space-y-3 overflow-y-auto custom-scrollbar pr-2"
-          style={{
-            maskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 40px), transparent 100%)',
-            scrollbarWidth: 'none', // Firefox
-            msOverflowStyle: 'none', // IE and Edge
-          }}
+          className="space-y-5 overflow-y-auto custom-scrollbar pr-2"
         >
           {sources.length === 0 ? (
-            <div className="p-4 border border-white/5 rounded-lg text-center">
-              <p className="text-gray-400 text-sm">No research sources available</p>
+            <div className="p-6 rounded-xl bg-white/5 border border-yellow-200/10 text-center">
+              <p className="text-gray-400 text-base">No research sources available</p>
             </div>
           ) : (
             sources.map((source, index) => (
               <div 
                 key={index} 
-                className="p-4 bg-[#1c1c1c]/50 rounded-lg transition-all duration-200 hover:bg-[#1c1c1c] group"
+                className="p-5 rounded-2xl bg-gradient-to-br from-yellow-100/5 to-yellow-900/5 border border-yellow-200/10 transition-all duration-200 hover:border-yellow-300/20 hover:bg-yellow-200/10 group flex flex-col gap-2 shadow-sm"
               >
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <h4 className="font-medium text-white text-base leading-tight">
+                <div className="flex items-start justify-between gap-4 mb-1">
+                  <h4 className="font-semibold text-white text-base leading-tight">
                     {source.title}
                   </h4>
                 </div>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                <p className="text-gray-300 text-sm leading-relaxed">
                   {source.relevance}
                 </p>
               </div>

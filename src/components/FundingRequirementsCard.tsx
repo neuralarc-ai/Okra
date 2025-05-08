@@ -34,14 +34,16 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-xl font-medium text-white">Funding Requirements</CardTitle>
+        <CardTitle className="text-2xl font-bold text-white flex items-center gap-3 tracking-tight">
+          <TrendingUp className="h-6 w-6 text-green-300" /> Funding Requirements
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-10">
+      <CardContent className="space-y-10 p-6">
         {/* Total Required */}
         {typeof fundingRequirements.totalRequired === 'number' && (
           <div className="flex flex-col items-center mb-6">
-            <span className="text-sm text-gray-400">Total Funding Required</span>
-            <span className="text-3xl font-bold text-white mt-1">
+            <span className="text-base text-green-300 font-bold mb-1">Total Funding Required</span>
+            <span className="text-3xl font-bold text-white bg-green-400/10 px-6 py-2 rounded-full border border-green-400/20 shadow-sm">
               {formatCurrency(fundingRequirements.totalRequired, currency)}
             </span>
           </div>
@@ -50,7 +52,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
         {/* Use of Funds */}
         {useOfFundsData.length > 0 && (
           <div className="mt-8">
-            <h4 className="text-sm font-medium text-white mb-4">Use of Funds</h4>
+            <h4 className="text-lg font-bold text-green-300 mb-4 flex items-center gap-2 tracking-tight">Use of Funds</h4>
             <div className="flex flex-col items-center justify-center">
               <div className="w-full" style={{ height: 400 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -120,7 +122,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
               {/* Legend */}
               <div className="flex flex-wrap justify-center gap-4 mt-4">
                 {useOfFundsData.map((entry, idx) => (
-                  <div key={entry.name} className="flex items-center gap-2">
+                  <div key={entry.name} className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full shadow-sm border border-white/10">
                     <span 
                       className="w-3 h-3 rounded-full block" 
                       style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}
@@ -138,16 +140,16 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
         {/* Funding Stages */}
         {(fundingRequirements.fundingStages || []).length > 0 && (
           <div className="mt-8">
-            <h4 className="text-sm font-medium text-white mb-2">Funding Stages</h4>
-            <div className="space-y-4">
+            <h4 className="text-lg font-bold text-green-300 mb-4 flex items-center gap-2 tracking-tight">Funding Stages</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {fundingRequirements.fundingStages.map((stage, index) => (
-                <div key={`stage-${index}`} className="space-y-1">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-white">{stage.stage}</span>
-                    <span className="text-sm text-gray-400">{formatCurrency(stage.amount, currency)}</span>
+                <div key={`stage-${index}`} className="p-4 rounded-xl bg-white/5 border border-green-400/10 flex flex-col gap-1 shadow-sm">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-base font-semibold text-white">{stage.stage}</span>
+                    <span className="px-3 py-1 rounded-full bg-green-400/10 text-green-400 font-bold text-sm border border-green-400/20">{formatCurrency(stage.amount, currency)}</span>
                   </div>
-                  <div className="text-xs text-gray-400">{stage.timeline}</div>
-                  <div className="text-sm text-gray-400">{stage.purpose}</div>
+                  <div className="text-xs text-gray-400 mb-1">{stage.timeline}</div>
+                  <div className="text-sm text-gray-300">{stage.purpose}</div>
                 </div>
               ))}
             </div>
@@ -157,34 +159,32 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
         {/* Funding Sources */}
         {(fundingRequirements.fundingSources || []).length > 0 && (
           <div className="mt-8">
-            <h4 className="text-sm font-medium text-white mb-2">Potential Funding Sources</h4>
-            <div className="space-y-4">
+            <h4 className="text-lg font-bold text-green-300 mb-4 flex items-center gap-2 tracking-tight">Potential Funding Sources</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {fundingRequirements.fundingSources.map((source, index) => (
-                <div key={`source-${index}`} className="space-y-1">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-white">{source.type}</span>
-                    <span className="text-xs text-gray-400">
-                      {source.likelihood}% likelihood
-                    </span>
+                <div key={`source-${index}`} className="p-4 rounded-xl bg-white/5 border border-green-400/10 flex flex-col gap-2 shadow-sm">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-base font-semibold text-white">{source.type}</span>
+                    <span className="px-3 py-1 rounded-full bg-green-400/10 text-green-400 font-bold text-xs border border-green-400/20">{source.likelihood}% likelihood</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-green-400">Pros:</span>
+                      <span className="text-green-400 font-semibold">Pros:</span>
                       <ul className="space-y-1 mt-1">
                         {(source.pros || []).map((pro, i) => (
                           <li key={`pro-${index}-${i}`} className="text-sm text-gray-400 flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-400/20" />
                             {pro}
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div>
-                      <span className="text-red-400">Cons:</span>
+                      <span className="text-red-400 font-semibold">Cons:</span>
                       <ul className="space-y-1 mt-1">
                         {(source.cons || []).map((con, i) => (
                           <li key={`con-${index}-${i}`} className="text-sm text-gray-400 flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-red-400/20" />
                             {con}
                           </li>
                         ))}
