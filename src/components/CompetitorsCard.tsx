@@ -124,10 +124,10 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
         <div className="space-y-6 mt-4">
           {marketShareData && marketShareData.length >= 2 && (
             <div className="mt-8">
-              <h4 className="text-base font-semibold text-white mb-2 text-center tracking-wide">Market Share Distribution</h4>
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-row items-center justify-center gap-8 w-full">
+                {/* Chart on the left */}
                 <div className="relative flex items-center justify-center" style={{ minHeight: 240 }}>
-                  <ResponsiveContainer width={440} height={440}>
+                  <ResponsiveContainer width={320} height={320}>
                     <PieChart>
                       <defs>
                         {GRADIENT_COLORS.map((gradient, idx) => (
@@ -157,8 +157,8 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                         }))}
                         dataKey="value"
                         nameKey="name"
-                        innerRadius={100}
-                        outerRadius={150}
+                        innerRadius={70}
+                        outerRadius={110}
                         stroke="none"
                       >
                         <Label
@@ -174,14 +174,14 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                                   <tspan
                                     x={viewBox.cx}
                                     y={viewBox.cy}
-                                    className="fill-foreground text-3xl font-bold"
+                                    className="fill-foreground text-2xl font-bold"
                                   >
                                     {total}%
                                   </tspan>
                                   <tspan
                                     x={viewBox.cx}
-                                    y={(viewBox.cy || 0) + 24}
-                                    className="fill-muted-foreground"
+                                    y={(viewBox.cy || 0) + 18}
+                                    className="fill-muted-foreground text-base"
                                   >
                                     Total
                                   </tspan>
@@ -194,17 +194,21 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
+                {/* Labels/Legend on the right */}
+                <div className="flex flex-col gap-3 min-w-[140px]">
+                  {marketShareData.map((entry, idx) => (
+                    <div key={entry.name} className="flex items-center gap-2">
+                      <span 
+                        className="w-3 h-3 rounded-full block" 
+                        style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}
+                      ></span>
+                      <span className="text-xs font-semibold" style={{ color: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}>{entry.name}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap justify-center gap-4 mt-4">
-                {marketShareData.map((entry, idx) => (
-                  <div key={entry.name} className="flex items-center gap-2">
-                    <span 
-                      className="w-3 h-3 rounded-full block" 
-                      style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}
-                    ></span>
-                    <span className="text-xs font-semibold" style={{ color: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}>{entry.name}</span>
-                  </div>
-                ))}
+              <div className="flex justify-center mt-4">
+                <h4 className="text-base font-semibold text-white tracking-wide">Market Share Distribution</h4>
               </div>
             </div>
           )}

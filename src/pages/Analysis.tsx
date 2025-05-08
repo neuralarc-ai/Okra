@@ -91,7 +91,7 @@ const Analysis = () => {
           </div>
             <div className="w-full bg-black/40 rounded-xl p-6 border border-white/10 shadow-lg animate-fadeUp">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="w-full flex flex-wrap justify-between mb-6">
+              <TabsList className="w-full flex flex-wrap justify-between mb-6 h-full">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="competitors">Competitors</TabsTrigger>
                 <TabsTrigger value="pricing-revenue">Pricing & Revenue</TabsTrigger>
