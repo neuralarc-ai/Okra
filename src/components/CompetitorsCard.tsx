@@ -3,6 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { Competitor } from "@/types/oracle";
 import { ChartBar, Award, ChevronDown, ChevronUp, MapPin, Users, TrendingUp, Building2, Star, ThumbsDown, Globe, Store, DollarSign, Zap, Users2 } from "lucide-react";
 import { useState } from "react";
+import { ResponsiveContainer, PieChart, Pie, Tooltip, Label } from "recharts";
 
 interface CompetitorsCardProps {
   competitors: Competitor[];
@@ -18,12 +19,12 @@ const COLORS = [
 ];
 
 const GRADIENT_COLORS = [
-  { id: "gradPurple", start: "#8b7cf6", end: "#a99ff7" },
-  { id: "gradPink", start: "#FFADDF", end: "#ffc7e8" },
-  { id: "gradYellow", start: "#FCEC3B", end: "#fdf38d" },
-  { id: "gradOrange", start: "#fbbf24", end: "#fcd26d" },
-  { id: "gradGreen", start: "#34d399", end: "#6fe3b5" },
-  { id: "gradBlue", start: "#60a5fa", end: "#8ac0fb" },
+  { id: "gradPurple", start: "#c084fc", end: "#6b21a8" },    // Soft purple to deep purple
+  { id: "gradPink", start: "#f9a8d4", end: "#be185d" },      // Soft pink to deep rose
+  { id: "gradYellow", start: "#fde047", end: "#854d0e" },    // Soft yellow to amber
+  { id: "gradOrange", start: "#fdba74", end: "#9a3412" },    // Soft orange to deep orange
+  { id: "gradGreen", start: "#4ade80", end: "#166534" },     // Soft green to forest
+  { id: "gradBlue", start: "#93c5fd", end: "#1e40af" },      // Soft blue to navy
 ];
 
 function getMarketShareData(competitors: Competitor[]) {
@@ -122,61 +123,86 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
       <CardContent>
         <div className="space-y-6 mt-4">
           {marketShareData && marketShareData.length >= 2 && (
-            <div className="h-[260px] mb-2 flex flex-col items-center justify-center">
+            <div className="mt-8">
               <h4 className="text-base font-semibold text-white mb-2 text-center tracking-wide">Market Share Distribution</h4>
-              <div className="relative flex items-center justify-center" style={{ minHeight: 2 * (radius + stroke) }}>
-                <svg width={2 * (radius + stroke)} height={2 * (radius + stroke)} style={{ display: 'block' }}>
-                  <defs>
-                    {GRADIENT_COLORS.map((gradient) => (
-                      <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor={gradient.start} />
-                        <stop offset="100%" stopColor={gradient.end} />
-                      </linearGradient>
-                    ))}
-                  </defs>
-                  {marketShareData.map((entry, idx) => {
-                    const valueAngle = (entry.value / total) * (chartCircum - gapAngle * marketShareData.length);
-                    const startAngle = currentAngle + gapAngle / 2;
-                    const endAngle = startAngle + valueAngle;
-                    const path = describeArc(cx, cy, radius, startAngle, endAngle);
-                    currentAngle = endAngle + gapAngle / 2;
-                    const gradient = GRADIENT_COLORS[idx % GRADIENT_COLORS.length];
-                    return (
-                      <path
-                        key={entry.name}
-                        d={path}
-                        stroke={`url(#${gradient.id})`}
-                        strokeWidth={stroke}
-                        fill="none"
-                        strokeLinecap="round"
-                        filter="drop-shadow(0 0 8px #0003)"
+              <div className="flex flex-col items-center justify-center">
+                <div className="relative flex items-center justify-center" style={{ minHeight: 240 }}>
+                  <ResponsiveContainer width={440} height={440}>
+                    <PieChart>
+                      <defs>
+                        {GRADIENT_COLORS.map((gradient, idx) => (
+                          <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor={gradient.start} />
+                            <stop offset="100%" stopColor={gradient.end} />
+                          </linearGradient>
+                        ))}
+                      </defs>
+                      <Tooltip
+                        cursor={false}
+                        contentStyle={{ 
+                          background: 'rgba(255, 255, 255, 0.95)', 
+                          border: 'none', 
+                          color: '#1a1a1a', 
+                          borderRadius: '10px',
+                          padding: '8px 12px',
+                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                        }}
+                        formatter={(value: number) => `${value}%`}
                       />
-                    );
-                  })}
-                  {/* Center label */}
-                  <text
-                    x="50%"
-                    y="45%"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize="3.0rem"
-                    fontWeight="bold"
-                    fill="#e5e7eb"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    {total}
-                    <tspan fontSize="1.1rem" x="50%" dy="2.5em" fill="#aaa">Total</tspan>
-                  </text>
-                </svg>
+                      <Pie
+                        data={marketShareData.map((entry, idx) => ({
+                          name: entry.name,
+                          value: entry.value,
+                          fill: `url(#${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].id})`
+                        }))}
+                        dataKey="value"
+                        nameKey="name"
+                        innerRadius={100}
+                        outerRadius={150}
+                        stroke="none"
+                      >
+                        <Label
+                          content={({ viewBox }) => {
+                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                              return (
+                                <text
+                                  x={viewBox.cx}
+                                  y={viewBox.cy}
+                                  textAnchor="middle"
+                                  dominantBaseline="middle"
+                                >
+                                  <tspan
+                                    x={viewBox.cx}
+                                    y={viewBox.cy}
+                                    className="fill-foreground text-3xl font-bold"
+                                  >
+                                    {total}%
+                                  </tspan>
+                                  <tspan
+                                    x={viewBox.cx}
+                                    y={(viewBox.cy || 0) + 24}
+                                    className="fill-muted-foreground"
+                                  >
+                                    Total
+                                  </tspan>
+                                </text>
+                              );
+                            }
+                          }}
+                        />
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
               <div className="flex flex-wrap justify-center gap-4 mt-4">
                 {marketShareData.map((entry, idx) => (
                   <div key={entry.name} className="flex items-center gap-2">
                     <span 
                       className="w-3 h-3 rounded-full block" 
-                      style={{ backgroundColor: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}
+                      style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}
                     ></span>
-                    <span className="text-xs text-white/80 font-medium">{entry.name}</span>
+                    <span className="text-xs font-semibold" style={{ color: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}>{entry.name}</span>
                   </div>
                 ))}
               </div>
@@ -229,8 +255,8 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 </div>
                 {/* Expanded Details */}
                 {isExpanded && competitor.detailedAnalysis && (
-                  <div className="mt-3 pt-3 border-t border-white/10">
-                    <div className="text-sm text-white mb-2 font-semibold">Detailed Summary</div>
+                  <div className="mt-3 pt-3 mx-3 border-t border-white/10">
+                    <div className="text-sm text-white mb-2 font-semibold">Summary</div>
                     <div className="text-xs text-gray-200 whitespace-pre-line mb-2">
                       {competitor.detailedAnalysis.summary || competitor.description}
                     </div>

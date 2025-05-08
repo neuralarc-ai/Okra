@@ -387,31 +387,31 @@ export const generateAnalysis = async (
     // Apply auto-closing early, before the first parse attempt in the robust error handling
     jsonString = autoCloseJson(jsonString);
 
-    // --- Currency Consistency Post-Processing ---
+      // --- Currency Consistency Post-Processing ---
     // Define fixCurrencyConsistency in a scope accessible by both try/catch blocks below
-    function fixCurrencyConsistency(obj, currency) {
-      if (typeof obj === 'string') {
-        if (currency === 'INR') {
-          const fixed = obj.replace(/\$|USD|usd|A\.?E\.?D\.?|aed/gi, '₹').replace(/INR/gi, '₹');
-          return fixed;
-        } else if (currency === 'USD') {
-          const fixed = obj.replace(/₹|INR|inr|A\.?E\.?D\.?|aed/gi, '$').replace(/\$/g, '$');
-          return fixed;
-        } else if (currency === 'AED') {
-          const fixed = obj.replace(/\$|USD|usd|INR|inr|₹/gi, 'AED');
-          return fixed;
+      function fixCurrencyConsistency(obj, currency) {
+        if (typeof obj === 'string') {
+          if (currency === 'INR') {
+            const fixed = obj.replace(/\$|USD|usd|A\.?E\.?D\.?|aed/gi, '₹').replace(/INR/gi, '₹');
+            return fixed;
+          } else if (currency === 'USD') {
+            const fixed = obj.replace(/₹|INR|inr|A\.?E\.?D\.?|aed/gi, '$').replace(/\$/g, '$');
+            return fixed;
+          } else if (currency === 'AED') {
+            const fixed = obj.replace(/\$|USD|usd|INR|inr|₹/gi, 'AED');
+            return fixed;
+          }
+        } else if (Array.isArray(obj)) {
+          return obj.map((item) => fixCurrencyConsistency(item, currency));
+        } else if (typeof obj === 'object' && obj !== null) {
+          const newObj = {};
+          for (const key in obj) {
+            newObj[key] = fixCurrencyConsistency(obj[key], currency);
+          }
+          return newObj;
         }
-      } else if (Array.isArray(obj)) {
-        return obj.map((item) => fixCurrencyConsistency(item, currency));
-      } else if (typeof obj === 'object' && obj !== null) {
-        const newObj = {};
-        for (const key in obj) {
-          newObj[key] = fixCurrencyConsistency(obj[key], currency);
-        }
-        return newObj;
+        return obj;
       }
-      return obj;
-    }
 
     try {
       resultObj = JSON.parse(jsonString);
@@ -462,7 +462,7 @@ export const generateAnalysis = async (
 
           } else {
             // No more structural elements to cut back to.
-            break; 
+            break;
           }
         }
         attempt++;

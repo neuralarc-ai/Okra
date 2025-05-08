@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RevenueModel } from '@/types/oracle';
 import { ChevronDown, ChevronUp, Target, TrendingUp, Users, BarChart3, AlertCircle, CheckCircle2, XCircle, Calendar, Users2, ArrowUpRight, ArrowDownRight, Lightbulb, Shield, Zap, DollarSign, LineChart, PieChart, Activity, TrendingDown, Building2, Globe, Store } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
 
 interface RevenueModelCardProps {
   revenueModel?: RevenueModel;
+  currency: string;
 }
 
 const COLORS = [
@@ -42,7 +44,26 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
   ].join(' ');
 }
 
-const RevenueModelCard = ({ revenueModel }: RevenueModelCardProps) => {
+// Helper to format metric values with units
+const formatMetricValue = (name: string, value: number | string, currency: string = 'INR') => {
+  const lower = name.toLowerCase();
+  if (lower.includes('tvl') || lower.includes('revenue') || lower.includes('locked') || lower.includes('arpu') || lower.includes('amount') || lower.includes('profit')) {
+    // Treat as currency
+    return formatCurrency(Number(value), currency);
+  }
+  if (lower.includes('user')) {
+    return `${value} users`;
+  }
+  if (lower.includes('audience')) {
+    return `${value} people`;
+  }
+  if (lower.includes('rate') || lower.includes('growth')) {
+    return `${value}%`;
+  }
+  return value;
+};
+
+const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => {
   const [expandedStream, setExpandedStream] = useState<string | null>(null);
   const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
   const [expandedStrategy, setExpandedStrategy] = useState<string | null>(null);
@@ -301,7 +322,7 @@ const RevenueModelCard = ({ revenueModel }: RevenueModelCardProps) => {
                       <div className="text-xs text-gray-400">{metric.timeframe}</div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="text-sm text-white">{metric.target}</div>
+                      <div className="text-sm text-white">{formatMetricValue(metric.name, metric.target, currency)}</div>
                       {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
                     </div>
                   </div>

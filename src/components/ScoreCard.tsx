@@ -15,8 +15,8 @@ const getScoreCategoryColor = (category: string) => {
     case "Fair": return "bg-gradient-to-r from-yellow-500/10 to-yellow-700/10 text-yellow-300 border-yellow-500/20";
     default: return "bg-gradient-to-r from-gray-500/10 to-gray-700/10 text-gray-300 border-gray-500/20";
   }
-};
-
+  };
+  
 const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   // Arc Progress SVG (2/3 circle)
   const radius = 95;
@@ -68,51 +68,51 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* Report Summary Section */}
         <section className="mb-8 mt-4 p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/0 border border-white/10 shadow-inner animate-fadeUp">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-            {/* Arc Progress with Gradient and Knob */}
-            <div className="relative flex flex-col items-center justify-center">
-              <svg height={radius * 2} width={radius * 2} className="block z-10">
-                {/* Background arc */}
-                <path
-                  d={describeArc(radius, radius, normalizedRadius, arcStartAngle, arcEndAngle)}
+          {/* Arc Progress with Gradient and Knob */}
+          <div className="relative flex flex-col items-center justify-center">
+            <svg height={radius * 2} width={radius * 2} className="block z-10">
+              {/* Background arc */}
+              <path
+                d={describeArc(radius, radius, normalizedRadius, arcStartAngle, arcEndAngle)}
                   stroke="#23272e"
-                  strokeWidth={stroke}
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                {/* Progress arc with gradient */}
-                <defs>
-                  <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#2B5C4F" />
-                    <stop offset="60%" stopColor="#FCEC3B" />
-                    <stop offset="100%" stopColor="#FFADDF" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d={progressPath}
-                  stroke="url(#arc-gradient)"
-                  strokeWidth={stroke}
-                  fill="none"
-                  strokeLinecap="round"
-                  style={{ filter: 'drop-shadow(0 0 8px #090101aa)' }}
-                />
-                {/* Knob at the end of the arc */}
-                <circle
-                  cx={knob.x}
-                  cy={knob.y}
-                  r={stroke / 1.5}
-                  fill="#fff"
-                  stroke="#070101"
-                  strokeWidth={3}
-                />
-              </svg>
-              {/* Centered Score and Label */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-                <span className="text-6xl font-extrabold text-white drop-shadow-lg">{score}</span>
+                strokeWidth={stroke}
+                fill="none"
+                strokeLinecap="round"
+              />
+              {/* Progress arc with gradient */}
+              <defs>
+                <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#2B5C4F" />
+                  <stop offset="60%" stopColor="#FCEC3B" />
+                  <stop offset="100%" stopColor="#FFADDF" />
+                </linearGradient>
+              </defs>
+              <path
+                d={progressPath}
+                stroke="url(#arc-gradient)"
+                strokeWidth={stroke}
+                fill="none"
+                strokeLinecap="round"
+                style={{ filter: 'drop-shadow(0 0 8px #090101aa)' }}
+              />
+              {/* Knob at the end of the arc */}
+              <circle
+                cx={knob.x}
+                cy={knob.y}
+                r={stroke / 1.5}
+                fill="#fff"
+                stroke="#070101"
+                strokeWidth={3}
+              />
+            </svg>
+            {/* Centered Score and Label */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+              <span className="text-6xl font-extrabold text-white drop-shadow-lg">{score}</span>
                 <span className={`mt-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${getScoreCategoryColor(scoreAnalysis.category)}`}>{scoreAnalysis.category}</span>
-              </div>
             </div>
-            {/* Badge and Summary */}
-            <div className="flex-1 flex flex-col gap-3 min-w-0 items-center md:items-start">
+          </div>
+          {/* Badge and Summary */}
+          <div className="flex-1 flex flex-col gap-3 min-w-0 items-center md:items-start">
               <span className={`px-4 py-1 rounded-full text-base font-semibold tracking-wide ${getScoreCategoryColor(scoreAnalysis.category)}`}>{scoreAnalysis.category} Potential</span>
               <p className="text-gray-100 text-lg leading-relaxed font-medium text-center md:text-left break-words">{summary}</p>
             </div>
@@ -126,7 +126,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             <div className="p-4 bg-white/5 rounded-xl flex flex-col justify-between min-h-[80px] border border-white/10">
               <div className="text-xs text-gray-400 mb-1 flex items-center gap-2 font-semibold">
                 <Target className="h-4 w-4 text-gray-400" />
-                Market Size
+              Market Size
               </div>
               <div className="text-lg font-bold text-white">{scoreAnalysis.keyMetrics.marketSize}</div>
             </div>
@@ -134,21 +134,21 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               <div className="text-xs text-gray-400 mb-1 flex items-center gap-2 font-semibold">
                 <TrendingUp className="h-4 w-4 text-gray-400" />
                 Growth Rate
-              </div>
+          </div>
               <div className="text-lg font-bold text-white">{scoreAnalysis.keyMetrics.growthRate}</div>
             </div>
             <div className="p-4 bg-white/5 rounded-xl flex flex-col justify-between min-h-[80px] border border-white/10">
               <div className="text-xs text-gray-400 mb-1 flex items-center gap-2 font-semibold">
                 <Users className="h-4 w-4 text-gray-400" />
-                Target Audience
-              </div>
+              Target Audience
+            </div>
               <div className="text-lg font-bold text-white whitespace-pre-line break-words leading-tight">{scoreAnalysis.keyMetrics.targetAudience}</div>
             </div>
             <div className="p-4 bg-white/5 rounded-xl flex flex-col justify-between min-h-[80px] border border-white/10">
               <div className="text-xs text-gray-400 mb-1 flex items-center gap-2 font-semibold">
                 <DollarSign className="h-4 w-4 text-gray-400" />
                 Initial Investment
-              </div>
+          </div>
               <div className="text-lg font-bold text-white">{scoreAnalysis.keyMetrics.initialInvestment}</div>
             </div>
           </div>
@@ -195,59 +195,59 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           </div>
         </section>
 
-        {/* SWOT Analysis */}
-        {scoreAnalysis.swot && (
+          {/* SWOT Analysis */}
+          {scoreAnalysis.swot && (
           <section className="mb-8">
             <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">SWOT Analysis</h3>
             <div className="grid grid-cols-2 gap-6">
-              <div>
+                <div>
                 <h4 className="text-xs font-bold text-green-300 mb-1">Strengths</h4>
-                <ul className="list-disc list-inside text-sm text-white/90">
-                  {scoreAnalysis.swot.strengths.map((s, i) => <li key={i}>{s}</li>)}
-                </ul>
-              </div>
-              <div>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.strengths.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </div>
+                <div>
                 <h4 className="text-xs font-bold text-yellow-300 mb-1">Weaknesses</h4>
-                <ul className="list-disc list-inside text-sm text-white/90">
-                  {scoreAnalysis.swot.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
-                </ul>
-              </div>
-              <div>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
+                  </ul>
+                </div>
+                <div>
                 <h4 className="text-xs font-bold text-blue-300 mb-1">Opportunities</h4>
-                <ul className="list-disc list-inside text-sm text-white/90">
-                  {scoreAnalysis.swot.opportunities.map((o, i) => <li key={i}>{o}</li>)}
-                </ul>
-              </div>
-              <div>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.opportunities.map((o, i) => <li key={i}>{o}</li>)}
+                  </ul>
+                </div>
+                <div>
                 <h4 className="text-xs font-bold text-red-300 mb-1">Threats</h4>
-                <ul className="list-disc list-inside text-sm text-white/90">
-                  {scoreAnalysis.swot.threats.map((t, i) => <li key={i}>{t}</li>)}
-                </ul>
+                  <ul className="list-disc list-inside text-sm text-white/90">
+                    {scoreAnalysis.swot.threats.map((t, i) => <li key={i}>{t}</li>)}
+                  </ul>
               </div>
             </div>
           </section>
-        )}
+          )}
 
-        {/* Market Trends */}
-        {scoreAnalysis.marketTrends && scoreAnalysis.marketTrends.length > 0 && (
+          {/* Market Trends */}
+          {scoreAnalysis.marketTrends && scoreAnalysis.marketTrends.length > 0 && (
           <section className="mb-8">
             <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">Market Trends</h3>
-            <ul className="space-y-2">
-              {scoreAnalysis.marketTrends.map((trend, i) => (
+              <ul className="space-y-2">
+                {scoreAnalysis.marketTrends.map((trend, i) => (
                 <li key={i} className="text-base text-white/90">
-                  <span className="font-semibold text-yellow-200">{trend.trend}:</span> {trend.impact}
-                </li>
-              ))}
-            </ul>
+                  <span className="font-semibold text-gray-400">{trend.trend}:</span> {trend.impact}
+                  </li>
+                ))}
+              </ul>
           </section>
-        )}
+          )}
 
-        {/* Regulatory & Risks */}
-        {scoreAnalysis.regulatoryAndRisks && scoreAnalysis.regulatoryAndRisks.length > 0 && (
+          {/* Regulatory & Risks */}
+          {scoreAnalysis.regulatoryAndRisks && scoreAnalysis.regulatoryAndRisks.length > 0 && (
           <section className="mb-8">
             <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">Regulatory & Risks</h3>
             <div className="grid gap-4">
-              {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
+                {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
                 <div
                   key={i}
                   className="bg-white/5 border border-white/10 rounded-lg p-4 flex flex-col gap-2"
@@ -263,20 +263,20 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               ))}
             </div>
           </section>
-        )}
+          )}
 
-        {/* Competitive Positioning */}
-        {scoreAnalysis.competitivePositioning && (
+          {/* Competitive Positioning */}
+          {scoreAnalysis.competitivePositioning && (
           <section className="mb-8">
             <h3 className="text-lg font-semibold text-white mb-3 tracking-wide">Competitive Positioning</h3>
             <div className="text-white/90 text-base mb-1">
-              <span className="font-semibold text-blue-200">Position:</span> {scoreAnalysis.competitivePositioning.position}
+              <span className="font-semibold text-gray-400">Position:  </span> {scoreAnalysis.competitivePositioning.position}
             </div>
-            <div className="text-white/70 text-sm">
-              <span className="font-semibold text-blue-200">Map:</span> {scoreAnalysis.competitivePositioning.mapDescription}
+            <div className="text-white/120 text-sm">
+              <span className="font-semibold text-gray-400">Map:  </span> {scoreAnalysis.competitivePositioning.mapDescription}
             </div>
           </section>
-        )}
+          )}
       </CardContent>
     </Card>
   );

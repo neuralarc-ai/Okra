@@ -318,7 +318,7 @@ const Index = () => {
               </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <PricingCard priceSuggestions={result.priceSuggestions} />
+                <PricingCard priceSuggestions={result.priceSuggestions} currency={result.currency} />
                 <ForecastCard forecast={{
                   ...result.forecasts,
                   averageCase: (result.forecasts as any).averageCase || result.forecasts.bestCase
@@ -331,13 +331,13 @@ const Index = () => {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <RevenueModelCard revenueModel={result.revenueModel} />
-                    <MilestonesCard milestones={result.milestones} />
+                    <RevenueModelCard revenueModel={result.revenueModel} currency={result.currency} />
+                    <MilestonesCard milestones={result.milestones} currency={result.currency} />
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <FinancialPlanCard financialPlan={result.financialPlan} />
-                    <FundingRequirementsCard fundingRequirements={result.fundingRequirements} />
+                    <FinancialPlanCard financialPlan={result.financialPlan} currency={result.currency} />
+                    <FundingRequirementsCard fundingRequirements={result.fundingRequirements} currency={result.currency} />
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

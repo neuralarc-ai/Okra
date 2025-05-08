@@ -3,12 +3,49 @@ import { PriceSuggestion } from "@/types/oracle";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Target, Users, ChevronDown, ChevronUp, AlertCircle, CheckCircle2, XCircle, BarChart3, Calendar, Users2, ArrowUpRight, ArrowDownRight, Lightbulb, Shield, Zap } from 'lucide-react';
 import { useState } from 'react';
+import { formatCurrency } from '@/lib/utils';
 
 interface PricingCardProps {
   priceSuggestions: PriceSuggestion[];
+  currency?: string;
 }
 
-const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
+// Helper to robustly format price values
+const formatPriceValue = (value: string | number, currency: string) => {
+  if (typeof value === 'number') return formatCurrency(value, currency);
+  if (typeof value !== 'string') return value;
+
+  // If already contains a currency symbol, show as-is
+  if (value.includes('$') || value.includes('₹') || value.includes('€')) return value;
+
+  // If it's a range (e.g., '500k - 2M+')
+  if (value.includes('-')) {
+    const [low, high] = value.split('-').map(v => v.trim());
+    const formatPart = (part: string) => {
+      if (part.toLowerCase().includes('k')) {
+        return formatCurrency(parseFloat(part) * 1e3, currency);
+      }
+      if (part.toLowerCase().includes('m')) {
+        return formatCurrency(parseFloat(part) * 1e6, currency);
+      }
+      const num = parseFloat(part.replace(/[^0-9.]/g, ''));
+      return isNaN(num) ? part : formatCurrency(num, currency);
+    };
+    return `${formatPart(low)} - ${formatPart(high)}`;
+  }
+
+  // Try to parse as number with k/M
+  if (value.toLowerCase().includes('k')) {
+    return formatCurrency(parseFloat(value) * 1e3, currency);
+  }
+  if (value.toLowerCase().includes('m')) {
+    return formatCurrency(parseFloat(value) * 1e6, currency);
+  }
+  const num = parseFloat(value.replace(/[^0-9.]/g, ''));
+  return isNaN(num) ? value : formatCurrency(num, currency);
+};
+
+const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) => {
   const [expandedPrice, setExpandedPrice] = useState<string | null>(null);
 
   // Build dynamic trend data from priceSuggestions
@@ -76,17 +113,17 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
               price.detailedAnalysis?.revenuePotential?.shortTerm
             ].filter(Boolean).slice(0, 3);
             return (
-              <div 
-                key={index} 
-                className="p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5"
-              >
+            <div 
+              key={index} 
+              className="p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5"
+            >
                 <div 
                   className="flex justify-between items-center mb-1 cursor-pointer"
                   onClick={() => togglePrice(price.type)}
                 >
                   <h4 className="text-sm font-semibold text-white flex items-center gap-2">{price.type}</h4>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white bg-white/10 px-2 py-0.5 rounded text-xs">{price.value}</span>
+                    <span className="font-bold text-white bg-white/10 px-2 py-0.5 rounded text-xs">{formatPriceValue(price.value, currency)}</span>
                     {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
                   </div>
                 </div>

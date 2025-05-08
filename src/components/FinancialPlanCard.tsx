@@ -6,6 +6,7 @@ import { RadarChart, Radar, PolarAngleAxis, PolarGrid, Tooltip as RechartsToolti
 
 interface FinancialPlanCardProps {
   financialPlan?: FinancialPlan;
+  currency: string;
 }
 
 const GRADIENT_COLORS = [
@@ -45,7 +46,7 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
   ].join(' ');
 }
 
-const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
+const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) => {
   if (!financialPlan) {
     return null;
   }
@@ -70,7 +71,7 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
             {(financialPlan.startupCosts || []).map((cost, index) => (
               <div key={`startup-${index}`} className="flex justify-between items-center text-sm">
                 <span className="text-sm text-gray-400">{cost.category}</span>
-                <span className="text-sm text-white">{formatCurrency(cost.amount)}</span>
+                <span className="text-sm text-white">{formatCurrency(cost.amount, currency)}</span>
               </div>
             ))}
           </div>
@@ -81,8 +82,8 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
           <div>
             <h4 className="text-sm font-medium text-white mb-4">Monthly Expenses Breakdown</h4>
             <div className="w-full max-w-[800px] mx-auto flex flex-col items-center justify-center" style={{ overflow: 'visible' }}>
-              <ResponsiveContainer width="100%" >
-                <RadarChart data={expenseData} outerRadius="55%">
+              <ResponsiveContainer width="100%" height={300}>
+                <RadarChart data={expenseData}>
                   <PolarGrid stroke="#222" />
                   <PolarAngleAxis dataKey="category" tick={{ fill: '#fff', fontSize: 12, fontWeight: 500 }} />
                   <Radar
@@ -95,12 +96,12 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
                   <RechartsTooltip
                     cursor={false}
                     contentStyle={{ background: '#18181b', border: 'none', color: '#f9fafb' }}
-                    formatter={(value: number) => formatCurrency(value)}
+                    formatter={(value: number) => formatCurrency(value, currency)}
                   />
                 </RadarChart>
               </ResponsiveContainer>
               <div className="mt-2 text-center">
-                <span className="text-lg font-bold text-white">{formatCurrency(total)}</span>
+                <span className="text-lg font-bold text-white">{formatCurrency(total, currency)}</span>
                 <span className="block text-xs text-gray-400">Total Monthly Expenses</span>
               </div>
             </div>
@@ -118,7 +119,7 @@ const FinancialPlanCard = ({ financialPlan }: FinancialPlanCardProps) => {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-400">Monthly Break-even Point</span>
-                <span className="text-sm text-white">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint)}</span>
+                <span className="text-sm text-white">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint, currency)}</span>
               </div>
             </div>
             <div className="mt-2">

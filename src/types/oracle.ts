@@ -24,6 +24,7 @@ export interface AnalysisResult {
   fundingRequirements: FundingRequirements;
   revenueModel: RevenueModel;
   milestones: Milestones;
+  currency: string; // The currency used for all monetary values in this analysis
 }
 
 export interface Competitor {

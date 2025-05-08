@@ -112,66 +112,47 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
 
   // Function to generate a new analyst message using Gemini
   const generateAnalystMessage = async (idea: string, prevMessages: AnalystMessage[], progress: number) => {
-    // Determine current topic index
+    // Determine the current and potentially next topic
     const lastTopicIndex = prevMessages.length > 0 ? topicOrder.indexOf(prevMessages[prevMessages.length - 1].category) : -1;
-    const nextTopicIndex = getNextTopicIndex(lastTopicIndex);
-    const nextTopic = topicOrder[nextTopicIndex];
-    let analyst: AnalystMessage["analyst"];
-    if (nextTopic === "conclusion") {
-      analyst = "David";
-    } else if (prevMessages.length === 0) {
-      analyst = "David";
-    } else {
-      const idx = (prevMessages.length - 1) % 3;
-      analyst = analystOrder[idx + 1];
-    }
-    const role = analysts[analyst].role;
-    const specialty = analysts[analyst].specialty;
-    const prevContext = prevMessages.map((m) => `${m.analyst} (${analysts[m.analyst].role}): ${m.message}`).join("\n");
-    const persona =
-      analyst === "Emma"
-        ? "You are Emma, a data-driven Market Research Analyst."
-        : analyst === "Mike"
-        ? "You are Mike, a strategic Business Strategist."
-        : analyst === "Scott"
-        ? "You are Scott, a pragmatic Financial Analyst."
-        : "You are David, a wise and concise team leader.";
-    let prompt = '';
-    if (nextTopic === "conclusion") {
-      prompt = `
-${persona}
-You are the team manager. Synthesize the discussion and provide a clear, actionable conclusion or next steps in one sentence.\nEnd your message with [conclusion complete].\nPrevious conversation:\n${prevContext || "(none yet)"}
-`;
-    } else {
-      prompt = `
-${persona}
-You are part of a 4-person analyst team (David, Emma, Mike, Scott) discussing a new business idea: "${idea}".
-Your role: ${role}.
-Your specialty: ${specialty}.
-Current topic: ${nextTopic}.
-Previous conversation:
-${prevContext || "(none yet)"}
+    const currentTopic = lastTopicIndex !== -1 ? topicOrder[lastTopicIndex] : topicOrder[0];
 
-You must address the topic: "${nextTopic}" in your response.
-Do not repeat previous topics.
-Respond with a single, concise, and professional message as your character.
-- Reference the previous analyst's point and add new insight or a follow-up question.
-- Do not mention progress numbers or scores.
-- Keep your response to one sentence, no more than 20 words.
-- Be insightful and business-focused.
-- End your message with [${nextTopic} complete].
-`;
+    // Determine the current analyst and potentially the next
+    let currentAnalyst: AnalystMessage["analyst"];
+    if (prevMessages.length === 0) {
+      currentAnalyst = "David";
+    } else {
+      const lastAnalyst = prevMessages[prevMessages.length - 1].analyst;
+      const analystOptions = analystOrder.filter(a => a !== lastAnalyst); // Avoid the same analyst speaking twice in a row
+      currentAnalyst = analystOptions[Math.floor(Math.random() * analystOptions.length)] || analystOrder[0];
     }
+
+    // Build previous conversation transcript, focusing on the last few turns
+    const conversationHistory = prevMessages.slice(-3).map((m) => `${m.analyst}: ${m.message.replace(/\s*\[[a-z]+ complete\]$/i, '')}`).join("\n");
+
+    const prompt = `
+You are part of a team of business analysts discussing the idea: "${idea}". The team includes David (Manager), Emma (Data Scientist), Mike (Business Strategist), and Scott (Financial Analyst).
+
+The current topic of discussion is: ${currentTopic}.
+
+Engage in a natural, concise conversation, directly referencing or building upon the previous analyst's points where relevant. Each analyst should speak in their own voice and contribute meaningfully to the discussion. Aim for short in 2-3 sentences under 27 words, impactful statements that advance the conversation.
+
+Previous turns:
+${conversationHistory || "(none yet)"}
+
+Your turn as ${currentAnalyst}: Respond to the previous point or add a new relevant insight related to ${currentTopic}. Keep your response brief and focused.
+`;
+
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = await response.text();
+
     return {
       id: prevMessages.length + 1,
-      analyst,
+      analyst: currentAnalyst,
       message: text.trim(),
       progressThreshold: progress,
-      category: nextTopic
+      category: currentTopic // Keep the category consistent for a while
     } as AnalystMessage;
   };
 
@@ -185,43 +166,49 @@ Respond with a single, concise, and professional message as your character.
   // Generate a new message when userInput or progress changes
   useEffect(() => {
     if (!userInput || progress < 3) return;
-    // Stop if the last message is a conclusion and marked complete
+
+    const shouldAdvanceTopic = visibleMessages.length > 0 && Math.random() < 0.4; // Adjust probability as needed
+    const lastTopicIndex = visibleMessages.length > 0 ? topicOrder.indexOf(visibleMessages[visibleMessages.length - 1].category) : -1;
+    const nextTopicIndex = shouldAdvanceTopic ? getNextTopicIndex(lastTopicIndex) : lastTopicIndex;
+    const nextTopic = topicOrder[nextTopicIndex];
+
+    // Stop if the last message is a conclusion from David
     if (
       visibleMessages.length > 0 &&
       visibleMessages[visibleMessages.length - 1].category === "conclusion" &&
-      visibleMessages[visibleMessages.length - 1].message.includes("[conclusion complete]")
+      visibleMessages[visibleMessages.length - 1].analyst === "David"
     ) {
       return;
     }
-    const promptKey = `${userInput}|${progress}|${visibleMessages.length}`;
+
+    const promptKey = `${userInput}|${progress}|${visibleMessages.length}|${nextTopic}`;
     if (lastPrompt === promptKey) return;
     setLastPrompt(promptKey);
-    // Add a cooldown (e.g., 3 seconds) between messages
-    const cooldown = 3000;
+
+    const cooldown = 1500 + Math.random() * 1500; // Adjust cooldown
     const now = Date.now();
     const lastMsgTime = (window as any)._lastAnalystMsgTime || 0;
     if (now - lastMsgTime < cooldown) return;
     (window as any)._lastAnalystMsgTime = now;
-    const thinkingDelay = 1200 + Math.random() * 600; // 1.2s to 1.8s
-    const typingDelay = 1800 + Math.random() * 1000;  // 1.8s to 2.8s
+
+    const thinkingDelay = 800 + Math.random() * 400;
+    const typingDelay = 1200 + Math.random() * 800;
+
     setTimeout(() => {
       let nextAnalyst: AnalystMessage["analyst"];
-      // Always advance to the next topic after each message
-      const lastTopicIndex = visibleMessages.length > 0 ? topicOrder.indexOf(visibleMessages[visibleMessages.length - 1].category) : -1;
-      const nextTopicIndex = getNextTopicIndex(lastTopicIndex);
-      const nextTopic = topicOrder[nextTopicIndex];
       if (nextTopic === "conclusion") {
         nextAnalyst = "David";
       } else if (visibleMessages.length === 0) {
         nextAnalyst = "David";
       } else {
-        const idx = (visibleMessages.length - 1) % 3;
-        nextAnalyst = analystOrder[idx + 1];
+        const lastAnalyst = visibleMessages[visibleMessages.length - 1].analyst;
+        const analystOptions = analystOrder.filter(a => a !== lastAnalyst);
+        nextAnalyst = analystOptions[Math.floor(Math.random() * analystOptions.length)] || analystOrder[0];
       }
       setTyping(nextAnalyst);
       generateAnalystMessage(userInput, visibleMessages, progress).then((msg) => {
         setTimeout(() => {
-          setVisibleMessages((prev) => [...prev, msg]);
+          setVisibleMessages((prev) => [...prev, { ...msg, category: nextTopic }]); // Ensure the category is updated
           setTyping(null);
         }, typingDelay);
       });
@@ -263,7 +250,7 @@ Respond with a single, concise, and professional message as your character.
               className={`mt-1 p-3 rounded-lg ${analysts[message.analyst].color} ${analysts[message.analyst].border} border ${message.analyst === 'David' ? 'text-right' : ''}`}
             >
               <p className={`text-sm ${analysts[message.analyst].text}`}>
-                {message.message.replace(/\s*\[[a-z]+ complete\]$/i, '')}
+                {message.message.replace(/^([A-Za-z]+):\s*/, '')}
               </p>
             </div>
           </div>

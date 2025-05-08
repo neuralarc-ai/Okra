@@ -2,13 +2,15 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FundingRequirements } from '@/types/oracle';
 import { formatCurrency } from '@/lib/utils';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, LabelList, Tooltip as RechartsTooltip, ResponsiveContainer, LabelProps } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { TrendingUp } from "lucide-react";
 
 interface FundingRequirementsCardProps {
   fundingRequirements?: FundingRequirements;
+  currency: string;
 }
 
-const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCardProps) => {
+const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequirementsCardProps) => {
   if (!fundingRequirements) {
     return null;
   }
@@ -16,80 +18,18 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
   // Prepare data for the bar chart
   const useOfFundsData = (fundingRequirements.useOfFunds || []).map(item => ({
     name: item.category,
-    amount: item.amount,
+    value: item.amount,
     priority: item.priority
   }));
 
-  const priorityColors = {
-    high: '#f43f5e',
-    medium: '#f59e42',
-    low: '#4ade80'
-  };
-
   const GRADIENT_COLORS = [
-    { id: "gradPurple", start: "#8b7cf6", end: "#5f3dc4" },
-    { id: "gradPink", start: "#FFADDF", end: "#ff3b82" },
-    { id: "gradYellow", start: "#FCEC3B", end: "#f59e42" },
-    { id: "gradOrange", start: "#fbbf24", end: "#ea580c" },
-    { id: "gradGreen", start: "#34d399", end: "#059669" },
-    { id: "gradBlue", start: "#60a5fa", end: "#2563eb" },
+    { id: "gradGreen1", start: "#dcfce7", end: "#22c55e" },     // Very light green to medium green
+    { id: "gradGreen2", start: "#bbf7d0", end: "#16a34a" },     // Pale green to green
+    { id: "gradGreen3", start: "#86efac", end: "#15803d" },     // Mint to emerald
+    { id: "gradGreen4", start: "#a7f3d0", end: "#059669" },     // Mint to teal
+    { id: "gradGreen5", start: "#d1fae5", end: "#10b981" },     // Light mint to emerald
+    { id: "gradGreen6", start: "#ecfdf5", end: "#34d399" },     // Almost white to teal
   ];
-
-  // Custom label for inside left (category) or outside if bar is short
-  const renderCategoryLabel = (props: LabelProps) => {
-    const { x, y, value, height, width } = props;
-    const xNum = Number(x);
-    const yNum = Number(y);
-    const widthNum = Number(width);
-    const heightNum = Number(height);
-    const threshold = 120; // px
-    if (widthNum < threshold) {
-      // Render outside, left of the bar
-      return (
-        <text x={xNum - 8} y={yNum + heightNum / 2 + 5} fill="#fff" fontSize={13} fontWeight="500" alignmentBaseline="middle" textAnchor="end">
-          {value}
-        </text>
-      );
-    }
-    // Render inside
-    return (
-      <text x={xNum + 8} y={yNum + heightNum / 2 + 5} fill="#fff" fontSize={13} fontWeight="500" alignmentBaseline="middle">
-        {value}
-      </text>
-    );
-  };
-
-  // Custom label for value (right side)
-  const renderValueLabel = (props: LabelProps) => {
-    const { x, y, value, width, height } = props;
-    const xNum = Number(x);
-    const yNum = Number(y);
-    const widthNum = Number(width);
-    const heightNum = Number(height);
-    return (
-      <text x={xNum + widthNum + 8} y={yNum + heightNum / 2 + 5} fill="#fff" fontSize={13} fontWeight="600" alignmentBaseline="middle">
-        {typeof value === 'number' ? formatCurrency(value) : value}
-      </text>
-    );
-  };
-
-  // Helper for donut chart arc
-  function describeArc(cx, cy, r, startAngle, endAngle) {
-    const polarToCartesian = (cx, cy, r, angle) => {
-      const a = ((angle - 90) * Math.PI) / 180.0;
-      return {
-        x: cx + r * Math.cos(a),
-        y: cy + r * Math.sin(a),
-      };
-    };
-    const start = polarToCartesian(cx, cy, r, endAngle);
-    const end = polarToCartesian(cx, cy, r, startAngle);
-    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-    return [
-      "M", start.x, start.y,
-      "A", r, r, 0, largeArcFlag, 0, end.x, end.y
-    ].join(" ");
-  }
 
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
@@ -102,7 +42,7 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
           <div className="flex flex-col items-center mb-6">
             <span className="text-sm text-gray-400">Total Funding Required</span>
             <span className="text-3xl font-bold text-white mt-1">
-              {formatCurrency(fundingRequirements.totalRequired)}
+              {formatCurrency(fundingRequirements.totalRequired, currency)}
             </span>
           </div>
         )}
@@ -112,68 +52,82 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
           <div className="mt-8">
             <h4 className="text-sm font-medium text-white mb-4">Use of Funds</h4>
             <div className="flex flex-col items-center justify-center">
-              {/* Donut Chart */}
-              <div className="relative flex items-center justify-center" style={{ minHeight: 240 }}>
-                <svg width={240} height={240} style={{ display: 'block' }}>
-                  <defs>
-                    {GRADIENT_COLORS.map((gradient) => (
-                      <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor={gradient.start} />
-                        <stop offset="100%" stopColor={gradient.end} />
-                      </linearGradient>
-                    ))}
-                  </defs>
-                  {(() => {
-                    const total = useOfFundsData.reduce((sum, d) => sum + d.amount, 0);
-                    const radius = 90;
-                    const stroke = 32;
-                    const cx = 120;
-                    const cy = 120;
-                    const gapAngle = 8;
-                    let currentAngle = -90;
-                    return useOfFundsData.map((entry, idx) => {
-                      const valueAngle = (entry.amount / total) * (360 - gapAngle * useOfFundsData.length);
-                      const startAngle = currentAngle + gapAngle / 2;
-                      const endAngle = startAngle + valueAngle;
-                      const path = describeArc(cx, cy, radius, startAngle, endAngle);
-                      currentAngle = endAngle + gapAngle / 2;
-                      const gradient = GRADIENT_COLORS[idx % GRADIENT_COLORS.length];
-                      return (
-                        <path
-                          key={entry.name}
-                          d={path}
-                          stroke={`url(#${gradient.id})`}
-                          strokeWidth={stroke}
-                          fill="none"
-                          strokeLinecap="round"
-                          filter="drop-shadow(0 0 8px #0003)"
-                        />
-                      );
-                    });
-                  })()}
-                  {/* Center label */}
-                  <circle cx={120} cy={120} r={60} fill="#18181b" />
-                  <text
-                    x="50%"
-                    y="50%"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize="1.3rem"
-                    fontWeight="bold"
-                    fill="#e5e7eb"
-                    style={{ fontFamily: 'inherit' }}
+              <div className="w-full" style={{ height: 400 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={useOfFundsData}
+                    layout="vertical"
+                    margin={{
+                      left: 0,
+                      right: 20,
+                      top: 20,
+                      bottom: 20,
+                    }}
                   >
-                    {formatCurrency(fundingRequirements.totalRequired)}
-                    <tspan fontSize="0.9rem" x="50%" dy="2.0em" fill="#aaa">Total</tspan>
-                  </text>
-                </svg>
+                    <defs>
+                      {GRADIENT_COLORS.map((gradient, idx) => (
+                        <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor={gradient.start} />
+                          <stop offset="100%" stopColor={gradient.end} />
+                        </linearGradient>
+                      ))}
+                    </defs>
+                    <YAxis
+                      dataKey="name"
+                      type="category"
+                      tickLine={false}
+                      tickMargin={10}
+                      axisLine={false}
+                      tick={{ fill: '#fff', fontSize: 12 }}
+                      width={150}
+                    />
+                    <XAxis
+                      dataKey="value"
+                      type="number"
+                      hide
+                    />
+                    <Tooltip
+                      cursor={false}
+                      contentStyle={{
+                        background: '#1a1a1a',
+                        border: 'none',
+                        color: '#f9fafb',
+                        borderRadius: '10px',
+                        padding: '8px 12px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                      }}
+                      formatter={(value: number) => formatCurrency(value, currency)}
+                    />
+                    <Bar
+                      dataKey="value"
+                      layout="vertical"
+                      radius={5}
+                      label={{
+                        position: 'right',
+                        fill: '#fff',
+                        fontSize: 12,
+                        fontWeight: 500,
+                        formatter: (value: number) => formatCurrency(value, currency)
+                      }}
+                    >
+                      {useOfFundsData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={`url(#${GRADIENT_COLORS[index % GRADIENT_COLORS.length].id})`} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
               {/* Legend */}
               <div className="flex flex-wrap justify-center gap-4 mt-4">
                 {useOfFundsData.map((entry, idx) => (
                   <div key={entry.name} className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full block" style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}></span>
-                    <span className="text-xs font-semibold" style={{ color: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}>{entry.name}</span>
+                    <span 
+                      className="w-3 h-3 rounded-full block" 
+                      style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}
+                    ></span>
+                    <span className="text-xs font-semibold" style={{ color: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}>
+                      {entry.name} ({formatCurrency(entry.value, currency)})
+                    </span>
                   </div>
                 ))}
               </div>
@@ -190,7 +144,7 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
                 <div key={`stage-${index}`} className="space-y-1">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-white">{stage.stage}</span>
-                    <span className="text-sm text-gray-400">{formatCurrency(stage.amount)}</span>
+                    <span className="text-sm text-gray-400">{formatCurrency(stage.amount, currency)}</span>
                   </div>
                   <div className="text-xs text-gray-400">{stage.timeline}</div>
                   <div className="text-sm text-gray-400">{stage.purpose}</div>
@@ -247,4 +201,4 @@ const FundingRequirementsCard = ({ fundingRequirements }: FundingRequirementsCar
   );
 };
 
-export default FundingRequirementsCard; 
+export default FundingRequirementsCard;
