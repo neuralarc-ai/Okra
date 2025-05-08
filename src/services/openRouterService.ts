@@ -19,6 +19,7 @@ export const generateAnalysis = async (
        - description: 1-2 sentence description
        - marketShare: Percentage of market share (number, e.g. 45 for 45%)
        - primaryAdvantage: Short, bold key advantage (e.g. 'Extensive network and brand recognition')
+       - website: Company website URL (if available)
        - detailedAnalysis: {
            summary: string (2-3 sentence summary of the competitor's strengths, market position, and key risks)
            marketPosition: string (e.g., "Market Leader", "Challenger", "Niche Player")

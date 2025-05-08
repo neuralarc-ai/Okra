@@ -33,6 +33,7 @@ export interface Competitor {
   description: string;
   marketShare?: string;
   primaryAdvantage?: string;
+  website?: string;
   detailedAnalysis?: {
     strengths: string[];
     weaknesses: string[];

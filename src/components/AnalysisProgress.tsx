@@ -149,7 +149,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
           {/* Right: Analyst Conversation */}
           <div className="flex-1 max-w-xl p-4 md:p-8 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-full flex flex-col">
             {/* Meet the Analyst Team section */}
-            <div className="mb-3">
+            <div className="mb-0">
               <div className="text-white/80 text-sm font-medium mb-2">Meet our analyst team</div>
               <div className="grid grid-cols-2 gap-3">
                 {/* Analyst Avatars and Roles */}

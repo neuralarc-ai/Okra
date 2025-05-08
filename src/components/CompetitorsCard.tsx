@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Competitor } from "@/types/oracle";
-import { ChartBar, Award, ChevronDown, ChevronUp, MapPin, Users, TrendingUp, Building2, Star, ThumbsDown, Globe, Store, DollarSign, Zap, Users2 } from "lucide-react";
+import { ChartBar, Award, ChevronDown, ChevronUp, MapPin, Users, TrendingUp, Building2, Star, ThumbsDown, Globe, Store, DollarSign, Zap, Users2, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { ResponsiveContainer, PieChart, Pie, Tooltip, Label } from "recharts";
 
@@ -270,6 +270,20 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       )}
                       {competitor.primaryAdvantage && (
                         <div><span className="font-semibold text-white">Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
+                      )}
+                      {competitor.website && (
+                        <div className="flex items-center gap-1">
+                          <span className="font-semibold text-white">Website:</span>
+                          <a 
+                            href={competitor.website.startsWith('http') ? competitor.website : `https://${competitor.website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                          >
+                            {competitor.website}
+                            <ExternalLink size={12} className="inline" />
+                          </a>
+                        </div>
                       )}
                     </div>
                   </div>

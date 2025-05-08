@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TrendingPrompt, getTrendingPrompts } from '@/services/geminiService';
+import { TrendingPrompt, getTrendingPrompts } from '@/services/aiService';
 import { Sparkles, TrendingUp, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
