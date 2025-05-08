@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,18 @@ export default {
 			}
 		},
 		extend: {
+			fontSize: {
+				'xs': '14px',
+				'sm': '16px',
+				'base': '18px',
+				'lg': '20px',
+				'xl': '22px',
+				'2xl': '24px',
+				'3xl': '28px',
+				'4xl': '32px',
+				'5xl': '36px',
+				'6xl': '40px',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
