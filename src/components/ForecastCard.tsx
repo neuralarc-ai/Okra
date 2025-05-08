@@ -26,8 +26,37 @@ const parseValue = (value: string | number) => {
 };
 
 const formatValue = (value: string | number) => {
-  if (typeof value === 'string') return value;
+  if (typeof value === 'string') {
+    // Check if the value is a currency value (has $ or ₹ prefix)
+    if (value.startsWith('$') || value.startsWith('₹')) {
+      const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ''));
+      if (value.startsWith('₹')) {
+        if (numericValue >= 10000000) { // 1 crore
+          return `₹${(numericValue / 10000000).toFixed(2)} crore`;
+        } else if (numericValue >= 100000) { // 1 lakh
+          return `₹${(numericValue / 100000).toFixed(2)} lakh`;
+        } else {
+          return `₹${numericValue.toLocaleString('en-IN')}`;
+        }
+      } else {
+        // For USD values
+        if (numericValue >= 1000000000) {
+          return `$${(numericValue / 1000000000).toFixed(1)}B`;
+        } else if (numericValue >= 1000000) {
+          return `$${(numericValue / 1000000).toFixed(1)}M`;
+        } else if (numericValue >= 1000) {
+          return `$${(numericValue / 1000).toFixed(1)}K`;
+        } else {
+          return `$${numericValue.toLocaleString('en-US')}`;
+        }
+      }
+    }
+    return value;
+  }
+  
   if (typeof value !== 'number') return '0';
+  
+  // For non-currency values
   if (value >= 1000000000) {
     return `${(value / 1000000000).toFixed(1)}B`;
   }
@@ -38,12 +67,6 @@ const formatValue = (value: string | number) => {
     return `${(value / 1000).toFixed(1)}K`;
   }
   return value.toLocaleString();
-};
-
-const getAvg = (a: string | number, b: string | number) => {
-  const av = parseValue(a);
-  const bv = parseValue(b);
-  return (av + bv) / 2;
 };
 
 const renderCategoryLabel = (props: LabelProps) => {
@@ -239,26 +262,56 @@ const formatWithPrefix = (prefix: string, value: string | number) => {
   return prefix + formatted;
 };
 
+// Add a new function to handle currency conversion
+const convertCurrency = (value: string | number, fromCurrency: string, toCurrency: string) => {
+  if (typeof value === 'string') {
+    // Remove currency symbols and convert to number
+    value = parseFloat(value.replace(/[^0-9.-]+/g, ''));
+  }
+  
+  // Add conversion rates (you might want to fetch these from an API)
+  const rates = {
+    'USD': 1,
+    'INR': 83, // Example rate: 1 USD = 83 INR
+  };
+  
+  if (fromCurrency === toCurrency) return value;
+  
+  // Convert to USD first if needed
+  let inUSD = fromCurrency === 'USD' ? value : value / rates[fromCurrency];
+  // Then convert to target currency
+  return toCurrency === 'USD' ? inUSD : inUSD * rates[toCurrency];
+};
+
 const ForecastCard = ({ forecast }: ForecastCardProps) => {
   // Revenue
   const bestRevenue = forecast.bestCase.revenue;
   const worstRevenue = forecast.worstCase.revenue;
-  const avgRevenue = getAvg(bestRevenue, worstRevenue);
+  const avgRevenue = forecast.averageCase.revenue;
+  
+  // Ensure all revenue values are in the same currency
+  const currency = forecast.currency || 'INR'; // Default to INR if not specified
+  const bestRevenueFormatted = formatValue(bestRevenue);
+  const avgRevenueFormatted = formatValue(avgRevenue);
+  const worstRevenueFormatted = formatValue(worstRevenue);
+  
   // Customers
   const bestCustomers = forecast.bestCase.customers;
   const worstCustomers = forecast.worstCase.customers;
-  const avgCustomers = getAvg(bestCustomers, worstCustomers);
+  const avgCustomers = forecast.averageCase.customers;
+  
   // Period
   const period = forecast.bestCase.period || forecast.worstCase.period || forecast.timeframe;
 
   const revenueData = [
     { name: "Best Case", value: parseValue(bestRevenue) },
-    { name: "Average Case", value: avgRevenue },
+    { name: "Average Case", value: parseValue(avgRevenue) },
     { name: "Worst Case", value: parseValue(worstRevenue) },
   ];
+  
   const customerData = [
     { name: "Best Case", value: parseValue(bestCustomers) },
-    { name: "Average Case", value: avgCustomers },
+    { name: "Average Case", value: parseValue(avgCustomers) },
     { name: "Worst Case", value: parseValue(worstCustomers) },
   ];
 
@@ -267,13 +320,17 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
       <ForecastBarChart
         title="Revenue Forecast"
         data={revenueData}
-        prefix="$"
+        prefix={currency === 'INR' ? '₹' : '$'}
         period={period}
-        bestCase={bestRevenue}
-        avgCase={avgRevenue}
-        worstCase={worstRevenue}
+        bestCase={bestRevenueFormatted}
+        avgCase={avgRevenueFormatted}
+        worstCase={worstRevenueFormatted}
         valueLabel={formatValue}
       />
+      {/* Revenue Forecast Summary */}
+      <div className="text-sm text-gray-300 mb-2">
+        <strong>Revenue Summary:</strong> No summary available.
+      </div>
       <ForecastAreaChart
         title="Customer Forecast"
         data={customerData}
@@ -283,6 +340,10 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         worstCase={worstCustomers}
         valueLabel={formatValue}
       />
+      {/* Customer Forecast Summary */}
+      <div className="text-sm text-gray-300">
+        <strong>Customer Summary:</strong> No summary available.
+      </div>
     </div>
   );
 };

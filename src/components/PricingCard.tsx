@@ -62,16 +62,19 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-medium">User Adoption by Price Model</CardTitle>
-        <p className="text-gray-400 text-xs mt-1">
-          Predicted number of users/customers for each pricing model over time.
-        </p>
+        <CardTitle className="text-xl font-semibold">Pricing Analysis</CardTitle>
+        <p className="text-gray-400 text-xs mt-1">Key pricing models and their projected adoption. Expand for detailed analysis.</p>
       </CardHeader>
       <CardContent className="p-4">
         <div className="space-y-4">
-          {/* Price suggestions */}
           {priceSuggestions.map((price, index) => {
             const isExpanded = expandedPrice === price.type;
+            // Only show 2-3 key points in collapsed view
+            const keyPoints = [
+              price.description,
+              price.detailedAnalysis?.competitiveAdvantage,
+              price.detailedAnalysis?.revenuePotential?.shortTerm
+            ].filter(Boolean).slice(0, 3);
             return (
               <div 
                 key={index} 
@@ -81,82 +84,37 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
                   className="flex justify-between items-center mb-1 cursor-pointer"
                   onClick={() => togglePrice(price.type)}
                 >
-                  <h4 className="text-sm font-medium text-gray-300">{price.type}</h4>
+                  <h4 className="text-sm font-semibold text-white flex items-center gap-2">{price.type}</h4>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white bg-white/10 px-2 py-0.5 rounded text-[10px] md:text-xs">{price.value}</span>
+                    <span className="font-bold text-white bg-white/10 px-2 py-0.5 rounded text-xs">{price.value}</span>
                     {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
                   </div>
                 </div>
-                <p className="text-gray-400 text-sm">{price.description}</p>
-
-                {isExpanded && price.detailedAnalysis && (
-                  <div className="mt-4 space-y-4 pt-4 border-t border-white/5">
-                    {renderDetailItem(<Users2 size={14} />, "Target Segment", price.detailedAnalysis.targetSegment)}
-                    {renderDetailItem(<Lightbulb size={14} />, "Competitive Advantage", price.detailedAnalysis.competitiveAdvantage)}
-                    
-                    {price.detailedAnalysis.revenuePotential && (
-                      <div className="space-y-2">
-                        <h5 className="text-xs font-medium text-gray-400">Revenue Potential</h5>
-                        {renderDetailItem(<ArrowUpRight size={14} />, "Short Term", price.detailedAnalysis.revenuePotential.shortTerm)}
-                        {renderDetailItem(<ArrowUpRight size={14} />, "Long Term", price.detailedAnalysis.revenuePotential.longTerm)}
-                        {renderDetailItem(<AlertCircle size={14} />, "Assumptions", price.detailedAnalysis.revenuePotential.assumptions)}
+                {/* Collapsed: show only key points */}
+                {!isExpanded && (
+                  <ul className="list-disc list-inside text-xs text-gray-300 ml-2 mt-1 space-y-1">
+                    {keyPoints.map((point, i) => <li key={i}>{point}</li>)}
+                  </ul>
+                )}
+                {/* Expanded: show detailed summary/analysis */}
+                {isExpanded && (
+                  <div className="mt-3 pt-3 border-t border-white/10">
+                    <div className="text-sm text-white mb-2 font-semibold">Detailed Analysis</div>
+                    <div className="text-xs text-gray-200 whitespace-pre-line">
+                      {price.detailedAnalysis?.summary || price.description}
+                    </div>
+                    {/* Optionally, show a few more details if available */}
+                    {price.detailedAnalysis?.revenuePotential?.longTerm && (
+                      <div className="mt-2 text-xs text-gray-400">
+                        <span className="font-semibold text-white">Long-term Revenue Potential:</span> {price.detailedAnalysis.revenuePotential.longTerm}
                       </div>
                     )}
-
-                    {renderDetailItem(<AlertCircle size={14} />, "Adoption Barriers", price.detailedAnalysis.adoptionBarriers)}
-                    
-                    {price.detailedAnalysis.successMetrics && (
-                      <div className="space-y-2">
-                        <h5 className="text-xs font-medium text-gray-400">Success Metrics</h5>
-                        {renderDetailItem(<BarChart3 size={14} />, "Key Metrics", price.detailedAnalysis.successMetrics.keyMetrics)}
-                        {renderDetailItem(<Target size={14} />, "Targets", price.detailedAnalysis.successMetrics.targets)}
-                      </div>
-                    )}
-
-                    {price.detailedAnalysis.implementationStrategy && (
-                      <div className="space-y-2">
-                        <h5 className="text-xs font-medium text-gray-400">Implementation Strategy</h5>
-                        {renderDetailItem(<Zap size={14} />, "Phases", price.detailedAnalysis.implementationStrategy.phases)}
-                        {renderDetailItem(<Calendar size={14} />, "Timeline", price.detailedAnalysis.implementationStrategy.timeline)}
-                        {renderDetailItem(<Users size={14} />, "Resources", price.detailedAnalysis.implementationStrategy.resources)}
-                      </div>
-                    )}
-
-                    {price.detailedAnalysis.riskAnalysis && (
-                      <div className="space-y-2">
-                        <h5 className="text-xs font-medium text-gray-400">Risk Analysis</h5>
-                        {renderDetailItem(<XCircle size={14} />, "Risks", price.detailedAnalysis.riskAnalysis.risks)}
-                        {renderDetailItem(<Shield size={14} />, "Mitigations", price.detailedAnalysis.riskAnalysis.mitigations)}
-                      </div>
-                    )}
-
-                    {price.detailedAnalysis.marketFit && (
-                      <div className="space-y-2">
-                        <h5 className="text-xs font-medium text-gray-400">Market Fit</h5>
-                        {renderDetailItem(<Users2 size={14} />, "Ideal Customers", price.detailedAnalysis.marketFit.idealCustomers)}
-                        {renderDetailItem(<TrendingUp size={14} />, "Market Conditions", price.detailedAnalysis.marketFit.marketConditions)}
-                        {renderDetailItem(<BarChart3 size={14} />, "Competitive Landscape", price.detailedAnalysis.marketFit.competitiveLandscape)}
-                      </div>
-                    )}
-
-                    {price.pricingStrategy && (
-                      <div className="space-y-2">
-                        <h5 className="text-xs font-medium text-gray-400">Pricing Strategy</h5>
-                        {renderDetailItem(<Lightbulb size={14} />, "Approach", price.pricingStrategy.approach)}
-                        {renderDetailItem(<AlertCircle size={14} />, "Rationale", price.pricingStrategy.rationale)}
-                        {renderDetailItem(<CheckCircle2 size={14} />, "Key Considerations", price.pricingStrategy.keyConsiderations)}
-                        {renderDetailItem(<Zap size={14} />, "Flexibility", price.pricingStrategy.flexibility)}
-                        {renderDetailItem(<TrendingUp size={14} />, "Scalability", price.pricingStrategy.scalability)}
-                      </div>
-                    )}
-
-                    {price.customerFeedback && (
-                      <div className="space-y-2">
-                        <h5 className="text-xs font-medium text-gray-400">Customer Feedback</h5>
-                        {renderDetailItem(<Users2 size={14} />, "Expected Reactions", price.customerFeedback.expectedReactions)}
-                        {renderDetailItem(<Lightbulb size={14} />, "Value Proposition", price.customerFeedback.valueProposition)}
-                        {renderDetailItem(<XCircle size={14} />, "Potential Objections", price.customerFeedback.objections)}
-                        {renderDetailItem(<CheckCircle2 size={14} />, "Response Strategy", price.customerFeedback.responses)}
+                    {price.detailedAnalysis?.adoptionBarriers && price.detailedAnalysis.adoptionBarriers.length > 0 && (
+                      <div className="mt-2">
+                        <span className="font-semibold text-white text-xs">Adoption Barriers:</span>
+                        <ul className="list-disc list-inside text-xs text-gray-300 ml-4">
+                          {price.detailedAnalysis.adoptionBarriers.map((b, i) => <li key={i}>{b}</li>)}
+                        </ul>
                       </div>
                     )}
                   </div>
@@ -164,7 +122,6 @@ const PricingCard = ({ priceSuggestions }: PricingCardProps) => {
               </div>
             );
           })}
-
           {/* Price trends graph */}
           <div className="space-y-2">
             <div className="h-[180px] w-full bg-black/20 rounded-lg p-2">

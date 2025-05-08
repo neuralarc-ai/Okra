@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Competitor } from "@/types/oracle";
-import { ChartBar, Award, ChevronDown, ChevronUp, MapPin, Users, TrendingUp, Building2, Star, ThumbsDown, Globe, Store } from "lucide-react";
+import { ChartBar, Award, ChevronDown, ChevronUp, MapPin, Users, TrendingUp, Building2, Star, ThumbsDown, Globe, Store, DollarSign, Zap, Users2 } from "lucide-react";
 import { useState } from "react";
 
 interface CompetitorsCardProps {
@@ -114,16 +114,16 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
   return (
     <Card className="card-bg hover-card shadow-lg">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-medium flex items-center gap-2">
+        <CardTitle className="text-xl font-semibold flex items-center gap-2">
           <ChartBar size={18} className="text-gray-400" />
           <span>Competitive Analysis</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4 mt-4">
+        <div className="space-y-6 mt-4">
           {marketShareData && marketShareData.length >= 2 && (
             <div className="h-[260px] mb-2 flex flex-col items-center justify-center">
-              <h4 className="text-sm text-gray-400 mb-2 text-center">Market Share Distribution</h4>
+              <h4 className="text-base font-semibold text-white mb-2 text-center tracking-wide">Market Share Distribution</h4>
               <div className="relative flex items-center justify-center" style={{ minHeight: 2 * (radius + stroke) }}>
                 <svg width={2 * (radius + stroke)} height={2 * (radius + stroke)} style={{ display: 'block' }}>
                   <defs>
@@ -169,14 +169,14 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                   </text>
                 </svg>
               </div>
-              <div className="flex flex-wrap justify-center gap-4 mt-4"> {/* Increased mt for better spacing */}
+              <div className="flex flex-wrap justify-center gap-4 mt-4">
                 {marketShareData.map((entry, idx) => (
                   <div key={entry.name} className="flex items-center gap-2">
                     <span 
                       className="w-3 h-3 rounded-full block" 
                       style={{ backgroundColor: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}
                     ></span>
-                    <span className="text-xs text-white/80">{entry.name}</span>
+                    <span className="text-xs text-white/80 font-medium">{entry.name}</span>
                   </div>
                 ))}
               </div>
@@ -187,60 +187,64 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
             const competitor = competitors.find(c => c.name === entry.name);
             if (!competitor) return null;
             const isExpanded = expandedCompetitor === competitor.name;
-
             return (
-              <div key={entry.name} className="space-y-2 p-3 border border-white/5 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
+              <section key={entry.name} className="bg-white/2 rounded-lg border border-white/10 shadow-inner">
+                {/* Section Header */}
                 <div 
-                  className="flex justify-between items-center cursor-pointer"
+                  className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-4 py-3 cursor-pointer group"
                   onClick={() => toggleCompetitor(competitor.name)}
                 >
-                  <span className="font-medium flex items-center gap-1">
-                    {competitor.name}
-                    {competitor.strengthScore > 80 && (
-                      <Award size={14} className="text-yellow-300" />
-                    )}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">
-                      {entry.value}% Share
+                  <div className="flex flex-col gap-1 md:gap-0 md:flex-row md:items-center">
+                    <span className="text-lg font-semibold text-white flex items-center gap-1">
+                      {competitor.name}
+                      {competitor.strengthScore > 80 && (
+                        <Award size={15} className="text-yellow-300 ml-1" />
+                      )}
                     </span>
-                    <span className="text-sm">{competitor.strengthScore}/100</span>
-                    {isExpanded ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
+                    <span className="ml-0 md:ml-4 text-xs text-gray-400 font-medium">Key Advantage: <span className="text-white font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span></span>
+                  </div>
+                  <div className="flex items-center gap-4 mt-2 md:mt-0">
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs text-gray-400">Market Share</span>
+                      <span className="text-base font-semibold text-white">{entry.value}%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs text-gray-400">Score</span>
+                      <span className="text-base font-semibold text-white">{competitor.strengthScore}/100</span>
+                    </div>
+                    <span>{isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}</span>
                   </div>
                 </div>
-                <Progress 
-                  value={competitor.strengthScore} 
-                  className="h-2 bg-gray-800"
-                  indicatorClassName={getProgressGradient()}
-                />
-                <p className="text-gray-400 text-xs">{competitor.description}</p>
-                {competitor.primaryAdvantage && (
-                  <div className="mt-1">
-                    <span className="text-xs text-gray-400">Key Advantage:</span>
-                    <span className="text-xs text-white ml-1 font-medium">{cleanAdvantage(competitor.primaryAdvantage)}</span>
-                  </div>
-                )}
-
+                {/* Progress Bar */}
+                <div className="px-4 pb-2">
+                  <Progress 
+                    value={competitor.strengthScore} 
+                    className="h-1.5 bg-gray-800 rounded-full"
+                    indicatorClassName={getProgressGradient()}
+                  />
+                </div>
+                {/* Description */}
+                <div className="px-4 pb-2">
+                  <p className="text-gray-400 text-xs italic">{competitor.description}</p>
+                </div>
+                {/* Expanded Details */}
                 {isExpanded && competitor.detailedAnalysis && (
-                  <div className="mt-4 space-y-4 pt-4 border-t border-white/5">
-                    {renderDetailItem(<TrendingUp size={14} />, "Market Position", competitor.detailedAnalysis.marketPosition)}
-                    {renderDetailItem(<Users size={14} />, "Target Audience", competitor.detailedAnalysis.targetAudience)}
-                    {renderDetailItem(<Building2 size={14} />, "Pricing Strategy", competitor.detailedAnalysis.pricingStrategy)}
-                    {renderDetailItem(<Star size={14} />, "Strengths", competitor.detailedAnalysis.strengths)}
-                    {renderDetailItem(<ThumbsDown size={14} />, "Weaknesses", competitor.detailedAnalysis.weaknesses)}
-                    {renderDetailItem(<Globe size={14} />, "Geographic Reach", competitor.detailedAnalysis.marketReach?.geographic)}
-                    {renderDetailItem(<Store size={14} />, "Distribution Channels", competitor.detailedAnalysis.marketReach?.channels)}
-                    {renderDetailItem(<MapPin size={14} />, "Recent Developments", competitor.detailedAnalysis.recentDevelopments)}
-                    
-                    {competitor.detailedAnalysis.customerFeedback && (
-                      <div className="space-y-2">
-                        {renderDetailItem(<Star size={14} />, "Positive Feedback", competitor.detailedAnalysis.customerFeedback.positive)}
-                        {renderDetailItem(<ThumbsDown size={14} />, "Negative Feedback", competitor.detailedAnalysis.customerFeedback.negative)}
-                      </div>
-                    )}
+                  <div className="mt-3 pt-3 border-t border-white/10">
+                    <div className="text-sm text-white mb-2 font-semibold">Detailed Summary</div>
+                    <div className="text-xs text-gray-200 whitespace-pre-line mb-2">
+                      {competitor.detailedAnalysis.summary || competitor.description}
+                    </div>
+                    <div className="flex flex-col gap-1 text-xs text-gray-300">
+                      {competitor.detailedAnalysis.marketPosition && (
+                        <div><span className="font-semibold text-white">Market Position:</span> {competitor.detailedAnalysis.marketPosition}</div>
+                      )}
+                      {competitor.primaryAdvantage && (
+                        <div><span className="font-semibold text-white">Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
+                      )}
+                    </div>
                   </div>
                 )}
-              </div>
+              </section>
             );
           })}
         </div>

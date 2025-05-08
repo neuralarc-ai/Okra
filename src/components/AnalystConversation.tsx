@@ -8,7 +8,7 @@ interface AnalystMessage {
   analyst: 'Emma' | 'Mike' | 'Scott' | 'David';
   message: string;
   progressThreshold: number;
-  category: 'market' | 'competitors' | 'pricing' | 'forecast' | 'target' | 'risk';
+  category: 'market' | 'competitors' | 'pricing' | 'forecast' | 'target' | 'risk' | 'conclusion';
 }
 
 interface AnalystConversationProps {
@@ -51,6 +51,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
   const analysts = {
     Emma: {
       role: "Data Scientist",
+      specialty: "market research, data analysis, and customer insights",
       color: "bg-[#9b87f5]/10",
       border: "border-[#9b87f5]/30",
       text: "text-white",
@@ -59,6 +60,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
     },
     Mike: {
       role: "Business Strategist",
+      specialty: "go-to-market strategy, business model, and competitive positioning",
       color: "bg-[#33C3F0]/10",
       border: "border-[#33C3F0]/30",
       text: "text-white",
@@ -67,6 +69,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
     },
     Scott: {
       role: "Financial Analyst",
+      specialty: "financial forecasts, investment, and risk analysis",
       color: "bg-[#F97316]/10",
       border: "border-[#F97316]/30",
       text: "text-white",
@@ -75,6 +78,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
     },
     David: {
       role: "Manager",
+      specialty: "synthesizing insights, next steps, and overall direction",
       color: "bg-[#22d3ee]/10",
       border: "border-[#22d3ee]/30",
       text: "text-white",
@@ -95,36 +99,69 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
   // Manager always first, then Emma, Mike, Scott
   const analystOrder: AnalystMessage["analyst"][] = ["David", "Emma", "Mike", "Scott"];
 
+  // Define the order of business topics to cover
+  const topicOrder: AnalystMessage["category"][] = [
+    "market", "competitors", "pricing", "forecast", "target", "risk", "conclusion"
+  ];
+
+  // Helper to get the next topic index
+  const getNextTopicIndex = (currentIndex: number) => {
+    if (currentIndex < topicOrder.length - 1) return currentIndex + 1;
+    return topicOrder.length - 1;
+  };
+
   // Function to generate a new analyst message using Gemini
   const generateAnalystMessage = async (idea: string, prevMessages: AnalystMessage[], progress: number) => {
+    // Determine current topic index
+    const lastTopicIndex = prevMessages.length > 0 ? topicOrder.indexOf(prevMessages[prevMessages.length - 1].category) : -1;
+    const nextTopicIndex = getNextTopicIndex(lastTopicIndex);
+    const nextTopic = topicOrder[nextTopicIndex];
     let analyst: AnalystMessage["analyst"];
-    if (prevMessages.length === 0) {
+    if (nextTopic === "conclusion") {
+      analyst = "David";
+    } else if (prevMessages.length === 0) {
       analyst = "David";
     } else {
-      // Rotate only Emma, Mike, Scott after David
       const idx = (prevMessages.length - 1) % 3;
       analyst = analystOrder[idx + 1];
     }
     const role = analysts[analyst].role;
+    const specialty = analysts[analyst].specialty;
+    const prevContext = prevMessages.map((m) => `${m.analyst} (${analysts[m.analyst].role}): ${m.message}`).join("\n");
     const persona =
       analyst === "Emma"
-        ? "You are Emma, a witty Data Scientist."
+        ? "You are Emma, a data-driven Market Research Analyst."
         : analyst === "Mike"
         ? "You are Mike, a strategic Business Strategist."
         : analyst === "Scott"
-        ? "You are Scott, a humorous Financial Analyst."
+        ? "You are Scott, a pragmatic Financial Analyst."
         : "You are David, a wise and concise team leader.";
-    const prevContext = prevMessages.map((m) => `${m.analyst} (${analysts[m.analyst].role}): ${m.message}`).join("\n");
-    const prompt = `
+    let prompt = '';
+    if (nextTopic === "conclusion") {
+      prompt = `
+${persona}
+You are the team manager. Synthesize the discussion and provide a clear, actionable conclusion or next steps in one sentence.\nEnd your message with [conclusion complete].\nPrevious conversation:\n${prevContext || "(none yet)"}
+`;
+    } else {
+      prompt = `
 ${persona}
 You are part of a 4-person analyst team (David, Emma, Mike, Scott) discussing a new business idea: "${idea}".
 Your role: ${role}.
-Current progress: ${progress}/100.
+Your specialty: ${specialty}.
+Current topic: ${nextTopic}.
 Previous conversation:
 ${prevContext || "(none yet)"}
 
-Respond with a single, engaging, and context-aware message as your character. Be insightful, relevant, and occasionally humorous. Reference the user's idea and the team's previous comments. Keep it concise, insightful, and NO LONGER THAN 1 SENTENCE. Respond in 1 sentence only in 20 words. Do not exceed 1 sentence , 20 words. Do NOT mention progress numbers or scores. Be extremely brief. Avoid explanations.`;
-
+You must address the topic: "${nextTopic}" in your response.
+Do not repeat previous topics.
+Respond with a single, concise, and professional message as your character.
+- Reference the previous analyst's point and add new insight or a follow-up question.
+- Do not mention progress numbers or scores.
+- Keep your response to one sentence, no more than 20 words.
+- Be insightful and business-focused.
+- End your message with [${nextTopic} complete].
+`;
+    }
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -134,7 +171,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
       analyst,
       message: text.trim(),
       progressThreshold: progress,
-      category: "market"
+      category: nextTopic
     } as AnalystMessage;
   };
 
@@ -148,14 +185,34 @@ Respond with a single, engaging, and context-aware message as your character. Be
   // Generate a new message when userInput or progress changes
   useEffect(() => {
     if (!userInput || progress < 3) return;
-    const promptKey = `${userInput}|${progress}`;
+    // Stop if the last message is a conclusion and marked complete
+    if (
+      visibleMessages.length > 0 &&
+      visibleMessages[visibleMessages.length - 1].category === "conclusion" &&
+      visibleMessages[visibleMessages.length - 1].message.includes("[conclusion complete]")
+    ) {
+      return;
+    }
+    const promptKey = `${userInput}|${progress}|${visibleMessages.length}`;
     if (lastPrompt === promptKey) return;
     setLastPrompt(promptKey);
+    // Add a cooldown (e.g., 3 seconds) between messages
+    const cooldown = 3000;
+    const now = Date.now();
+    const lastMsgTime = (window as any)._lastAnalystMsgTime || 0;
+    if (now - lastMsgTime < cooldown) return;
+    (window as any)._lastAnalystMsgTime = now;
     const thinkingDelay = 1200 + Math.random() * 600; // 1.2s to 1.8s
     const typingDelay = 1800 + Math.random() * 1000;  // 1.8s to 2.8s
     setTimeout(() => {
       let nextAnalyst: AnalystMessage["analyst"];
-      if (visibleMessages.length === 0) {
+      // Always advance to the next topic after each message
+      const lastTopicIndex = visibleMessages.length > 0 ? topicOrder.indexOf(visibleMessages[visibleMessages.length - 1].category) : -1;
+      const nextTopicIndex = getNextTopicIndex(lastTopicIndex);
+      const nextTopic = topicOrder[nextTopicIndex];
+      if (nextTopic === "conclusion") {
+        nextAnalyst = "David";
+      } else if (visibleMessages.length === 0) {
         nextAnalyst = "David";
       } else {
         const idx = (visibleMessages.length - 1) % 3;
@@ -170,7 +227,7 @@ Respond with a single, engaging, and context-aware message as your character. Be
       });
     }, thinkingDelay);
     // eslint-disable-next-line
-  }, [userInput, progress]);
+  }, [userInput, progress, visibleMessages.length]);
 
   if (visibleMessages.length === 0 && !typing) {
     return null;

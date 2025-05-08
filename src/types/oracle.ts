@@ -52,6 +52,7 @@ export interface Competitor {
       geographic: string[];
       channels: string[];
     };
+    summary?: string;
   };
 }
 
@@ -61,45 +62,12 @@ export interface PriceSuggestion {
   description: string;
   trends?: PriceTrend[];
   detailedAnalysis?: {
-    targetSegment: string[];
+    summary?: string;
     competitiveAdvantage: string;
     revenuePotential: {
       shortTerm: string;
       longTerm: string;
-      assumptions: string[];
     };
-    adoptionBarriers: string[];
-    successMetrics: {
-      keyMetrics: string[];
-      targets: string[];
-    };
-    implementationStrategy: {
-      phases: string[];
-      timeline: string;
-      resources: string[];
-    };
-    riskAnalysis: {
-      risks: string[];
-      mitigations: string[];
-    };
-    marketFit: {
-      idealCustomers: string[];
-      marketConditions: string[];
-      competitiveLandscape: string;
-    };
-  };
-  pricingStrategy?: {
-    approach: string;
-    rationale: string;
-    keyConsiderations: string[];
-    flexibility: string;
-    scalability: string;
-  };
-  customerFeedback?: {
-    expectedReactions: string[];
-    valueProposition: string;
-    objections: string[];
-    responses: string[];
   };
 }
 
@@ -111,7 +79,11 @@ export interface PriceTrend {
 export interface Forecast {
   bestCase: ForecastCase;
   worstCase: ForecastCase;
+  averageCase: ForecastCase;
   timeframe?: string;
+  currency?: string;
+  revenueSummary?: string;
+  customerSummary?: string;
 }
 
 export interface ForecastCase {
