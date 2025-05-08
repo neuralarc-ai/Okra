@@ -119,15 +119,15 @@ const Analysis = () => {
               <TabsContent value="go-to-market">
                 <GoToMarketCard goToMarket={result.goToMarket} />
               </TabsContent>
-              <TabsContent value="timeline-milestones">
+              <TabsContent value="timeline-milestones" className="flex flex-col gap-4">
                 <TimelineCard timeline={result.timeline} />
                 <MilestonesCard milestones={result.milestones} currency={result.currency} />
               </TabsContent>
-              <TabsContent value="financial-plan">
+              <TabsContent value="financial-plan" className="flex flex-col gap-4">
                 <FinancialPlanCard financialPlan={result.financialPlan} currency={result.currency} />
                 <FundingRequirementsCard fundingRequirements={result.fundingRequirements} currency={result.currency} />
               </TabsContent>
-              <TabsContent value="clients-sources">
+              <TabsContent value="clients-sources" className="flex flex-col gap-4">
                 <ClientsCard clients={result.clients} />
                 <SourcesCard sources={result.sources} />
               </TabsContent>

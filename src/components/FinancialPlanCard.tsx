@@ -61,17 +61,24 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-xl font-medium text-white">Financial Plan</CardTitle>
+        <CardTitle className="text-2xl font-bold text-white flex items-center gap-3 tracking-tight">
+          <RadarChart width={24} height={24} className="text-purple-300" /> Financial Plan
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8 p-6">
         {/* Startup Costs */}
         <div>
-          <h4 className="text-sm font-medium text-white mb-2">Initial Startup Costs</h4>
-          <div className="space-y-2">
+          <h4 className="text-lg font-bold text-purple-300 mb-3 flex items-center gap-2 tracking-tight">Initial Startup Costs</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {(financialPlan.startupCosts || []).map((cost, index) => (
-              <div key={`startup-${index}`} className="flex justify-between items-center text-sm">
-                <span className="text-sm text-gray-400">{cost.category}</span>
-                <span className="text-sm text-white">{formatCurrency(cost.amount, currency)}</span>
+              <div key={`startup-${index}`} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-purple-400/10 shadow-sm">
+                <span className="text-base text-gray-300 flex items-center gap-2">
+                  {/* Optionally, you could add an icon here based on category */}
+                  {cost.category}
+                </span>
+                <span className="px-4 py-1 rounded-full bg-purple-400/10 text-purple-300 font-bold text-sm shadow-sm border border-purple-400/20">
+                  {formatCurrency(cost.amount, currency)}
+                </span>
               </div>
             ))}
           </div>
@@ -80,30 +87,49 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
         {/* Monthly Expenses Breakdown */}
         {expenseData.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-white mb-4">Monthly Expenses Breakdown</h4>
-            <div className="w-full max-w-[800px] mx-auto flex flex-col items-center justify-center" style={{ overflow: 'visible' }}>
-              <ResponsiveContainer width="100%" height={300}>
-                <RadarChart data={expenseData}>
-                  <PolarGrid stroke="#222" />
-                  <PolarAngleAxis dataKey="category" tick={{ fill: '#fff', fontSize: 12, fontWeight: 500 }} />
-                  <Radar
-                    dataKey="value"
-                    fill={RADAR_COLOR}
-                    fillOpacity={0.6}
-                    stroke={RADAR_COLOR}
-                    dot={{ r: 4, fill: RADAR_COLOR, fillOpacity: 1 }}
-                  />
-                  <RechartsTooltip
-                    cursor={false}
-                    contentStyle={{ background: '#18181b', border: 'none', color: '#f9fafb' }}
-                    formatter={(value: number) => formatCurrency(value, currency)}
-                  />
-                </RadarChart>
-              </ResponsiveContainer>
-              <div className="mt-2 text-center">
-                <span className="text-lg font-bold text-white">{formatCurrency(total, currency)}</span>
-                <span className="block text-xs text-gray-400">Total Monthly Expenses</span>
+            <h4 className="text-lg font-bold text-purple-300 mb-3 flex items-center gap-2 tracking-tight">Monthly Expenses Breakdown</h4>
+            <div className="w-full max-w-[800px] mx-auto flex flex-col md:flex-row items-center justify-center gap-8" style={{ overflow: 'visible' }}>
+              <div className="flex-1 min-w-[260px]">
+                <ResponsiveContainer width="100%" height={300}>
+                  <RadarChart data={expenseData}>
+                    <PolarGrid stroke="#222" />
+                    <PolarAngleAxis dataKey="category" tick={{ fill: '#fff', fontSize: 12, fontWeight: 500 }} />
+                    <Radar
+                      dataKey="value"
+                      fill={RADAR_COLOR}
+                      fillOpacity={0.6}
+                      stroke={RADAR_COLOR}
+                      dot={{ r: 4, fill: RADAR_COLOR, fillOpacity: 1 }}
+                    />
+                    <RechartsTooltip
+                      cursor={false}
+                      contentStyle={{ background: '#18181b', border: 'none', color: '#f9fafb' }}
+                      formatter={(value: number) => formatCurrency(value, currency)}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
               </div>
+              <div className="flex-1 min-w-[220px]">
+                <div className="rounded-xl bg-white/5 border border-purple-400/10 p-0 overflow-hidden">
+                  <table className="w-full text-left">
+                    <tbody>
+                      {expenseData.map((expense, idx) => (
+                        <tr key={expense.category} className="border-b border-white/10 last:border-b-0">
+                          <td className="px-5 py-3 text-gray-300 text-sm">{expense.category}</td>
+                          <td className="px-5 py-3 text-white text-sm font-semibold text-right">{formatCurrency(expense.value, currency)}</td>
+                        </tr>
+                      ))}
+                      <tr>
+                        <td className="px-5 py-3 text-purple-300 text-base font-bold">Total</td>
+                        <td className="px-5 py-3 text-white text-base font-bold text-right">{formatCurrency(total, currency)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 text-center">
+              <span className="block text-xs text-gray-400">Monthly expenses by category and total</span>
             </div>
           </div>
         )}
@@ -111,23 +137,27 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
         {/* Break-even Analysis */}
         {financialPlan.breakEvenAnalysis && (
           <div>
-            <h4 className="text-sm font-medium text-white mb-2">Break-even Analysis</h4>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-400">Time to Break-even</span>
-                <span className="text-sm text-white">{financialPlan.breakEvenAnalysis.timeToBreakEven}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-400">Monthly Break-even Point</span>
-                <span className="text-sm text-white">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint, currency)}</span>
-              </div>
+            <h4 className="text-lg font-bold text-purple-300 mb-3 flex items-center gap-2 tracking-tight">Break-even Analysis</h4>
+            <div className="rounded-xl bg-white/5 border border-purple-400/10 p-0 overflow-hidden mb-2">
+              <table className="w-full text-left">
+                <tbody>
+                  <tr className="border-b border-white/10">
+                    <td className="px-5 py-3 text-gray-300 text-sm">Time to Break-even</td>
+                    <td className="px-5 py-3 text-white text-sm font-semibold text-right">{financialPlan.breakEvenAnalysis.timeToBreakEven}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-5 py-3 text-gray-300 text-sm">Monthly Break-even Point</td>
+                    <td className="px-5 py-3 text-white text-sm font-semibold text-right">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint, currency)}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div className="mt-2">
-              <strong className="text-xs text-gray-400">Key Assumptions:</strong>
+              <span className="text-xs text-gray-400 font-semibold">Key Assumptions:</span>
               <ul className="space-y-1 mt-1">
                 {(financialPlan.breakEvenAnalysis.assumptions || []).map((assumption, index) => (
                   <li key={`assumption-${index}`} className="text-sm text-gray-400 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400/20" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400/20" />
                     {assumption}
                   </li>
                 ))}
@@ -138,9 +168,9 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
 
         {/* Projected Profit Margin */}
         {typeof financialPlan.projectedProfitMargin === 'number' && (
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-400">Projected Profit Margin</span>
-            <span className="text-lg font-semibold text-white">
+          <div className="flex justify-between items-center rounded-xl bg-white/5 border border-purple-400/10 px-5 py-4 mt-2">
+            <span className="text-base text-purple-300 font-bold">Projected Profit Margin</span>
+            <span className="text-lg font-bold text-white bg-purple-400/10 px-4 py-1 rounded-full">
               {financialPlan.projectedProfitMargin}%
             </span>
           </div>
