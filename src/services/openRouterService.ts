@@ -555,27 +555,53 @@ function applyCurrencyConsistency(obj: any): AnalysisResult {
     return obj;
   }
 
+  // Normalize the currency code
+  const normalizedCurrency = obj.currency.toUpperCase().replace(/[₹$€]/g, '');
+  obj.currency = normalizedCurrency; // Store the normalized currency code
+
   function fixCurrency(item: any, currency: string): any {
     if (typeof item === 'string') {
-      // Replace various currency formats with the correct one
+      // Only replace currency symbols in display strings, not in currency codes
       if (currency === 'INR') {
-        return item.replace(/\$|USD|usd|A\.?E\.?D\.?|aed/gi, '₹').replace(/INR/gi, '₹');
+        // Replace currency symbols but preserve currency codes
+        return item
+          .replace(/\$|USD|usd|A\.?E\.?D\.?|aed/gi, (match) => {
+            // If it's a currency code, keep it as INR
+            return match.toUpperCase() === 'USD' ? 'INR' : '₹';
+          })
+          .replace(/INR/gi, 'INR'); // Keep INR as is
       } else if (currency === 'USD') {
-        return item.replace(/₹|INR|inr|A\.?E\.?D\.?|aed/gi, '$').replace(/\$/g, '$');
+        return item
+          .replace(/₹|INR|inr|A\.?E\.?D\.?|aed/gi, (match) => {
+            return match.toUpperCase() === 'INR' ? 'USD' : '$';
+          })
+          .replace(/USD/gi, 'USD'); // Keep USD as is
       } else if (currency === 'AED') {
-        return item.replace(/\$|USD|usd|INR|inr|₹/gi, 'AED');
+        return item
+          .replace(/\$|USD|usd|INR|inr|₹/gi, (match) => {
+            const upper = match.toUpperCase();
+            if (upper === 'USD') return 'USD';
+            if (upper === 'INR') return 'INR';
+            return 'AED';
+          })
+          .replace(/AED/gi, 'AED'); // Keep AED as is
       }
     } else if (Array.isArray(item)) {
       return item.map(element => fixCurrency(element, currency));
     } else if (typeof item === 'object' && item !== null) {
       const newObj: Record<string, any> = {};
       for (const key in item) {
-        newObj[key] = fixCurrency(item[key], currency);
+        // Don't modify currency codes in property names
+        if (key === 'currency') {
+          newObj[key] = currency;
+        } else {
+          newObj[key] = fixCurrency(item[key], currency);
+        }
       }
       return newObj;
     }
     return item;
   }
 
-  return fixCurrency(obj, obj.currency) as AnalysisResult;
+  return fixCurrency(obj, normalizedCurrency) as AnalysisResult;
 }

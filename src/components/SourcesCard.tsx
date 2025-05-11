@@ -34,7 +34,8 @@ const SourcesCard = ({ sources = [] }: SourcesCardProps) => {
       </CardHeader>
       <CardContent className="relative">
         <div 
-          className="space-y-5 pr-2"
+          className="space-y-5 overflow-y-auto custom-scrollbar pr-2"
+          style={{ maxHeight: 'calc(100vh - 300px)' }}
         >
           {!sources || sources.length === 0 ? (
             <div className="p-6 rounded-xl bg-white/5 border border-yellow-200/10 text-center">
