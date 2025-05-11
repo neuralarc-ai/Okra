@@ -8,10 +8,10 @@ interface Source {
 }
 
 interface SourcesCardProps {
-  sources: Source[];
+  sources?: Source[];
 }
 
-const SourcesCard = ({ sources }: SourcesCardProps) => {
+const SourcesCard = ({ sources = [] }: SourcesCardProps) => {
   return (
     <Card className="card-bg hover-card shadow-lg h-full">
       <CardHeader className="pb-2">
@@ -20,7 +20,9 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
             <CardTitle className="text-2xl font-semibold text-white flex items-center gap-3 tracking-tight">
               <BookOpen size={22} className="text-yellow-300" /> Research Sources
             </CardTitle>
-            <div className="text-xs text-yellow-200 mt-1 font-medium">{sources.length} verified sources analyzed</div>
+            <div className="text-xs text-yellow-200 mt-1 font-medium">
+              {sources?.length || 0} verified sources analyzed
+            </div>
           </div>
           <button
             className="px-4 py-1 rounded-full border border-yellow-200/10 bg-yellow-200/5 text-xs text-yellow-200 hover:bg-yellow-200/10 transition font-medium shadow-sm"
@@ -30,11 +32,12 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
           </button>
         </div>
       </CardHeader>
-      <CardContent className="relative p-6">
+      <CardContent className="relative">
         <div 
           className="space-y-5 overflow-y-auto custom-scrollbar pr-2"
+          style={{ maxHeight: 'calc(100vh - 300px)' }}
         >
-          {sources.length === 0 ? (
+          {!sources || sources.length === 0 ? (
             <div className="p-6 rounded-xl bg-white/5 border border-yellow-200/10 text-center">
               <p className="text-gray-400 text-base">No research sources available</p>
             </div>
@@ -57,12 +60,14 @@ const SourcesCard = ({ sources }: SourcesCardProps) => {
           )}
         </div>
         {/* Fade out effect at the bottom if content overflows */}
-        <div 
-          className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to bottom, transparent, rgb(16 16 16))'
-          }}
-        />
+        {sources && sources.length > 3 && (
+          <div 
+            className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, transparent, rgb(16 16 16))'
+            }}
+          />
+        )}
       </CardContent>
     </Card>
   );
