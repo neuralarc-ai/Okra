@@ -144,7 +144,16 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 <Users className="h-4 w-4 text-green-200" />
                 Target Audience
               </div>
-              <div className="text-lg font-semibold text-white whitespace-pre-line break-words leading-tight">{scoreAnalysis.keyMetrics.targetAudience}</div>
+              <div className="text-lg font-semibold text-white whitespace-pre-line break-words leading-tight">
+                {scoreAnalysis.keyMetrics.targetAudience
+                  .replace(/^(Tens of millions of|Millions of|Hundreds of|Thousands of)\s+/i, '')
+                  .replace(/\(thousands\)|\(millions\)|\(hundreds\)|\(tens of millions\)/gi, '')
+                  .replace(/,\s*(thousands|millions|hundreds|tens of millions)/gi, '')
+                  .replace(/\s*\(\s*\)/g, '') // Remove empty parentheses
+                  .replace(/\s*,\s*,/g, ',') // Fix double commas
+                  .replace(/,\s*$/, '') // Remove trailing comma
+                  .trim()}
+              </div>
             </div>
             <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-between min-h-[80px] border border-green-200/10">
               <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">

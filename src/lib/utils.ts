@@ -31,13 +31,13 @@ export function formatCurrency(amount: number, currency: string = 'INR'): string
   
   // For other currencies, use Intl.NumberFormat with the normalized currency code
   try {
-    const formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
       currency: normalizedCurrency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-    return formatter.format(amount);
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  return formatter.format(amount);
   } catch (error) {
     // Fallback to basic formatting if currency code is invalid
     console.warn(`Invalid currency code: ${currency}, falling back to basic formatting`);
