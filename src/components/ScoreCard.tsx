@@ -125,28 +125,28 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             <TrendingUp className="h-6 w-6 text-green-200" /> Key Metrics
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-between min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
               <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
                 <Target className="h-4 w-4 text-green-200" />
                 Market Size
               </div>
               <div className="text-lg font-semibold text-white">{scoreAnalysis.keyMetrics.marketSize}</div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-between min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
               <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
                 <TrendingUp className="h-4 w-4 text-green-200" />
                 Growth Rate
               </div>
               <div className="text-lg font-semibold text-white">{scoreAnalysis.keyMetrics.growthRate}</div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-between min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
               <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
                 <Users className="h-4 w-4 text-green-200" />
                 Target Audience
               </div>
               <div className="text-lg font-semibold text-white whitespace-pre-line break-words leading-tight">{scoreAnalysis.keyMetrics.targetAudience}</div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-between min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
               <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
                 <DollarSign className="h-4 w-4 text-green-200" />
                 Initial Investment
@@ -286,7 +286,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-base text-white">{risk.risk}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-start gap-2">
                   <span className="text-gray-400 font-medium">Mitigation:</span>
                   <span className="text-white/90">{risk.mitigation}</span>
                 </div>
