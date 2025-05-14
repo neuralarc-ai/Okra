@@ -16,7 +16,14 @@ const Landing = () => {
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <main className="flex-1 flex flex-col items-center justify-center px-4">
           <div className="flex flex-col items-center gap-6 animate-fadeUp">
-            <img src="/okra-black.png" alt="Okra AI Logo" style={{ width: '220px', height: '56px' }} className="mx-auto" />
+          <div className="flex items-center gap-3 mb-2">
+              <span className="inline-flex items-center justify-center rounded-full bg-white/10 p-3">
+                <Sparkles className="text-white w-8 h-8 animate-pulse" />
+              </span>
+              <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg tracking-tight text-center">
+                Okra AI
+              </h1>
+            </div>
             <h2 className="text-xl md:text-2xl text-white/80 font-medium text-center max-w-2xl">
               AI-powered research analyst for startups and innovators. Instantly validate your ideas, analyze competitors, and get actionable insights—beautifully, securely, and fast.
             </h2>
