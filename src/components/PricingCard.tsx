@@ -14,30 +14,24 @@ interface PricingCardProps {
 const formatPriceValue = (value: any, currency: string): string => {
   if (typeof value === 'number') return formatCurrency(value, currency);
   if (typeof value === 'string') {
-    // If it's a range (e.g., '500k - 2M+')
-    if (value.includes('-')) {
-      const [low, high] = value.split('-').map(v => v.trim());
-      const formatPart = (part: string) => {
-        if (part.toLowerCase().includes('k')) {
-          return formatCurrency(parseFloat(part) * 1e3, currency);
-        }
-        if (part.toLowerCase().includes('m')) {
-          return formatCurrency(parseFloat(part) * 1e6, currency);
-        }
-        const num = parseFloat(part.replace(/[^0-9.]/g, ''));
-        return isNaN(num) ? part : formatCurrency(num, currency);
-      };
-      return `${formatPart(low)} - ${formatPart(high)}`;
+    // Remove currency codes and non-numeric characters except for .,- (for ranges)
+    const cleaned = value.replace(/(USD|INR|AED|EUR|GBP|\$|₹|€|£)/gi, '').replace(/[^0-9.,\-]/g, '');
+    // Handle ranges like "5000-15000"
+    if (cleaned.includes('-')) {
+      const [low, high] = cleaned.split('-').map(v => v.replace(/,/g, '').trim());
+      const lowNum = parseFloat(low);
+      const highNum = parseFloat(high);
+      if (!isNaN(lowNum) && !isNaN(highNum)) {
+        return `${formatCurrency(lowNum, currency)} - ${formatCurrency(highNum, currency)}`;
+      }
     }
-    // Try to parse as number with k/M
-    if (value.toLowerCase().includes('k')) {
-      return formatCurrency(parseFloat(value) * 1e3, currency);
+    // Single value
+    const num = parseFloat(cleaned.replace(/,/g, ''));
+    if (!isNaN(num)) {
+      return formatCurrency(num, currency);
     }
-    if (value.toLowerCase().includes('m')) {
-      return formatCurrency(parseFloat(value) * 1e6, currency);
-    }
-    const num = parseFloat(value.replace(/[^0-9.]/g, ''));
-    return isNaN(num) ? value : formatCurrency(num, currency);
+    // If still not a number, just return the original string
+    return value;
   }
   if (typeof value === 'object' && value !== null) {
     // Recursively format each key-value pair
