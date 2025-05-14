@@ -73,17 +73,17 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
       <CardContent className="space-y-8 p-6">
         {/* Quarterly Milestones */}
         <div className="space-y-8">
-          {milestones.quarters.map((quarter, index) => (
-            <div key={`quarter-${index}`} className="space-y-4">
+          {milestones.quarters.map((quarter, idx) => (
+            <div key={idx} className="space-y-4">
               <div className="flex justify-between items-center mb-2">
                 <h4 className="text-lg font-bold text-blue-300">{quarter.quarter}</h4>
                 <span className="text-xs text-gray-400 bg-white/10 px-3 py-1 rounded-full">Budget: {formatCurrency(quarter.budget, currency)}</span>
               </div>
               {/* Objectives */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {quarter.objectives.map((objective, objIndex) => (
+              {Array.isArray(quarter.objectives) && quarter.objectives.length > 0 ? (
+                quarter.objectives.map((objective, i) => (
                   <div 
-                    key={`obj-${index}-${objIndex}`}
+                    key={`obj-${idx}-${i}`}
                     className="p-4 border border-white/10 rounded-xl bg-white/5 flex flex-col gap-2 shadow-sm"
                   >
                     <div className="flex items-center gap-2 mb-1">
@@ -97,7 +97,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                       <div className="flex flex-wrap gap-2 mt-2">
                         {objective.metrics.map((metric, metricIndex) => (
                           <div 
-                            key={`metric-${index}-${objIndex}-${metricIndex}`}
+                            key={`metric-${idx}-${i}-${metricIndex}`}
                             className="px-2 py-1 bg-blue-900/20 rounded text-xs flex items-center gap-1"
                           >
                             <span className="text-blue-300 font-semibold">{metric.name}:</span>
@@ -111,15 +111,17 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                       </div>
                     )}
                   </div>
-                ))}
-              </div>
+                ))
+              ) : (
+                <div className="text-gray-400 italic">No objectives listed for this quarter.</div>
+              )}
               {/* Key Deliverables */}
               <div className="pl-2 border-l-4 border-blue-300/20 mt-2">
                 <h5 className="text-xs font-semibold text-blue-300 mb-2">Key Deliverables</h5>
                 <ul className="space-y-1">
                   {quarter.keyDeliverables.map((deliverable, delIndex) => (
                     <li 
-                      key={`del-${index}-${delIndex}`}
+                      key={`del-${idx}-${delIndex}`}
                       className="text-sm text-gray-300 flex items-center gap-2"
                     >
                       <CheckCircle2 className="w-3 h-3 text-blue-300" />

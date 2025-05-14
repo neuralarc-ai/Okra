@@ -1,0 +1,1845 @@
+{
+  "$ref": "#/definitions/AnalysisResult",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "AnalysisResult": {
+      "additionalProperties": false,
+      "properties": {
+        "clients": {
+          "items": {
+            "$ref": "#/definitions/Client"
+          },
+          "type": "array"
+        },
+        "competitors": {
+          "items": {
+            "$ref": "#/definitions/Competitor"
+          },
+          "type": "array"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "financialPlan": {
+          "$ref": "#/definitions/FinancialPlan"
+        },
+        "forecasts": {
+          "additionalProperties": false,
+          "properties": {
+            "bestCase": {
+              "additionalProperties": false,
+              "properties": {
+                "customers": {
+                  "type": "number"
+                },
+                "marketShare": {
+                  "type": "number"
+                },
+                "revenue": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "revenue",
+                "marketShare",
+                "customers"
+              ],
+              "type": "object"
+            },
+            "worstCase": {
+              "additionalProperties": false,
+              "properties": {
+                "customers": {
+                  "type": "number"
+                },
+                "marketShare": {
+                  "type": "number"
+                },
+                "revenue": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "revenue",
+                "marketShare",
+                "customers"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "bestCase",
+            "worstCase"
+          ],
+          "type": "object"
+        },
+        "fundingRequirements": {
+          "$ref": "#/definitions/FundingRequirements"
+        },
+        "goToMarket": {
+          "$ref": "#/definitions/GoToMarket"
+        },
+        "milestones": {
+          "$ref": "#/definitions/Milestones"
+        },
+        "priceSuggestions": {
+          "items": {
+            "$ref": "#/definitions/PriceSuggestion"
+          },
+          "type": "array"
+        },
+        "revenueModel": {
+          "$ref": "#/definitions/RevenueModel"
+        },
+        "scoreAnalysis": {
+          "$ref": "#/definitions/ScoreAnalysis"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/definitions/Source"
+          },
+          "type": "array"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "timeline": {
+          "$ref": "#/definitions/Timeline"
+        },
+        "validationScore": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "validationScore",
+        "competitors",
+        "priceSuggestions",
+        "forecasts",
+        "timeline",
+        "goToMarket",
+        "clients",
+        "sources",
+        "summary",
+        "scoreAnalysis",
+        "financialPlan",
+        "fundingRequirements",
+        "revenueModel",
+        "milestones",
+        "currency"
+      ],
+      "type": "object"
+    },
+    "Client": {
+      "additionalProperties": false,
+      "properties": {
+        "industry": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "segment": {
+          "additionalProperties": false,
+          "properties": {
+            "growth": {
+              "type": "string"
+            },
+            "priority": {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "priority"
+          ],
+          "type": "object"
+        },
+        "targetAudienceDefinition": {
+          "additionalProperties": false,
+          "properties": {
+            "demographics": {
+              "additionalProperties": false,
+              "properties": {
+                "primary": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "secondary": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "primary"
+              ],
+              "type": "object"
+            },
+            "geographics": {
+              "additionalProperties": false,
+              "properties": {
+                "coverage": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "location",
+                "coverage"
+              ],
+              "type": "object"
+            },
+            "psychographics": {
+              "additionalProperties": false,
+              "properties": {
+                "lifestyle": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "needs": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "preferences": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "needs"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "demographics",
+            "psychographics",
+            "geographics"
+          ],
+          "type": "object"
+        },
+        "targetAudienceType": {
+          "type": "string"
+        },
+        "useCase": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "industry",
+        "useCase",
+        "targetAudienceDefinition"
+      ],
+      "type": "object"
+    },
+    "Competitor": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "detailedAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "customerFeedback": {
+              "additionalProperties": false,
+              "properties": {
+                "negative": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "positive": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "positive",
+                "negative"
+              ],
+              "type": "object"
+            },
+            "fundingStatus": {
+              "type": "string"
+            },
+            "growthRate": {
+              "type": "string"
+            },
+            "marketPosition": {
+              "type": "string"
+            },
+            "marketReach": {
+              "additionalProperties": false,
+              "properties": {
+                "channels": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "geographic": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "geographic",
+                "channels"
+              ],
+              "type": "object"
+            },
+            "partnerships": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "pricingStrategy": {
+              "type": "string"
+            },
+            "recentDevelopments": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "strengths": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "targetAudience": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "technologyStack": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "uniqueSellingPoints": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "weaknesses": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "strengths",
+            "weaknesses",
+            "marketPosition",
+            "targetAudience",
+            "pricingStrategy",
+            "uniqueSellingPoints",
+            "recentDevelopments",
+            "growthRate"
+          ],
+          "type": "object"
+        },
+        "marketShare": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "primaryAdvantage": {
+          "type": "string"
+        },
+        "strengthScore": {
+          "type": "number"
+        },
+        "website": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "strengthScore",
+        "description"
+      ],
+      "type": "object"
+    },
+    "FinancialPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "breakEvenAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "assumptions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "monthlyBreakEvenPoint": {
+              "type": "number"
+            },
+            "timeToBreakEven": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "timeToBreakEven",
+            "monthlyBreakEvenPoint",
+            "assumptions"
+          ],
+          "type": "object"
+        },
+        "monthlyExpenses": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "category": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "category",
+              "amount",
+              "description"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "projectedProfitMargin": {
+          "type": "number"
+        },
+        "revenueStreams": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "assumptions": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "projectedAmount": {
+                "type": "number"
+              },
+              "source": {
+                "type": "string"
+              },
+              "timeframe": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "source",
+              "projectedAmount",
+              "timeframe",
+              "assumptions"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "startupCosts": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "category": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "category",
+              "amount",
+              "description"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "startupCosts",
+        "monthlyExpenses",
+        "revenueStreams",
+        "breakEvenAnalysis",
+        "projectedProfitMargin"
+      ],
+      "type": "object"
+    },
+    "FundingRequirements": {
+      "additionalProperties": false,
+      "properties": {
+        "equityDilution": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "percentage": {
+                "type": "number"
+              },
+              "stage": {
+                "type": "string"
+              },
+              "valuation": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "stage",
+              "percentage",
+              "valuation"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "fundingSources": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "cons": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "likelihood": {
+                "type": "number"
+              },
+              "pros": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "requirements": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "likelihood",
+              "requirements",
+              "pros",
+              "cons"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "fundingStages": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "milestones": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "stage": {
+                "type": "string"
+              },
+              "timeline": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "stage",
+              "amount",
+              "timeline",
+              "purpose",
+              "milestones"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "totalRequired": {
+          "type": "number"
+        },
+        "useOfFunds": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "category": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "priority": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "category",
+              "amount",
+              "description",
+              "priority"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "totalRequired",
+        "fundingStages",
+        "equityDilution",
+        "fundingSources",
+        "useOfFunds"
+      ],
+      "type": "object"
+    },
+    "GoToMarket": {
+      "additionalProperties": false,
+      "properties": {
+        "channels": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "cost": {
+                "type": "string"
+              },
+              "effectiveness": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "timeToROI": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "effectiveness",
+              "cost",
+              "timeToROI"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "kpis": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "metric": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "timeframe": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "metric",
+              "target",
+              "timeframe"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "strategy": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "priority": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "description",
+              "priority"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "strategy",
+        "channels",
+        "kpis"
+      ],
+      "type": "object"
+    },
+    "Milestones": {
+      "additionalProperties": false,
+      "properties": {
+        "criticalMilestones": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "importance": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "successCriteria": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "name",
+              "date",
+              "importance",
+              "successCriteria"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "quarters": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "budget": {
+                "type": "number"
+              },
+              "keyDeliverables": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "objectives": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "dependencies": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "metrics": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "target": {
+                            "type": [
+                              "string",
+                              "number"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "target"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "status": {
+                      "enum": [
+                        "pending",
+                        "in-progress",
+                        "completed"
+                      ],
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "description",
+                    "metrics",
+                    "status",
+                    "dependencies"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "quarter": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "quarter",
+              "objectives",
+              "keyDeliverables",
+              "budget"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "quarters",
+        "criticalMilestones"
+      ],
+      "type": "object"
+    },
+    "PriceSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "detailedAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "adoptionBarriers": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "competitiveAdvantage": {
+              "type": "string"
+            },
+            "revenuePotential": {
+              "additionalProperties": false,
+              "properties": {
+                "longTerm": {
+                  "type": "string"
+                },
+                "shortTerm": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "shortTerm",
+                "longTerm"
+              ],
+              "type": "object"
+            },
+            "summary": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "competitiveAdvantage",
+            "revenuePotential"
+          ],
+          "type": "object"
+        },
+        "trends": {
+          "items": {
+            "$ref": "#/definitions/PriceTrend"
+          },
+          "type": "array"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value",
+        "description"
+      ],
+      "type": "object"
+    },
+    "PriceTrend": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "value"
+      ],
+      "type": "object"
+    },
+    "RevenueModel": {
+      "additionalProperties": false,
+      "properties": {
+        "financialProjections": {
+          "additionalProperties": false,
+          "properties": {
+            "breakEvenAnalysis": {
+              "additionalProperties": false,
+              "properties": {
+                "assumptions": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "point": {
+                  "type": "string"
+                },
+                "timeline": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "point",
+                "timeline",
+                "assumptions"
+              ],
+              "type": "object"
+            },
+            "profitMargins": {
+              "additionalProperties": false,
+              "properties": {
+                "current": {
+                  "type": "string"
+                },
+                "improvementStrategy": {
+                  "type": "string"
+                },
+                "target": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "current",
+                "target",
+                "improvementStrategy"
+              ],
+              "type": "object"
+            },
+            "revenueGrowth": {
+              "additionalProperties": false,
+              "properties": {
+                "assumptions": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "year1": {
+                  "type": "string"
+                },
+                "year2": {
+                  "type": "string"
+                },
+                "year3": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "year1",
+                "year2",
+                "year3",
+                "assumptions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "revenueGrowth",
+            "profitMargins",
+            "breakEvenAnalysis"
+          ],
+          "type": "object"
+        },
+        "growthStrategy": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "detailedStrategy": {
+                "additionalProperties": false,
+                "properties": {
+                  "keyActivities": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "marketAnalysis": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "competitivePosition": {
+                        "type": "string"
+                      },
+                      "growthOpportunities": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "targetSegments": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "targetSegments",
+                      "competitivePosition",
+                      "growthOpportunities"
+                    ],
+                    "type": "object"
+                  },
+                  "objectives": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "resourceRequirements": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "riskAssessment": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "mitigations": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "risks": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "risks",
+                      "mitigations"
+                    ],
+                    "type": "object"
+                  },
+                  "successCriteria": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "objectives",
+                  "keyActivities",
+                  "successCriteria",
+                  "resourceRequirements",
+                  "riskAssessment",
+                  "marketAnalysis"
+                ],
+                "type": "object"
+              },
+              "expectedImpact": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "tactics": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "timeline": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "phase",
+              "tactics",
+              "expectedImpact",
+              "timeline"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "marketAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "competitiveLandscape": {
+              "additionalProperties": false,
+              "properties": {
+                "competitiveAdvantages": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "competitors": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "marketShare": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "competitors",
+                "marketShare",
+                "competitiveAdvantages"
+              ],
+              "type": "object"
+            },
+            "marketGrowthRate": {
+              "type": "string"
+            },
+            "marketTrends": {
+              "additionalProperties": false,
+              "properties": {
+                "current": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "emerging": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "impact": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "current",
+                "emerging",
+                "impact"
+              ],
+              "type": "object"
+            },
+            "serviceableAddressableMarket": {
+              "type": "string"
+            },
+            "serviceableObtainableMarket": {
+              "type": "string"
+            },
+            "totalAddressableMarket": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "totalAddressableMarket",
+            "serviceableAddressableMarket",
+            "serviceableObtainableMarket",
+            "marketGrowthRate",
+            "competitiveLandscape",
+            "marketTrends"
+          ],
+          "type": "object"
+        },
+        "metrics": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "current": {
+                "type": "number"
+              },
+              "detailedMetrics": {
+                "additionalProperties": false,
+                "properties": {
+                  "calculation": {
+                    "type": "string"
+                  },
+                  "definition": {
+                    "type": "string"
+                  },
+                  "importance": {
+                    "type": "string"
+                  },
+                  "improvementStrategy": {
+                    "type": "string"
+                  },
+                  "industryBenchmark": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "definition",
+                  "calculation",
+                  "importance",
+                  "industryBenchmark",
+                  "improvementStrategy"
+                ],
+                "type": "object"
+              },
+              "name": {
+                "type": "string"
+              },
+              "target": {
+                "type": "number"
+              },
+              "timeframe": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "current",
+              "target",
+              "timeframe"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "primaryStreams": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "detailedAnalysis": {
+                "additionalProperties": false,
+                "properties": {
+                  "competitiveAdvantage": {
+                    "type": "string"
+                  },
+                  "customerValue": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "painPoints": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "valueProposition": {
+                        "type": "string"
+                      },
+                      "willingnessToPay": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "valueProposition",
+                      "painPoints",
+                      "willingnessToPay"
+                    ],
+                    "type": "object"
+                  },
+                  "growthPotential": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "assumptions": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "longTerm": {
+                        "type": "string"
+                      },
+                      "shortTerm": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "shortTerm",
+                      "longTerm",
+                      "assumptions"
+                    ],
+                    "type": "object"
+                  },
+                  "implementationRequirements": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "dependencies": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "resources": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "timeline": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "resources",
+                      "timeline",
+                      "dependencies"
+                    ],
+                    "type": "object"
+                  },
+                  "marketConditions": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "current": {
+                        "type": "string"
+                      },
+                      "opportunities": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "trends": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "current",
+                      "trends",
+                      "opportunities"
+                    ],
+                    "type": "object"
+                  },
+                  "riskFactors": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "mitigations": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "risks": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "risks",
+                      "mitigations"
+                    ],
+                    "type": "object"
+                  },
+                  "targetMarket": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "targetMarket",
+                  "competitiveAdvantage",
+                  "growthPotential",
+                  "implementationRequirements",
+                  "riskFactors",
+                  "marketConditions",
+                  "customerValue"
+                ],
+                "type": "object"
+              },
+              "name": {
+                "type": "string"
+              },
+              "percentage": {
+                "type": "number"
+              },
+              "recurringType": {
+                "enum": [
+                  "one-time",
+                  "subscription",
+                  "usage-based",
+                  "hybrid"
+                ],
+                "type": "string"
+              },
+              "scalability": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "description",
+              "percentage",
+              "scalability",
+              "recurringType"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "risks": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "detailedRisk": {
+                "additionalProperties": false,
+                "properties": {
+                  "contingencyPlans": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "earlyWarningSigns": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "monitoringMetrics": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "triggers": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "description",
+                  "triggers",
+                  "earlyWarningSigns",
+                  "contingencyPlans",
+                  "monitoringMetrics"
+                ],
+                "type": "object"
+              },
+              "impact": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              },
+              "mitigationStrategy": {
+                "type": "string"
+              },
+              "probability": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "category",
+              "probability",
+              "impact",
+              "mitigationStrategy"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "primaryStreams",
+        "metrics",
+        "growthStrategy",
+        "risks"
+      ],
+      "type": "object"
+    },
+    "ScoreAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "competition": {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "level": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "level",
+            "description"
+          ],
+          "type": "object"
+        },
+        "competitivePositioning": {
+          "additionalProperties": false,
+          "properties": {
+            "mapDescription": {
+              "type": "string"
+            },
+            "position": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "position",
+            "mapDescription"
+          ],
+          "type": "object"
+        },
+        "executiveSummary": {
+          "type": "string"
+        },
+        "keyMetrics": {
+          "additionalProperties": false,
+          "properties": {
+            "growthRate": {
+              "type": "string"
+            },
+            "initialInvestment": {
+              "type": "string"
+            },
+            "marketSize": {
+              "type": "string"
+            },
+            "targetAudience": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "marketSize",
+            "growthRate",
+            "targetAudience",
+            "initialInvestment"
+          ],
+          "type": "object"
+        },
+        "marketPotential": {
+          "additionalProperties": false,
+          "properties": {
+            "score": {
+              "type": "number"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "score",
+            "status"
+          ],
+          "type": "object"
+        },
+        "marketSize": {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "trend": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "trend",
+            "value"
+          ],
+          "type": "object"
+        },
+        "marketTrends": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "impact": {
+                "type": "string"
+              },
+              "trend": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "trend",
+              "impact"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "recommendations": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "regulatoryAndRisks": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "mitigation": {
+                "type": "string"
+              },
+              "risk": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "risk",
+              "mitigation"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "swot": {
+          "additionalProperties": false,
+          "properties": {
+            "opportunities": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "strengths": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "threats": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "weaknesses": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "strengths",
+            "weaknesses",
+            "opportunities",
+            "threats"
+          ],
+          "type": "object"
+        },
+        "timing": {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "description"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "category",
+        "marketPotential",
+        "competition",
+        "marketSize",
+        "timing",
+        "recommendations",
+        "keyMetrics",
+        "executiveSummary"
+      ],
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "relevance": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "relevance"
+      ],
+      "type": "object"
+    },
+    "Timeline": {
+      "additionalProperties": false,
+      "properties": {
+        "criticalPath": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "phases": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "duration": {
+                "type": "string"
+              },
+              "milestone": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "risk": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ],
+                "type": "string"
+              },
+              "tasks": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "name",
+              "duration",
+              "tasks",
+              "milestone",
+              "risk"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "totalDuration": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "phases",
+        "totalDuration",
+        "criticalPath"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -5,9 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// Accepts a currency code (e.g., 'USD', 'INR', 'AED') and returns a formatted string for display with the appropriate symbol.
+// Input currency should always be a code, never a symbol.
 export function formatCurrency(amount: number, currency: string = 'INR'): string {
-  // Normalize currency code to uppercase and handle symbol cases
-  const normalizedCurrency = currency.toUpperCase().replace(/[₹$€]/g, '');
+  // Normalize currency code to uppercase and remove any symbols accidentally passed
+  const normalizedCurrency = currency.toUpperCase().replace(/[^A-Z]/g, '');
   
   if (normalizedCurrency === 'INR') {
     if (amount >= 10000000) { // 1 crore
@@ -26,6 +28,15 @@ export function formatCurrency(amount: number, currency: string = 'INR'): string
       return `$${(amount / 1000).toFixed(1)}K`;
     } else {
       return `$${amount.toLocaleString('en-US')}`;
+    }
+  } else if (normalizedCurrency === 'AED') {
+    // Example for AED (Emirati Dirham)
+    if (amount >= 1000000) {
+      return `AED ${(amount / 1000000).toFixed(2)}M`;
+    } else if (amount >= 1000) {
+      return `AED ${(amount / 1000).toFixed(2)}K`;
+    } else {
+      return `AED ${amount.toLocaleString('en-AE')}`;
     }
   }
   

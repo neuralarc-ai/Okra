@@ -103,7 +103,7 @@ export const generateAnalysis = async (
         - keyMetrics: object with:
           * marketSize: string (e.g., "$120M")
           * growthRate: string (e.g., "14.5% CAGR")
-          * targetAudience: string (e.g., "2.4M")
+          * targetAudience: string (e.g., "B2B clients, B2C consumers,  individuals & businesses, B2B Buyers (Importers, Wholesalers, Processors), Initial target VR users")
           * initialInvestment: string (e.g., "$85,000")
         - executiveSummary: string (2-3 sentences describing the business idea and its target market)
         - swot: object with:
@@ -261,10 +261,10 @@ export const generateAnalysis = async (
           * date: string
           * importance: string
           * successCriteria: string[]
-    16. currency: string (e.g., "INR" or "USD") — The currency used for all monetary values in this report. All monetary values in this report must use the currency specified here, and must be consistent throughout. Never mix currencies. If the business is in India, use INR (₹); if in the US, use USD ($); etc. If the user prompt mentions a country, always use that country's currency. State the currency at the top of the JSON as: currency: "INR" (or "USD", etc.).
+    16. currency: string (e.g., "INR" or "USD") — The currency CODE used for all monetary values in this report. All monetary values in this report must use the currency CODE (e.g., "INR", "USD", "AED") specified here, and must be consistent throughout. NEVER use currency symbols (such as $, ₹, €) in the JSON. Only use the currency code (e.g., "USD", "INR", "AED"). Never mix currencies. If the business is in India, use INR; if in the US, use USD; etc. If the user prompt mentions a country, always use that country's currency. State the currency at the top of the JSON as: currency: "INR" (or "USD", etc.).
 
     IMPORTANT CURRENCY RULES:
-    1. If the business is in India, ALL monetary values MUST use INR (₹) only. This includes:
+    1. If the business is in India, ALL monetary values MUST use INR only. This includes:
        - Pricing analysis
        - Financial plans
        - Milestones and budgets
@@ -272,17 +272,18 @@ export const generateAnalysis = async (
        - Investment requirements
        - Break-even analysis
        - All other monetary values
-    2. If the business is in the US, ALL monetary values MUST use USD ($) only.
+    2. If the business is in the US, ALL monetary values MUST use USD only.
     3. NEVER mix currencies within the same report.
     4. If you find any value in another currency, convert it to the specified currency using current exchange rates and explain the conversion in the consistencyCheck.
     5. For Indian businesses:
-       - Use ₹ symbol for INR
-       - Format large numbers with commas (e.g., ₹1,00,00,000)
-       - Use lakhs and crores for large numbers (e.g., ₹1 crore instead of ₹10,000,000)
+       - Use the code "INR" for all monetary values in the JSON (never the ₹ symbol)
+       - Format large numbers with commas (e.g., 1,00,00,000)
+       - Use lakhs and crores for large numbers (e.g., 1 crore instead of 10,000,000)
     6. For US businesses:
-       - Use $ symbol for USD
-       - Format large numbers with commas (e.g., $1,000,000)
-       - Use millions and billions for large numbers (e.g., $1M instead of $1,000,000)
+       - Use the code "USD" for all monetary values in the JSON (never the $ symbol)
+       - Format large numbers with commas (e.g., 1,000,000)
+       - Use millions and billions for large numbers (e.g., 1M instead of 1,000,000)
+    7. NEVER use currency symbols in the JSON. Only use the currency code (e.g., "USD", "INR", "AED").
 
     17. For every chart (including price trends, revenue, customer, and market share), you MUST include axis labels and units in the JSON. For example, add fields like "xAxisLabel": "Date (MM/DD)", "yAxisLabel": "Number of Users", "yAxisUnit": "users". If any chart is missing axis labels or units, regenerate the JSON.
 
@@ -295,24 +296,24 @@ export const generateAnalysis = async (
         - chartAxes: For every chart, specify the units and axis labels. If missing, REGENERATE the JSON.
         - revenueBySegment: Provide a breakdown of revenue by customer segment, and ensure segment priorities match their revenue contribution. If not, CORRECT the priorities or revenue breakdown.
         - valueAddedJustification: If value-added products are a small share despite high margin, explain why, or adjust the share to match the business logic.
-        - currencyAndUnits: Ensure all monetary values use the same currency and units throughout the report. If not, CORRECT them.
-        - currencyConsistency: Confirm that all monetary values use the specified currency. If not, CORRECT and flag. Specifically check:
-          * All pricing models use the same currency
-          * All financial plans use the same currency
-          * All milestones and budgets use the same currency
-          * All revenue forecasts use the same currency
-          * All investment requirements use the same currency
-          * All break-even analysis uses the same currency
-          * If any currency is mixed, convert ALL values to the specified currency
+        - currencyAndUnits: Ensure all monetary values use the same currency CODE and units throughout the report. If not, CORRECT them. NEVER use currency symbols in the JSON.
+        - currencyConsistency: Confirm that all monetary values use the specified currency CODE. If not, CORRECT and flag. Specifically check:
+          * All pricing models use the same currency CODE
+          * All financial plans use the same currency CODE
+          * All milestones and budgets use the same currency CODE
+          * All revenue forecasts use the same currency CODE
+          * All investment requirements use the same currency CODE
+          * All break-even analysis uses the same currency CODE
+          * If any currency is mixed, convert ALL values to the specified currency CODE
         - forecastConsistency: Ensure the averageCase is a realistic middle ground based on market analysis, not a simple mathematical average. The averageCase should:
           * Be higher than worstCase but lower than bestCase
           * Consider market conditions, competition, and historical data
-          * Have consistent units and currency with other cases
+          * Have consistent units and currency CODE with other cases
           * Align with the business timeline and market entry strategy
         - If ANY inconsistency is found, DO NOT return the JSON. Instead, REGENERATE and CORRECT the data until ALL checks pass. Only return the JSON if ALL consistency checks pass and all numbers, currencies, and logic are aligned.
     Format as valid JSON without markdown formatting or explanations. Use realistic data based on current market trends. The response MUST include all required fields, especially the 15 sources requirement.
 
-    IMPORTANT: Before finalizing the JSON, perform a strict consistency check as described above. If any numbers, currencies, or logic do not align, correct them and regenerate the JSON. All monetary values in this report must use the currency specified in the 'currency' field, and must be consistent throughout. Never mix currencies. Ensure the JSON is properly formatted without any syntax errors. Do not use markdown code blocks.
+    IMPORTANT: Before finalizing the JSON, perform a strict consistency check as described above. If any numbers, currencies, or logic do not align, correct them and regenerate the JSON. All monetary values in this report must use the currency CODE specified in the 'currency' field, and must be consistent throughout. NEVER use currency symbols in the JSON. Ensure the JSON is properly formatted without any syntax errors. Do not use markdown code blocks.
 
     IMPORTANT: All string values must be concise (max 200 characters). Never return incomplete or truncated JSON. Always close all brackets and quotes.`;
 

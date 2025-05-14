@@ -10,39 +10,42 @@ interface PricingCardProps {
   currency?: string;
 }
 
-// Helper to robustly format price values
-const formatPriceValue = (value: string | number, currency: string) => {
+// Helper to robustly format price values, including objects
+const formatPriceValue = (value: any, currency: string): string => {
   if (typeof value === 'number') return formatCurrency(value, currency);
-  if (typeof value !== 'string') return value;
-
-  // If already contains a currency symbol, show as-is
-  if (value.includes('$') || value.includes('₹') || value.includes('€')) return value;
-
-  // If it's a range (e.g., '500k - 2M+')
-  if (value.includes('-')) {
-    const [low, high] = value.split('-').map(v => v.trim());
-    const formatPart = (part: string) => {
-      if (part.toLowerCase().includes('k')) {
-        return formatCurrency(parseFloat(part) * 1e3, currency);
-      }
-      if (part.toLowerCase().includes('m')) {
-        return formatCurrency(parseFloat(part) * 1e6, currency);
-      }
-      const num = parseFloat(part.replace(/[^0-9.]/g, ''));
-      return isNaN(num) ? part : formatCurrency(num, currency);
-    };
-    return `${formatPart(low)} - ${formatPart(high)}`;
+  if (typeof value === 'string') {
+    // If it's a range (e.g., '500k - 2M+')
+    if (value.includes('-')) {
+      const [low, high] = value.split('-').map(v => v.trim());
+      const formatPart = (part: string) => {
+        if (part.toLowerCase().includes('k')) {
+          return formatCurrency(parseFloat(part) * 1e3, currency);
+        }
+        if (part.toLowerCase().includes('m')) {
+          return formatCurrency(parseFloat(part) * 1e6, currency);
+        }
+        const num = parseFloat(part.replace(/[^0-9.]/g, ''));
+        return isNaN(num) ? part : formatCurrency(num, currency);
+      };
+      return `${formatPart(low)} - ${formatPart(high)}`;
+    }
+    // Try to parse as number with k/M
+    if (value.toLowerCase().includes('k')) {
+      return formatCurrency(parseFloat(value) * 1e3, currency);
+    }
+    if (value.toLowerCase().includes('m')) {
+      return formatCurrency(parseFloat(value) * 1e6, currency);
+    }
+    const num = parseFloat(value.replace(/[^0-9.]/g, ''));
+    return isNaN(num) ? value : formatCurrency(num, currency);
   }
-
-  // Try to parse as number with k/M
-  if (value.toLowerCase().includes('k')) {
-    return formatCurrency(parseFloat(value) * 1e3, currency);
+  if (typeof value === 'object' && value !== null) {
+    // Recursively format each key-value pair
+    return Object.entries(value)
+      .map(([k, v]) => `${k}: ${formatPriceValue(v, currency)}`)
+      .join(', ');
   }
-  if (value.toLowerCase().includes('m')) {
-    return formatCurrency(parseFloat(value) * 1e6, currency);
-  }
-  const num = parseFloat(value.replace(/[^0-9.]/g, ''));
-  return isNaN(num) ? value : formatCurrency(num, currency);
+  return '';
 };
 
 const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) => {
