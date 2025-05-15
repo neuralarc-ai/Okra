@@ -145,7 +145,33 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                   </tbody>
                 </table>
               </div>
+              {/* Competitive Landscape */}
+              {revenueModel.marketAnalysis.competitiveLandscape && (
+                <div className="rounded-xl bg-white/5 border border-blue-400/10 p-0 overflow-hidden">
+                  <div className="px-5 py-4">
+                    <h5 className="text-base font-bold text-blue-400 flex items-center gap-2 mb-4"><Users2 className="h-4 w-4" /> Competitive Landscape</h5>
+                    <div className="flex flex-col space-y-4">
+                      <div className="flex items-start gap-2 text-white/90 text-sm"><PieChart className="h-4 w-4 " /> <span className="font-semibold">Market Share:</span> <span className="font-bold text-white">{revenueModel.marketAnalysis.competitiveLandscape.marketShare}</span></div>
+                      <div className="flex items-start gap-2 text-white/90 text-sm"><Users2 className="h-4 w-4 " /> <span className="font-semibold">Competitors:</span> <span className="font-bold text-white">{revenueModel.marketAnalysis.competitiveLandscape.competitors?.join(', ')}</span></div>
+                      <div className="flex items-start gap-2 text-white/90 text-sm"><Lightbulb className="h-4 w-4 " /> <span className="font-semibold">Advantages:</span> <span className="font-bold text-white">{revenueModel.marketAnalysis.competitiveLandscape.competitiveAdvantages?.join(', ')}</span></div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+            {/* Market Trends */}
+            {revenueModel.marketAnalysis.marketTrends && (
+              <div className="rounded-xl bg-white/5 border border-blue-400/10 p-0 overflow-hidden mt-4">
+                <div className="px-5 py-4">
+                  <h5 className="text-base font-bold text-blue-400 flex items-center gap-2 mb-4"><TrendingUp className="h-4 w-4" /> Market Trends</h5>
+                  <div className="flex flex-col space-y-2">
+                    <div className="text-white/90 text-sm"><span className="font-semibold">Current:</span> {revenueModel.marketAnalysis.marketTrends.current?.join(', ')}</div>
+                    <div className="text-white/90 text-sm"><span className="font-semibold">Emerging:</span> {revenueModel.marketAnalysis.marketTrends.emerging?.join(', ')}</div>
+                    <div className="text-white/90 text-sm"><span className="font-semibold">Impact:</span> {revenueModel.marketAnalysis.marketTrends.impact}</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -172,6 +198,9 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     </tr>
                   </tbody>
                 </table>
+                {revenueModel.financialProjections.revenueGrowth.assumptions && (
+                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> {revenueModel.financialProjections.revenueGrowth.assumptions.join(', ')}</div>
+                )}
               </div>
               {/* Profit Margins */}
               <div className="rounded-xl bg-white/5 border border-white/10 p-0 overflow-hidden">
@@ -187,6 +216,9 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     </tr>
                   </tbody>
                 </table>
+                {revenueModel.financialProjections.profitMargins.improvementStrategy && (
+                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><Lightbulb className="inline h-3 w-3 mr-1 text-green-300" /> {revenueModel.financialProjections.profitMargins.improvementStrategy}</div>
+                )}
               </div>
               {/* Break-Even Analysis */}
               <div className="rounded-xl bg-white/5 border border-white/10 p-0 overflow-hidden">
@@ -202,6 +234,9 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     </tr>
                   </tbody>
                 </table>
+                {revenueModel.financialProjections.breakEvenAnalysis.assumptions && (
+                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> {revenueModel.financialProjections.breakEvenAnalysis.assumptions.join(', ')}</div>
+                )}
               </div>
             </div>
           </div>
