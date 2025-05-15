@@ -139,78 +139,11 @@ export const generateAnalysis = async (
           * percentage: number (percentage of total revenue)
           * scalability: 'high' | 'medium' | 'low'
           * recurringType: 'one-time' | 'subscription' | 'usage-based' | 'hybrid'
-          * detailedAnalysis: {
-              targetMarket: string[] (specific market segments)
-              competitiveAdvantage: string (how this revenue stream differentiates)
-              growthPotential: {
-                shortTerm: string (3-6 months projection)
-                longTerm: string (1-2 years projection)
-                assumptions: string[] (key assumptions)
-              }
-              implementationRequirements: {
-                resources: string[] (required resources)
-                timeline: string (implementation timeline)
-                dependencies: string[] (prerequisites)
-              }
-              riskFactors: {
-                risks: string[] (potential risks)
-                mitigations: string[] (risk mitigation strategies)
-              }
-              marketConditions: {
-                current: string (current market state)
-                trends: string[] (market trends affecting this stream)
-                opportunities: string[] (growth opportunities)
-              }
-              customerValue: {
-                valueProposition: string (customer benefits)
-                painPoints: string[] (problems solved)
-                willingnessToPay: string (customer price sensitivity)
-              }
-            }
         - metrics: array of objects with:
           * name: string
           * current: number
           * target: number
           * timeframe: string
-          * detailedMetrics: {
-              definition: string (metric definition)
-              calculation: string (how it's calculated)
-              importance: string (why it matters)
-              industryBenchmark: string (industry standard)
-              improvementStrategy: string (how to improve)
-            }
-        - growthStrategy: array of objects with:
-          * phase: string
-          * tactics: string[]
-          * expectedImpact: string
-          * timeline: string
-          * detailedStrategy: {
-              objectives: string[] (specific goals)
-              keyActivities: string[] (required actions)
-              successCriteria: string[] (how to measure success)
-              resourceRequirements: string[] (needed resources)
-              riskAssessment: {
-                risks: string[] (potential risks)
-                mitigations: string[] (risk mitigation strategies)
-              }
-              marketAnalysis: {
-                targetSegments: string[] (focus areas)
-                competitivePosition: string (market position)
-                growthOpportunities: string[] (expansion possibilities)
-              }
-            }
-        - risks: array of objects with:
-          * category: string
-          * probability: 'high' | 'medium' | 'low'
-          * impact: 'high' | 'medium' | 'low'
-          * mitigationStrategy: string
-          * detailedRisk: {
-              description: string (detailed risk description)
-              triggers: string[] (risk triggers)
-              earlyWarningSigns: string[] (indicators)
-              contingencyPlans: string[] (backup plans)
-              monitoringMetrics: string[] (metrics to track)
-            }
         - marketAnalysis: {
             totalAddressableMarket: string (TAM)
             serviceableAddressableMarket: string (SAM)
@@ -245,6 +178,11 @@ export const generateAnalysis = async (
               assumptions: string[]
             }
           }
+        - riskAnalysis: array of objects with:
+            * category: string
+            * probability: 'high' | 'medium' | 'low'
+            * impact: 'high' | 'medium' | 'low'
+            * summaryPoints: array of 3-4 short strings (each a key risk/mitigation/observation, max 120 chars)
     15. milestones (object with quarterly objectives and critical milestones):
         - quarters: array of objects with:
           * quarter: string (e.g., "Q1 2024")

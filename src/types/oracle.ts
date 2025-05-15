@@ -377,6 +377,12 @@ export interface RevenueModel {
       assumptions: string[];
     };
   };
+  riskAnalysis?: Array<{
+    category: string;
+    probability: 'high' | 'medium' | 'low';
+    impact: 'high' | 'medium' | 'low';
+    summaryPoints: string[];
+  }>;
 }
 
 export interface Milestones {
