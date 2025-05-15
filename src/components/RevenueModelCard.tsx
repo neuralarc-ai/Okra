@@ -128,50 +128,24 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                   <tbody>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-3 flex items-center gap-2 text-blue-300 font-semibold text-sm"><DollarSign className="h-4 w-4" /> TAM</td>
-                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis?.totalAddressableMarket ?? 'N/A'}</td>
+                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis.totalAddressableMarket}</td>
                     </tr>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-3 flex items-center gap-2 text-green-300 font-semibold text-sm"><Target className="h-4 w-4" /> SAM</td>
-                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis?.serviceableAddressableMarket ?? 'N/A'}</td>
+                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis.serviceableAddressableMarket}</td>
                     </tr>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-3 flex items-center gap-2 text-yellow-300 font-semibold text-sm"><TrendingUp className="h-4 w-4" /> SOM</td>
-                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis?.serviceableObtainableMarket ?? 'N/A'}</td>
+                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis.serviceableObtainableMarket}</td>
                     </tr>
                     <tr>
                       <td className="px-5 py-3 flex items-center gap-2 text-pink-300 font-semibold text-sm"><Activity className="h-4 w-4" /> Growth Rate</td>
-                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis?.marketGrowthRate ?? 'N/A'}</td>
+                      <td className="px-5 py-3 text-white text-sm font-semibold">{revenueModel.marketAnalysis.marketGrowthRate}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              {/* Competitive Landscape */}
-              {revenueModel.marketAnalysis?.competitiveLandscape && (
-                <div className="rounded-xl bg-white/5 border border-blue-400/10 p-0 overflow-hidden">
-                  <div className="px-5 py-4">
-                    <h5 className="text-base font-bold text-blue-400 flex items-center gap-2 mb-4"><Users2 className="h-4 w-4" /> Competitive Landscape</h5>
-                    <div className="flex flex-col space-y-4">
-                      <div className="flex items-start gap-2 text-white/90 text-sm"><PieChart className="h-4 w-4 " /> <span className="font-semibold">Market Share:</span> <span className="font-bold text-white">{revenueModel.marketAnalysis?.competitiveLandscape?.marketShare ?? 'N/A'}</span></div>
-                      <div className="flex items-start gap-2 text-white/90 text-sm"><Users2 className="h-4 w-4 " /> <span className="font-semibold">Competitors:</span> <span className="font-bold text-white">{revenueModel.marketAnalysis?.competitiveLandscape?.competitors?.join(', ') ?? 'N/A'}</span></div>
-                      <div className="flex items-start gap-2 text-white/90 text-sm"><Lightbulb className="h-4 w-4 " /> <span className="font-semibold">Advantages:</span> <span className="font-bold text-white">{revenueModel.marketAnalysis?.competitiveLandscape?.competitiveAdvantages?.join(', ') ?? 'N/A'}</span></div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
-            {/* Market Trends */}
-            {revenueModel.marketAnalysis?.marketTrends && (
-              <div className="rounded-xl bg-white/5 border border-blue-400/10 p-0 overflow-hidden mt-4">
-                <div className="px-5 py-4">
-                  <h5 className="text-base font-bold text-blue-400 flex items-center gap-2 mb-4"><TrendingUp className="h-4 w-4" /> Market Trends</h5>
-                  <div className="flex flex-col space-y-2">
-                    <div className="text-white/90 text-sm"><span className="font-semibold">Current:</span> {revenueModel.marketAnalysis?.marketTrends?.current?.join(', ') ?? 'N/A'}</div>
-                    <div className="text-white/90 text-sm"><span className="font-semibold">Emerging:</span> {revenueModel.marketAnalysis?.marketTrends?.emerging?.join(', ') ?? 'N/A'}</div>
-                    <div className="text-white/90 text-sm"><span className="font-semibold">Impact:</span> {revenueModel.marketAnalysis?.marketTrends?.impact ?? 'N/A'}</div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )}
 
@@ -186,21 +160,18 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                   <tbody>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 1</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections?.revenueGrowth?.year1 ?? 'N/A'}</td>
+                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth.year1}</td>
                     </tr>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 2</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections?.revenueGrowth?.year2 ?? 'N/A'}</td>
+                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth.year2}</td>
                     </tr>
                     <tr>
                       <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 3</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections?.revenueGrowth?.year3 ?? 'N/A'}</td>
+                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth.year3}</td>
                     </tr>
                   </tbody>
                 </table>
-                {revenueModel.financialProjections?.revenueGrowth?.assumptions && (
-                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> {revenueModel.financialProjections?.revenueGrowth?.assumptions?.join(', ')}</div>
-                )}
               </div>
               {/* Profit Margins */}
               <div className="rounded-xl bg-white/5 border border-white/10 p-0 overflow-hidden">
@@ -208,17 +179,14 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                   <tbody>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><LineChart className="h-4 w-4" /> Current</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections?.profitMargins?.current ?? 'N/A'}</td>
+                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.profitMargins.current}</td>
                     </tr>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Target className="h-4 w-4" /> Target</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections?.profitMargins?.target ?? 'N/A'}</td>
+                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.profitMargins.target}</td>
                     </tr>
                   </tbody>
                 </table>
-                {revenueModel.financialProjections?.profitMargins?.improvementStrategy && (
-                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><Lightbulb className="inline h-3 w-3 mr-1 text-green-300" /> {revenueModel.financialProjections?.profitMargins?.improvementStrategy}</div>
-                )}
               </div>
               {/* Break-Even Analysis */}
               <div className="rounded-xl bg-white/5 border border-white/10 p-0 overflow-hidden">
@@ -226,17 +194,14 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                   <tbody>
                     <tr className="border-b border-white/10">
                       <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Target className="h-4 w-4" /> Point</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections?.breakEvenAnalysis?.point ?? 'N/A'}</td>
+                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.breakEvenAnalysis.point}</td>
                     </tr>
                     <tr>
                       <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Calendar className="h-4 w-4" /> Timeline</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections?.breakEvenAnalysis?.timeline ?? 'N/A'}</td>
+                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.breakEvenAnalysis.timeline}</td>
                     </tr>
                   </tbody>
                 </table>
-                {revenueModel.financialProjections?.breakEvenAnalysis?.assumptions && (
-                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> {revenueModel.financialProjections?.breakEvenAnalysis?.assumptions?.join(', ')}</div>
-                )}
               </div>
             </div>
           </div>
@@ -347,41 +312,6 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
             ))}
           </div>
         </div>
-
-        {/* Risk Analysis */}
-        {revenueModel.riskAnalysis && revenueModel.riskAnalysis.length > 0 && (
-          <div className="mt-8">
-            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2 tracking-tight"><AlertCircle className="h-5 w-5 text-red-300" /> Risk Analysis</h4>
-            <div className="space-y-4">
-              {revenueModel.riskAnalysis.map((risk, index) => (
-                <div key={`risk-${index}`} className="border border-white/10 rounded-2xl p-5 bg-white/5 shadow-sm">
-                  <div className="flex flex-wrap items-center gap-3 mb-2">
-                    <span className="text-base font-bold text-white">{risk.category}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${
-                      risk.probability === 'high' ? 'bg-red-500/20 text-red-300' :
-                      risk.probability === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
-                      'bg-green-500/20 text-green-300'
-                    }`}>
-                      {risk.probability} probability
-                    </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${
-                      risk.impact === 'high' ? 'bg-red-500/20 text-red-300' :
-                      risk.impact === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
-                      'bg-green-500/20 text-green-300'
-                    }`}>
-                      {risk.impact} impact
-                    </span>
-                  </div>
-                  <ul className="list-disc list-inside text-xs ml-4 mt-1 text-gray-300">
-                    {risk.summaryPoints.map((point, i) => (
-                      <li key={i}>{point}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

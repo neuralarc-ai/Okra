@@ -149,40 +149,22 @@ export const generateAnalysis = async (
             serviceableAddressableMarket: string (SAM)
             serviceableObtainableMarket: string (SOM)
             marketGrowthRate: string
-            competitiveLandscape: {
-              competitors: string[] (key competitors)
-              marketShare: string (your market share)
-              competitiveAdvantages: string[] (your advantages)
-            }
-            marketTrends: {
-              current: string[] (current trends)
-              emerging: string[] (emerging trends)
-              impact: string (impact on revenue)
-            }
           }
         - financialProjections: {
             revenueGrowth: {
               year1: string
               year2: string
               year3: string
-              assumptions: string[]
             }
             profitMargins: {
               current: string
               target: string
-              improvementStrategy: string
             }
             breakEvenAnalysis: {
               point: string
               timeline: string
-              assumptions: string[]
             }
           }
-        - riskAnalysis: array of objects with:
-            * category: string
-            * probability: 'high' | 'medium' | 'low'
-            * impact: 'high' | 'medium' | 'low'
-            * summaryPoints: array of 3-4 short strings (each a key risk/mitigation/observation, max 120 chars)
     15. milestones (object with quarterly objectives and critical milestones):
         - quarters: array of objects with:
           * quarter: string (e.g., "Q1 2024")
