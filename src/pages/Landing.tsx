@@ -11,7 +11,7 @@ const Landing = () => {
     <div className="min-h-screen w-full flex flex-col relative overflow-hidden">
       {/* Background */}
       <div 
-        className="fixed inset-0 bg-[url('/background.png')] bg-cover bg-top z-0"
+        className="fixed inset-0 bg-[url('/background2.png')] bg-cover bg-top z-0"
       />
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <main className="flex-1 flex flex-col items-center justify-center px-4">

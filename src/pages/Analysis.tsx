@@ -52,7 +52,7 @@ const Analysis = () => {
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden">
-      <div className="fixed inset-0 bg-[url('/background.png')] bg-cover bg-top z-0" />
+      <div className="fixed inset-0 bg-[url('/background2.png')] bg-cover bg-top z-0" />
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <div className="flex-1 flex flex-col items-center w-full py-8">
           <div className="w-full max-w-6xl mx-auto">
