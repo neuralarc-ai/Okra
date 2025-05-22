@@ -184,58 +184,79 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
               <div className="rounded-xl bg-white/5 border border-white/10 p-0 overflow-hidden">
                 <table className="w-full text-left">
                   <tbody>
-                    <tr className="border-b border-white/10">
-                      <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 1</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth.year1}</td>
-                    </tr>
-                    <tr className="border-b border-white/10">
-                      <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 2</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth.year2}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 3</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth.year3}</td>
-                    </tr>
+                    {revenueModel.financialProjections.revenueGrowth && (
+                      <>
+                        <tr className="border-b border-white/10">
+                          <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 1</td>
+                          <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth?.year1 || 'N/A'}</td>
+                        </tr>
+                        <tr className="border-b border-white/10">
+                          <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 2</td>
+                          <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth?.year2 || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                          <td className="px-5 py-2 text-green-300 font-semibold text-sm">Year 3</td>
+                          <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.revenueGrowth?.year3 || 'N/A'}</td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </table>
-                {revenueModel.financialProjections.revenueGrowth.assumptions && (
-                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> {revenueModel.financialProjections.revenueGrowth.assumptions.join(', ')}</div>
+                {revenueModel.financialProjections.revenueGrowth?.assumptions && (
+                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10">
+                    <AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> 
+                    {revenueModel.financialProjections.revenueGrowth.assumptions.join(', ')}
+                  </div>
                 )}
               </div>
               {/* Profit Margins */}
               <div className="rounded-xl bg-white/5 border border-white/10 p-0 overflow-hidden">
                 <table className="w-full text-left">
                   <tbody>
-                    <tr className="border-b border-white/10">
-                      <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><LineChart className="h-4 w-4" /> Current</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.profitMargins.current}</td>
-                    </tr>
-                    <tr className="border-b border-white/10">
-                      <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Target className="h-4 w-4" /> Target</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.profitMargins.target}</td>
-                    </tr>
+                    {revenueModel.financialProjections.profitMargins && (
+                      <>
+                        <tr className="border-b border-white/10">
+                          <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><LineChart className="h-4 w-4" /> Current</td>
+                          <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.profitMargins?.current || 'N/A'}</td>
+                        </tr>
+                        <tr className="border-b border-white/10">
+                          <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Target className="h-4 w-4" /> Target</td>
+                          <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.profitMargins?.target || 'N/A'}</td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </table>
-                {revenueModel.financialProjections.profitMargins.improvementStrategy && (
-                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><Lightbulb className="inline h-3 w-3 mr-1 text-green-300" /> {revenueModel.financialProjections.profitMargins.improvementStrategy}</div>
+                {revenueModel.financialProjections.profitMargins?.improvementStrategy && (
+                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10">
+                    <Lightbulb className="inline h-3 w-3 mr-1 text-green-300" /> 
+                    {revenueModel.financialProjections.profitMargins.improvementStrategy}
+                  </div>
                 )}
               </div>
               {/* Break-Even Analysis */}
               <div className="rounded-xl bg-white/5 border border-white/10 p-0 overflow-hidden">
                 <table className="w-full text-left">
                   <tbody>
-                    <tr className="border-b border-white/10">
-                      <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Target className="h-4 w-4" /> Point</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.breakEvenAnalysis.point}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Calendar className="h-4 w-4" /> Timeline</td>
-                      <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.breakEvenAnalysis.timeline}</td>
-                    </tr>
+                    {revenueModel.financialProjections.breakEvenAnalysis && (
+                      <>
+                        <tr className="border-b border-white/10">
+                          <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Target className="h-4 w-4" /> Point</td>
+                          <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.breakEvenAnalysis?.point || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                          <td className="px-5 py-2 flex items-center gap-2 text-green-300 font-semibold text-sm"><Calendar className="h-4 w-4" /> Timeline</td>
+                          <td className="px-5 py-2 text-white text-sm font-semibold">{revenueModel.financialProjections.breakEvenAnalysis?.timeline || 'N/A'}</td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </table>
-                {revenueModel.financialProjections.breakEvenAnalysis.assumptions && (
-                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10"><AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> {revenueModel.financialProjections.breakEvenAnalysis.assumptions.join(', ')}</div>
+                {revenueModel.financialProjections.breakEvenAnalysis?.assumptions && (
+                  <div className="px-5 py-2 text-xs text-gray-400 border-t border-white/10">
+                    <AlertCircle className="inline h-3 w-3 mr-1 text-yellow-300" /> 
+                    {revenueModel.financialProjections.breakEvenAnalysis.assumptions.join(', ')}
+                  </div>
                 )}
               </div>
             </div>

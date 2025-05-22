@@ -6,10 +6,12 @@ const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
 /**
  * Generates a business analysis using Google's Gemini API
  * @param prompt The business idea to analyze
+ * @param skipCurrencyCheck Optional flag to skip currency consistency check
  * @returns Structured analysis result or null
  */
 export const generateAnalysis = async (
-  prompt: string
+  prompt: string,
+  skipCurrencyCheck: boolean = false
 ): Promise<AnalysisResult | null> => {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" });
@@ -256,7 +258,7 @@ export const generateAnalysis = async (
     const response = await result.response;
     const text = await response.text();
 
-    return parseAndCleanResponse(text);
+    return parseAndCleanResponse(text, skipCurrencyCheck);
   } catch (error) {
     console.error('Error generating analysis (Gemini):', error);
     throw error;
@@ -266,9 +268,10 @@ export const generateAnalysis = async (
 /**
  * Parses and cleans the Gemini API response text
  * @param text Raw response text from Gemini API
+ * @param skipCurrencyCheck Optional flag to skip currency consistency check
  * @returns Cleaned and parsed AnalysisResult object
  */
-function parseAndCleanResponse(text: string): AnalysisResult | null {
+function parseAndCleanResponse(text: string, skipCurrencyCheck: boolean = false): AnalysisResult | null {
   // Step 1: Extract JSON content (removing markdown code blocks if present)
   let jsonString = extractJsonContent(text);
   
@@ -276,7 +279,7 @@ function parseAndCleanResponse(text: string): AnalysisResult | null {
   jsonString = cleanJsonString(jsonString);
   
   // Step 3: Try parsing with increasingly aggressive recovery techniques
-  return parseWithRecovery(jsonString, text);
+  return parseWithRecovery(jsonString, text, skipCurrencyCheck);
 }
 
 /**
@@ -323,15 +326,15 @@ function cleanJsonString(jsonString: string): string {
 /**
  * Attempts to parse JSON with increasingly aggressive recovery techniques
  */
-function parseWithRecovery(jsonString: string, originalText: string): AnalysisResult | null {
+function parseWithRecovery(jsonString: string, originalText: string, skipCurrencyCheck: boolean): AnalysisResult | null {
   let result = null;
   let lastError = null;
   
   // First attempt: Parse as-is
   try {
     result = JSON.parse(jsonString);
-    // If we get here, parsing succeeded
-    return applyCurrencyConsistency(result);
+    // Only apply currency consistency if not skipped
+    return skipCurrencyCheck ? result : applyCurrencyConsistency(result);
   } catch (err) {
     lastError = err;
     console.warn('Initial JSON parse failed, attempting recovery:', err);
@@ -342,7 +345,7 @@ function parseWithRecovery(jsonString: string, originalText: string): AnalysisRe
     const fixedJson = autoCloseJson(jsonString);
     result = JSON.parse(fixedJson);
     console.info('Recovered JSON using auto-close');
-    return applyCurrencyConsistency(result);
+    return skipCurrencyCheck ? result : applyCurrencyConsistency(result);
   } catch (err) {
     lastError = err;
     console.warn('Auto-close JSON recovery failed:', err);
@@ -354,7 +357,7 @@ function parseWithRecovery(jsonString: string, originalText: string): AnalysisRe
     if (recoveredJson) {
       result = JSON.parse(recoveredJson);
       console.info('Recovered JSON using chunk-based recovery');
-      return applyCurrencyConsistency(result);
+      return skipCurrencyCheck ? result : applyCurrencyConsistency(result);
     }
   } catch (err) {
     lastError = err;
@@ -367,7 +370,7 @@ function parseWithRecovery(jsonString: string, originalText: string): AnalysisRe
     if (largestValidJson) {
       result = JSON.parse(largestValidJson);
       console.info('Recovered partial JSON using regex extraction');
-      return applyCurrencyConsistency(result);
+      return skipCurrencyCheck ? result : applyCurrencyConsistency(result);
     }
   } catch (err) {
     console.error('All JSON recovery methods failed');
