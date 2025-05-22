@@ -12,13 +12,13 @@ interface PromptSuggestion {
 
 export const expandPrompt = async (basicPrompt: string): Promise<PromptSuggestion> => {
   try {
-    if (!import.meta.env.VITE_OPENAI_API_KEY) {
-      throw new Error('OpenAI API key is not configured');
+    if (!import.meta.env.VITE_GEMINI_API_KEY) {
+      throw new Error('Gemini API key is not configured');
     }
     
     const suggestion = await generatePromptExpansion(basicPrompt);
     if (!suggestion || !suggestion.title) {
-      throw new Error('Invalid response from AI service');
+      throw new Error('Invalid response from Gemini service');
     }
     return suggestion;
   } catch (error) {

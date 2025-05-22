@@ -169,10 +169,10 @@ const Index = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8]">
       {/* Background */}
       <div 
-        className="fixed inset-0 bg-[url('/background2.png')] bg-cover bg-top z-0"
+        className="fixed inset-0 bg-[#FBFAF8] z-0"
       />
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         {/* Main content */}
@@ -181,15 +181,14 @@ const Index = () => {
           {!(isAnalyzing || showResults) && (
         <div 
           ref={inputContainerRef} 
-          className={`flex flex-col items-center w-full absolute left-1/2 -translate-x-1/2 transition-all duration-500 ease-in-out z-20 gap-4 ${
-                'top-1/2 -translate-y-1/2'
+          className={`flex flex-col items-center w-full'
           }`}
         >
-          <div className="text-center mb-2">
-            <h1 className="text-4xl font-bold text-white tracking-tight">
-                <span className="text-white">Welcome to Okra AI</span>
+          <div className="text-center mb-2 mt-24">
+            <h1 className="text-4xl font-bold text-[#1E1E1E] tracking-tight">
+                <span className="text-[#1E1E1E]">Welcome to Okra AI</span>
             </h1>
-            <p className="text-gray-300 mt-1">AI Research Analyst for your Products and Services</p>
+            <p className="text-[#798682] mt-1">AI Research Analyst for your Products and Services.</p>
           </div>
           
             <ChatInput 
@@ -199,7 +198,7 @@ const Index = () => {
             />
             
             {/* Add TrendingPrompts component */}
-            <div className="w-full max-w-2xl mt-8">
+            <div className="w-full max-w-[1070px] mt-8">
               <TrendingPrompts 
                 onSelectPrompt={handleSelectTrendingPrompt}
                 className="animate-fadeUp"
