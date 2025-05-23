@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, MicOff, Wand2 } from "lucide-react";
+import { Send, Mic, MicOff, Wand2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
@@ -130,66 +130,125 @@ const ChatInput = ({
   };
   
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      className="w-full max-w-2xl flex flex-col gap-2 transition-all duration-300 shadow-lg"
-    >
-      <div 
-        className={`p-4 rounded-xl backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 ${
-          isAnalyzing ? 'bg-black/80' : 'chat-container'
-        }`}
+    <div className="w-full max-w-[1071px] mx-auto">
+      <form 
+        onSubmit={handleSubmit} 
+        className="w-full flex flex-col gap-2 transition-all duration-300"
       >
-        <Textarea 
-          ref={textareaRef} 
-          value={message} 
-          onChange={e => setMessage(e.target.value)} 
-          placeholder="Describe your product or service idea in detail. What problem does it solve? Who is it for? What makes it unique?..." 
-          disabled={isAnalyzing} 
-          rows={3} 
-          className="flex-1 px-4 py-3 bg-transparent placeholder-gray-400 text-white text-lg min-h-[100px] max-h-[200px] resize-none border-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 [&:not(:disabled)]:hover:border-none" 
-        />
-        
-        <div className="flex justify-between items-center px-2 mt-2">
-          <div className="text-xs text-gray-400">
-            {message.length > 0 ? `${message.length} characters` : "Enter your product idea for analysis"}
-          </div>
+        <div 
+          className={`p-4 rounded-xl bg-white transition-all duration-300 relative ${isAnalyzing ? 'opacity-70' : ''}`}
+          style={{
+            border: '4px solid transparent',
+            backgroundOrigin: 'border-box',
+            backgroundClip: 'padding-box, border-box',
+            backgroundImage: 'linear-gradient(white, white), linear-gradient(90deg, #3987BE 50%, #D48EA3 100%)',
+          }}
+        >
+          <Textarea 
+            ref={textareaRef} 
+            value={message} 
+            onChange={e => setMessage(e.target.value)} 
+            placeholder="Describe your product or service idea in detail. What problem does it solve? Who is it for? What makes it unique?..." 
+            disabled={isAnalyzing} 
+            rows={3} 
+            className="flex-1 px-4 py-3 bg-transparent placeholder-gray-500 text-[#222] text-lg min-h-[100px] max-h-[200px] resize-none border-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 [&:not(:disabled)]:hover:border-none" 
+          />
           
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className={`rounded-full bg-transparent border-white/40 text-white hover:bg-white/10 ${isExpanding ? 'opacity-50' : ''}`}
-              onClick={handleExpandPrompt}
-              disabled={isAnalyzing || isExpanding}
-            >
-              <Wand2 size={18} className={isExpanding ? 'animate-pulse' : ''} />
-            </Button>
-
-            {speechRecognitionSupported && 
-              <Button 
-                type="button" 
-                variant="outline" 
-                size="icon" 
-                className={`rounded-full ${isListening ? 'bg-white text-black' : 'bg-transparent border-white/40 text-white hover:bg-white/10'}`} 
-                onClick={toggleSpeechRecognition} 
-                disabled={isAnalyzing}
-              >
-                {isListening ? <MicOff size={18} /> : <Mic size={18} />}
-              </Button>
-            }
+          <div className="flex justify-between items-center px-2 mt-2">
+            <div className="text-xs text-gray-500">
+              {message.length > 0 ? `${message.length} characters` : "Enter your product idea for analysis"}
+            </div>
             
-            <Button 
-              type="submit" 
-              className="bg-white text-black hover:bg-gray-200 rounded-full px-6 transition-all duration-300" 
-              disabled={!message.trim() || isAnalyzing}
-            >
-              {isAnalyzing ? 'Analyzing...' : 'Analyze'}
-            </Button>
+            <div className="flex gap-4 items-center">
+              {/* Expand Button */}
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  width: 72,
+                  height: 72,
+                  borderRadius: 52,
+                  padding: 14,
+                  background: '#F4F4F4',
+                  marginRight: 20,
+                }}
+              >
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className={`flex items-center justify-center p-0 bg-[#302D2A] text-white shadow-md ${isExpanding ? 'opacity-50' : ''}`}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 40,
+                  }}
+                  onClick={handleExpandPrompt}
+                  disabled={isAnalyzing || isExpanding}
+                >
+                  <Wand2 size={24} className={isExpanding ? 'animate-pulse' : ''} />
+                </Button>
+              </div>
+
+              {/* Mic Button */}
+              {speechRecognitionSupported && 
+                <div
+                  className="flex items-center justify-center"
+                  style={{
+                    width: 72,
+                    height: 72,
+                    borderRadius: 52,
+                    padding: 14,
+                    background: '#F4F4F4',
+                    marginRight: 20,
+                  }}
+                >
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="icon" 
+                    className={`flex items-center justify-center p-0 bg-[#302D2A] text-white shadow-md ${isListening ? 'opacity-80' : ''}`} 
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 40,
+                    }}
+                    onClick={toggleSpeechRecognition} 
+                    disabled={isAnalyzing}
+                  >
+                    {isListening ? <MicOff size={24} /> : <Mic size={24} />}
+                  </Button>
+                </div>
+              }
+              
+              {/* Analyze Button */}
+              <Button 
+                type="submit" 
+                className="flex items-center bg-[#302D2A] text-white hover:bg-[#47423C] transition-all duration-300 disabled:bg-[#302D2A] disabled:text-white disabled:opacity-60"
+                style={{
+                  fontFamily: 'Fustat, sans-serif',
+                  fontWeight: 500,
+                  fontSize: 16,
+                  lineHeight: '24px',
+                  letterSpacing: 0,
+                  width: 193,
+                  height: 64,
+                  minWidth: 128,
+                  gap: 8,
+                  borderRadius: 4,
+                  paddingTop: 16,
+                  paddingRight: 27,
+                  paddingBottom: 16,
+                  paddingLeft: 27
+                }}
+                disabled={!message.trim() || isAnalyzing}
+              >
+                {isAnalyzing ? 'Analyzing...' : <><span>Start Analysis</span> <ArrowRight size={20} /></>}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

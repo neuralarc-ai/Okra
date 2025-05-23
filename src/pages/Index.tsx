@@ -184,11 +184,11 @@ const Index = () => {
           className={`flex flex-col items-center w-full'
           }`}
         >
-          <div className="text-center mb-2 mt-24">
-            <h1 className="text-4xl font-bold text-[#1E1E1E] tracking-tight">
+          <div className="text-center mb-2 mt-36">
+            <h1 className="text-[54px] font-[600] text-[#1E1E1E] tracking-[-3%]" style={{ fontFamily: 'Fustat' }}>
                 <span className="text-[#1E1E1E]">Welcome to Okra AI</span>
             </h1>
-            <p className="text-[#798682] mt-1">AI Research Analyst for your Products and Services.</p>
+            <p className="text-[#202020] text-[20px] mt-1 mb-9">AI Research Analyst for your Products and Services.</p>
           </div>
           
             <ChatInput 

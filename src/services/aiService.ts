@@ -37,7 +37,7 @@ export const getTrendingPrompts = async (): Promise<TrendingPrompt[]> => {
     Format the response as a JSON array with objects containing:
     - title (short name)
     - description (2-3 sentences about the idea)
-    - category (e.g., AI, Health, Fintech)
+    - category (e.g. Fintech)
     - trendScore (a number between 80-99 indicating how trending it is)
     
     Focus on innovative, tech-forward ideas that solve real problems. Return ONLY the JSON array, no markdown formatting or other text.`;
