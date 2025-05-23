@@ -57,10 +57,9 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
-    <Card className="card-bg hover-card shadow-lg h-full">
+    <div>
       <CardHeader className="pb-2">
-        <CardTitle className="text-3xl font-semibold text-white flex items-center gap-3 tracking-tight">
-          <Sparkles className="h-7 w-7 text-yellow-200" />
+        <CardTitle className="text-3xl font-semibold text-[#202020] flex items-center gap-3 tracking-tight">
           <span>Idea Validation Report</span>
         </CardTitle>
       </CardHeader>
@@ -121,78 +120,74 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
 
         {/* Key Metrics Dashboard */}
         <section className="mb-10">
-          <h3 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3 tracking-tight">
-            <TrendingUp className="h-6 w-6 text-green-200" /> Key Metrics
+          <h3 className="text-2xl font-semibold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
+            Key Metrics
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
-              <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
-                <Target className="h-4 w-4 text-green-200" />
+              <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Market Size
               </div>
-              <div className="text-lg font-semibold text-white">{scoreAnalysis.keyMetrics.marketSize}</div>
+              <div className="text-lg font-semibold text-[#202020]">{scoreAnalysis.keyMetrics.marketSize}</div>
             </div>
             <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
-              <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
-                <TrendingUp className="h-4 w-4 text-green-200" />
+              <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Growth Rate
               </div>
-              <div className="text-lg font-semibold text-white">{scoreAnalysis.keyMetrics.growthRate}</div>
+              <div className="text-lg font-semibold text-[#202020]">{scoreAnalysis.keyMetrics.growthRate}</div>
             </div>
             <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
-              <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
-                <Users className="h-4 w-4 text-green-200" />
+              <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Target Audience
               </div>
-              <div className="text-lg font-semibold text-white whitespace-pre-line break-words leading-tight">{scoreAnalysis.keyMetrics.targetAudience}</div>
+              <div className="text-lg font-semibold text-[#202020] whitespace-pre-line break-words leading-tight">{scoreAnalysis.keyMetrics.targetAudience}</div>
             </div>
             <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
-              <div className="text-xs text-green-200 mb-1 flex items-center gap-2 font-medium">
-                <DollarSign className="h-4 w-4 text-green-200" />
+              <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Initial Investment
               </div>
-              <div className="text-lg font-semibold text-white">{scoreAnalysis.keyMetrics.initialInvestment}</div>
+              <div className="text-lg font-semibold text-[#202020]">{scoreAnalysis.keyMetrics.initialInvestment}</div>
             </div>
           </div>
         </section>
 
         {/* Executive Summary */}
         <section className="mb-10 p-10 bg-white/2 rounded-2xl border border-yellow-200/10">
-          <h3 className="text-2xl font-semibold text-yellow-200 mb-3 flex items-center gap-3 tracking-tight">
-            <DollarSign className="h-6 w-6" /> Executive Summary
+          <h3 className="text-2xl font-semibold text-[#202020] mb-3 flex items-center gap-3 tracking-tight">
+            Executive Summary
           </h3>
-          <p className="text-lg text-gray-200 leading-relaxed font-normal">{scoreAnalysis.executiveSummary}</p>
+          <p className="text-lg text-[#202020] leading-relaxed font-normal">{scoreAnalysis.executiveSummary}</p>
         </section>
 
         {/* Detailed Analysis */}
         <section className="mb-10">
-          <h3 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3 tracking-tight">
-            <Target className="h-6 w-6 text-blue-200" /> Detailed Analysis
+          <h3 className="text-2xl font-semibold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
+            Detailed Analysis
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-6">
             <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
-              <div className="text-xs text-blue-200 mb-1 font-medium">Market Potential</div>
-              <div className="text-base text-white font-semibold">{scoreAnalysis.marketPotential.score}% <span className="text-xs text-blue-200 font-normal">{scoreAnalysis.marketPotential.status}</span></div>
+              <div className="text-xs text-[#202020] mb-1 font-medium">Market Potential</div>
+              <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.marketPotential.score}% <span className="text-xs text-[#202020] font-normal">{scoreAnalysis.marketPotential.status}</span></div>
             </div>
             <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
-              <div className="text-xs text-blue-200 mb-1 font-medium">Competition</div>
-              <div className="text-base text-white font-semibold">{scoreAnalysis.competition.level}</div>
+              <div className="text-xs text-[#202020] mb-1 font-medium">Competition</div>
+              <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.competition.level}</div>
             </div>
             <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
-              <div className="text-xs text-blue-200 mb-1 font-medium">Market Size</div>
-              <div className="text-base text-white font-semibold">{scoreAnalysis.marketSize.status} <span className="text-xs text-blue-200 font-normal">({scoreAnalysis.marketSize.trend})</span></div>
+              <div className="text-xs text-[#202020] mb-1 font-medium">Market Size</div>
+              <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.marketSize.status} <span className="text-xs text-[#202020] font-normal">({scoreAnalysis.marketSize.trend})</span></div>
             </div>
             <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
-              <div className="text-xs text-blue-200 mb-1 font-medium">Timing</div>
-              <div className="text-base text-white font-semibold">{scoreAnalysis.timing.status}</div>
+              <div className="text-xs text-[#202020] mb-1 font-medium">Timing</div>
+              <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.timing.status}</div>
             </div>
           </div>
           {/* Recommendations */}
           <div className="p-6 border border-green-200/20 bg-green-200/5 rounded-2xl mb-4">
-            <div className="text-lg font-semibold text-green-200 mb-3 flex items-center gap-2"><Sparkles className="h-5 w-5" /> Key Recommendations</div>
+            <div className="text-lg font-semibold text-[#202020] mb-3 flex items-center gap-2">Key Recommendations</div>
             <ul className="space-y-2">
               {scoreAnalysis.recommendations.map((recommendation, index) => (
-                <li key={index} className="text-base text-white flex items-center gap-2">
+                <li key={index} className="text-base text-[#202020] flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-200" />
                   {recommendation}
                 </li>
@@ -204,8 +199,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* SWOT Analysis */}
         {scoreAnalysis.swot && (
         <section className="mb-8">
-           <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3 tracking-tight">
-             <Sparkles className="h-6 w-6 text-yellow-300" /> SWOT Analysis
+           <h3 className="text-2xl font-bold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
+             SWOT Analysis
            </h3>
            <div className="grid grid-cols-2 gap-0 relative bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
              {/* Vertical line separators */}
@@ -258,12 +253,12 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* Market Trends */}
         {scoreAnalysis.marketTrends && scoreAnalysis.marketTrends.length > 0 && (
         <section className="mb-8">
-          <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3 tracking-tight">
-            <TrendingUp className="h-6 w-6 text-pink-300" /> Market Trends
+          <h3 className="text-2xl font-bold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
+            Market Trends
           </h3>
             <ul className="space-y-2">
               {scoreAnalysis.marketTrends.map((trend, i) => (
-              <li key={i} className="text-base text-white/90">
+              <li key={i} className="text-base text-[#202020]/90">
                 <span className="font-semibold text-gray-400">{trend.trend}:</span> {trend.impact}
                 </li>
               ))}
@@ -274,8 +269,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* Regulatory & Risks */}
         {scoreAnalysis.regulatoryAndRisks && scoreAnalysis.regulatoryAndRisks.length > 0 && (
         <section className="mb-8">
-          <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3 tracking-tight">
-            <DollarSign className="h-6 w-6 text-red-300" /> Regulatory & Risks
+          <h3 className="text-2xl font-bold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
+            Regulatory & Risks
           </h3>
           <div className="grid gap-6">
               {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
@@ -284,11 +279,11 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-3"
               >
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-base text-white">{risk.risk}</span>
+                  <span className="font-semibold text-base text-[#202020]">{risk.risk}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-gray-400 font-medium">Mitigation:</span>
-                  <span className="text-white/90">{risk.mitigation}</span>
+                  <span className="text-[#202020]/90">{risk.mitigation}</span>
                 </div>
               </div>
             ))}
@@ -299,19 +294,19 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* Competitive Positioning */}
         {scoreAnalysis.competitivePositioning && (
         <section className="mb-8">
-          <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3 tracking-tight">
-            <Target className="h-6 w-6 text-purple-300" /> Competitive Positioning
+          <h3 className="text-2xl font-bold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
+            Competitive Positioning
           </h3>
-          <div className="text-white/90 text-lg mb-2">
+          <div className="text-[#202020]/90 text-lg mb-2">
             <span className="font-semibold text-gray-400">Position:  </span> {scoreAnalysis.competitivePositioning.position}
           </div>
-          <div className="text-white/120 text-base">
+          <div className="text-[#202020]/120 text-base">
             <span className="font-semibold text-gray-400">Map:  </span> {scoreAnalysis.competitivePositioning.mapDescription}
           </div>
         </section>
         )}
       </CardContent>
-    </Card>
+    </div>
   );
 };
 

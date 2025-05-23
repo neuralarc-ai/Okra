@@ -113,9 +113,9 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
   };
 
   return (
-    <Card className="card-bg hover-card shadow-lg">
+    <div>
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-semibold flex items-center gap-2">
+        <CardTitle className="text-xl font-semibold flex items-center gap-2 text-[#202020]">
           <ChartBar size={18} className="text-gray-400" />
           <span>Competitive Analysis</span>
         </CardTitle>
@@ -142,7 +142,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                         contentStyle={{ 
                           background: 'rgba(255, 255, 255, 0.95)', 
                           border: 'none', 
-                          color: '#1a1a1a', 
+                          color: '#202020', 
                           borderRadius: '10px',
                           padding: '8px 12px',
                           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
@@ -170,6 +170,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                                   y={viewBox.cy}
                                   textAnchor="middle"
                                   dominantBaseline="middle"
+                                  fill="#202020"
                                 >
                                   <tspan
                                     x={viewBox.cx}
@@ -208,7 +209,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 </div>
               </div>
               <div className="flex justify-center mt-4">
-                <h4 className="text-base font-semibold text-white tracking-wide">Market Share Distribution</h4>
+                <h4 className="text-base font-semibold text-[#202020] tracking-wide">Market Share Distribution</h4>
               </div>
             </div>
           )}
@@ -225,26 +226,26 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                   onClick={() => toggleCompetitor(competitor.name)}
                 >
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-lg font-semibold text-white flex items-center gap-1">
+                    <span className="text-lg font-semibold text-[#202020] flex items-center gap-1">
                       {competitor.name}
                       {competitor.strengthScore > 80 && (
                         <Award size={15} className="text-yellow-300 ml-1" />
                       )}
                     </span>
                     {competitor.primaryAdvantage && (
-                      <span className="text-xs text-gray-400 font-medium mt-0.5">
-                        Key Advantage: <span className="text-white font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span>
+                      <span className="text-xs text-[#202020] font-medium mt-0.5">
+                        Key Advantage: <span className="text-[#202020] font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span>
                       </span>
                     )}
                   </div>
                   <div className="flex items-center gap-4 mt-2 md:mt-0">
                     <div className="flex flex-col items-center">
-                      <span className="text-xs text-gray-400">Market Share</span>
-                      <span className="text-base font-semibold text-white">{entry.value}%</span>
+                      <span className="text-xs text-[#202020]">Market Share</span>
+                      <span className="text-base font-semibold text-[#202020]">{entry.value}%</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <span className="text-xs text-gray-400" title="Strength Score is a 0-100 rating of this competitor's overall market strength, brand, and execution.">Strength Score</span>
-                      <span className="text-base font-semibold text-white">{competitor.strengthScore}/100</span>
+                      <span className="text-xs text-[#202020]" title="Strength Score is a 0-100 rating of this competitor's overall market strength, brand, and execution.">Strength Score</span>
+                      <span className="text-base font-semibold text-[#202020]">{competitor.strengthScore}/100</span>
                     </div>
                     <span>{isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}</span>
                   </div>
@@ -259,25 +260,25 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 </div>
                 {/* Description */}
                 <div className="px-4 pb-2">
-                  <p className="text-gray-400 text-xs italic">{competitor.description}</p>
+                  <p className="text-[#202020] text-xs italic">{competitor.description}</p>
                 </div>
                 {/* Expanded Details */}
                 {isExpanded && competitor.detailedAnalysis && (
                   <div className="mt-3 pt-3 mx-3 border-t border-white/10">
-                    <div className="text-sm text-white mb-2 font-semibold">Summary</div>
-                    <div className="text-xs text-gray-200 whitespace-pre-line mb-2">
+                    <div className="text-sm text-[#202020] mb-2 font-semibold">Summary</div>
+                    <div className="text-xs text-[#202020] whitespace-pre-line mb-2">
                       {competitor.detailedAnalysis.summary || competitor.description}
                     </div>
-                    <div className="flex flex-col gap-1 text-xs text-gray-300">
+                    <div className="flex flex-col gap-1 text-xs text-[#202020]">
                       {competitor.detailedAnalysis.marketPosition && (
-                        <div><span className="font-semibold text-white">Market Position:</span> {competitor.detailedAnalysis.marketPosition}</div>
+                        <div><span className="font-semibold text-[#202020]">Market Position:</span> {competitor.detailedAnalysis.marketPosition}</div>
                       )}
                       {competitor.primaryAdvantage && (
-                        <div><span className="font-semibold text-white">Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
+                        <div><span className="font-semibold text-[#202020]">Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
                       )}
                       {competitor.website && (
                         <div className="flex items-center gap-1">
-                          <span className="font-semibold text-white">Website:</span>
+                          <span className="font-semibold text-[#202020]">Website:</span>
                           <a 
                             href={competitor.website.startsWith('http') ? competitor.website : `https://${competitor.website}`}
                             target="_blank"
@@ -285,7 +286,6 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                             className="text-blue-400 hover:text-blue-300 flex items-center gap-1"
                           >
                             {competitor.website}
-                            <ExternalLink size={12} className="inline" />
                           </a>
                         </div>
                       )}
@@ -297,7 +297,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
           })}
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 };
 

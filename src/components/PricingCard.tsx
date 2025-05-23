@@ -94,12 +94,12 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
   };
 
   return (
-    <Card className="card-bg hover-card shadow-lg h-full">
+    <div>
       <CardHeader className="pb-2">
-        <CardTitle className="text-2xl font-extrabold text-white flex items-center gap-3 tracking-tight">
+        <CardTitle className="text-2xl font-extrabold text-[#202020] flex items-center gap-3 tracking-tight">
           <BarChart3 className="h-6 w-6 text-blue-300" /> Pricing Analysis
         </CardTitle>
-        <p className="text-gray-400 text-sm mt-2">Key pricing models and their projected adoption. Expand for detailed analysis.</p>
+        <p className="text-[#202020] text-sm mt-2">Key pricing models and their projected adoption. Expand for detailed analysis.</p>
       </CardHeader>
       <CardContent className="p-6">
         <div className="space-y-6">
@@ -114,13 +114,13 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             return (
             <div 
               key={index}
-              className="p-5 border border-white/10 rounded-2xl bg-white/5 transition-all duration-200 hover:border-blue-400/30 hover:bg-blue-400/5 shadow-sm group"
+              className="p-5 border border-[#202020]/10 rounded-2xl bg-white/5 transition-all duration-200 hover:border-blue-400/30 hover:bg-blue-400/5 shadow-sm group"
             >
                 <div 
                   className="flex justify-between items-center mb-2 cursor-pointer"
                   onClick={() => togglePrice(price.type)}
                 >
-                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                  <h4 className="text-base font-bold text-[#202020] flex items-center gap-2">
                     <Zap className="h-4 w-4 text-yellow-300" /> {price.type}
                   </h4>
                   <div className="flex items-center gap-2">
@@ -130,27 +130,27 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                 </div>
                 {/* Collapsed: show only key points */}
                 {!isExpanded && (
-                  <ul className="list-disc list-inside text-xs text-gray-300 ml-2 mt-1 space-y-1">
+                  <ul className="list-disc list-inside text-xs text-[#202020] ml-2 mt-1 space-y-1">
                     {keyPoints.map((point, i) => <li key={i} className="leading-relaxed">{point}</li>)}
                   </ul>
                 )}
                 {/* Expanded: show detailed summary/analysis */}
                 {isExpanded && (
                   <div className="mt-4 pt-4 border-t border-blue-400/10">
-                    <div className="text-base text-white mb-2 font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-yellow-300" /> Detailed Analysis</div>
-                    <div className="text-sm text-gray-200 whitespace-pre-line mb-2">
+                    <div className="text-base text-[#202020] mb-2 font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-yellow-300" /> Detailed Analysis</div>
+                    <div className="text-sm text-[#202020] whitespace-pre-line mb-2">
                       {price.detailedAnalysis?.summary || price.description}
                     </div>
                     {/* Optionally, show a few more details if available */}
                     {price.detailedAnalysis?.revenuePotential?.longTerm && (
-                      <div className="mt-2 text-xs text-gray-400">
-                        <span className="font-semibold text-white">Long-term Revenue Potential:</span> {price.detailedAnalysis.revenuePotential.longTerm}
+                      <div className="mt-2 text-xs text-[#202020]">
+                        <span className="font-semibold text-[#202020]">Long-term Revenue Potential:</span> {price.detailedAnalysis.revenuePotential.longTerm}
                       </div>
                     )}
                     {price.detailedAnalysis?.adoptionBarriers && price.detailedAnalysis.adoptionBarriers.length > 0 && (
                       <div className="mt-2">
-                        <span className="font-semibold text-white text-xs">Adoption Barriers:</span>
-                        <ul className="list-disc list-inside text-xs text-gray-300 ml-4">
+                        <span className="font-semibold text-[#202020] text-xs">Adoption Barriers:</span>
+                        <ul className="list-disc list-inside text-xs text-[#202020] ml-4">
                           {price.detailedAnalysis.adoptionBarriers.map((b, i) => <li key={i}>{b}</li>)}
                         </ul>
                       </div>
@@ -206,18 +206,18 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex flex-row items-center justify-center w-full px-2 text-xs text-gray-400 mt-3 gap-6">
+            <div className="flex flex-row items-center justify-center w-full px-2 text-xs text-[#202020] mt-3 gap-6">
               {uniquePriceSuggestions.map((ps) => (
-                <div key={ps.type} className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full shadow-sm border border-white/10">
+                <div key={ps.type} className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full shadow-sm border border-[#202020]/10">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors[ps.type] }} />
-                  <span className="font-semibold text-white">{ps.type}</span>
+                  <span className="font-semibold text-[#202020]">{ps.type}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 };
 
