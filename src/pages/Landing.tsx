@@ -14,9 +14,6 @@ const Landing = () => {
         <main className="flex-1 flex flex-col items-center justify-center px-4">
           <div className="flex flex-col items-center gap-6 animate-fadeUp">
             <div className="flex items-center gap-3 mb-2">
-              <span className="inline-flex items-center justify-center rounded-full bg-[#E5E7EB] p-3">
-                <Sparkles className="text-[#3987BE] w-8 h-8 animate-pulse" />
-              </span>
               <h1 className="text-5xl md:text-6xl font-extrabold text-[#1E1E1E] tracking-tight text-center">
                 Okra AI
               </h1>
