@@ -30,9 +30,9 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
   };
 
   return (
-    <Card className="card-bg hover-card shadow-lg h-full">
+    <div>
       <CardHeader className="pb-2">
-        <CardTitle className="text-2xl font-bold text-white flex items-center gap-3 tracking-tight">
+        <CardTitle className="text-2xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
           <Target className="w-6 h-6 text-blue-300" /> Go-to-Market Strategy
         </CardTitle>
       </CardHeader>
@@ -40,20 +40,20 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
         <div className="space-y-8">
           {/* Strategy Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-2 tracking-tight">
+            <h3 className="text-lg font-bold text-[#202020] flex items-center gap-2 mb-2 tracking-tight">
               <TrendingUp className="w-5 h-5 text-green-300" /> Strategic Initiatives
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {goToMarket.strategy.map((item, index) => (
                 <div
                   key={index}
-                  className="p-5 border border-white/10 rounded-xl bg-white/5 transition-all duration-200 hover:border-green-400/30 hover:bg-green-400/5 shadow-sm flex flex-col gap-2"
+                  className="p-5 border border-[#202020]/10 rounded-xl bg-white/5 transition-all duration-200 hover:border-green-400/30 hover:bg-green-400/5 shadow-sm flex flex-col gap-2"
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-base font-semibold text-white">{item.name}</span>
+                    <span className="text-base font-semibold text-[#202020]">{item.name}</span>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getPriorityColor(item.priority)}`}>{item.priority.toUpperCase()}</span>
                   </div>
-                  <p className="text-sm text-gray-300 leading-relaxed">{item.description}</p>
+                  <p className="text-sm text-[#202020] leading-relaxed">{item.description}</p>
                 </div>
               ))}
             </div>
@@ -61,20 +61,20 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
 
           {/* Marketing Channels */}
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-2 tracking-tight">
+            <h3 className="text-lg font-bold text-[#202020] flex items-center gap-2 mb-2 tracking-tight">
               <BarChart3 className="w-5 h-5 text-yellow-300" /> Marketing Channels
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {goToMarket.channels.map((channel, index) => (
                 <div
                   key={index}
-                  className="p-5 border border-white/10 rounded-xl bg-white/5 transition-all duration-200 hover:border-yellow-400/30 hover:bg-yellow-400/5 shadow-sm flex flex-col gap-2"
+                  className="p-5 border border-[#202020]/10 rounded-xl bg-white/5 transition-all duration-200 hover:border-yellow-400/30 hover:bg-yellow-400/5 shadow-sm flex flex-col gap-2"
                 >
                   <div className="flex flex-col items-start justify-between mb-2">
-                    <span className="text-base font-semibold mb-2 text-white">{channel.name}</span>
+                    <span className="text-base font-semibold mb-2 text-[#202020]">{channel.name}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-gray-400 bg-white/10 px-2 py-0.5 rounded-full">Cost: {channel.cost}</span>
-                      <span className="text-xs text-gray-400 bg-white/10 px-2 py-0.5 rounded-full">ROI: {channel.timeToROI}</span>
+                      <span className="text-xs text-[#202020] bg-white/10 px-2 py-0.5 rounded-full">Cost: {channel.cost}</span>
+                      <span className="text-xs text-[#202020] bg-white/10 px-2 py-0.5 rounded-full">ROI: {channel.timeToROI}</span>
                     </div>
                   </div>
                   {/* Effectiveness bar */}
@@ -85,7 +85,7 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                     />
                   </div>
                   <div className="flex justify-end mt-1">
-                    <span className="text-xs text-gray-400">Effectiveness: {channel.effectiveness}%</span>
+                    <span className="text-xs text-[#202020]">Effectiveness: {channel.effectiveness}%</span>
                   </div>
                 </div>
               ))}
@@ -94,16 +94,16 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
 
           {/* KPIs */}
           <div className="space-y-3">
-            <h3 className="text-lg font-bold text-white mb-2 tracking-tight">Key Performance Indicators</h3>
+            <h3 className="text-lg font-bold text-[#202020] mb-2 tracking-tight">Key Performance Indicators</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {goToMarket.kpis.map((kpi, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 shadow-sm"
+                  className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-[#202020]/10 shadow-sm"
                 >
                   <div>
-                    <div className="text-base font-semibold text-white">{kpi.metric}</div>
-                    <div className="text-xs text-gray-400">{kpi.timeframe}</div>
+                    <div className="text-base font-semibold text-[#202020]">{kpi.metric}</div>
+                    <div className="text-xs text-[#202020]">{kpi.timeframe}</div>
                   </div>
                   <div className="text-base font-bold text-blue-300">{kpi.target}</div>
                 </div>
@@ -112,7 +112,7 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
           </div>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 };
 

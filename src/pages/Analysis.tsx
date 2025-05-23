@@ -15,7 +15,7 @@ import ClientsCard from "@/components/ClientsCard";
 import SourcesCard from "@/components/SourcesCard";
 import Footer from "@/components/Footer";
 import { Button } from '@/components/ui/button';
-import { Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import ShareResultsButton from '@/components/ShareResultsButton';
 import { generatePDF } from '@/services/pdfService';
 
@@ -51,8 +51,7 @@ const Analysis = () => {
   if (!result) return null;
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden">
-      <div className="fixed inset-0 bg-[url('/background2.png')] bg-cover bg-top z-0" />
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8] grain-texture">
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <div className="flex-1 flex flex-col items-center w-full py-8">
           <div className="w-full max-w-6xl mx-auto">
@@ -62,21 +61,56 @@ const Analysis = () => {
           </div>
           {/* Query display section restored from Index.tsx */}
             <div className="mb-8" onClick={() => setIsQueryExpanded(!isQueryExpanded)}>
-            <div className="flex items-center justify-between p-4 bg-black/40 backdrop-blur-md rounded-xl border border-white/10">
+            <div className="flex items-center justify-between p-4 bg-[#E0D9D1] rounded-[8px]">
               <div className="flex-1">
-                <h3 className="text-sm font-medium text-white">Analyzed Business Idea</h3>
-                <p className="mt-1 text-sm text-gray line-clamp-1">{userInput}</p>
+                <h3 className="text-sm font-medium text-[#161616]">Analyzed Business Idea</h3>
+                <p className="mt-1 text-sm text-[#161616] line-clamp-1">{userInput}</p>
               </div>
               <div className="flex items-center gap-2 ml-4">
-                <Button onClick={e => { e.stopPropagation(); handleDownloadPDF(); }} variant="outline" size="sm" className="flex items-center gap-1 text-white border-white/20 hover:bg-white/10">
-                  <Download size={16} />
-                  <span>PDF</span>
+                <Button 
+                  onClick={e => { e.stopPropagation(); handleDownloadPDF(); }} 
+                  variant="ghost" 
+                  size="icon" 
+                  className="w-[72px] h-[72px] p-0 hover:bg-transparent"
+                >
+                  <img src="/pdf.svg" alt="Download PDF" className="w-full h-full" />
                 </Button>
-                <ShareResultsButton result={result} prompt={userInput} />
-                <Button onClick={e => { e.stopPropagation(); handleNewAnalysis(); }} variant="outline" size="sm" className="text-white border-white/20 hover:bg-white/10">
+                <Button 
+                  onClick={e => { 
+                    e.stopPropagation(); 
+                    if (result) {
+                      const shareText = `Okra AI Analysis of "${userInput}" - Validation Score: ${result.validationScore}/100`;
+                      if (navigator.share) {
+                        navigator.share({
+                          title: 'Okra AI Analysis',
+                          text: shareText,
+                        }).catch(() => {
+                          navigator.clipboard.writeText(
+                            `Okra AI Analysis Results\n\nProduct/Service Idea: "${userInput}"\nValidation Score: ${result.validationScore}/100\n\nSummary: ${result.summary}`
+                          );
+                        });
+                      } else {
+                        navigator.clipboard.writeText(
+                          `Okra AI Analysis Results\n\nProduct/Service Idea: "${userInput}"\nValidation Score: ${result.validationScore}/100\n\nSummary: ${result.summary}`
+                        );
+                      }
+                    }
+                  }}
+                  variant="ghost" 
+                  size="icon" 
+                  className="w-[72px] h-[72px] p-0 hover:bg-transparent"
+                >
+                  <img src="/share.svg" alt="Share Results" className="w-full h-full" />
+                </Button>
+                <Button 
+                  onClick={e => { e.stopPropagation(); handleNewAnalysis(); }} 
+                  variant="ghost" 
+                  className="h-[64px] bg-[#2B2521] text-white hover:bg-[#2B2521]/90 rounded-[4px] px-[27px] py-[16px] flex items-center gap-2"
+                >
                   New Analysis
+                  <ArrowRight size={20} />
                 </Button>
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={e => { e.stopPropagation(); setIsQueryExpanded(!isQueryExpanded); }}>
+                <Button variant="ghost" size="icon" className="text-[#2B2521] " onClick={e => { e.stopPropagation(); setIsQueryExpanded(!isQueryExpanded); }}>
                   {isQueryExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </Button>
               </div>
@@ -85,21 +119,21 @@ const Analysis = () => {
             <div className={`transition-all duration-300 ${isQueryExpanded ? 'opacity-100 max-h-[1000px]' : 'opacity-0 max-h-0 overflow-hidden'}`}>
               <div className="px-6 pb-6">
                 <div className="w-full h-px bg-white/10 mb-4" />
-                <div className="whitespace-pre-wrap break-words text-white/90 bg-black/20 rounded-lg p-4 text-base font-normal">{userInput}</div>
+                <div className="whitespace-pre-wrap break-words text-black bg-[#F2EFEB] rounded-lg p-4 text-base font-normal">{userInput}</div>
               </div>
             </div>
           </div>
-            <div className="w-full bg-black/40 rounded-xl p-6 border border-white/10 shadow-lg animate-fadeUp">
+            <div className="w-full rounded-xl p-6 animate-fadeUp">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="w-full flex flex-wrap justify-between mb-6 h-full">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="competitors">Competitors</TabsTrigger>
-                <TabsTrigger value="pricing-revenue">Pricing & Revenue</TabsTrigger>
-                <TabsTrigger value="forecast">Forecast</TabsTrigger>
-                <TabsTrigger value="go-to-market">Go-to-Market</TabsTrigger>
-                <TabsTrigger value="timeline-milestones">Timeline & Milestones</TabsTrigger>
-                <TabsTrigger value="financial-plan">Financial Plan</TabsTrigger>
-                <TabsTrigger value="clients-sources">Clients & Sources</TabsTrigger>
+              <TabsList className="w-full flex flex-nowrap justify-between mb-6 h-full bg-[#F1F1F1] p-2 rounded-lg">
+                <TabsTrigger value="overview" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Overview</TabsTrigger>
+                <TabsTrigger value="competitors" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Competitors</TabsTrigger>
+                <TabsTrigger value="pricing-revenue" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Pricing & Revenue</TabsTrigger>
+                <TabsTrigger value="forecast" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Forecast</TabsTrigger>
+                <TabsTrigger value="go-to-market" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Go-to-Market</TabsTrigger>
+                <TabsTrigger value="timeline-milestones" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Timeline & Milestones</TabsTrigger>
+                <TabsTrigger value="financial-plan" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Financial Plan</TabsTrigger>
+                <TabsTrigger value="clients-sources" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Clients & Sources</TabsTrigger>
               </TabsList>
               <TabsContent value="overview">
                 {/* Overview: ScoreCard, summary, recommendations */}

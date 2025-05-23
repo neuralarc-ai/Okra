@@ -10,27 +10,27 @@ interface ClientsCardProps {
 const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
   if (!clients || clients.length === 0) {
     return (
-      <Card className="card-bg hover-card shadow-lg h-full">
+      <div>
         <CardHeader className="pb-2">
-          <CardTitle className="text-2xl font-semibold text-white flex items-center gap-3 tracking-tight">
-            <Users className="w-6 h-6 text-blue-200" /> Target Audience
+          <CardTitle className="text-2xl font-semibold text-[#202020] flex items-center gap-3 tracking-tight">
+            <Users className="w-6 h-6 text-[#202020]" /> Target Audience
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <div className="text-center text-gray-400">
+          <div className="text-center text-[#202020]">
             No client segments available
           </div>
         </CardContent>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="card-bg hover-card shadow-lg h-full">
+    <div>
       <CardHeader className="pb-2">
-        <CardTitle className="text-2xl font-semibold text-white flex items-center gap-3 tracking-tight">
-          <Users className="w-6 h-6 text-blue-200" /> Target Audience
-          <span className="ml-auto px-4 py-1 rounded-full bg-blue-200/10 text-blue-200 font-medium text-xs border border-blue-200/10">
+        <CardTitle className="text-2xl font-semibold text-[#202020] flex items-center gap-3 tracking-tight">
+          <Users className="w-6 h-6 text-[#202020]" /> Target Audience
+          <span className="ml-auto px-4 py-1 rounded-full bg-white/10 text-[#202020] font-medium text-xs border border-[#202020]/10">
             {clients.length} segments
           </span>
         </CardTitle>
@@ -42,11 +42,11 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
           {clients.map((client, index) => (
             <div 
               key={index}
-              className="p-6 border border-white/5 rounded-2xl bg-gradient-to-br from-white/2 to-blue-900/5 transition-all duration-200 hover:border-blue-200/20 hover:bg-blue-200/5 shadow-sm flex flex-col gap-6"
+              className="p-6 border border-[#202020]/10 rounded-2xl bg-white/5 transition-all duration-200 hover:border-[#202020]/20 hover:bg-white/10 shadow-sm flex flex-col gap-6"
             >
               <div>
-                <h4 className="text-lg font-semibold text-white mb-1">{client.name}</h4>
-                <div className="flex items-center gap-2 text-xs text-blue-200 font-medium">
+                <h4 className="text-lg font-semibold text-[#202020] mb-1">{client.name}</h4>
+                <div className="flex items-center gap-2 text-xs text-[#202020] font-medium">
                   <Target className="w-3 h-3" />
                   {client.industry}
                 </div>
@@ -70,7 +70,7 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
                 )}
               </div>
 
-              <div className="text-base text-gray-200 font-normal">
+              <div className="text-base text-[#202020] font-normal">
                 {client.useCase}
               </div>
 
@@ -78,12 +78,12 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
                 {/* Demographics Section */}
                 {client.targetAudienceDefinition?.demographics?.primary && (
                   <div className="space-y-1">
-                    <h5 className="text-xs font-medium text-blue-200">Demographics</h5>
+                    <h5 className="text-xs font-medium text-[#202020]">Demographics</h5>
                     <div className="flex flex-wrap gap-1">
                       {client.targetAudienceDefinition.demographics.primary.map((demo, i) => (
                         <span 
                           key={i}
-                          className="px-2 py-1 rounded-full bg-blue-200/10 text-blue-100 font-medium text-xs border border-blue-200/10"
+                          className="px-2 py-1 rounded-full bg-white/10 text-[#202020] font-medium text-xs border border-[#202020]/10"
                         >
                           {demo}
                         </span>
@@ -95,12 +95,12 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
                 {/* Needs Section */}
                 {client.targetAudienceDefinition?.psychographics?.needs && (
                   <div className="space-y-1">
-                    <h5 className="text-xs font-medium text-green-200">Key Needs</h5>
+                    <h5 className="text-xs font-medium text-[#202020]">Key Needs</h5>
                     <div className="flex flex-wrap gap-1">
                       {client.targetAudienceDefinition.psychographics.needs.map((need, i) => (
                         <span 
                           key={i}
-                          className="px-2 py-1 rounded-full bg-green-200/10 text-green-100 font-medium text-xs border border-green-200/10"
+                          className="px-2 py-1 rounded-full bg-white/10 text-[#202020] font-medium text-xs border border-[#202020]/10"
                         >
                           {need}
                         </span>
@@ -112,13 +112,13 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
                 {/* Location & Growth */}
                 {client.targetAudienceDefinition?.geographics && (
                   <div className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-blue-200" />
-                    <span className="text-blue-100 font-medium">{client.targetAudienceDefinition.geographics.location}</span>,
-                    <span className="text-blue-100 font-medium">{client.targetAudienceDefinition.geographics.coverage}</span>
+                    <MapPin className="w-3 h-3 text-[#202020]" />
+                    <span className="text-[#202020] font-medium">{client.targetAudienceDefinition.geographics.location}</span>,
+                    <span className="text-[#202020] font-medium">{client.targetAudienceDefinition.geographics.coverage}</span>
                   </div>
                 )}
                 {client.segment?.growth && (
-                  <div className="flex items-center gap-1 text-green-200 font-medium">
+                  <div className="flex items-center gap-1 text-[#202020] font-medium">
                     <TrendingUp className="w-3 h-3" />
                     {client.segment.growth} growth
                   </div>
@@ -132,12 +132,12 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
           <div 
             className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
             style={{
-              background: 'linear-gradient(to bottom, transparent, rgb(16 16 16))'
+              background: 'linear-gradient(to bottom, transparent, rgb(255 255 255))'
             }}
           />
         )}
       </CardContent>
-    </Card>
+    </div>
   );
 };
 

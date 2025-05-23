@@ -13,19 +13,19 @@ interface SourcesCardProps {
 
 const SourcesCard = ({ sources = [] }: SourcesCardProps) => {
   return (
-    <Card className="card-bg hover-card shadow-lg h-full">
+    <div>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-2xl font-semibold text-white flex items-center gap-3 tracking-tight">
-              <BookOpen size={22} className="text-yellow-300" /> Research Sources
+            <CardTitle className="text-2xl font-semibold text-[#202020] flex items-center gap-3 tracking-tight">
+              <BookOpen size={22} className="text-[#202020]" /> Research Sources
             </CardTitle>
-            <div className="text-xs text-yellow-200 mt-1 font-medium">
+            <div className="text-xs text-[#202020] mt-1 font-medium">
               {sources?.length || 0} verified sources analyzed
             </div>
           </div>
           <button
-            className="px-4 py-1 rounded-full border border-yellow-200/10 bg-yellow-200/5 text-xs text-yellow-200 hover:bg-yellow-200/10 transition font-medium shadow-sm"
+            className="px-4 py-1 rounded-full border border-[#202020]/10 bg-white/5 text-xs text-[#202020] hover:bg-white/10 transition font-medium shadow-sm"
             style={{ minWidth: 140 }}
           >
             Deep Research Mode
@@ -38,21 +38,21 @@ const SourcesCard = ({ sources = [] }: SourcesCardProps) => {
           style={{ maxHeight: 'calc(100vh - 300px)' }}
         >
           {!sources || sources.length === 0 ? (
-            <div className="p-6 rounded-xl bg-white/5 border border-yellow-200/10 text-center">
-              <p className="text-gray-400 text-base">No research sources available</p>
+            <div className="p-6 rounded-xl bg-white/5 border border-[#202020]/10 text-center">
+              <p className="text-[#202020] text-base">No research sources available</p>
             </div>
           ) : (
             sources.map((source, index) => (
               <div 
                 key={index} 
-                className="p-5 rounded-2xl bg-gradient-to-br from-yellow-100/5 to-yellow-900/5 border border-yellow-200/10 transition-all duration-200 hover:border-yellow-300/20 hover:bg-yellow-200/10 group flex flex-col gap-2 shadow-sm"
+                className="p-5 rounded-2xl bg-white/5 border border-[#202020]/10 transition-all duration-200 hover:border-[#202020]/20 hover:bg-white/10 group flex flex-col gap-2 shadow-sm"
               >
                 <div className="flex items-start justify-between gap-4 mb-1">
-                  <h4 className="font-semibold text-white text-base leading-tight">
+                  <h4 className="font-semibold text-[#202020] text-base leading-tight">
                     {source.title}
                   </h4>
                 </div>
-                <p className="text-gray-300 text-sm leading-relaxed">
+                <p className="text-[#202020] text-sm leading-relaxed">
                   {source.relevance}
                 </p>
               </div>
@@ -69,7 +69,7 @@ const SourcesCard = ({ sources = [] }: SourcesCardProps) => {
           />
         )}
       </CardContent>
-    </Card>
+    </div>
   );
 };
 
