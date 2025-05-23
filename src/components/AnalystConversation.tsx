@@ -239,17 +239,17 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-white">
+              <span className="font-medium text-[#202020]">
                 {message.analyst}
               </span>
-              <span className="text-xs text-white/60">
+              <span className="text-xs text-[#202020]/60">
                 {analysts[message.analyst].role}
               </span>
             </div>
             <div 
-              className={`mt-1 p-3 rounded-lg ${analysts[message.analyst].color} ${analysts[message.analyst].border} border ${message.analyst === 'David' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg bg-[#E3E7EA] border border-[#B0B7BC] ${message.analyst === 'David' ? 'text-right' : ''}`}
             >
-              <p className={`text-sm ${analysts[message.analyst].text}`}>
+              <p className={`text-sm text-[#202020]`}>
                 {message.message.replace(/^([A-Za-z]+):\s*/, '')}
               </p>
             </div>
@@ -270,20 +270,20 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-white">
+              <span className="font-medium text-[#202020]">
                 {typing}
               </span>
-              <span className="text-xs text-white/60">
+              <span className="text-xs text-[#202020]/60">
                 {analysts[typing].role}
               </span>
             </div>
             <div 
-              className={`mt-1 p-3 rounded-lg ${analysts[typing].color} ${analysts[typing].border} border ${typing === 'David' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg bg-[#E3E7EA] border border-[#B0B7BC] ${typing === 'David' ? 'text-right' : ''}`}
             >
               <div className="flex gap-1 items-center h-4 justify-end">
-                <span className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></span>
-                <span className="w-2 h-2 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: '0.15s' }}></span>
-                <span className="w-2 h-2 bg-white/60 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></span>
+                <span className="w-2 h-2 bg-[#B0B7BC] rounded-full animate-pulse"></span>
+                <span className="w-2 h-2 bg-[#B0B7BC] rounded-full animate-pulse" style={{ animationDelay: '0.15s' }}></span>
+                <span className="w-2 h-2 bg-[#B0B7BC] rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></span>
               </div>
             </div>
           </div>

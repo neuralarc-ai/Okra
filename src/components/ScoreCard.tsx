@@ -57,15 +57,15 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
-    <div>
+    <Card className="bg-[#FFFFFF] shadow-lg rounded-xl">
       <CardHeader className="pb-2">
-        <CardTitle className="text-3xl font-semibold text-[#202020] flex items-center gap-3 tracking-tight">
+        <CardTitle className="text-3xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
           <span>Idea Validation Report</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* Report Summary Section */}
-        <section className="mb-10 mt-4 p-10 rounded-2xl bg-gradient-to-br from-white/2 to-yellow-100/5 border border-yellow-200/10 shadow-inner animate-fadeUp">
+        <section className="mb-10 mt-4 p-10 rounded-[16px] bg-[#1E342F] border border-[#B0B7BC] shadow-inner animate-fadeUp">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
           {/* Arc Progress with Gradient and Knob */}
           <div className="relative flex flex-col items-center justify-center">
@@ -73,7 +73,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               {/* Background arc */}
               <path
                 d={describeArc(radius, radius, normalizedRadius, arcStartAngle, arcEndAngle)}
-                  stroke="#23272e"
+                  stroke="#E3E7EA"
                 strokeWidth={stroke}
                 fill="none"
                 strokeLinecap="round"
@@ -107,13 +107,17 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             {/* Centered Score and Label */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
               <span className="text-6xl font-bold text-white drop-shadow-lg">{score}</span>
-                <span className={`mt-2 px-4 py-1 rounded-full text-xs font-medium tracking-wide bg-yellow-200/10 text-yellow-200 border border-yellow-200/20`}>{scoreAnalysis.category}</span>
+                <span className="mt-2 px-4 py-1 rounded-[8px] text-xs font-medium tracking-wide"
+                  style={{ background: 'linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)', color: '#202020', borderRadius: '8px', border: 'none' }}
+                >{scoreAnalysis.category}</span>
             </div>
           </div>
           {/* Badge and Summary */}
           <div className="flex-1 flex flex-col gap-4 min-w-0 items-center md:items-start">
-              <span className="px-4 py-1 rounded-full text-base font-medium tracking-wide bg-yellow-200/10 text-yellow-200 border border-yellow-200/20">{scoreAnalysis.category} Potential</span>
-              <p className="text-gray-200 text-xl leading-relaxed font-normal text-center md:text-left break-words">{summary}</p>
+              <span className="px-4 py-1 rounded-[8px] text-base font-medium tracking-wide"
+                style={{ background: 'linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)', color: '#202020', borderRadius: '8px', border: 'none' }}
+              >{scoreAnalysis.category} Potential</span>
+              <p className="text-white text-xl leading-relaxed font-normal text-center md:text-left break-words">{summary}</p>
             </div>
           </div>
         </section>
@@ -124,25 +128,25 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             Key Metrics
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] flex flex-col justify-start gap-2 min-h-[80px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Market Size
               </div>
               <div className="text-lg font-semibold text-[#202020]">{scoreAnalysis.keyMetrics.marketSize}</div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] flex flex-col justify-start gap-2 min-h-[80px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Growth Rate
               </div>
               <div className="text-lg font-semibold text-[#202020]">{scoreAnalysis.keyMetrics.growthRate}</div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] flex flex-col justify-start gap-2 min-h-[80px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Target Audience
               </div>
               <div className="text-lg font-semibold text-[#202020] whitespace-pre-line break-words leading-tight">{scoreAnalysis.keyMetrics.targetAudience}</div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl flex flex-col justify-start gap-2 min-h-[80px] border border-green-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] flex flex-col justify-start gap-2 min-h-[80px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Initial Investment
               </div>
@@ -152,7 +156,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         </section>
 
         {/* Executive Summary */}
-        <section className="mb-10 p-10 bg-white/2 rounded-2xl border border-yellow-200/10">
+        <section className="mb-10 p-10 bg-[#CFD2D4] rounded-[16px] border border-[#B0B7BC]">
           <h3 className="text-2xl font-semibold text-[#202020] mb-3 flex items-center gap-3 tracking-tight">
             Executive Summary
           </h3>
@@ -165,30 +169,30 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             Detailed Analysis
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-6">
-            <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 font-medium">Market Potential</div>
               <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.marketPotential.score}% <span className="text-xs text-[#202020] font-normal">{scoreAnalysis.marketPotential.status}</span></div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 font-medium">Competition</div>
               <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.competition.level}</div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 font-medium">Market Size</div>
               <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.marketSize.status} <span className="text-xs text-[#202020] font-normal">({scoreAnalysis.marketSize.trend})</span></div>
             </div>
-            <div className="p-5 bg-white/2 rounded-2xl border border-blue-200/10">
+            <div className="p-5 bg-[#E3E7EA] rounded-[8px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 font-medium">Timing</div>
               <div className="text-base text-[#202020] font-semibold">{scoreAnalysis.timing.status}</div>
             </div>
           </div>
           {/* Recommendations */}
-          <div className="p-6 border border-green-200/20 bg-green-200/5 rounded-2xl mb-4">
-            <div className="text-lg font-semibold text-[#202020] mb-3 flex items-center gap-2">Key Recommendations</div>
+          <div className="p-6 border border-[#B0B7BC] bg-[#1E342F] rounded-[8px] mb-4">
+            <div className="text-lg font-semibold text-white mb-3 flex items-center gap-2">Key Recommendations</div>
             <ul className="space-y-2">
               {scoreAnalysis.recommendations.map((recommendation, index) => (
-                <li key={index} className="text-base text-[#202020] flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-200" />
+                <li key={index} className="text-base text-white flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#2B5C4F]" />
                   {recommendation}
                 </li>
               ))}
@@ -202,47 +206,47 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
            <h3 className="text-2xl font-bold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
              SWOT Analysis
            </h3>
-           <div className="grid grid-cols-2 gap-0 relative bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+           <div className="grid grid-cols-2 gap-0 relative bg-[#2B2521] rounded-[16px] border border-[#B0B7BC] overflow-hidden">
              {/* Vertical line separators */}
-             <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-white/10 z-10" />
-             <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-white/10 z-10" />
+             <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#B0B7BC] z-10" />
+             <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#B0B7BC] z-10" />
              {/* Strengths */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-700/30 text-green-300"><TrendingUp className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-green-300">Strengths</h4>
+                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#E3E7EA] text-[#2B5C4F]"><TrendingUp className="h-5 w-5" /></span>
+                 <h4 className="text-lg font-bold text-[#2B5C4F]">Strengths</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white/90 space-y-1 pl-2">
+               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
                  {scoreAnalysis.swot.strengths.map((s, i) => <li key={i}>{s}</li>)}
                </ul>
              </div>
              {/* Weaknesses */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-yellow-700/30 text-yellow-300"><Target className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-yellow-300">Weaknesses</h4>
+                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#FFF4D6] text-[#B68B00]"><Target className="h-5 w-5" /></span>
+                 <h4 className="text-lg font-bold text-[#B68B00]">Weaknesses</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white/90 space-y-1 pl-2">
+               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
                  {scoreAnalysis.swot.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
                </ul>
              </div>
              {/* Opportunities */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-700/30 text-blue-300"><Users className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-blue-300">Opportunities</h4>
+                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#E3E7EA] text-[#3987BE]"><Users className="h-5 w-5" /></span>
+                 <h4 className="text-lg font-bold text-[#3987BE]">Opportunities</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white/90 space-y-1 pl-2">
+               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
                  {scoreAnalysis.swot.opportunities.map((o, i) => <li key={i}>{o}</li>)}
                </ul>
              </div>
              {/* Threats */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-700/30 text-red-300"><DollarSign className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-red-300">Threats</h4>
+                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#FDE7E7] text-[#B8001E]"><DollarSign className="h-5 w-5" /></span>
+                 <h4 className="text-lg font-bold text-[#B8001E]">Threats</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white/90 space-y-1 pl-2">
+               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
                  {scoreAnalysis.swot.threats.map((t, i) => <li key={i}>{t}</li>)}
                </ul>
              </div>
@@ -258,8 +262,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           </h3>
             <ul className="space-y-2">
               {scoreAnalysis.marketTrends.map((trend, i) => (
-              <li key={i} className="text-base text-[#202020]/90">
-                <span className="font-semibold text-gray-400">{trend.trend}:</span> {trend.impact}
+              <li key={i} className="text-base text-black">
+                <span className="font-semibold text-gray-600">{trend.trend}:</span> {trend.impact}
                 </li>
               ))}
             </ul>
@@ -276,13 +280,13 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
               <div
                 key={i}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-3"
+                className="bg-[#E3E7EA] border border-[#B0B7BC] rounded-[8px] p-6 flex flex-col gap-3"
               >
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-base text-[#202020]">{risk.risk}</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-gray-400 font-medium">Mitigation:</span>
+                  <span className="text-black font-medium">Mitigation:</span>
                   <span className="text-[#202020]/90">{risk.mitigation}</span>
                 </div>
               </div>
@@ -298,15 +302,15 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             Competitive Positioning
           </h3>
           <div className="text-[#202020]/90 text-lg mb-2">
-            <span className="font-semibold text-gray-400">Position:  </span> {scoreAnalysis.competitivePositioning.position}
+            <span className="font-semibold text-gray-600">Position:  </span> {scoreAnalysis.competitivePositioning.position}
           </div>
-          <div className="text-[#202020]/120 text-base">
-            <span className="font-semibold text-gray-400">Map:  </span> {scoreAnalysis.competitivePositioning.mapDescription}
+          <div className="text-[#202020]/90 text-base">
+            <span className="font-semibold text-gray-600">Map:  </span> {scoreAnalysis.competitivePositioning.mapDescription}
           </div>
         </section>
         )}
       </CardContent>
-    </div>
+    </Card>
   );
 };
 

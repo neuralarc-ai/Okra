@@ -73,20 +73,20 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
       {progress < 100 ? (
         <div className="w-full min-h-[600px] flex flex-col md:flex-row gap-6 animate-fadeUp mt-8 items-stretch justify-center">
           {/* Left: Progress UI */}
-          <div className="flex-1 max-w-2xl p-8 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-full flex flex-col">
+          <div className="flex-1 max-w-2xl p-8 rounded-xl bg-[#FFFFFF] shadow-lg h-full flex flex-col border border-[#B0B7BC]">
             <div className="mb-5 flex items-center gap-2">
-              <div className="p-2 bg-white/10 rounded-full">
-                <Search className="text-white h-5 w-5 animate-pulse" />
+              <div className="p-2 bg-[#E3E7EA] rounded-full">
+                <Search className="text-[#202020] h-5 w-5 animate-pulse" />
               </div>
               <div>
-                <h3 className="text-lg text-white font-medium tracking-wide">Deep Analysis in Progress</h3>
-                <p className="text-sm text-white/70">{source}</p>
+                <h3 className="text-lg text-[#202020] font-medium tracking-wide">Deep Analysis in Progress</h3>
+                <p className="text-sm text-[#202020]/70">{source}</p>
               </div>
             </div>
             <div className="progress-container h-3 relative overflow-hidden mb-6">
               <div 
-                className="progress-bar" 
-                style={{ width: `${progress}%` }}
+                className="progress-bar"
+                style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #262626 0%, #3987BE 60%, #D48EA3 100%)' }}
               />
               {/* Particle overlay */}
               <div className="absolute inset-0 pointer-events-none">
@@ -107,10 +107,10 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
               </div>
             </div>
             <div className="flex justify-between items-center mb-6">
-              <span className="text-sm text-white/80 font-medium flex items-center gap-1">
-                <Sparkles size={16} className="animate-pulse" /> Okra AI is researching your idea
+              <span className="text-sm text-[#202020]/80 font-medium flex items-center gap-1">
+                <Sparkles size={16} className="animate-pulse text-[#3987BE]" /> Okra AI is researching your idea
               </span>
-              <span className="text-sm font-medium text-white bg-white/10 px-3 py-1 rounded-full">
+              <span className="text-sm font-medium text-[#202020] bg-[#E3E7EA] px-3 py-1 rounded-full">
                 {progress}%
               </span>
             </div>
@@ -122,24 +122,24 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                 return (
                   <div 
                     key={step.name} 
-                    className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-300 ${
-                      progress > stepThreshold ? 'bg-white/10 border border-white/20' : 'bg-transparent border border-white/5'
+                    className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-300 border ${
+                      progress > stepThreshold ? 'bg-[#E3E7EA] border-[#B0B7BC]' : 'bg-transparent border-[#E3E7EA]'
                     }`}
                   >
                     <div 
                       className={`flex items-center justify-center ${
-                        progress > stepThreshold ? 'text-white' : 'text-white/40'
+                        progress > stepThreshold ? 'text-[#3987BE]' : 'text-[#B0B7BC]'
                       }`}
                     >
                       {step.icon}
                     </div>
                     <span className={`text-xs ${
-                      progress > stepThreshold ? 'text-white' : 'text-white/40'
+                      progress > stepThreshold ? 'text-[#202020]' : 'text-[#B0B7BC]'
                     }`}>
                       {step.name}
                     </span>
                     {progress > stepThreshold && (
-                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#3987BE] animate-pulse" />
                     )}
                   </div>
                 );
@@ -147,10 +147,10 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
             </div>
           </div>
           {/* Right: Analyst Conversation */}
-          <div className="flex-1 max-w-xl p-4 md:p-8 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 shadow-lg h-full flex flex-col">
+          <div className="flex-1 max-w-xl p-4 md:p-8 rounded-xl bg-[#FFFFFF] shadow-lg h-full flex flex-col border border-[#B0B7BC]">
             {/* Meet the Analyst Team section */}
             <div className="mb-0">
-              <div className="text-white/80 text-sm font-medium mb-2">Meet our analyst team</div>
+              <div className="text-[#202020]/80 text-sm font-medium mb-2">Meet our analyst team</div>
               <div className="grid grid-cols-2 gap-3">
                 {/* Analyst Avatars and Roles */}
                 {[
@@ -160,15 +160,15 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                   { name: 'Scott', role: 'Financial Analyst', img: '/scott-profile.png', color: 'bg-[#F97316]/10', border: 'border-[#F97316]/30' },
                 ].map(a => (
                   <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border}`} style={{ minWidth: 0 }}>
-                    <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-white/10 object-cover" />
+                    <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-[#B0B7BC] object-cover" />
                     <div className="flex flex-col min-w-0 max-w-[120px]">
-                      <span className="text-sm font-semibold text-white truncate">{a.name}</span>
-                      <span className="text-xs text-white/60 whitespace-nowrap">{a.role}</span>
+                      <span className="text-sm font-semibold text-[#202020] truncate">{a.name}</span>
+                      <span className="text-xs text-[#202020]/60 whitespace-nowrap">{a.role}</span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="text-xs text-white/50 mt-2">This analysis is a collaborative team effort by our analysts.</div>
+              <div className="text-xs text-[#202020]/50 mt-2">This analysis is a collaborative team effort by our analysts.</div>
             </div>
             <AnalystConversation progress={progress} userInput={userInput} />
           </div>

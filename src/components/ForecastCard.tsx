@@ -208,7 +208,7 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
 };
 
 const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
-  <Card className="card-bg hover-card shadow-lg">
+  <Card className="bg-[#2B2521]  shadow-lg">
     <CardHeader className="pb-2">
       <CardTitle className="text-xl font-medium">
         {title} {period ? `(${period})` : ''}
@@ -304,7 +304,7 @@ const convertCurrency = (value: string | number, fromCurrency: string, toCurrenc
 };
 
 const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
-  <Card className="card-bg hover-card shadow-lg">
+  <Card className="bg-[#2B2521]  shadow-lg">
     <CardHeader className="pb-2">
       <CardTitle className="text-xl font-medium">
         {title} {period ? `(${period})` : ''}
@@ -404,7 +404,7 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       <ForecastLineChart
         title="Revenue Forecast"
         data={revenueData}
@@ -416,7 +416,7 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
       />
       {/* Revenue Forecast Summary */}
       {forecast.revenueSummary && (
-        <div className="text-sm text-gray-300 mb-2">
+        <div className="text-sm text-[#202020] mb-2">
           <strong>Revenue Summary:</strong> {forecast.revenueSummary}
         </div>
       )}
@@ -431,7 +431,7 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
       />
       {/* Customer Forecast Summary */}
       {forecast.customerSummary && (
-        <div className="text-sm text-gray-300">
+        <div className="text-sm text-[#202020]">
           <strong>Customer Summary:</strong> {forecast.customerSummary}
         </div>
       )}

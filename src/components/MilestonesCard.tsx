@@ -64,7 +64,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
   };
 
   return (
-    <div>
+    <Card className="bg-[#FFFFFF] shadow-lg rounded-xl">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
           <CheckCircle2 className="w-6 h-6 text-[#202020]" /> Milestones
@@ -77,19 +77,23 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
             <div key={idx} className="space-y-4">
               <div className="flex justify-between items-center mb-2">
                 <h4 className="text-lg font-bold text-[#202020]">{quarter.quarter}</h4>
-                <span className="text-xs text-[#202020] bg-white/10 px-3 py-1 rounded-full">Budget: {formatCurrency(quarter.budget, currency)}</span>
+                <span className="text-xs text-[#202020] bg-[#E3E7EA] px-3 py-1 rounded-[8px] border border-[#B0B7BC]">Budget: {formatCurrency(quarter.budget, currency)}</span>
               </div>
               {/* Objectives */}
               {Array.isArray(quarter.objectives) && quarter.objectives.length > 0 ? (
                 quarter.objectives.map((objective, i) => (
                   <div 
                     key={`obj-${idx}-${i}`}
-                    className="p-4 border border-[#202020]/10 rounded-xl flex flex-col gap-2 shadow-sm"
+                    className="p-4 border border-[#B0B7BC] rounded-[8px] bg-[#CFD2D4] flex flex-col gap-2 shadow-sm"
                   >
                     <div className="flex items-center gap-2 mb-1">
                       {getStatusIcon(objective.status)}
                       <span className="text-base font-semibold text-[#202020]">{objective.title}</span>
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold border border-[#202020]/10 bg-white/10 text-[#202020] ml-auto">{objective.status.replace('-', ' ').toUpperCase()}</span>
+                      <span className="px-2 py-0.5 rounded-[8px] text-xs font-bold ml-auto"
+                        style={{ background: 'linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)', color: '#202020', borderRadius: '8px', border: 'none' }}
+                      >
+                        {objective.status.replace('-', ' ').toUpperCase()}
+                      </span>
                     </div>
                     <p className="text-sm text-[#202020] leading-relaxed">{objective.description}</p>
                     {/* Metrics */}
@@ -98,7 +102,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                         {objective.metrics.map((metric, metricIndex) => (
                           <div 
                             key={`metric-${idx}-${i}-${metricIndex}`}
-                            className="px-2 py-1 bg-white/10 rounded text-xs flex items-center gap-1"
+                            className="px-2 py-1 bg-[#E3E7EA] rounded-[8px] text-xs flex items-center gap-1 border border-[#B0B7BC]"
                           >
                             <span className="text-[#202020] font-semibold">{metric.name}:</span>
                             <span className="text-[#202020] ml-1">
@@ -116,7 +120,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                 <div className="text-[#202020] italic">No objectives listed for this quarter.</div>
               )}
               {/* Key Deliverables */}
-              <div className="pl-2 border-l-4 border-[#202020]/20 mt-2">
+              <div className="pl-2 border-l-4 border-[#B0B7BC] mt-2">
                 <h5 className="text-xs font-semibold text-[#202020] mb-2">Key Deliverables</h5>
                 <ul className="space-y-1">
                   {quarter.keyDeliverables.map((deliverable, delIndex) => (
@@ -143,13 +147,17 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
             {milestones.criticalMilestones.map((milestone, index) => {
               const color = getCriticalColor(milestone.importance);
               return (
-                <div key={`critical-${index}`} className={`p-4 border ${color.border} rounded-xl flex flex-col gap-2 shadow-sm`}>
+                <div key={`critical-${index}`} className={`p-4 border border-[#B0B7BC] rounded-[8px] bg-[#CFD2D4] flex flex-col gap-2 shadow-sm`}>
                   <div className="flex justify-between items-center mb-1">
                     <h5 className="text-base font-semibold text-[#202020]">{milestone.name}</h5>
-                    <span className="text-xs text-[#202020] bg-white/10 px-2 py-0.5 rounded-full">{milestone.date}</span>
+                    <span className="text-xs text-[#202020] bg-[#E3E7EA] px-2 py-0.5 rounded-[8px] border border-[#B0B7BC]"
+                      style={{ background: 'linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)', color: '#202020', borderRadius: '8px', border: 'none' }}
+                    >
+                      {milestone.date}
+                    </span>
                   </div>
                   {milestone.importance && (
-                    <span className={`inline-block px-2 py-0.5 rounded-full ${color.badge} text-xs font-semibold w-fit`}>
+                    <span className={`inline-block px-2 py-0.5 rounded-[8px] bg-[#E3E7EA] border border-[#B0B7BC] text-xs font-semibold w-fit text-[#202020]`}>
                       {milestone.importance}
                     </span>
                   )}
@@ -166,7 +174,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
           </div>
         </div>
       </CardContent>
-    </div>
+    </Card>
   );
 };
 

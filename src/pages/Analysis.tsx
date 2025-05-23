@@ -110,7 +110,7 @@ const Analysis = () => {
                   New Analysis
                   <ArrowRight size={20} />
                 </Button>
-                <Button variant="ghost" size="icon" className="text-[#2B2521] " onClick={e => { e.stopPropagation(); setIsQueryExpanded(!isQueryExpanded); }}>
+                <Button variant="ghost" size="icon" className="text-[#2B2521]  " onClick={e => { e.stopPropagation(); setIsQueryExpanded(!isQueryExpanded); }}>
                   {isQueryExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </Button>
               </div>
