@@ -231,7 +231,7 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           className={`flex gap-3 mb-4 animate-fadeUp ${message.analyst === 'David' ? 'flex-row-reverse justify-end' : ''}`}
           style={{ animationDuration: '0.5s' }}
         >
-          <Avatar className={`h-8 w-8 ${analysts[message.analyst].color} ${analysts[message.analyst].border} border flex items-center justify-center`}>
+          <Avatar className={`h-8 w-8 bg-[#F0EDE9] border border-[#D9D3C7] flex items-center justify-center`}>
             <AvatarImage src={analysts[message.analyst].image} alt={message.analyst} />
             <AvatarFallback className="bg-transparent">
               {analysts[message.analyst].icon}
@@ -239,17 +239,17 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-[#202020]">
+              <span className="font-medium text-[#2B2521]">
                 {message.analyst}
               </span>
-              <span className="text-xs text-[#202020]/60">
+              <span className="text-xs text-[#2B2521]/60">
                 {analysts[message.analyst].role}
               </span>
             </div>
             <div 
-              className={`mt-1 p-3 rounded-lg bg-[#E3E7EA] border border-[#B0B7BC] ${message.analyst === 'David' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg bg-[#D9D3C7] border border-[#F0EDE9] ${message.analyst === 'David' ? 'text-right' : ''}`}
             >
-              <p className={`text-sm text-[#202020]`}>
+              <p className={`text-sm text-[#2B2521]`}>
                 {message.message.replace(/^([A-Za-z]+):\s*/, '')}
               </p>
             </div>
@@ -262,7 +262,7 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           key={`typing-${typing}-${visibleMessages.length}`}
           className={`flex gap-3 mb-4 animate-fadeUp ${typing === 'David' ? 'flex-row-reverse justify-end' : ''}`}
         >
-          <Avatar className={`h-8 w-8 ${analysts[typing].color} ${analysts[typing].border} border flex items-center justify-center`}>
+          <Avatar className={`h-8 w-8 bg-[#F0EDE9] border border-[#D9D3C7] flex items-center justify-center`}>
             <AvatarImage src={analysts[typing].image} alt={typing} />
             <AvatarFallback className="bg-transparent">
               {analysts[typing].icon}
@@ -270,20 +270,20 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-[#202020]">
+              <span className="font-medium text-[#2B2521]">
                 {typing}
               </span>
-              <span className="text-xs text-[#202020]/60">
+              <span className="text-xs text-[#2B2521]/60">
                 {analysts[typing].role}
               </span>
             </div>
             <div 
-              className={`mt-1 p-3 rounded-lg bg-[#E3E7EA] border border-[#B0B7BC] ${typing === 'David' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg bg-[#D9D3C7] border border-[#F0EDE9] ${typing === 'David' ? 'text-right' : ''}`}
             >
               <div className="flex gap-1 items-center h-4 justify-end">
-                <span className="w-2 h-2 bg-[#B0B7BC] rounded-full animate-pulse"></span>
-                <span className="w-2 h-2 bg-[#B0B7BC] rounded-full animate-pulse" style={{ animationDelay: '0.15s' }}></span>
-                <span className="w-2 h-2 bg-[#B0B7BC] rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></span>
+                <span className="w-2 h-2 bg-[#B7BEAE] rounded-full animate-pulse"></span>
+                <span className="w-2 h-2 bg-[#B7BEAE] rounded-full animate-pulse" style={{ animationDelay: '0.15s' }}></span>
+                <span className="w-2 h-2 bg-[#B7BEAE] rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></span>
               </div>
             </div>
           </div>

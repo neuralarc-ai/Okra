@@ -65,7 +65,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
     { name: 'Funding requirements', icon: <DollarSign size={16} /> },
     { name: 'Financial plan', icon: <Gauge size={16} /> },
     { name: 'Milestones', icon: <Calendar size={16} /> },
-    { name: 'Revenue model', icon: <BarChart size={16} /> },
+    { name: 'Compiling report', icon: <BarChart size={16} /> },
   ];
 
   return (
@@ -73,102 +73,91 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
       {progress < 100 ? (
         <div className="w-full min-h-[600px] flex flex-col md:flex-row gap-6 animate-fadeUp mt-8 items-stretch justify-center">
           {/* Left: Progress UI */}
-          <div className="flex-1 max-w-2xl p-8 rounded-xl bg-[#FFFFFF] shadow-lg h-full flex flex-col border border-[#B0B7BC]">
+          <div className="flex-1 max-w-2xl p-8 rounded-2xl   h-full flex flex-col  ">
             <div className="mb-5 flex items-center gap-2">
-              <div className="p-2 bg-[#E3E7EA] rounded-full">
-                <Search className="text-[#202020] h-5 w-5 animate-pulse" />
+              <div className="p-2 bg-[#B7BEAE40] rounded-full">
+                <Search className="text-[#2B2521] h-5 w-5 animate-pulse" />
               </div>
               <div>
-                <h3 className="text-lg text-[#202020] font-medium tracking-wide">Deep Analysis in Progress</h3>
-                <p className="text-sm text-[#202020]/70">{source}</p>
+                <h3 className="text-2xl text-[#2B2521] font-semibold tracking-wide">Deep analysis in progress</h3>
+                <p className="text-base text-[#2B2521]/80">{source}</p>
               </div>
             </div>
-            <div className="progress-container h-3 relative overflow-hidden mb-6">
-              <div 
-                className="progress-bar"
-                style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #262626 0%, #3987BE 60%, #D48EA3 100%)' }}
-              />
-              {/* Particle overlay */}
-              <div className="absolute inset-0 pointer-events-none">
-                {particles.map(particle => (
-                  <div 
-                    key={particle.id}
-                    className="absolute top-0 h-full rounded-full"
-                    style={{
-                      left: `${particle.x}%`,
-                      width: `${particle.size}px`,
-                      opacity: particle.opacity,
-                      backgroundColor: particle.color,
-                      transform: `translateX(-${particle.size / 2}px)`,
-                      boxShadow: `0 0 ${particle.size * 2}px ${particle.size}px ${particle.color}80`
-                    }}
-                  />
-                ))}
+            {/* Progress bar card */}
+            <div className="w-full rounded-2xl bg-[#2B2521] px-8 pt-6 pb-6 mb-8 flex flex-col" style={{minHeight: '110px'}}>
+              <div className="w-full h-2 mb-6 mt-1 rounded-full bg-[#423B36] overflow-hidden">
+                <div
+                  className="h-2 rounded-full"
+                  style={{
+                    width: `${progress}%`,
+                    background: 'linear-gradient(90deg, #5B8EE2 0%, #B7A6D7 60%, #E6A6B7 100%)',
+                    transition: 'width 0.5s cubic-bezier(.4,2,.6,1)',
+                  }}
+                />
               </div>
-            </div>
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-sm text-[#202020]/80 font-medium flex items-center gap-1">
-                <Sparkles size={16} className="animate-pulse text-[#3987BE]" /> Okra AI is researching your idea
-              </span>
-              <span className="text-sm font-medium text-[#202020] bg-[#E3E7EA] px-3 py-1 rounded-full">
-                {progress}%
-              </span>
+              <div className="flex justify-between items-center w-full">
+                <span className="text-white text-2xl font-normal">Okra AI is researching your idea</span>
+                <span className="text-white text-2xl font-semibold">{progress}%</span>
+              </div>
             </div>
             {/* Analysis steps */}
-            <div className="grid grid-cols-2 gap-4">
-              {analysisSteps.map((step, index) => {
-                // Adjust the progress threshold for more steps
-                const stepThreshold = (index * (100 / analysisSteps.length));
-                return (
-                  <div 
-                    key={step.name} 
-                    className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-300 border ${
-                      progress > stepThreshold ? 'bg-[#E3E7EA] border-[#B0B7BC]' : 'bg-transparent border-[#E3E7EA]'
-                    }`}
-                  >
-                    <div 
-                      className={`flex items-center justify-center ${
-                        progress > stepThreshold ? 'text-[#3987BE]' : 'text-[#B0B7BC]'
-                      }`}
-                    >
-                      {step.icon}
-                    </div>
-                    <span className={`text-xs ${
-                      progress > stepThreshold ? 'text-[#202020]' : 'text-[#B0B7BC]'
-                    }`}>
-                      {step.name}
-                    </span>
-                    {progress > stepThreshold && (
-                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#3987BE] animate-pulse" />
-                    )}
-                  </div>
-                );
-              })}
+            <div className="w-full max-w-[649px] mx-auto">
+              {[0,2,4,6,8,10].map((rowIdx) => (
+                <div key={rowIdx} className="flex gap-x-5 mb-4 last:mb-0">
+                  {[0,1].map((colIdx) => {
+                    const index = rowIdx + colIdx;
+                    if (index >= analysisSteps.length) return null;
+                    const step = analysisSteps[index];
+                    const stepThreshold = (index * (100 / analysisSteps.length));
+                    const isActive = progress > stepThreshold;
+                    const isLastActive = isActive && (index === analysisSteps.length - 1 || progress < ((index + 1) * (100 / analysisSteps.length)));
+                    return (
+                      <div
+                        key={step.name}
+                        className="flex items-center gap-4 flex-1"
+                        style={{
+                          borderRadius: '4px',
+                          padding: '16px',
+                          background: isLastActive ? '#F6F6F6' : (isActive ? '#B7BEAE' : '#B7BEAE40'),
+                          border: isLastActive ? '1.5px solid #2B2521' : 'none',
+                        }}
+                      >
+                        <div style={{color: '#2B2521', display: 'flex', alignItems: 'center'}}>
+                          {step.icon}
+                        </div>
+                        <span style={{color: '#2B2521', fontSize: '20px', fontWeight: 400}}>
+                          {step.name}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
           {/* Right: Analyst Conversation */}
-          <div className="flex-1 max-w-xl p-4 md:p-8 rounded-xl bg-[#FFFFFF] shadow-lg h-full flex flex-col border border-[#B0B7BC]">
+          <div className="flex-1 max-w-2xl p-4 md:p-8 rounded-2xl bg-[#F0EDE9] shadow h-full flex flex-col ">
             {/* Meet the Analyst Team section */}
             <div className="mb-0">
-              <div className="text-[#202020]/80 text-sm font-medium mb-2">Meet our analyst team</div>
+              <div className="text-[#2B2521] text-base font-semibold mb-2">Meet our analyst team</div>
               <div className="grid grid-cols-2 gap-3">
                 {/* Analyst Avatars and Roles */}
                 {[
-                  { name: 'David', role: 'Manager', img: '/manager-profile.png', color: 'bg-[#22d3ee]/10', border: 'border-[#22d3ee]/30' },
-                  { name: 'Emma', role: 'Data Scientist', img: '/emma-profile.png', color: 'bg-[#9b87f5]/10', border: 'border-[#9b87f5]/30' },
-                  { name: 'Mike', role: 'Business Strategist', img: '/mike-profile.png', color: 'bg-[#33C3F0]/10', border: 'border-[#33C3F0]/30' },
-                  { name: 'Scott', role: 'Financial Analyst', img: '/scott-profile.png', color: 'bg-[#F97316]/10', border: 'border-[#F97316]/30' },
+                  { name: 'David', role: 'Manager', img: '/manager-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
+                  { name: 'Emma', role: 'Data Scientist', img: '/emma-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
+                  { name: 'Mike', role: 'Business Strategist', img: '/mike-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
+                  { name: 'Scott', role: 'Financial Analyst', img: '/scott-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
                 ].map(a => (
                   <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border}`} style={{ minWidth: 0 }}>
-                    <img src={a.img} alt={a.name} className="w-7 h-7 rounded-full border border-[#B0B7BC] object-cover" />
-                    <div className="flex flex-col min-w-0 max-w-[120px]">
-                      <span className="text-sm font-semibold text-[#202020] truncate">{a.name}</span>
-                      <span className="text-xs text-[#202020]/60 whitespace-nowrap">{a.role}</span>
+                    <img src={a.img} alt={a.name} className="w-[72px] h-[72px] rounded-full border border-[#B7BEAE] object-cover" />
+                    <div className="flex flex-col max-w-[268px] min-h-[92px">
+                      <span className="text-base font-semibold text-[#2B2521] truncate">{a.name}</span>
+                      <span className="text-xs text-[#2B2521]/60 whitespace-nowrap">{a.role}</span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="text-xs text-[#202020]/50 mt-2">This analysis is a collaborative team effort by our analysts.</div>
+              <div className="text-xs text-[#000000] mt-2 mb-3">This analysis is a collaborative team effort by our analysts.</div>
             </div>
             <AnalystConversation progress={progress} userInput={userInput} />
           </div>
