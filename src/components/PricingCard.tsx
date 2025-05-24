@@ -114,43 +114,47 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             return (
             <div 
               key={index}
-              className="p-5 border border-[#202020]/10 rounded-2xl bg-white/5 transition-all duration-200 hover:border-blue-400/30 hover:bg-blue-400/5 shadow-sm group"
+              className="p-6 border rounded-2xl bg-[#E3E2DF] border-[#CFD2D4] transition-all duration-200 group"
             >
                 <div 
                   className="flex justify-between items-center mb-2 cursor-pointer"
                   onClick={() => togglePrice(price.type)}
                 >
-                  <h4 className="text-base font-bold text-[#202020] flex items-center gap-2">
+                  <h4 className="text-base font-bold flex items-center gap-2" style={{ color: '#161616' }}>
                     <Zap className="h-4 w-4 text-yellow-300" /> {price.type}
                   </h4>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-blue-700 bg-blue-200/80 px-3 py-1 rounded-full text-xs shadow-sm border border-blue-300/40">{formatPriceValue(price.value, currency)}</span>
-                    {isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
+                    <span className="font-bold text-[#161616] bg-[#A8B0B8] px-4 py-1 rounded-full text-sm border border-[#CFD2D4]">{formatPriceValue(price.value, currency)}</span>
+                    {isExpanded ? <ChevronUp size={18} className="text-[#A9A9A9]" /> : <ChevronDown size={18} className="text-[#A9A9A9]" />}
                   </div>
                 </div>
                 {/* Collapsed: show only key points */}
                 {!isExpanded && (
-                  <ul className="list-disc list-inside text-xs text-[#202020] ml-2 mt-1 space-y-1">
+                  <ul className="list-disc list-inside text-sm text-[#2B2521] ml-2 mt-1 space-y-1">
                     {keyPoints.map((point, i) => <li key={i} className="leading-relaxed">{point}</li>)}
                   </ul>
                 )}
                 {/* Expanded: show detailed summary/analysis */}
                 {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-blue-400/10">
-                    <div className="text-base text-[#202020] mb-2 font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-yellow-300" /> Detailed Analysis</div>
-                    <div className="text-sm text-[#202020] whitespace-pre-line mb-2">
+                  <div className="mt-4 pt-4 border-t border-[#CFD2D4]">
+                    <div className="text-base mb-2 font-bold flex items-center gap-2" style={{ color: '#161616' }}><Lightbulb className="h-4 w-4 text-yellow-300" /> Detailed Analysis</div>
+                    <div className="text-sm mb-2" style={{ color: '#2B2521', whiteSpace: 'pre-line' }}>
                       {price.detailedAnalysis?.summary || price.description}
                     </div>
                     {/* Optionally, show a few more details if available */}
                     {price.detailedAnalysis?.revenuePotential?.longTerm && (
-                      <div className="mt-2 text-xs text-[#202020]">
-                        <span className="font-semibold text-[#202020]">Long-term Revenue Potential:</span> {price.detailedAnalysis.revenuePotential.longTerm}
+                      <div className="mt-2 text-sm" style={{ color: '#2B2521' }}>
+                        <span className="font-semibold" style={{ color: '#161616' }}>
+                          Long-term Revenue Potential:
+                        </span> {price.detailedAnalysis.revenuePotential.longTerm}
                       </div>
                     )}
                     {price.detailedAnalysis?.adoptionBarriers && price.detailedAnalysis.adoptionBarriers.length > 0 && (
                       <div className="mt-2">
-                        <span className="font-semibold text-[#202020] text-xs">Adoption Barriers:</span>
-                        <ul className="list-disc list-inside text-xs text-[#202020] ml-4">
+                        <span className="font-semibold text-xs" style={{ color: '#161616' }}>
+                          Adoption Barriers:
+                        </span>
+                        <ul className="list-disc list-inside text-sm ml-4" style={{ color: '#2B2521' }}>
                           {price.detailedAnalysis.adoptionBarriers.map((b, i) => <li key={i}>{b}</li>)}
                         </ul>
                       </div>
@@ -162,55 +166,55 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
           })}
           {/* Price trends graph */}
           <div className="space-y-2">
-            <div className="h-[200px] w-full bg-gradient-to-br from-blue-900/30 to-blue-400/10 rounded-2xl p-4 shadow-inner border border-blue-400/10">
+            <div className="h-[260px] w-full rounded-2xl p-6 border" style={{ background: '#2B2521', borderColor: '#161616' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={trendData}
                   margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <CartesianGrid stroke="#E3E2DF" />
                   <XAxis
                     dataKey="date"
-                    stroke="rgba(255,255,255,0.5)"
-                    fontSize={10}
+                    stroke="#CFD2D4"
+                    fontSize={12}
                     tickLine={false}
                     tickMargin={5}
                   />
                   <YAxis
-                    stroke="rgba(255,255,255,0.5)"
-                    fontSize={10}
+                    stroke="#CFD2D4"
+                    fontSize={12}
                     tickLine={false}
                     axisLine={false}
                     tickMargin={5}
-                    label={{ value: 'Users', angle: -90, position: 'insideLeft', fill: '#fff' }}
+                    label={{ value: 'Users', angle: -90, position: 'insideLeft', fill: '#CFD2D4' }}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'rgba(0,0,0,0.8)',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      backgroundColor: '#161616',
+                      border: '1px solid #B7A694',
                       borderRadius: '6px',
-                      color: 'white'
+                      color: '#F8F7F3'
                     }}
                     formatter={(value) => value != null ? `${value} users` : ''}
                   />
-                  {uniquePriceSuggestions.map((ps) => (
+                  {uniquePriceSuggestions.map((ps, idx) => (
                     <Line
                       key={ps.type}
                       type="monotone"
                       dataKey={ps.type}
-                      stroke={typeColors[ps.type]}
+                      stroke={idx === 0 ? '#D48EA3' : '#3987BE'}
                       strokeWidth={2}
                       dot={false}
+                      strokeDasharray="6 4"
                     />
                   ))}
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex flex-row items-center justify-center w-full px-2 text-xs text-[#202020] mt-3 gap-6">
-              {uniquePriceSuggestions.map((ps) => (
-                <div key={ps.type} className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full shadow-sm border border-[#202020]/10">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors[ps.type] }} />
-                  <span className="font-semibold text-[#202020]">{ps.type}</span>
+            <div className="flex flex-row items-center justify-center w-full px-2 text-base mt-4 gap-6">
+              {uniquePriceSuggestions.map((ps, idx) => (
+                <div key={ps.type} className="flex items-center gap-2 px-5 py-2 rounded-full border" style={{ background: idx === 0 ? '#D48EA3' : '#3987BE', borderColor: '#161616' }}>
+                  <span className="font-semibold text-[#161616]" style={{ color: idx === 0 ? '#161616' : '#F8F7F3' }}>{ps.type}</span>
                 </div>
               ))}
             </div>

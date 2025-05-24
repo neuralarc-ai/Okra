@@ -57,7 +57,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
-    <Card className="bg-[#FFFFFF] shadow-lg rounded-xl">
+    <Card className="bg-[#FFFFFF] rounded-xl">
       <CardHeader className="pb-2">
         <CardTitle className="text-3xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
           <span>Idea Validation Report</span>
@@ -127,7 +127,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           <h3 className="text-2xl font-semibold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
             Key Metrics
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="p-5 bg-[#E3E7EA] rounded-[8px] flex flex-col justify-start gap-2 min-h-[80px] border border-[#B0B7BC]">
               <div className="text-xs text-[#202020] mb-1 flex items-center gap-2 font-medium">
                 Market Size
@@ -166,7 +166,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* Detailed Analysis */}
         <section className="mb-10">
           <h3 className="text-2xl font-semibold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
-            Detailed Analysis
+            Market Analysis
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-6">
             <div className="p-5 bg-[#E3E7EA] rounded-[8px] border border-[#B0B7BC]">
@@ -208,45 +208,41 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
            </h3>
            <div className="grid grid-cols-2 gap-0 relative bg-[#2B2521] rounded-[16px] border border-[#B0B7BC] overflow-hidden">
              {/* Vertical line separators */}
-             <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#B0B7BC] z-10" />
-             <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#B0B7BC] z-10" />
+             <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#B0B7BC] z-10 -translate-x-1/2" />
+             <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#B0B7BC] z-10 -translate-y-1/2" />
              {/* Strengths */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#E3E7EA] text-[#2B5C4F]"><TrendingUp className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-[#2B5C4F]">Strengths</h4>
+                 <h4 className="text-lg font-bold" style={{ color: '#3987BE' }}>Strengths</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
+               <ul className="list-disc list-outside pl-4 text-base text-white space-y-1">
                  {scoreAnalysis.swot.strengths.map((s, i) => <li key={i}>{s}</li>)}
                </ul>
              </div>
              {/* Weaknesses */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#FFF4D6] text-[#B68B00]"><Target className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-[#B68B00]">Weaknesses</h4>
+                 <h4 className="text-lg font-bold" style={{ color: '#D48EA3' }}>Weaknesses</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
+               <ul className="list-disc list-outside pl-4 text-base text-white space-y-1">
                  {scoreAnalysis.swot.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
                </ul>
              </div>
              {/* Opportunities */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#E3E7EA] text-[#3987BE]"><Users className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-[#3987BE]">Opportunities</h4>
+                 <h4 className="text-lg font-bold" style={{ color: '#97A487' }}>Opportunities</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
+               <ul className="list-disc list-outside pl-4 text-base text-white space-y-1">
                  {scoreAnalysis.swot.opportunities.map((o, i) => <li key={i}>{o}</li>)}
                </ul>
              </div>
              {/* Threats */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">
-                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#FDE7E7] text-[#B8001E]"><DollarSign className="h-5 w-5" /></span>
-                 <h4 className="text-lg font-bold text-[#B8001E]">Threats</h4>
+                 <h4 className="text-lg font-bold" style={{ color: '#B7A694' }}>Threats</h4>
                </div>
-               <ul className="list-disc list-inside text-base text-white space-y-1 pl-2">
+               <ul className="list-disc list-outside pl-4 text-base text-white space-y-1">
                  {scoreAnalysis.swot.threats.map((t, i) => <li key={i}>{t}</li>)}
                </ul>
              </div>
@@ -276,7 +272,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           <h3 className="text-2xl font-bold text-[#202020] mb-4 flex items-center gap-3 tracking-tight">
             Regulatory & Risks
           </h3>
-          <div className="grid gap-6">
+          <div className="grid gap-4">
               {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
               <div
                 key={i}

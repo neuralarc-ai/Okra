@@ -9,22 +9,18 @@ interface CompetitorsCardProps {
   competitors: Competitor[];
 }
 
-const COLORS = [
-  "#8b7cf6", // purple
-  "#FFADDF", // pink
-  "#FCEC3B", // yellow
-  "#fbbf24", // orange
-  "#34d399", // green
-  "#60a5fa", // blue
+const CHART_COLORS = [
+  "#C6AEA3", // Descript
+  "#D48EA3", // Midjourney/DALLE/Stable Diffusion
+  "#A8B0B8", // Jasper AI
+  "#97A487", // RunwayML
 ];
 
-const GRADIENT_COLORS = [
-  { id: "gradPurple", start: "#c084fc", end: "#6b21a8" },    // Soft purple to deep purple
-  { id: "gradPink", start: "#f9a8d4", end: "#be185d" },      // Soft pink to deep rose
-  { id: "gradYellow", start: "#fde047", end: "#854d0e" },    // Soft yellow to amber
-  { id: "gradOrange", start: "#fdba74", end: "#9a3412" },    // Soft orange to deep orange
-  { id: "gradGreen", start: "#4ade80", end: "#166534" },     // Soft green to forest
-  { id: "gradBlue", start: "#93c5fd", end: "#1e40af" },      // Soft blue to navy
+const CHART_LABEL_COLORS = [
+  "#F8F7F3", // for text/labels
+  "#CFD2D4",
+  "#E3E2DF",
+  "#B7A694"
 ];
 
 function getMarketShareData(competitors: Competitor[]) {
@@ -114,189 +110,177 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
 
   return (
     <div>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-semibold flex items-center gap-2 text-[#202020]">
-          <ChartBar size={18} className="text-gray-400" />
-          <span>Competitive Analysis</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6 mt-4">
-          {marketShareData && marketShareData.length >= 2 && (
-            <div className="mt-8">
-              <div className="flex flex-row items-center justify-center gap-8 w-full">
-                {/* Chart on the left */}
-                <div className="relative flex items-center justify-center" style={{ minHeight: 240 }}>
-                  <ResponsiveContainer width={320} height={320}>
-                    <PieChart>
-                      <defs>
-                        {GRADIENT_COLORS.map((gradient, idx) => (
-                          <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor={gradient.start} />
-                            <stop offset="100%" stopColor={gradient.end} />
-                          </linearGradient>
-                        ))}
-                      </defs>
-                      <Tooltip
-                        cursor={false}
-                        contentStyle={{ 
-                          background: 'rgba(255, 255, 255, 0.95)', 
-                          border: 'none', 
-                          color: '#202020', 
-                          borderRadius: '10px',
-                          padding: '8px 12px',
-                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-                        }}
-                        formatter={(value: number) => `${value}%`}
-                      />
-                      <Pie
-                        data={marketShareData.map((entry, idx) => ({
-                          name: entry.name,
-                          value: entry.value,
-                          fill: `url(#${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].id})`
-                        }))}
-                        dataKey="value"
-                        nameKey="name"
-                        innerRadius={70}
-                        outerRadius={110}
-                        stroke="none"
-                      >
-                        <Label
-                          content={({ viewBox }) => {
-                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                              return (
-                                <text
-                                  x={viewBox.cx}
-                                  y={viewBox.cy}
-                                  textAnchor="middle"
-                                  dominantBaseline="middle"
-                                  fill="#202020"
-                                >
-                                  <tspan
-                                    x={viewBox.cx}
-                                    y={viewBox.cy}
-                                    className="fill-foreground text-2xl font-bold"
-                                  >
-                                    {total}%
-                                  </tspan>
-                                  <tspan
-                                    x={viewBox.cx}
-                                    y={(viewBox.cy || 0) + 18}
-                                    className="fill-muted-foreground text-base"
-                                  >
-                                    Total
-                                  </tspan>
-                                </text>
-                              );
-                            }
+      {/* Chart and Legend Section */}
+      <div className="rounded-2xl p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
+            <ChartBar size={18} className="text-[#CFD2D4]" />
+            <span>Competitive Analysis</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent style={{ background: '#161616', borderRadius: '1rem' }}>
+          <div className="space-y-6 mt-4">
+            {marketShareData && marketShareData.length >= 2 && (
+              <div className="mt-8">
+                <div className="flex flex-row items-center justify-center gap-8 w-full">
+                  {/* Chart on the left */}
+                  <div className="relative flex items-center justify-center mt-8" style={{ minHeight: 240 }}>
+                    <ResponsiveContainer width={320} height={320}>
+                      <PieChart>
+                        <Tooltip
+                          cursor={false}
+                          contentStyle={{ 
+                            background: '#161616',
+                            border: '1px solid #B7A694',
+                            color: '#F8F7F3',
+                            borderRadius: '10px',
+                            padding: '8px 12px',
+                            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
                           }}
+                          formatter={(value: number) => `${value}%`}
                         />
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                {/* Labels/Legend on the right */}
-                <div className="flex flex-col gap-3 min-w-[140px]">
-                  {marketShareData.map((entry, idx) => (
-                    <div key={entry.name} className="flex items-center gap-2">
-                      <span 
-                        className="w-3 h-3 rounded-full block" 
-                        style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}
-                      ></span>
-                      <span className="text-xs font-semibold" style={{ color: GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start }}>{entry.name}</span>
-                    </div>
-                  ))}
+                        <Pie
+                          data={marketShareData.map((entry, idx) => ({
+                            name: entry.name,
+                            value: entry.value,
+                            fill: CHART_COLORS[idx % CHART_COLORS.length]
+                          }))}
+                          dataKey="value"
+                          nameKey="name"
+                          innerRadius={70}
+                          outerRadius={120}
+                          stroke="#2B2521"
+                          strokeWidth={2}
+                          label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                            // Calculate label position
+                            const RADIAN = Math.PI / 180;
+                            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                            return (
+                              <text
+                                x={x}
+                                y={y}
+                                fill="#fff"
+                                textAnchor="middle"
+                                dominantBaseline="central"
+                                fontWeight={400}
+                                fontSize={14}
+                              >
+                                {`${Number(value).toFixed(1)}%`}
+                              </text>
+                            );
+                          }}
+                          labelLine={false}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  {/* Labels/Legend on the right */}
+                  <div className="flex flex-col gap-3 min-w-[180px]">
+                    <h4 className="text-base font-semibold mb-2 mt-8" style={{ color: '#F8F7F3' }}>Market Share Distribution</h4>
+                    {marketShareData.map((entry, idx) => (
+                      <div key={entry.name} className="flex items-center gap-3 px-4 py-3 rounded-lg border" style={{ borderColor: '#FFFFFF40', background: '#161616' }}>
+                        <span 
+                          className="w-4 h-4 rounded block border" 
+                          style={{ background: CHART_COLORS[idx % CHART_COLORS.length], borderColor: '#B7A694' }}
+                        ></span>
+                        <span className="text-base font-medium" style={{ color: '#F8F7F3' }}>{entry.name}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="flex justify-center mt-4">
-                <h4 className="text-base font-semibold text-[#202020] tracking-wide">Market Share Distribution</h4>
-              </div>
-            </div>
-          )}
-
-          {marketShareData && marketShareData.map((entry, idx) => {
-            const competitor = competitors.find(c => c.name === entry.name);
-            if (!competitor) return null;
-            const isExpanded = expandedCompetitor === competitor.name;
-            return (
-              <section key={entry.name} className="bg-white/2 rounded-lg border border-white/10 shadow-inner">
-                {/* Section Header */}
-                <div 
-                  className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-4 py-3 cursor-pointer group"
-                  onClick={() => toggleCompetitor(competitor.name)}
-                >
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-lg font-semibold text-[#202020] flex items-center gap-1">
-                      {competitor.name}
-                      {competitor.strengthScore > 80 && (
-                        <Award size={15} className="text-yellow-300 ml-1" />
-                      )}
-                    </span>
-                    {competitor.primaryAdvantage && (
-                      <span className="text-xs text-[#202020] font-medium mt-0.5">
-                        Key Advantage: <span className="text-[#202020] font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span>
-                      </span>
+            )}
+          </div>
+        </CardContent>
+      </div>
+      {/* Competitor Cards Section */}
+      <div className="flex flex-col gap-4">
+        {marketShareData && marketShareData.map((entry, idx) => {
+          const competitor = competitors.find(c => c.name === entry.name);
+          if (!competitor) return null;
+          const isExpanded = expandedCompetitor === competitor.name;
+          return (
+            <section key={entry.name} className="bg-[#B7BEAE] rounded-xl border mb-0" style={{ borderColor: '#CFD4C9' }}>
+              {/* Section Header */}
+              <div 
+                className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-6 py-5 cursor-pointer group"
+                onClick={() => toggleCompetitor(competitor.name)}
+              >
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xl font-semibold" style={{ color: '#161616' }}>
+                    {competitor.name}
+                    {competitor.strengthScore > 80 && (
+                      <Award size={15} className="text-yellow-300 ml-1" />
                     )}
-                  </div>
-                  <div className="flex items-center gap-4 mt-2 md:mt-0">
-                    <div className="flex flex-col items-center">
-                      <span className="text-xs text-[#202020]">Market Share</span>
-                      <span className="text-base font-semibold text-[#202020]">{entry.value}%</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-xs text-[#202020]" title="Strength Score is a 0-100 rating of this competitor's overall market strength, brand, and execution.">Strength Score</span>
-                      <span className="text-base font-semibold text-[#202020]">{competitor.strengthScore}/100</span>
-                    </div>
-                    <span>{isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}</span>
-                  </div>
+                  </span>
+                  {competitor.primaryAdvantage && (
+                    <span className="text-sm font-medium mt-0.5" style={{ color: '#2B2521' }}>
+                      Key Advantage: <span className="font-semibold">{cleanAdvantage(competitor.primaryAdvantage)}</span>
+                    </span>
+                  )}
                 </div>
-                {/* Progress Bar */}
-                <div className="px-4 pb-2">
-                  <Progress 
-                    value={competitor.strengthScore} 
-                    className="h-1.5 bg-gray-800 rounded-full"
-                    indicatorClassName={getProgressGradient()}
+                <div className="flex items-center gap-8 mt-2 md:mt-0">
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs" style={{ color: '#2B2521' }}>Market Share</span>
+                    <span className="text-lg font-semibold" style={{ color: '#161616' }}>{Number(entry.value).toFixed(1)}%</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs" style={{ color: '#2B2521' }} title="Strength Score is a 0-100 rating of this competitor's overall market strength, brand, and execution.">Strength Score</span>
+                    <span className="text-lg font-semibold" style={{ color: '#161616' }}>{competitor.strengthScore}/100</span>
+                  </div>
+                  <span>{isExpanded ? <ChevronUp size={18} className="text-[#2B2521]" /> : <ChevronDown size={18} className="text-[#2B2521]" />}</span>
+                </div>
+              </div>
+              {/* Progress Bar */}
+              <div className="px-6 pb-2">
+                <div className="w-full h-1.5 bg-[#CFD4C9] rounded-full overflow-hidden">
+                  <div
+                    className="h-1.5 rounded-full"
+                    style={{ width: `${competitor.strengthScore}%`, background: '#97A487' }}
                   />
                 </div>
-                {/* Description */}
-                <div className="px-4 pb-2">
-                  <p className="text-[#202020] text-xs italic">{competitor.description}</p>
-                </div>
-                {/* Expanded Details */}
-                {isExpanded && competitor.detailedAnalysis && (
-                  <div className="mt-3 pt-3 mx-3 border-t border-white/10">
-                    <div className="text-sm text-[#202020] mb-2 font-semibold">Summary</div>
-                    <div className="text-xs text-[#202020] whitespace-pre-line mb-2">
-                      {competitor.detailedAnalysis.summary || competitor.description}
-                    </div>
-                    <div className="flex flex-col gap-1 text-xs text-[#202020]">
-                      {competitor.detailedAnalysis.marketPosition && (
-                        <div><span className="font-semibold text-[#202020]">Market Position:</span> {competitor.detailedAnalysis.marketPosition}</div>
-                      )}
-                      {competitor.primaryAdvantage && (
-                        <div><span className="font-semibold text-[#202020]">Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
-                      )}
-                      {competitor.website && (
-                        <div className="flex items-center gap-1">
-                          <span className="font-semibold text-[#202020]">Website:</span>
-                          <a 
-                            href={competitor.website.startsWith('http') ? competitor.website : `https://${competitor.website}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-400 hover:text-blue-300 flex items-center gap-1"
-                          >
-                            {competitor.website}
-                          </a>
-                        </div>
-                      )}
-                    </div>
+              </div>
+              {/* Description */}
+              <div className="px-6 pb-2">
+                <p className="text-sm italic" style={{ color: '#2B2521' }}>{competitor.description}</p>
+              </div>
+              {/* Expanded Details */}
+              {isExpanded && competitor.detailedAnalysis && (
+                <div className="mt-3 pt-3 mx-6 border-t" style={{ borderColor: '#CFD4C9' }}>
+                  <div className="text-base mb-2 font-semibold" style={{ color: '#161616' }}>Summary</div>
+                  <div className="text-sm mb-2" style={{ color: '#2B2521', whiteSpace: 'pre-line' }}>
+                    {competitor.detailedAnalysis.summary || competitor.description}
                   </div>
-                )}
-              </section>
-            );
-          })}
-        </div>
-      </CardContent>
+                  <div className="flex flex-col gap-1 text-sm" style={{ color: '#2B2521' }}>
+                    {competitor.detailedAnalysis.marketPosition && (
+                      <div><span className="font-semibold" style={{ color: '#A9A9A9' }}>Market Position:</span> {competitor.detailedAnalysis.marketPosition}</div>
+                    )}
+                    {competitor.primaryAdvantage && (
+                      <div><span className="font-semibold" style={{ color: '#A9A9A9' }}>Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
+                    )}
+                    {competitor.website && (
+                      <div className="flex items-center gap-1">
+                        <span className="font-semibold" style={{ color: '#A9A9A9' }}>Website:</span>
+                        <a 
+                          href={competitor.website.startsWith('http') ? competitor.website : `https://${competitor.website}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline hover:text-[#3987BE]"
+                          style={{ color: '#3987BE' }}
+                        >
+                          {competitor.website}
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
 };
