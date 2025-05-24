@@ -172,7 +172,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                   data={trendData}
                   margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
                 >
-                  <CartesianGrid stroke="#E3E2DF" />
+                  <CartesianGrid stroke="#7D7D7D" />
                   <XAxis
                     dataKey="date"
                     stroke="#CFD2D4"
