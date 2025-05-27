@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PriceSuggestion } from "@/types/oracle";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Target, Users, ChevronDown, ChevronUp, AlertCircle, CheckCircle2, XCircle, BarChart3, Calendar, Users2, ArrowUpRight, ArrowDownRight, Lightbulb, Shield, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { formatCurrency } from '@/lib/utils';
 
@@ -94,12 +93,28 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
   };
 
   return (
-    <div>
+    <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-2xl font-extrabold text-[#202020] flex items-center gap-3 tracking-tight">
-          <BarChart3 className="h-6 w-6 text-blue-300" /> Pricing Analysis
+        <CardTitle className="text-[#202020]" style={{
+          fontFamily: 'Fustat',
+          fontWeight: 500,
+          fontSize: '40px',
+          lineHeight: '69px',
+          letterSpacing: '-2%',
+          verticalAlign: 'middle',
+          margin: 0
+        }}>
+          Pricing Analysis
         </CardTitle>
-        <p className="text-[#202020] text-sm mt-2">Key pricing models and their projected adoption. Expand for detailed analysis.</p>
+        <p className="text-[#202020] text-sm mt-2" style={{
+          fontFamily: 'Fustat',
+          fontWeight: 300,
+          fontSize: '20px',
+          lineHeight: '28px',
+          letterSpacing: '-2%',
+          verticalAlign: 'middle',
+          margin: 0
+        }}>Key pricing models and their projected adoption. Expand for detailed analysis.</p>
       </CardHeader>
       <CardContent className="p-6">
         <div className="space-y-6">
@@ -121,11 +136,11 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                   onClick={() => togglePrice(price.type)}
                 >
                   <h4 className="text-base font-bold flex items-center gap-2" style={{ color: '#161616' }}>
-                    <Zap className="h-4 w-4 text-yellow-300" /> {price.type}
+                    {price.type}
                   </h4>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-[#161616] bg-[#A8B0B8] px-4 py-1 rounded-full text-sm border border-[#CFD2D4]">{formatPriceValue(price.value, currency)}</span>
-                    {isExpanded ? <ChevronUp size={18} className="text-[#A9A9A9]" /> : <ChevronDown size={18} className="text-[#A9A9A9]" />}
+                    <span className="font-sans font-semibold text-[#FFFFFF] bg-[#647280] px-4 py-1 rounded-full text-[24px] leading-none tracking-normal text-center border border-[#CFD2D4]">{formatPriceValue(price.value, currency)}</span>
+
                   </div>
                 </div>
                 {/* Collapsed: show only key points */}
@@ -137,7 +152,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                 {/* Expanded: show detailed summary/analysis */}
                 {isExpanded && (
                   <div className="mt-4 pt-4 border-t border-[#CFD2D4]">
-                    <div className="text-base mb-2 font-bold flex items-center gap-2" style={{ color: '#161616' }}><Lightbulb className="h-4 w-4 text-yellow-300" /> Detailed Analysis</div>
+                    <div className="text-base mb-2 font-bold" style={{ color: '#161616' }}>Detailed Analysis</div>
                     <div className="text-sm mb-2" style={{ color: '#2B2521', whiteSpace: 'pre-line' }}>
                       {price.detailedAnalysis?.summary || price.description}
                     </div>
@@ -221,7 +236,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
           </div>
         </div>
       </CardContent>
-    </div>
+    </Card>
   );
 };
 

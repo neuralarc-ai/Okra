@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TrendingPrompt, getTrendingPrompts } from '@/services/aiService';
-import { Sparkles, TrendingUp, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Sparkles, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface TrendingPromptsProps {
@@ -60,26 +59,11 @@ What makes it unique:
     );
   }
 
-  // Card background colors for the 4 cards
-  const cardBgColors = [
-    
-    '#C0C6B8', // greenish
-    '#CFD2D4', // light gray
-    '#A8B0B8', // blue-gray
-    '#D0C3B5', // tan
-  ];
-  // Icon background colors for the 4 cards
-  const iconOuterBgColors = [
-    '#949D87B0', // greenish outer
-    '#7A8286B0', // gray outer
-    '#73808C38', // blue-gray outer
-    '#A3896DB0', // tan outer
-  ];
-  const iconInnerBgColors = [
-    '#949D87', // greenish inner
-    '#7A8286', // gray inner
-    '#73808C', // blue-gray inner
-    '#A3896D', // tan inner
+  const backgroundImages = [
+    "bg-[url('/Effect%201.png')]",
+    "bg-[url('/Effect%203.png')]",
+    "bg-[url('/Effect%204.png')]",
+    "bg-[url('/Effect%206.png')]"
   ];
 
   return (
@@ -90,85 +74,53 @@ What makes it unique:
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {prompts.slice(0, 4).map((prompt, index) => (
-          <div
-            key={index}
-            className="flex flex-col shadow-sm transition-transform cursor-pointer hover:shadow-md hover:scale-[1.015] focus:outline-none"
-            style={{
-              background: cardBgColors[index % cardBgColors.length],
-              boxShadow: '0 2px 8px 0 #0000000D',
-              width: 522,
-              height: 260,
-              gap: 24,
-              borderRadius: 8,
-              borderWidth: 1,
-              padding: 24,
-              borderStyle: 'solid',
-              borderColor: '#E5E7EB',
-            }}
-            onClick={() => handleSelectPrompt(prompt)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleSelectPrompt(prompt); }}
-          >
-            <div className="flex items-center gap-3" style={{marginBottom: 1}}>
-              <span
-                className="inline-flex items-center justify-center"
-                style={{
-                  background: iconOuterBgColors[index % iconOuterBgColors.length],
-                  width: 40,
-                  height: 40,
-                  borderRadius: '28.89px',
-                  padding: '7.78px',
-                }}
-              >
-                <span
-                  className="inline-flex items-center justify-center"
-                  style={{
-                    background: iconInnerBgColors[index % iconInnerBgColors.length],
-                    width: '24.44px',
-                    height: '24.44px',
-                    borderRadius: '22.22px',
-                  }}
-                >
-                  <TrendingUp size={20} className="text-white" />
-                </span>
-              </span>
-              <span className="text-2xl font-semibold text-[#1E1E1E] truncate max-w-full">{prompt.title}</span>
-            </div>
-            <div
-              className="bg-[#FFFFFF] flex flex-col gap-1"
-              style={{
-                width: 474,
-                height: 148,
-                borderRadius: 4,
-                paddingTop: 24,
-                paddingRight: 26,
-                paddingBottom: 24,
-                paddingLeft: 26,
-                marginBottom: 0,
-              }}
-            >
-              <p
-                className="text-[#202020] font-normal mb-2"
-                style={{ fontSize: '16px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}
-              >
-                {prompt.description}
-              </p>
-              <div className="flex items-center gap-3 ">
-                <span className="text-sm font-medium px-3 py-1 rounded-full" style={{background: '#1E342FA3', color: '#FFFFFF'}}>
-                  {prompt.category}
-                </span>
-                <span className="text-sm font-medium px-4 py-1 rounded-full" style={{background: '#2020200D', color: '#202020'}}>
-                  {prompt.trendScore}% trending
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
+      {prompts.slice(0, 4).map((prompt, index) => (
+  <div
+    key={index}
+    className={`
+      relative flex flex-col cursor-pointer transition-transform hover:scale-[1.015] shadow-sm hover:shadow-md 
+      w-[522px] h-[260px] p-6 rounded-lg border border-gray-200
+      ${backgroundImages[index % backgroundImages.length]} bg-cover bg-center
+      before:absolute before:inset-0 before:rounded-lg 
+      before:bg-gradient-to-t before:from-white/50 before:from-5% before:to-white/10 before:to-70% before:z-0
+      overflow-hidden
+    `}
+    onClick={() => handleSelectPrompt(prompt)}
+    role="button"
+    tabIndex={0}
+    onKeyDown={e => {
+      if (e.key === 'Enter' || e.key === ' ') handleSelectPrompt(prompt);
+    }}
+  >
+    {/* Content sits above the overlay */}
+    <div className="relative z-10 flex items-center gap-3 mb-1">
+      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white/80">
+        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#1E342F]">
+          <TrendingUp size={20} className="text-white" />
+        </span>
+      </span>
+      <span className="text-2xl font-semibold text-[#1E1E1E] truncate">{prompt.title}</span>
+    </div>
+
+    <div className="relative z-10 flex flex-col gap-2 bg-white/90 backdrop-blur-sm p-6 rounded-md mt-auto">
+      <p className="text-[#202020] text-base line-clamp-2">
+        {prompt.description}
+      </p>
+      <div className="flex items-center gap-3">
+        <span className="text-sm font-medium px-3 py-1 rounded-full bg-[#1E342FA3] text-white">
+          {prompt.category}
+        </span>
+        <span className="text-sm font-medium px-4 py-1 rounded-full bg-[#2020200D] text-[#202020]">
+          {prompt.trendScore}% trending
+        </span>
+      </div>
+    </div>
+  </div>
+))}
+
       </div>
     </div>
   );
 };
 
-export default TrendingPrompts; 
+export default TrendingPrompts;

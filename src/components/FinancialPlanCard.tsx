@@ -59,49 +59,52 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
   const total = expenseData.reduce((sum, d) => sum + d.value, 0);
 
   return (
-    <Card className="bg-[#FFFFFF] shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-[40px] font-bold text-[#202020] flex items-center gap-3 tracking-tight">
-           Financial Plan
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-8 p-6">
-        {/* Startup Costs */}
-        <div>
-          <h4 className="text-lg font-bold text-[#202020] mb-3 flex items-center gap-2 tracking-tight">Initial Startup Costs</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {(financialPlan.startupCosts || []).map((cost, index) => (
-              <div key={`startup-${index}`} className="flex items-center justify-between p-4 rounded-[4px] bg-[#CFD2D4] border border-[#000000]/10 shadow-sm">
-                <span className="text-base text-[#000000] flex items-center gap-2">
-                  {/* Optionally, you could add an icon here based on category */}
-                  {cost.category}
-                </span>
-                <span
-                  style={{
-                    background: 'linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)',
-                    borderRadius: '100px',
-                    padding: '0.5rem 2rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    border: '4px solid linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)',
-    
-                  }}
-                >
-                  <span className="text-[#202020] text-lg font-bold" style={{background: 'transparent'}}>
-                    {formatCurrency(cost.amount, currency)}
-                  </span>
-                </span>
+    <Card className="border-none outline-none">
+      <CardContent className="p-0">
+        <div className=" bg-white/1 p-6 rounded-lg">
+          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundImage: 'url(/card-bg-1.png)' }}>
+            <CardHeader className="p-0 mb-3">
+              <CardTitle className="font-fustat font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
+                Financial Plan
+              </CardTitle>
+            </CardHeader>
+            
+            {/* Startup Costs */}
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {(financialPlan.startupCosts || []).map((cost, index) => (
+                  <div key={`startup-${index}`} className="flex items-center justify-between p-4 rounded-[8px] bg-[#49566378] border border-[#000000]/10 shadow-sm">
+                    <span className="text-base text-[#000000]  flex items-center px-1 gap-2">
+                      {cost.category}
+                    </span>
+                    <span
+                      style={{
+                        background: '#495663',
+                        borderRadius: '100px',
+                        padding: '0.5rem 1.6rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        border: '4px solid #495663',
+                      }}
+                    >
+                      <span className="text-[#FFFFFF] text-lg font-semibold" style={{background: 'transparent'}}>
+                        {formatCurrency(cost.amount, currency)}
+                      </span>
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
-
+      
+      <div className="p-6">
         {/* Monthly Expenses Breakdown */}
         {expenseData.length > 0 && (
-          <div className="bg-[#2B2521] rounded-xl p-6">
+          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundImage: 'url(/card-bg-2.png)' }}>
             <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2 tracking-tight">Monthly Expenses Breakdown</h4>
             <div className="w-full  mx-auto flex flex-col items-center justify-center">
-              <div className="w-full bg-[#FFFFFF0D]  rounded-xl p-6 flex flex-col md:flex-row items-center justify-center gap-8" style={{ overflow: 'visible' }}>
+              <div className="w-full bg-[#2B2521]  rounded-xl p-6 flex flex-col md:flex-row items-center justify-center gap-8" style={{ overflow: 'visible' }}>
                 <div className="flex-1 min-w-[260px]">
                   <ResponsiveContainer width="100%" height={300}>
                     <RadarChart data={expenseData}>
@@ -128,13 +131,14 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
                       />
                     </RadarChart>
                   </ResponsiveContainer>
+                  <span className="block text-xl font-semibold text-white text-center">Monthly expenses by category and total</span>
                 </div>
-                <div className="flex-1 min-w-[220px]">
-                  <div className="rounded-xl  border border-[#8B8B8B] p-0 overflow-hidden">
+                <div className=" min-w-[220px] px-1">
+                  <div className="rounded-[8px]  border border-[#FFFFFF25] p-0 overflow-hidden">
                     <table className="w-full text-left">
                       <tbody>
                         {expenseData.map((expense, idx) => (
-                          <tr key={expense.category} className="border-b border-[#8B8B8B] last:border-b-0">
+                          <tr key={expense.category} className="border-b border-[#FFFFFF25] last:border-b-0">
                             <td className="px-5 py-3 text-white text-sm">{expense.category}</td>
                             <td className="px-5 py-3 text-white text-sm font-semibold text-right">{formatCurrency(expense.value, currency)}</td>
                           </tr>
@@ -147,9 +151,6 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
                     </table>
                   </div>
                 </div>
-              </div>
-              <div className="mt-6 w-full flex justify-center">
-                <span className="block text-2xl font-semibold text-white text-center">Monthly expenses by category and total</span>
               </div>
             </div>
           </div>
@@ -196,6 +197,7 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
             </span>
           </div>
         )}
+      </div>
       </CardContent>
     </Card>
   );

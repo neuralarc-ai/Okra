@@ -157,7 +157,7 @@ const Analysis = () => {
                 <TimelineCard timeline={result.timeline} />
                 <MilestonesCard milestones={result.milestones} currency={result.currency} />
               </TabsContent>
-              <TabsContent value="financial-plan" className="flex flex-col gap-4">
+              <TabsContent value="financial-plan" className="flex flex-col gap-4 border-none outline-none">
                 <FinancialPlanCard financialPlan={result.financialPlan} currency={result.currency} />
                 <FundingRequirementsCard fundingRequirements={result.fundingRequirements} currency={result.currency} />
               </TabsContent>

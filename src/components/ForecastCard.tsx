@@ -223,8 +223,8 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
           >
             <defs>
               <linearGradient id="customerBlueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#60a5fa" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#2563eb" stopOpacity={0.2} />
+                <stop offset="0%" stopColor="#79BAE8" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#79BAE8" stopOpacity={0.2} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#222" />
@@ -319,7 +319,7 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
           >
             <defs>
               <linearGradient id="revenueGreenGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#4ade80" stopOpacity={0.8} />
+                <stop offset="0%" stopColor="#DC92A9" stopOpacity={0.8} />
                 <stop offset="100%" stopColor="#059669" stopOpacity={0.2} />
               </linearGradient>
             </defs>
@@ -336,7 +336,7 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
             <YAxis dataKey="value" axisLine={false} tickLine={false} tick={false} hide />
             <RechartsTooltip
               cursor={false}
-              contentStyle={{ background: '#1a1a1a', border: 'none', color: '#f9fafb' }}
+              contentStyle={{ background: '#1a1a1a', border: 'none', color: '#DDDDCC' }}
               formatter={(value: number) => valueLabel ? valueLabel(value) : formatValue(value)}
             />
             <Area

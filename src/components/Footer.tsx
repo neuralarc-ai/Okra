@@ -8,7 +8,7 @@ const Footer = () => {
   const [termsOpen, setTermsOpen] = useState(false);
 
   return (
-    <footer className="w-full py-3 px-2 bg-black border-t border-white/10 flex items-center justify-center text-xs text-gray-400 rounded-b-2xl shadow-lg">
+    <footer className="w-full py-3 px-2 bg-black border-t border-white/10 flex items-center justify-center text-xs text-gray-400  shadow-lg">
       <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
         <button className="underline hover:text-white transition" onClick={() => setTermsOpen(true)}>{'Terms of use'}</button>
         <span className="mx-1 text-gray-500">•</span>

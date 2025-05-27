@@ -10,6 +10,9 @@ export default {
 	],
 	prefix: "",
 	theme: {
+		fontFamily: {
+			sans: ['Fustat', 'sans-serif'],
+		},
 		container: {
 			center: true,
 			padding: '2rem',

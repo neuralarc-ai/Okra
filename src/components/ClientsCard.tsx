@@ -10,7 +10,7 @@ interface ClientsCardProps {
 const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
   if (!clients || clients.length === 0) {
     return (
-      <Card className="bg-[#FFFFFF] shadow-lg rounded-xl">
+      <Card className="bg-[#FFFFFF]  rounded-[8px]">
         <CardHeader className="pb-2">
           <CardTitle className="text-2xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
             <Users className="w-6 h-6 text-[#202020]" /> Target Audience
@@ -26,7 +26,7 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
   }
 
   return (
-    <Card className="bg-[#FFFFFF] shadow-lg rounded-xl">
+    <Card className="bg-[#FFFFFF] rounded-[8px]">
       <CardHeader className="pb-2">
         <CardTitle className="text-2xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
           <Users className="w-6 h-6 text-[#202020]" /> Target Audience
@@ -42,33 +42,36 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
           {clients.map((client, index) => (
             <div 
               key={index}
-              className="p-6 border border-[#202020]/10 rounded-[4px] bg-[#CFD2D4] transition-all duration-200 hover:border-[#202020]/20 hover:bg-[#CFD2D4] shadow-sm flex flex-col gap-6"
+              className="p-6 border border-[#202020]/10 rounded-[4px] bg-[#E5E8E2] transition-all duration-200 hover:border-[#202020]/20 hover:bg-[#E5E8E2]"
             >
-              <div>
-                <h4 className="text-lg font-semibold text-[#202020] mb-1">{client.name}</h4>
-                <div className="flex items-center gap-2 text-xs text-[#202020] font-medium">
-                  <Target className="w-3 h-3 text-[#202020]" />
-                  {client.industry}
+              <div className="flex justify-between items-start gap-4 mb-6">
+                <div>
+                  <h4 className="text-lg font-semibold text-[#202020] mb-1">{client.name}</h4>
+                  <div className="flex items-center gap-2 text-xs text-[#202020] font-medium">
+                    <Target className="w-3 h-3 text-[#202020] flex-shrink-0" />
+                    {client.industry}
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                  {client.targetAudienceType && (
+                    <span className="px-3 py-1 rounded-full bg-[#A7B897]  font-medium text-xs border border-pink-200/10 whitespace-nowrap">
+                      {client.targetAudienceType}
+                    </span>
+                  )}
+                  {client.segment?.priority && (
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium border whitespace-nowrap ${
+                      client.segment.priority === 'high' 
+                        ? 'bg-[#A7B897]  '
+                        : client.segment.priority === 'medium'
+                        ? 'bg-[#A7B897]  '
+                        : 'bg-[#A7B897]  '
+                    }`}>
+                      {client.segment.priority} priority
+                    </span>
+                  )}
                 </div>
               </div>
-              <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                {client.targetAudienceType && (
-                  <span className="px-3 py-1 rounded-full bg-pink-200/10 text-pink-700 font-medium text-xs border border-pink-200/10">
-                    {client.targetAudienceType}
-                  </span>
-                )}
-                {client.segment?.priority && (
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
-                    client.segment.priority === 'high' 
-                      ? 'bg-green-200/10 text-green-700 border-green-200/10'
-                      : client.segment.priority === 'medium'
-                      ? 'bg-yellow-200/10 text-yellow-700 border-yellow-200/10'
-                      : 'bg-gray-200/10 text-gray-700 border-gray-200/10'
-                  }`}>
-                    {client.segment.priority} priority
-                  </span>
-                )}
-              </div>
+              <div className="w-full h-px bg-[#20202026] my-4"></div>
 
               <div className="text-base text-[#202020] font-normal">
                 {client.useCase}
@@ -83,7 +86,7 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
                       {client.targetAudienceDefinition.demographics.primary.map((demo, i) => (
                         <span 
                           key={i}
-                          className="px-2 py-1 rounded-[8px] bg-[#E3E7EA] text-[#202020] font-medium text-xs border border-[#B0B7BC]"
+                          className="px-5 py-2 mb-1.5 rounded-2xl bg-[#2020200D]  text-[#202020] font-medium text-xs border"
                         >
                           {demo}
                         </span>
@@ -95,12 +98,12 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
                 {/* Needs Section */}
                 {client.targetAudienceDefinition?.psychographics?.needs && (
                   <div className="space-y-1">
-                    <h5 className="text-xs font-medium text-[#202020]">Key Needs</h5>
+                    <h5 className="text-xs font-medium text-[#202020] mb-1.5">Key Needs</h5>
                     <div className="flex flex-wrap gap-1">
                       {client.targetAudienceDefinition.psychographics.needs.map((need, i) => (
                         <span 
                           key={i}
-                          className="px-2 py-1 rounded-[8px] bg-[#E3E7EA] text-[#202020] font-medium text-xs border border-[#B0B7BC]"
+                          className="px-2 py-1 mb-1.5 rounded-2xl bg-[#2020200D]  text-[#202020] font-medium text-xs border"
                         >
                           {need}
                         </span>
@@ -131,9 +134,7 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
         {clients.length > 3 && (
           <div 
             className="absolute bottom-0 left-0 right-2 h-20 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to bottom, transparent, rgb(255 255 255))'
-            }}
+           
           />
         )}
       </CardContent>

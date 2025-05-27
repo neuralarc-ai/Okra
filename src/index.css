@@ -5,32 +5,50 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 70%;
-    --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 0% 30%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
+    --card: 0 0% 97%;
+    --card-foreground: 0 0% 13%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 13%;
+    --primary: 216 41% 52%; /* #3987BE */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 96 15% 85%; /* #E3E2DF */
+    --secondary-foreground: 0 0% 13%;
+    --muted: 96 15% 92%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 96 15% 90%;
+    --accent-foreground: 0 0% 13%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 0 0% 70%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 216 41% 70%;
     --radius: 0.5rem;
+    
+    /* Custom color variables */
+    --color-dark: 0 0% 9%; /* #161616 */
+    --color-dark-green: 164 19% 16%; /* #1E342F */
+    --color-dark-brown: 20 15% 15%; /* #2B2521 */
+    --color-blue: 202 60% 48%; /* #3987BE */
+    --color-green: 83 18% 58%; /* #97A487 */
+    --color-gray: 213 10% 70%; /* #A8B0B8 */
+    --color-medium-gray: 0 0% 66%; /* #A9A9A9 */
+    --color-tan: 32 22% 65%; /* #B7A694 */
+    --color-mint: 83 19% 67%; /* #B7BEAE */
+    --color-pink: 15 25% 68%; /* #C6AEA3 */
+    --color-light-gray: 200 7% 82%; /* #CFD2D4 */
+    --color-light-mint: 97 13% 80%; /* #CFD4C9 */
+    --color-light-tan: 22 28% 77%; /* #D0C3B5 */
+    --color-salmon: 343 50% 67%; /* #D48EA3 */
+    --color-off-white: 50 13% 90%; /* #E3E2DF */
+    --color-eggshell: 45 20% 96%; /* #F8F7F3 */
   }
 }
 
 html,
 body {
-  @apply bg-black text-white h-full overflow-x-hidden;
+  @apply bg-white text-black h-full overflow-x-hidden;
   scroll-behavior: smooth;
 }
 

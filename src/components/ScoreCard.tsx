@@ -207,9 +207,13 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
              SWOT Analysis
            </h3>
            <div className="grid grid-cols-2 gap-0 relative bg-[#2B2521] rounded-[16px] border border-[#B0B7BC] overflow-hidden">
-             {/* Vertical line separators */}
-             <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-[#B0B7BC] z-10 -translate-x-1/2" />
-             <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#B0B7BC] z-10 -translate-y-1/2" />
+             {/* Vertical and horizontal line separators - half length with fade */}
+             <div className="absolute top-1/4 bottom-1/4 left-1/2 w-0.5 z-10 -translate-x-1/2" style={{
+               background: 'linear-gradient(to bottom, transparent, #7D7D7D 20%, #7D7D7D 80%, transparent)'
+             }} />
+             <div className="absolute top-1/2 left-1/4 right-1/4 h-0.5 z-10 -translate-y-1/2" style={{
+               background: 'linear-gradient(to right, transparent, #7D7D7D 20%, #7D7D7D 80%, transparent)'
+             }} />
              {/* Strengths */}
              <div className="p-6 flex flex-col items-start gap-2 z-20">
                <div className="flex items-center gap-2 mb-2">

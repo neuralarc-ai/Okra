@@ -111,7 +111,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
   return (
     <div>
       {/* Chart and Legend Section */}
-      <div className="rounded-2xl p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+      <div className="rounded-[8px] p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
         <CardHeader className="pb-2">
           <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
             <ChartBar size={18} className="text-[#CFD2D4]" />
@@ -202,7 +202,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
           if (!competitor) return null;
           const isExpanded = expandedCompetitor === competitor.name;
           return (
-            <section key={entry.name} className="bg-[#B7BEAE] rounded-xl border mb-0" style={{ borderColor: '#CFD4C9' }}>
+            <section key={entry.name} className="bg-[#B7BEAE] rounded-[8px] border mb-0" style={{ borderColor: '#CFD4C9' }}>
               {/* Section Header */}
               <div 
                 className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-6 py-5 cursor-pointer group"
@@ -255,14 +255,14 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                   </div>
                   <div className="flex flex-col gap-1 text-sm" style={{ color: '#2B2521' }}>
                     {competitor.detailedAnalysis.marketPosition && (
-                      <div><span className="font-semibold" style={{ color: '#A9A9A9' }}>Market Position:</span> {competitor.detailedAnalysis.marketPosition}</div>
+                      <div><span className="font-semibold" style={{ color: '#20202073' }}>Market Position:</span> {competitor.detailedAnalysis.marketPosition}</div>
                     )}
                     {competitor.primaryAdvantage && (
-                      <div><span className="font-semibold" style={{ color: '#A9A9A9' }}>Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
+                      <div><span className="font-semibold" style={{ color: '#20202073' }}>Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
                     )}
                     {competitor.website && (
                       <div className="flex items-center gap-1">
-                        <span className="font-semibold" style={{ color: '#A9A9A9' }}>Website:</span>
+                        <span className="font-semibold" style={{ color: '#20202073' }}>Website:</span>
                         <a 
                           href={competitor.website.startsWith('http') ? competitor.website : `https://${competitor.website}`}
                           target="_blank"
