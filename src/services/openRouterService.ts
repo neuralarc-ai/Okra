@@ -1,18 +1,68 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { AnalysisResult } from '../types/oracle';
+import { mcpAnalysisService } from './mcpAnalysisService';
+import { MCPError } from './mcp/types';
 
+// Keep the original Gemini instance for backward compatibility
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
 
 /**
- * Generates a business analysis using Google's Gemini API
+ * Generates a business analysis using either MCP or direct Gemini API
  * @param prompt The business idea to analyze
  * @param skipCurrencyCheck Optional flag to skip currency consistency check
+ * @param useMCP Optional flag to use MCP implementation (defaults to true)
  * @returns Structured analysis result or null
  */
 export const generateAnalysis = async (
   prompt: string,
-  skipCurrencyCheck: boolean = false
+  skipCurrencyCheck: boolean = false,
+  useMCP: boolean = true
 ): Promise<AnalysisResult | null> => {
+  try {
+    if (useMCP) {
+      // Generate a session ID based on the prompt (you might want to use a more sophisticated method)
+      const sessionId = `analysis-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+      
+      try {
+        // Use MCP implementation
+        const analysis = await mcpAnalysisService.generateAnalysis(
+          sessionId,
+          prompt,
+          skipCurrencyCheck
+        );
+
+        // Clean up the session after successful analysis
+        await mcpAnalysisService.endSession(sessionId);
+        
+        return analysis;
+      } catch (error) {
+        if (error instanceof MCPError && error.recoverable) {
+          console.warn('MCP analysis failed, falling back to direct Gemini API:', error);
+          // Fall back to direct API call if MCP fails
+          return generateAnalysisDirect(prompt, skipCurrencyCheck);
+        }
+        throw error;
+      }
+    } else {
+      // Use direct Gemini API call
+      return generateAnalysisDirect(prompt, skipCurrencyCheck);
+    }
+  } catch (error) {
+    console.error('Error generating analysis:', error);
+    throw error;
+  }
+};
+
+/**
+ * Direct Gemini API implementation (kept for backward compatibility)
+ * @param prompt The business idea to analyze
+ * @param skipCurrencyCheck Optional flag to skip currency consistency check
+ * @returns Structured analysis result or null
+ */
+async function generateAnalysisDirect(
+  prompt: string,
+  skipCurrencyCheck: boolean = false
+): Promise<AnalysisResult | null> {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" });
     
@@ -260,10 +310,10 @@ export const generateAnalysis = async (
 
     return parseAndCleanResponse(text, skipCurrencyCheck);
   } catch (error) {
-    console.error('Error generating analysis (Gemini):', error);
+    console.error('Error generating analysis (Direct Gemini):', error);
     throw error;
   }
-};
+}
 
 /**
  * Parses and cleans the Gemini API response text
@@ -271,7 +321,7 @@ export const generateAnalysis = async (
  * @param skipCurrencyCheck Optional flag to skip currency consistency check
  * @returns Cleaned and parsed AnalysisResult object
  */
-function parseAndCleanResponse(text: string, skipCurrencyCheck: boolean = false): AnalysisResult | null {
+export function parseAndCleanResponse(text: string, skipCurrencyCheck: boolean = false): AnalysisResult | null {
   // Step 1: Extract JSON content (removing markdown code blocks if present)
   let jsonString = extractJsonContent(text);
   
@@ -285,7 +335,7 @@ function parseAndCleanResponse(text: string, skipCurrencyCheck: boolean = false)
 /**
  * Extracts JSON content from text that might contain markdown
  */
-function extractJsonContent(text: string): string {
+export function extractJsonContent(text: string): string {
   // First remove markdown code blocks if present
   let content = text.replace(/^```(?:json)?\s*\n?([\s\S]*?)\n?```$/m, '$1').trim();
   
@@ -303,7 +353,7 @@ function extractJsonContent(text: string): string {
 /**
  * Cleans common JSON formatting issues
  */
-function cleanJsonString(jsonString: string): string {
+export function cleanJsonString(jsonString: string): string {
   let cleaned = jsonString;
   
   // Fix trailing commas before closing brackets
@@ -326,7 +376,7 @@ function cleanJsonString(jsonString: string): string {
 /**
  * Attempts to parse JSON with increasingly aggressive recovery techniques
  */
-function parseWithRecovery(jsonString: string, originalText: string, skipCurrencyCheck: boolean): AnalysisResult | null {
+export function parseWithRecovery(jsonString: string, originalText: string, skipCurrencyCheck: boolean): AnalysisResult | null {
   let result = null;
   let lastError = null;
   
@@ -385,7 +435,7 @@ function parseWithRecovery(jsonString: string, originalText: string, skipCurrenc
 /**
  * Auto-closes unbalanced brackets and quotes in JSON
  */
-function autoCloseJson(str: string): string {
+export function autoCloseJson(str: string): string {
   let fixed = str;
   
   // Check for and fix unterminated strings
@@ -438,7 +488,7 @@ function autoCloseJson(str: string): string {
 /**
  * Chunk-based recovery strategy that removes problematic sections
  */
-function chunkBasedRecovery(json: string): string | null {
+export function chunkBasedRecovery(json: string): string | null {
   const chunks = json.split(/,(?=\s*["{\[])/);
   
   // Try removing one chunk at a time from the end
@@ -460,7 +510,7 @@ function chunkBasedRecovery(json: string): string | null {
 /**
  * Finds the largest valid JSON object in the string
  */
-function findLargestValidJson(text: string): string | null {
+export function findLargestValidJson(text: string): string | null {
   // Look for JSON objects that start with { and end with }
   const jsonObjRegex = /\{(?:[^{}]|(?:\{[^{}]*\}))*\}/g;
   let match;
@@ -487,7 +537,7 @@ function findLargestValidJson(text: string): string | null {
 /**
  * Ensures currency consistency throughout the result
  */
-function applyCurrencyConsistency(obj: any): AnalysisResult {
+export function applyCurrencyConsistency(obj: any): AnalysisResult {
   if (!obj || !obj.currency) {
     return obj;
   }
