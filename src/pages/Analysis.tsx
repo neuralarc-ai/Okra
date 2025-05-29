@@ -54,14 +54,14 @@ const Analysis = () => {
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8] grain-texture">
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <div className="flex-1 flex flex-col items-center w-full py-8">
-          <div className="w-full max-w-6xl mx-auto">
-          <div className="flex flex-col items-center mb-8 animate-fadeUp">
+          <div className="w-full max-w-6xl mx-auto px-4">
+          <div className="flex flex-col items-center mb-8 animate-fadeUp w-full">
             <h2 className="text-3xl font-bold text-black mb-2 tracking-tight">Analysis Results</h2>
             <p className="text-black text-base max-w-xl text-center">Here are your AI-powered insights and research. Scroll down for detailed breakdowns and actionable recommendations.</p>
           </div>
           {/* Query display section restored from Index.tsx */}
-            <div className="mb-8" onClick={() => setIsQueryExpanded(!isQueryExpanded)}>
-            <div className="flex items-center justify-between p-4 bg-[#E0D9D1] rounded-[8px]">
+            <div className="mb-8 w-full" onClick={() => setIsQueryExpanded(!isQueryExpanded)}>
+            <div className="flex items-center justify-between p-4 bg-[#E0D9D1] rounded-[8px] w-full">
               <div className="flex-1">
                 <h3 className="text-sm font-medium text-[#161616]">Analyzed Business Idea</h3>
                 <p className="mt-1 text-sm text-[#161616] line-clamp-1">{userInput}</p>
@@ -123,7 +123,7 @@ const Analysis = () => {
               </div>
             </div>
           </div>
-            <div className="w-full rounded-xl p-6 animate-fadeUp">
+            <div className="w-full animate-fadeUp">
             <Tabs defaultValue="overview" className="w-full">
               <TabsList className="w-full flex flex-nowrap justify-between mb-6 h-full bg-[#F1F1F1] p-2 rounded-lg">
                 <TabsTrigger value="overview" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Overview</TabsTrigger>

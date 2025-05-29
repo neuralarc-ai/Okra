@@ -64,7 +64,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
   };
 
   return (
-    <Card className="bg-[#FFFFFF] shadow-lg rounded-xl">
+    <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
           <CheckCircle2 className="w-6 h-6 text-[#202020]" /> Milestones

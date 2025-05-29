@@ -118,91 +118,110 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
             <span>Competitive Analysis</span>
           </CardTitle>
         </CardHeader>
-        <CardContent style={{ background: '#161616', borderRadius: '1rem' }}>
-          <div className="space-y-6 mt-4">
-            {marketShareData && marketShareData.length >= 2 && (
-              <div className="mt-8">
-                <div className="flex flex-row items-center justify-center gap-8 w-full">
-                  {/* Chart on the left */}
-                  <div className="relative flex items-center justify-center mt-8" style={{ minHeight: 240 }}>
-                    <ResponsiveContainer width={320} height={320}>
-                      <PieChart>
-                        <Tooltip
-                          cursor={false}
-                          contentStyle={{ 
-                            background: '#161616',
-                            border: '1px solid #B7A694',
-                            color: '#F8F7F3',
-                            borderRadius: '10px',
-                            padding: '8px 12px',
-                            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
-                          }}
-                          formatter={(value: number) => `${value}%`}
-                        />
-                        <Pie
-                          data={marketShareData.map((entry, idx) => ({
-                            name: entry.name,
-                            value: entry.value,
-                            fill: CHART_COLORS[idx % CHART_COLORS.length]
-                          }))}
-                          dataKey="value"
-                          nameKey="name"
-                          innerRadius={70}
-                          outerRadius={120}
-                          stroke="#2B2521"
-                          strokeWidth={2}
-                          label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
-                            // Calculate label position
-                            const RADIAN = Math.PI / 180;
-                            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
-                            return (
-                              <text
-                                x={x}
-                                y={y}
-                                fill="#fff"
-                                textAnchor="middle"
-                                dominantBaseline="central"
-                                fontWeight={400}
-                                fontSize={14}
-                              >
-                                {`${Number(value).toFixed(1)}%`}
-                              </text>
-                            );
-                          }}
-                          labelLine={false}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  {/* Labels/Legend on the right */}
-                  <div className="flex flex-col gap-3 min-w-[180px]">
-                    <h4 className="text-base font-semibold mb-2 mt-8" style={{ color: '#F8F7F3' }}>Market Share Distribution</h4>
-                    {marketShareData.map((entry, idx) => (
-                      <div key={entry.name} className="flex items-center gap-3 px-4 py-3 rounded-lg border" style={{ borderColor: '#FFFFFF40', background: '#161616' }}>
-                        <span 
-                          className="w-4 h-4 rounded block border" 
-                          style={{ background: CHART_COLORS[idx % CHART_COLORS.length], borderColor: '#B7A694' }}
-                        ></span>
-                        <span className="text-base font-medium" style={{ color: '#F8F7F3' }}>{entry.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+        <CardContent className="p-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Pie Chart Card */}
+          <div className="p-6 flex flex-col items-center justify-center" style={{ background: '#161616', borderRadius: '0.5rem' }}>
+            <div className="w-full" style={{ minHeight: 300 }}>
+              {marketShareData && marketShareData.length >= 2 && (
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Tooltip
+                      cursor={false}
+                      contentStyle={{ 
+                        background: '#2B2521',
+                        border: '1px solid #B7A694',
+                        color: '#F8F7F3',
+                        borderRadius: '10px',
+                        padding: '8px 12px',
+                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
+                      }}
+                      formatter={(value: number) => `${value}%`}
+                    />
+                    <Pie
+                      data={marketShareData.map((entry, idx) => ({
+                        name: entry.name,
+                        value: entry.value,
+                        fill: CHART_COLORS[idx % CHART_COLORS.length]
+                      }))}
+                      dataKey="value"
+                      nameKey="name"
+                      innerRadius="60%"
+                      outerRadius="90%"
+                      stroke="#2B2521"
+                      strokeWidth={2}
+                      label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                        const RADIAN = Math.PI / 180;
+                        const radius = 25 + innerRadius + (outerRadius - innerRadius);
+                        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                        return (
+                          <text
+                            x={x}
+                            y={y}
+                            fill="#fff"
+                            textAnchor={x > cx ? 'start' : 'end'}
+                            dominantBaseline="central"
+                            fontWeight={400}
+                            fontSize={14}
+                          >
+                            {`${Number(value).toFixed(1)}%`}
+                          </text>
+                        );
+                      }}
+                      labelLine={{ stroke: '#B7A694', strokeWidth: 1 }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
+            </div>
           </div>
-        </CardContent>
+
+          {/* Legend Card */}
+          <div className="p-6" style={{ background: '#161616', borderRadius: '0.5rem' }}>
+            <h4 className="text-base font-semibold mt-4 mb-4" style={{ color: '#F8F7F3' }}>Market Share Distribution</h4>
+            <div className="flex flex-col gap-3">
+              {marketShareData && marketShareData.map((entry, idx) => (
+                <div 
+                  key={entry.name} 
+                  className="flex items-center justify-between gap-3 px-4 py-3 mb-2 rounded-lg border" 
+                  style={{ borderColor: '#FFFFFF40', background: '#2B2521' }}
+                >
+                  <div className="flex items-center gap-3">
+                    <span 
+                      className="w-4 h-4 rounded block border" 
+                      style={{ 
+                        background: CHART_COLORS[idx % CHART_COLORS.length], 
+                        borderColor: '#B7A694' 
+                      }}
+                    />
+                    <span className="text-base font-medium" style={{ color: '#F8F7F3' }}>
+                      {entry.name}
+                    </span>
+                  </div>
+                  <span className="text-base font-medium" style={{ color: '#F8F7F3' }}>
+                    {entry.value}%
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardContent>
       </div>
       {/* Competitor Cards Section */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 ">
         {marketShareData && marketShareData.map((entry, idx) => {
           const competitor = competitors.find(c => c.name === entry.name);
           if (!competitor) return null;
           const isExpanded = expandedCompetitor === competitor.name;
           return (
-            <section key={entry.name} className="bg-[#B7BEAE] rounded-[8px] border mb-0" style={{ borderColor: '#CFD4C9' }}>
+            <section key={entry.name} className="border-none outline-none shadow-none rounded-[8px]" style={{
+              backgroundImage: "url('/card-bg-9.png')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}>
               {/* Section Header */}
               <div 
                 className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-6 py-5 cursor-pointer group"
@@ -211,9 +230,6 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 <div className="flex flex-col gap-0.5">
                   <span className="text-xl font-semibold" style={{ color: '#161616' }}>
                     {competitor.name}
-                    {competitor.strengthScore > 80 && (
-                      <Award size={15} className="text-yellow-300 ml-1" />
-                    )}
                   </span>
                   {competitor.primaryAdvantage && (
                     <span className="text-sm font-medium mt-0.5" style={{ color: '#2B2521' }}>
@@ -221,34 +237,49 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-8 mt-2 md:mt-0">
-                  <div className="flex flex-col items-center">
-                    <span className="text-xs" style={{ color: '#2B2521' }}>Market Share</span>
-                    <span className="text-lg font-semibold" style={{ color: '#161616' }}>{Number(entry.value).toFixed(1)}%</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="text-xs" style={{ color: '#2B2521' }} title="Strength Score is a 0-100 rating of this competitor's overall market strength, brand, and execution.">Strength Score</span>
-                    <span className="text-lg font-semibold" style={{ color: '#161616' }}>{competitor.strengthScore}/100</span>
-                  </div>
+                <div className="flex items-center gap-2">
                   <span>{isExpanded ? <ChevronUp size={18} className="text-[#2B2521]" /> : <ChevronDown size={18} className="text-[#2B2521]" />}</span>
                 </div>
               </div>
-              {/* Progress Bar */}
-              <div className="px-6 pb-2">
-                <div className="w-full h-1.5 bg-[#CFD4C9] rounded-full overflow-hidden">
-                  <div
-                    className="h-1.5 rounded-full"
-                    style={{ width: `${competitor.strengthScore}%`, background: '#97A487' }}
-                  />
+              {/* Progress Bar and Metrics */}
+              <div className="px-6 pb-2 flex items-stretch gap-4 h-[120px]">
+                {/* Progress Bar Card */}
+                <div className="relative px-4 py-3 rounded-lg border border-[#202020]/10 bg-[#F8F8F773] shadow-sm flex-1 flex flex-col justify-center">
+                  <div className="w-full space-y-3">
+                    <div className="w-full h-2 bg-[#CFD4C9] rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${competitor.strengthScore}%`, background: '#97A487' }}
+                      />
+                    </div>
+                    {competitor.description && (
+                      <p className="text-sm text-[#2B2521]  line-clamp-2">
+                        {competitor.description}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              {/* Description */}
-              <div className="px-6 pb-2">
-                <p className="text-sm italic" style={{ color: '#2B2521' }}>{competitor.description}</p>
+
+                {/* Market Share Card */}
+                <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg border border-[#202020]/10 bg-[#F8F8F7] shadow-sm" style={{ minWidth: '120px' }}>
+                  <div className="text-xs text-[#2B2521] mb-1">Market Share</div>
+                  <div className="font-fustat font-normal text-4xl text-center" style={{ letterSpacing: '0%' }}>
+                    {Number(entry.value).toFixed(1)}%
+                  </div>
+                </div>
+
+                {/* Strength Score Card */}
+                <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg border border-[#202020]/10 bg-[#F8F8F7] shadow-sm" style={{ minWidth: '120px' }}>
+                  <div className="text-xs text-[#2B2521] mb-1">Strength Score</div>
+                  <div className="font-fustat font-normal text-4xl text-center" style={{ letterSpacing: '0%' }}>
+                    {competitor.strengthScore}/100
+                  </div>
+                </div>
               </div>
               {/* Expanded Details */}
               {isExpanded && competitor.detailedAnalysis && (
-                <div className="mt-3 pt-3 mx-6 border-t" style={{ borderColor: '#CFD4C9' }}>
+                <div className="mt-3 pt-3 mx-6 mb-4 rounded-[8px] border-t bg-[#E5E8E2]" style={{ borderColor: '#CFD4C9' }}>
+                  <div className="px-6">
                   <div className="text-base mb-2 font-semibold" style={{ color: '#161616' }}>Summary</div>
                   <div className="text-sm mb-2" style={{ color: '#2B2521', whiteSpace: 'pre-line' }}>
                     {competitor.detailedAnalysis.summary || competitor.description}
@@ -261,19 +292,20 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       <div><span className="font-semibold" style={{ color: '#20202073' }}>Key Advantage:</span> {cleanAdvantage(competitor.primaryAdvantage)}</div>
                     )}
                     {competitor.website && (
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1 mb-3">
                         <span className="font-semibold" style={{ color: '#20202073' }}>Website:</span>
                         <a 
                           href={competitor.website.startsWith('http') ? competitor.website : `https://${competitor.website}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline hover:text-[#3987BE]"
-                          style={{ color: '#3987BE' }}
+                          className="underline hover:text-[#4a65da]"
+                          style={{ color: '#4a65da' }}
                         >
                           {competitor.website}
                         </a>
                       </div>
                     )}
+                  </div>
                   </div>
                 </div>
               )}

@@ -57,15 +57,15 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   const knob = polarToCartesian(radius, radius, normalizedRadius, progressAngle);
 
   return (
-    <Card className="bg-[#FFFFFF] rounded-xl">
+    <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-3xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
-          <span>Idea Validation Report</span>
+        <CardTitle className="font-['Fustat'] font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020]">
+          Idea Validation Report
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* Report Summary Section */}
-        <section className="mb-10 mt-4 p-10 rounded-[16px] bg-[#1E342F] border border-[#B0B7BC] shadow-inner animate-fadeUp">
+        <section className="mb-10 mt-4 p-16 rounded-[16px] bg-[#1E342F] border border-[#B0B7BC] shadow-inner animate-fadeUp">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
           {/* Arc Progress with Gradient and Knob */}
           <div className="relative flex flex-col items-center justify-center">
@@ -99,8 +99,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 cx={knob.x}
                 cy={knob.y}
                 r={stroke / 1.5}
-                fill="#fff"
-                stroke="#070101"
+                fill="#FFFFFF"
+                
                 strokeWidth={3}
               />
             </svg>

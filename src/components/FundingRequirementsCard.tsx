@@ -33,7 +33,17 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
 
   return (
     <div>
-      <Card className="bg-[#1E342F] rounded-xl p-6">
+      <Card 
+        className="rounded-[8px] p-6 overflow-hidden relative"
+        style={{
+          backgroundImage: "url('/card-bg-5.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#1E342F', // Fallback color
+          backgroundBlendMode: 'overlay'
+        }}
+      >
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-white flex items-center gap-3 tracking-tight">
             <TrendingUp className="h-6 w-6 text-white" /> Funding Requirements
@@ -42,9 +52,9 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
         <CardContent className="space-y-10 p-6">
           {/* Total Required */}
           {typeof fundingRequirements.totalRequired === 'number' && (
-            <div className="bg-[#FFFFFF0D] rounded-xl p-6 flex items-center justify-between mb-6">
-              <span className="text-base text-white font-bold">Total Funding Required</span>
-              <span className="text-3xl font-bold text-[#202020] bg-gradient-to-r from-[#7B8B85] to-[#4DE1E6] px-6 py-2 rounded-full border-0 shadow-sm">
+            <div className="bg-[#FFFFFF]/5 rounded-xl p-6 flex items-center justify-between mb-6">
+              <span className="text-base text-white font-semibold">Total Funding Required</span>
+              <span className="text-3xl font-bold text-[#202020] bg-gradient-to-r from-[#C6AEA3] to-[#8EE3F0] px-16 py-2 rounded-full ">
                 {formatCurrency(fundingRequirements.totalRequired, currency)}
               </span>
             </div>
@@ -52,8 +62,8 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
 
           {/* Use of Funds */}
           {useOfFundsData.length > 0 && (
-            <div className="bg-[#FFFFFF0D] rounded-xl p-6">
-              <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-2 tracking-tight">Use of Funds</h4>
+            <div className="bg-[#FFFFFF0D] rounded-[8px] p-6">
+              <h4 className="text-[26px] font-semibold text-white mb-4 flex items-center gap-2 tracking-tight">Use of Funds</h4>
               <div className="flex flex-col items-center justify-center">
                 <div className="w-full" style={{ height: 400 }}>
                   <ResponsiveContainer width="100%" height="100%">
@@ -80,8 +90,9 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                         tickLine={false}
                         tickMargin={10}
                         axisLine={false}
-                        tick={{ fill: 'white', fontSize: 14 }}
+                        tick={{ fill: 'white', fontSize: 14, }}
                         width={150}
+                        className="max-w-[100px]"
                       />
                       <XAxis
                         dataKey="value"
@@ -122,12 +133,9 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                 {/* Legend */}
                 <div className="flex flex-wrap justify-center gap-4 mt-4">
                   {useOfFundsData.map((entry, idx) => (
-                    <div key={entry.name} className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full shadow-sm border border-[#202020]/10">
-                      <span
-                        className="w-3 h-3 rounded-full block"
-                        style={{ background: `linear-gradient(90deg, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].start}, ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length].end})` }}
-                      ></span>
-                      <span className="text-xs font-semibold text-[#202020]">
+                    <div key={entry.name} className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full shadow-sm border border-[#202020]/10">
+                      
+                      <span className="text-xs font-semibold text-[#FFFFFF]">
                         {entry.name} ({formatCurrency(entry.value, currency)})
                       </span>
                     </div>
@@ -141,19 +149,40 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
 
       {/* Funding Stages */}
       {(fundingRequirements.fundingStages || []).length > 0 && (
-        <div className="mt-8">
-          <h4 className="text-lg font-bold text-[#202020] mb-4 flex items-center gap-2 tracking-tight">Funding Stages</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {fundingRequirements.fundingStages.map((stage, index) => (
-              <div key={`stage-${index}`} className="p-4 rounded-xl bg-[#CFD2D4] border border-[#202020]/10 flex flex-col gap-1 shadow-sm">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-base font-semibold text-[#202020]">{stage.stage}</span>
-                  <span className="px-3 py-1 rounded-full bg-white/10 text-[#202020] font-bold text-sm border border-[#202020]/20">{formatCurrency(stage.amount, currency)}</span>
+        <div 
+          className="mt-8 rounded-[8px] p-6 relative overflow-hidden"
+          style={{
+            backgroundImage: "url('/card-bg-6.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          <div className="absolute inset-0 bg-[#D0C3B5]/55 "></div>
+          <div className="relative z-10">
+            <h4 className="font-fustat font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] mb-6">Funding Stages</h4>
+            <div className="flex flex-col gap-6">
+              {fundingRequirements.fundingStages.map((stage, index) => (
+                <div 
+                  key={`stage-${index}`} 
+                  className="relative"
+                >
+                  <div className="flex flex-col gap-2 p-4 bg-[#F8F8F899] rounded-lg">
+                    <div className="flex justify-between items-center">
+                      <h5 className="font-fustat font-medium text-[26px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020]">{stage.stage}</h5>
+                      <span className="text-3xl font-bold text-[#FFFFFF] bg-gradient-to-r from-[#79685D] to-[#2B2521] px-12 py-3 rounded-full ">
+                        {formatCurrency(stage.amount, currency)}
+                      </span>
+                    </div>
+                    <div className="text-[16px] text-[#202020]">{stage.timeline}</div>
+                    <div className="text-[16px] text-[#202020] leading-5 mt-1">{stage.purpose}</div>
+                  </div>
+                  {index < (fundingRequirements.fundingStages?.length || 0) - 1 && (
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-[#8B8B8B]"></div>
+                  )}
                 </div>
-                <div className="text-xs text-[#202020] mb-1">{stage.timeline}</div>
-                <div className="text-sm text-[#202020]">{stage.purpose}</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -161,36 +190,59 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
       {/* Funding Sources */}
       {(fundingRequirements.fundingSources || []).length > 0 && (
         <div className="mt-8">
-          <h4 className="text-lg font-bold text-[#202020] mb-4 flex items-center gap-2 tracking-tight">Potential Funding Sources</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h4 className="font-fustat font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] mb-6">Potential Funding Sources</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {fundingRequirements.fundingSources.map((source, index) => (
-              <div key={`source-${index}`} className="p-4 rounded-xl bg-[#CFD2D4] border border-[#202020]/10 flex flex-col gap-2 shadow-sm">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-base font-semibold text-[#202020]">{source.type}</span>
-                  <span className="px-3 py-1 rounded-full bg-white/10 text-[#202020] font-bold text-xs border border-[#202020]/20">{source.likelihood}% likelihood</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <span className="text-black font-semibold">Pros:</span>
-                    <ul className="space-y-1 mt-1">
-                      {(source.pros || []).map((pro, i) => (
-                        <li key={`pro-${index}-${i}`} className="text-sm text-[#202020] flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#202020]/20" />
-                          {pro}
-                        </li>
-                      ))}
-                    </ul>
+              <div 
+                key={`source-${index}`}
+                className="relative p-6 rounded-xl overflow-hidden"
+                style={{
+                  backgroundImage: "url('/card-bg-7.png')",
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                }}
+              >
+                <div className="absolute inset-0 bg-[#FFFFFF]/20"></div>
+                <div className="relative z-10 bg-[#FFFFFF59] p-6 rounded-lg">
+                  <div className="flex justify-between items-center  mb-4">
+                    <h5 className="text-[24px] font-fustat  font-medium text-[#202020]">{source.type}</h5>
+                    <span className="px-4 py-2 rounded-full bg-gradient-to-r from-[#332C27] to-[#332C27] text-white text-sm font-medium">
+                      {source.likelihood}% likelihood
+                    </span>
                   </div>
-                  <div>
-                    <span className="text-black font-semibold">Cons:</span>
-                    <ul className="space-y-1 mt-1">
-                      {(source.cons || []).map((con, i) => (
-                        <li key={`con-${index}-${i}`} className="text-sm text-[#202020] flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#202020]/20" />
-                          {con}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="w-full h-[1.5px] bg-[#202020]/10 mb-4"></div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Pros Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 pb-2">
+                        <span className="text-2xl font-semibold text-[#028242] tracking-tight">Pros</span>
+                      </div>
+                      <ul className="space-y-2 pl-1.5">
+                        {(source.pros || []).map((pro, i) => (
+                          <li key={`pro-${index}-${i}`} className="flex items-start gap-3 group">
+                            <div className="w-2 h-2 rounded-full bg-[#028242] mt-2.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
+                            <span className="text-[17px] leading-relaxed text-gray-800">{pro}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    {/* Cons Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 pb-1">
+                        <span className="text-2xl font-semibold text-[#A91414] tracking-tight">Cons</span>
+                      </div>
+                      <ul className="space-y-2 pl-1.5">
+                        {(source.cons || []).map((con, i) => (
+                          <li key={`con-${index}-${i}`} className="flex items-start gap-3 group">
+                            <div className="w-2 h-2 rounded-full bg-[#A91414] mt-2.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
+                            <span className="text-[17px] leading-relaxed text-gray-800">{con}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>

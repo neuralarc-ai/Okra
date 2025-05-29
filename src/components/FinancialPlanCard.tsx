@@ -59,10 +59,10 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
   const total = expenseData.reduce((sum, d) => sum + d.value, 0);
 
   return (
-    <Card className="border-none outline-none">
+    <Card className=" bg-white border-none outline-none">
       <CardContent className="p-0">
-        <div className=" bg-white/1 p-6 rounded-lg">
-          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundImage: 'url(/card-bg-1.png)' }}>
+        <div className=" p-6 rounded-lg">
+          <div className="rounded-[8px] p-6" style={{ backgroundColor: '#E3E2DFBF' }}>
             <CardHeader className="p-0 mb-3">
               <CardTitle className="font-fustat font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
                 Financial Plan
@@ -73,18 +73,18 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
             <div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {(financialPlan.startupCosts || []).map((cost, index) => (
-                  <div key={`startup-${index}`} className="flex items-center justify-between p-4 rounded-[8px] bg-[#49566378] border border-[#000000]/10 shadow-sm">
+                  <div key={`startup-${index}`} className="flex items-center justify-between p-4 rounded-[8px] bg-[#C6AEA399] border border-[#000000]/10 shadow-sm">
                     <span className="text-base text-[#000000]  flex items-center px-1 gap-2">
                       {cost.category}
                     </span>
                     <span
                       style={{
-                        background: '#495663',
-                        borderRadius: '100px',
+                        background: '#9A7D70',
+                        borderRadius: '8px',
                         padding: '0.5rem 1.6rem',
                         display: 'flex',
                         alignItems: 'center',
-                        border: '4px solid #495663',
+                        border: '4px solid #9A7D70',
                       }}
                     >
                       <span className="text-[#FFFFFF] text-lg font-semibold" style={{background: 'transparent'}}>
@@ -101,28 +101,29 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
       <div className="p-6">
         {/* Monthly Expenses Breakdown */}
         {expenseData.length > 0 && (
-          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundImage: 'url(/card-bg-2.png)' }}>
-            <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2 tracking-tight">Monthly Expenses Breakdown</h4>
-            <div className="w-full  mx-auto flex flex-col items-center justify-center">
-              <div className="w-full bg-[#2B2521]  rounded-xl p-6 flex flex-col md:flex-row items-center justify-center gap-8" style={{ overflow: 'visible' }}>
-                <div className="flex-1 min-w-[260px]">
-                  <ResponsiveContainer width="100%" height={300}>
+          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundImage: 'url(/card-bg-3.png)' }}>
+            <h4 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] align-middle text-white mb-6">Monthly Expenses Breakdown</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Radar Chart Card */}
+              <div className="bg-[#2B2521] rounded-[8px] p-6 flex flex-col items-center justify-center">
+                <div className="w-full max-w-[500px] h-[355px] mx-auto">
+                  <ResponsiveContainer width="100%" height="100%">
                     <RadarChart data={expenseData}>
                       <defs>
                         <radialGradient id="customRadarGradient" cx="50%" cy="50%" r="80%">
                           <stop offset="0%" stopColor="#262626" stopOpacity="0.5" />
-                          <stop offset="50%" stopColor="#3987BE" stopOpacity="0.3" />
-                          <stop offset="100%" stopColor="#D48EA3" stopOpacity="0.2" />
+                          <stop offset="30%" stopColor="#3987BE" stopOpacity="0.3" />
+                          <stop offset="80%" stopColor="#D48EA3" stopOpacity="0.2" />
                         </radialGradient>
                       </defs>
-                      <PolarGrid stroke="#8B8B8B" />
-                      <PolarAngleAxis dataKey="category" tick={{ fill: '#fff', fontSize: 12, fontWeight: 500 }} />
+                      <PolarGrid stroke="#8B8B8BAB" />
+                      <PolarAngleAxis dataKey="category" width={100} tick={{ fill: '#8B8B8B', fontSize: 12  }}  />
                       <Radar
                         dataKey="value"
                         fill="url(#customRadarGradient)"
                         fillOpacity={1}
                         stroke="#D48EA3"
-                        dot={{ r: 4, fill: '#D48EA3', fillOpacity: 1 }}
+                        dot={{ r: 1, fill: '#D48EA3', fillOpacity: 1 }}
                       />
                       <RechartsTooltip
                         cursor={false}
@@ -131,24 +132,22 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
                       />
                     </RadarChart>
                   </ResponsiveContainer>
-                  <span className="block text-xl font-semibold text-white text-center">Monthly expenses by category and total</span>
                 </div>
-                <div className=" min-w-[220px] px-1">
-                  <div className="rounded-[8px]  border border-[#FFFFFF25] p-0 overflow-hidden">
-                    <table className="w-full text-left">
-                      <tbody>
-                        {expenseData.map((expense, idx) => (
-                          <tr key={expense.category} className="border-b border-[#FFFFFF25] last:border-b-0">
-                            <td className="px-5 py-3 text-white text-sm">{expense.category}</td>
-                            <td className="px-5 py-3 text-white text-sm font-semibold text-right">{formatCurrency(expense.value, currency)}</td>
-                          </tr>
-                        ))}
-                        <tr>
-                          <td className="px-5 py-3 text-white text-base font-bold">Total</td>
-                          <td className="px-5 py-3 text-white text-base font-bold text-right">{formatCurrency(total, currency)}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+              </div>
+
+              {/* Table Card */}
+              <div className="bg-[#2B2521] rounded-[8px] p-6">
+                <h4 className="font-['Fustat'] font-normal text-[22px] leading-[49.04px] tracking-[-0.8%] text-center text-[#DCDCDC] mb-7 mt-5">Monthly expenses by category and total</h4>
+                <div className="space-y-2">
+                  {expenseData.map((expense, idx) => (
+                    <div key={expense.category} className="flex justify-between items-center bg-[#2B2521] rounded-[8px] border border-[#FFFFFF25] p-4">
+                      <span className="text-white text-sm">{expense.category}</span>
+                      <span className="text-white text-sm font-semibold">{formatCurrency(expense.value, currency)}</span>
+                    </div>
+                  ))}
+                  <div className="flex justify-between items-center bg-[#FFFFFF1A] rounded-[8px] border border-[#FFFFFF25] p-4 mt-4">
+                    <span className="text-white text-base font-bold">Total</span>
+                    <span className="text-white text-base font-bold">{formatCurrency(total, currency)}</span>
                   </div>
                 </div>
               </div>
@@ -156,47 +155,72 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
           </div>
         )}
 
-        {/* Break-even Analysis */}
-        {financialPlan.breakEvenAnalysis && (
-          <div>
-            <h4 className="text-lg font-bold text-[#202020] mb-3 flex items-center gap-2 tracking-tight">Break-even Analysis</h4>
-            <div className="rounded-xl overflow-hidden mb-2">
-              <table className="w-full text-left">
-                <tbody>
-                  <tr className="bg-[#D8DCDF]">
-                    <td className="px-5 py-3 text-sm" style={{ color: '#0000007D' }}>Time to Break-even</td>
-                    <td className="px-5 py-3 text-sm font-semibold text-right" style={{ color: '#000000' }}>{financialPlan.breakEvenAnalysis.timeToBreakEven}</td>
-                  </tr>
-                  <tr className="bg-[#D8DCDF]">
-                    <td className="px-5 py-3 text-sm" style={{ color: '#0000007D' }}>Monthly Break-even Point</td>
-                    <td className="px-5 py-3 text-sm font-semibold text-right" style={{ color: '#000000' }}>{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint, currency)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-2">
-              <span className="text-xs text-[#202020] font-semibold">Key Assumptions:</span>
-              <ul className="space-y-1 mt-1">
-                {(financialPlan.breakEvenAnalysis.assumptions || []).map((assumption, index) => (
-                  <li key={`assumption-${index}`} className="text-sm text-[#202020] flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#202020]/20" />
-                    {assumption}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        <div className="bg-[#E3E2DFBF] p-5 rounded-[8px] mt-4">
+          {/* Break-even Analysis */}
+          {financialPlan.breakEvenAnalysis && (
+            <div>
+              <h4 className="font-['Fustat'] font-medium text-[40px] leading-[69px] tracking-[-2%] align-middle text-[#202020] mb-3">Break-even Analysis</h4>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                {/* Time to Break-even Card */}
+                <div className="relative rounded-[8px] overflow-hidden" style={{ backgroundImage: "url('/Effect 1.png')", backgroundSize: 'cover' }}>
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-5">
+                      <img src="/icons/hourglass.svg" alt="Time" className="w-10 h-10" />
+                      <span className="text-[22px] font-normal text-[#202020]">Time to Break-even</span>
+                    </div>
+                    <div className="bg-[#F8F8F773] rounded-[8px] px-8 py-10 text-center">
+                      <span className="font-['Fustat'] font-normal text-[40px] leading-6 tracking-[-1%] text-center align-middle text-gray-900">
+                        {financialPlan.breakEvenAnalysis.timeToBreakEven}
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-        {/* Projected Profit Margin */}
-        {typeof financialPlan.projectedProfitMargin === 'number' && (
-          <div className="flex justify-between items-center rounded-xl bg-[#A8B0B8] border border-[#202020]/10 px-5 py-4 mt-2">
-            <span className="text-base text-[#202020] font-bold">Projected Profit Margin</span>
-            <span className="text-lg font-bold text-[#202020] bg-white/10 px-4 py-1 rounded-full">
-              {financialPlan.projectedProfitMargin}%
-            </span>
-          </div>
-        )}
+                {/* Monthly Break-even Point Card */}
+                <div className="relative rounded-[8px] overflow-hidden" style={{ backgroundImage: "url('/Effect 1.png')", backgroundSize: 'cover' }}>
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-5">
+                      <img src="/icons/calender.svg" alt="Money" className="w-10 h-10" />
+                      <span className="text-[22px] font-normal text-[#202020]">Monthly Break-even Point</span>
+                    </div>
+                    <div className="bg-[#F8F8F773] rounded-[8px] px-8 py-10 mb-3 text-center">
+                      <span className="font-['Fustat'] font-normal text-[40px] leading-6 tracking-[-1%] text-center align-middle text-gray-900">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint, currency)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6">
+                <span className="text-[20px]  text-[#202020]  font-semibold">Key Assumptions:</span>
+                <ul className="space-y-1 mt-6">
+                  {(financialPlan.breakEvenAnalysis.assumptions || []).map((assumption, index) => (
+                    <li key={`assumption-${index}`} className="text-sm text-[#0000007D] flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#0000007D]" />
+                      {assumption}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* Projected Profit Margin */}
+          {typeof financialPlan.projectedProfitMargin === 'number' && (
+            <div 
+              className="flex justify-between items-center rounded-[8px] border border-[#202020]/10 px-6 py-8 mt-6 overflow-hidden relative"
+              style={{
+                backgroundImage: "url('/card-bg-4.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            >
+              <span className="text-[32px] text-[#202020] font-semibold">Projected Profit Margin</span>
+              <span className="text-[40px] font-semibold text-[#202020] bg-[#F8F8F773] px-4 py-1 rounded-[8px]">
+                {financialPlan.projectedProfitMargin}%
+              </span>
+            </div>
+          )}
+        </div>
       </div>
       </CardContent>
     </Card>

@@ -40,7 +40,7 @@ const TimelineCard = ({ timeline }: TimelineCardProps) => {
             {timeline.phases.map((phase, index) => (
               <Card
                 key={index}
-                className="p-5  bg-white rounded-[8px]  transition-all duration-200 shadow-sm"
+                className="p-5  bg-white rounded-[8px]  transition-all duration-200 shadow-none"
               >
                 {/* Phase header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">

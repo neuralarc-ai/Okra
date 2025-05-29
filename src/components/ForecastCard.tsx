@@ -129,7 +129,7 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
   const minWidth = 120; // Adjust this value as needed
 
   return (
-    <Card className="card-bg hover-card shadow-lg">
+    <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-medium">
           {title} {period ? `(${period})` : ''}

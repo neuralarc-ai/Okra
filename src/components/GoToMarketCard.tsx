@@ -29,7 +29,7 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
   };
 
   return (
-    <Card className="bg-gray-50 rounded-xl overflow-hidden">
+    <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader className="pb-4 border-b border-gray-100">
         <CardTitle className="text-2xl font-bold text-gray-900 tracking-tight">
           Go-to-Market Strategy

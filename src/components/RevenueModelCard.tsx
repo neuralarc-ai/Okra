@@ -110,7 +110,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
   };
 
   return (
-    <Card style={{ background: '#FFFFFF', border: '1px solid #CFD2D4' }}>
+    <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader>
         <CardTitle className="text-2xl font-extrabold flex items-center gap-3 tracking-tight" style={{ color: '#161616' }}>
           Revenue Model
