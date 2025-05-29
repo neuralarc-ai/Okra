@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PriceSuggestion } from "@/types/oracle";
+import { Info, TrendingUp, BarChart2, DollarSign, Check, X, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
 import { formatCurrency } from '@/lib/utils';
@@ -72,7 +73,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
 
   const renderDetailItem = (icon: React.ReactNode, title: string, content: string | string[]) => {
     if (!content || (Array.isArray(content) && content.length === 0)) return null;
-    
+
     return (
       <div className="space-y-1">
         <div className="flex items-center gap-2 text-gray-400">
@@ -127,11 +128,11 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
               price.detailedAnalysis?.revenuePotential?.shortTerm
             ].filter(Boolean).slice(0, 3);
             return (
-            <div 
-              key={index}
-              className="p-6 border rounded-2xl bg-[#E3E2DF] border-[#CFD2D4] transition-all duration-200 group"
-            >
-                <div 
+              <div
+                key={index}
+                className="p-6 border rounded-2xl bg-[#E3E2DF] border-[#CFD2D4] transition-all duration-200 group"
+              >
+                <div
                   className="flex justify-between items-center mb-2 cursor-pointer"
                   onClick={() => togglePrice(price.type)}
                 >
@@ -139,8 +140,14 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                     {price.type}
                   </h4>
                   <div className="flex items-center gap-2">
-                    <span className="font-sans font-semibold text-[#FFFFFF] bg-[#647280] px-4 py-1 rounded-full text-[24px] leading-none tracking-normal text-center border border-[#CFD2D4]">{formatPriceValue(price.value, currency)}</span>
-
+                    <span className="inline-block p-[4px] rounded-full bg-gradient-to-r from-[#C6AEA3] to-[#2B2521]">
+                      <span className="font-sans font-semibold text-[#000000] bg-gradient-to-r from-[#79685D] to-[#D1C2B8] px-[16px] py-[24px] rounded-full text-[28px] leading-none tracking-normal text-center block"> {formatPriceValue(price.value, currency)}</span>
+                    </span>
+                    {isExpanded ? (
+                      <ChevronUp className="text-[#2B2521]" />
+                    ) : (
+                      <ChevronDown className="text-[#2B2521]" />
+                    )}
                   </div>
                 </div>
                 {/* Collapsed: show only key points */}
