@@ -94,9 +94,12 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
   };
 
   return (
-    <Card className="border-none outline-none bg-white shadow-none">
+    <Card
+      className="border-none outline-none shadow-none"
+      style={{ backgroundImage: 'url(/card-bg-3.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
       <CardHeader className="pb-2">
-        <CardTitle className="text-[#202020]" style={{
+        <CardTitle className="text-[#FBFAF8]" style={{
           fontFamily: 'Fustat',
           fontWeight: 500,
           fontSize: '40px',
@@ -107,7 +110,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
         }}>
           Pricing Analysis
         </CardTitle>
-        <p className="text-[#202020] text-sm mt-2" style={{
+        <p className="text-[#FBFAF8] text-sm mt-2" style={{
           fontFamily: 'Fustat',
           fontWeight: 300,
           fontSize: '20px',
@@ -130,59 +133,64 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             return (
               <div
                 key={index}
-                className="p-6 border rounded-2xl bg-[#E3E2DF] border-[#CFD2D4] transition-all duration-200 group"
+                className="p-6 rounded-[8px] transition-all duration-200 group relative min-h-[220px] flex flex-col justify-between overflow-hidden"
+                style={{ backgroundImage: "url('/Effect%207.png')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
               >
-                <div
-                  className="flex justify-between items-center mb-2 cursor-pointer"
-                  onClick={() => togglePrice(price.type)}
-                >
-                  <h4 className="text-base font-bold flex items-center gap-2" style={{ color: '#161616' }}>
-                    {price.type}
-                  </h4>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-block p-[4px] rounded-full bg-gradient-to-r from-[#C6AEA3] to-[#2B2521]">
-                      <span className="font-sans font-semibold text-[#000000] bg-gradient-to-r from-[#79685D] to-[#D1C2B8] px-[16px] py-[24px] rounded-full text-[28px] leading-none tracking-normal text-center block"> {formatPriceValue(price.value, currency)}</span>
-                    </span>
-                    {isExpanded ? (
-                      <ChevronUp className="text-[#2B2521]" />
-                    ) : (
-                      <ChevronDown className="text-[#2B2521]" />
-                    )}
-                  </div>
-                </div>
-                {/* Collapsed: show only key points */}
-                {!isExpanded && (
-                  <ul className="list-disc list-inside text-sm text-[#2B2521] ml-2 mt-1 space-y-1">
-                    {keyPoints.map((point, i) => <li key={i} className="leading-relaxed">{point}</li>)}
-                  </ul>
-                )}
-                {/* Expanded: show detailed summary/analysis */}
-                {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-[#CFD2D4]">
-                    <div className="text-base mb-2 font-bold" style={{ color: '#161616' }}>Detailed Analysis</div>
-                    <div className="text-sm mb-2" style={{ color: '#2B2521', whiteSpace: 'pre-line' }}>
-                      {price.detailedAnalysis?.summary || price.description}
+                {/* Overlay for contrast */}
+                <div className="absolute inset-0  z-0" />
+                <div className="relative z-10 bg-[#F8F8F82E] rounded-[8px] p-[24px]">
+                  <div
+                    className="flex justify-between items-center mb-2 cursor-pointer"
+                    onClick={() => togglePrice(price.type)}
+                  >
+                    <h4 className="text-[32px] font-bold flex items-center gap-2" style={{ color: '#fff' }}>
+                      {price.type}
+                    </h4>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block p-[4px] rounded-full bg-gradient-to-r from-[#C6AEA3] to-[#2B2521]">
+                        <span className="font-sans font-semibold text-[#000000] bg-gradient-to-r from-[#79685D] to-[#D1C2B8] px-[16px] py-[24px] rounded-full text-[28px] leading-none tracking-normal text-center block"> {formatPriceValue(price.value, currency)}</span>
+                      </span>
+                      {isExpanded ? (
+                        <ChevronUp className="text-[#2B2521]" />
+                      ) : (
+                        <ChevronDown className="text-[#2B2521]" />
+                      )}
                     </div>
-                    {/* Optionally, show a few more details if available */}
-                    {price.detailedAnalysis?.revenuePotential?.longTerm && (
-                      <div className="mt-2 text-sm" style={{ color: '#2B2521' }}>
-                        <span className="font-semibold" style={{ color: '#161616' }}>
-                          Long-term Revenue Potential:
-                        </span> {price.detailedAnalysis.revenuePotential.longTerm}
-                      </div>
-                    )}
-                    {price.detailedAnalysis?.adoptionBarriers && price.detailedAnalysis.adoptionBarriers.length > 0 && (
-                      <div className="mt-2">
-                        <span className="font-semibold text-xs" style={{ color: '#161616' }}>
-                          Adoption Barriers:
-                        </span>
-                        <ul className="list-disc list-inside text-sm ml-4" style={{ color: '#2B2521' }}>
-                          {price.detailedAnalysis.adoptionBarriers.map((b, i) => <li key={i}>{b}</li>)}
-                        </ul>
-                      </div>
-                    )}
                   </div>
-                )}
+                  {/* Collapsed: show only key points */}
+                  {!isExpanded && (
+                    <ul className="list-disc list-inside text-[24px] text-[#fff] ml-2 mt-1 space-y-1">
+                      {keyPoints.map((point, i) => <li key={i} className="leading-relaxed">{point}</li>)}
+                    </ul>
+                  )}
+                  {/* Expanded: show detailed summary/analysis */}
+                  {isExpanded && (
+                    <div className="mt-4 pt-4">
+                      <div className="text-[24px] mb-2 font-bold" style={{ color: '#fff' }}>Detailed Analysis</div>
+                      <div className="text-[24px] mb-2" style={{ color: '#fff', whiteSpace: 'pre-line' }}>
+                        {price.detailedAnalysis?.summary || price.description}
+                      </div>
+                      {/* Optionally, show a few more details if available */}
+                      {price.detailedAnalysis?.revenuePotential?.longTerm && (
+                        <div className="mt-2 text-[24px]" style={{ color: '#fff' }}>
+                          <span className="font-semibold" style={{ color: '#fff' }}>
+                            Long-term Revenue Potential:
+                          </span> {price.detailedAnalysis.revenuePotential.longTerm}
+                        </div>
+                      )}
+                      {price.detailedAnalysis?.adoptionBarriers && price.detailedAnalysis.adoptionBarriers.length > 0 && (
+                        <div className="mt-2">
+                          <span className="font-semibold text-xs" style={{ color: '#161616' }}>
+                            Adoption Barriers:
+                          </span>
+                          <ul className="list-disc list-inside text-sm ml-4" style={{ color: '#2B2521' }}>
+                            {price.detailedAnalysis.adoptionBarriers.map((b, i) => <li key={i}>{b}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -235,7 +243,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             </div>
             <div className="flex flex-row items-center justify-center w-full px-2 text-base mt-4 gap-6">
               {uniquePriceSuggestions.map((ps, idx) => (
-                <div key={ps.type} className="flex items-center gap-2 px-5 py-2 rounded-full border" style={{ background: idx === 0 ? '#D48EA3' : '#3987BE', borderColor: '#161616' }}>
+                <div key={ps.type} className="flex items-center gap-2 px-5 py-2 rounded-full border" style={{ background: idx === 0 ? '#D48EA3' : '#3987BE', borderColor: '#293E3900' }}>
                   <span className="font-semibold text-[#161616]" style={{ color: idx === 0 ? '#161616' : '#F8F7F3' }}>{ps.type}</span>
                 </div>
               ))}
