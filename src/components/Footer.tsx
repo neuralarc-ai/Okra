@@ -18,10 +18,9 @@ const Footer = () => {
         <span className="mx-1 text-gray-500">•</span>
         <button className="underline hover:text-white transition" onClick={() => setEthicsOpen(true)}>Responsible AI</button>
         <span className="mx-1 text-gray-500">•</span>
-        <span className="text-white/80">Copyright © 2025. All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;Okra AI, a thing by{'  '}
-          <a href="https://neuralarc.ai" target="_blank" rel="noopener noreferrer" className="inline-flex ml-1 items-center underline hover:text-white transition">
+        <span className="text-white/80">Copyright 2025. All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;Okra AI, a thing by{' '}
+          <a href="https://neuralarc.ai" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">
             Neural Arc
-            <img src="/neural-footer.png" alt="Neural Arc Logo" style={{ height: 18 }} className="ml-2 inline-block align-middle" />
           </a>
         </span>
       </div>

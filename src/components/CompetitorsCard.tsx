@@ -278,7 +278,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
               </div>
               {/* Expanded Details */}
               {isExpanded && competitor.detailedAnalysis && (
-                <div className="mt-3 pt-3 mx-6 mb-4 rounded-[8px] border-t bg-[#E5E8E2]" style={{ borderColor: '#CFD4C9' }}>
+                <div className="mt-3 pt-3 mx-6 mb-4 rounded-[8px] border-t bg-[#F8F8F773]" style={{ borderColor: '#CFD4C9' }}>
                   <div className="px-6">
                   <div className="text-base mb-2 font-semibold" style={{ color: '#161616' }}>Summary</div>
                   <div className="text-sm mb-2" style={{ color: '#2B2521', whiteSpace: 'pre-line' }}>
