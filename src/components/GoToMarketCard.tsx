@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoToMarket } from "@/types/oracle";
 import { Badge } from "@/components/ui/badge";
+import { ChartBar, Target, TrendingUp, Users, Zap } from "lucide-react";
 
 interface GoToMarketCardProps {
   goToMarket: GoToMarket;
@@ -10,16 +11,12 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
   const getPriorityColor = (priority: 'high' | 'medium' | 'low') => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
       case 'low':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
     }
-  };
-
-  const getEffectivenessWidth = (effectiveness: number) => {
-    return `${Math.max(5, Math.min(100, effectiveness))}%`;
   };
 
   const getEffectivenessClass = (effectiveness: number) => {
@@ -30,97 +27,136 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
 
   return (
     <Card className="border-none outline-none bg-white shadow-none">
-      <CardHeader className="pb-4 border-b border-gray-100">
-        <CardTitle className="text-2xl font-bold text-gray-900 tracking-tight">
-          Go-to-Market Strategy
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="space-y-8">
+      <CardContent className="p-0">
+        <div className="p-6">
+          {/* Header Section */}
+          <div className="rounded-[8px] p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
+                <ChartBar size={18} className="text-[#CFD2D4]" />
+                <span>Go-to-Market Strategy</span>
+              </CardTitle>
+            </CardHeader>
+          </div>
+
           {/* Strategy Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              Strategic Initiatives
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {goToMarket.strategy.map((item, index) => (
-                <div
-                  key={index}
-                  className="p-5 border border-gray-200 rounded-xl bg-[#CCCBCA] transition-all duration-200 hover:shadow-md hover:border-gray-300"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-base font-medium text-gray-900">{item.name}</span>
-                    <Badge 
-                      variant="outline" 
-                      className={`px-2.5 py-0.5 text-xs font-medium border ${getPriorityColor(item.priority)}`}
+          <div className="space-y-6">
+            <div className="rounded-[8px] p-6" style={{ background: '#E3E2DFBF' }}>
+              <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+                Strategic Initiatives
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {goToMarket.strategy.map((item, index) => (
+                  <div
+                    key={index}
+                    className="p-6 rounded-[8px] border transition-all duration-200"
+                    style={{ 
+                      background: '#F8F8F773',
+                      borderColor: '#20202010',
+                      backgroundImage: "url('/card-bg-9.png')",
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-lg font-semibold" style={{ color: '#161616' }}>{item.name}</span>
+                      <Badge 
+                        className="px-3 py-1 text-sm font-medium rounded-full"
+                        style={{
+                          background: getPriorityColor(item.priority).bg,
+                          color: getPriorityColor(item.priority).text,
+                          border: `1px solid ${getPriorityColor(item.priority).border}`
+                        }}
+                      >
+                        {item.priority.toUpperCase()}
+                      </Badge>
+                    </div>
+                    <p className="text-sm" style={{ color: '#2B2521' }}>{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Marketing Channels */}
+            <div className="rounded-[8px] p-6" style={{ background: '#E3E2DFBF' }}>
+              <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+                Marketing Channels
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {goToMarket.channels.map((channel, index) => (
+                  <div
+                    key={index}
+                    className="p-6 rounded-[8px] border transition-all duration-200"
+                    style={{ 
+                      background: '#F8F8F773',
+                      borderColor: '#20202010',
+                      backgroundImage: "url('/card-bg-9.png')",
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  >
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-lg font-semibold" style={{ color: '#161616' }}>{channel.name}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs px-3 py-1 rounded-full" style={{ background: '#2B2521', color: '#F8F7F3' }}>
+                            Cost: {channel.cost}
+                          </span>
+                          <span className="text-xs px-3 py-1 rounded-full" style={{ background: '#2B2521', color: '#F8F7F3' }}>
+                            ROI: {channel.timeToROI}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="h-2 bg-[#CFD2D4] rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${getEffectivenessClass(channel.effectiveness)}`}
+                            style={{ width: `${Math.max(5, Math.min(100, channel.effectiveness))}%` }}
+                          />
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm" style={{ color: '#2B2521' }}>Effectiveness</span>
+                          <span className="text-sm font-medium" style={{ color: '#161616' }}>{channel.effectiveness}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* KPIs Section */}
+            <div className="rounded-[8px] p-6" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
+                  <Target size={18} className="text-[#CFD2D4]" />
+                  <span>Key Performance Indicators</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  {goToMarket.kpis.map((kpi, index) => (
+                    <div
+                      key={index}
+                      className="p-4 rounded-[8px] border"
+                      style={{ 
+                        background: '#161616',
+                        borderColor: '#B7A694',
+                      }}
                     >
-                      {item.priority.toUpperCase()}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Marketing Channels */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              Marketing Channels
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {goToMarket.channels.map((channel, index) => (
-                <div
-                  key={index}
-                  className="p-5 border border-[#CFD4C9] bg-[#B7BEAE] rounded-[8px]  transition-all duration-200"
-                >
-                  <div className="flex flex-col items-start justify-between mb-3">
-                    <span className="text-base font-medium text-gray-900 mb-2">{channel.name}</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-600 bg-[#A7B897] px-2.5 py-1 rounded-full">
-                        Cost: {channel.cost}
-                      </span>
-                      <span className="text-xs text-gray-600 bg-[#A7B897] px-2.5 py-1 rounded-full">
-                        ROI: {channel.timeToROI}
-                      </span>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-base font-medium" style={{ color: '#F8F7F3' }}>{kpi.metric}</div>
+                          <div className="text-sm" style={{ color: '#CFD2D4' }}>{kpi.timeframe}</div>
+                        </div>
+                        <div className="text-xl font-semibold" style={{ color: '#F8F7F3' }}>{kpi.target}</div>
+                      </div>
                     </div>
-                  </div>
-                  {/* Effectiveness bar */}
-                  <div className="space-y-1">
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${getEffectivenessClass(channel.effectiveness)}`}
-                        style={{ width: getEffectivenessWidth(channel.effectiveness) }}
-                      />
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-xs text-gray-500">Effectiveness</span>
-                      <span className="text-xs font-medium text-gray-900">{channel.effectiveness}%</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* KPIs */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              Key Performance Indicators
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {goToMarket.kpis.map((kpi, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-4 bg-white rounded-xl"
-                >
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">{kpi.metric}</div>
-                    <div className="text-xs text-gray-500">{kpi.timeframe}</div>
-                  </div>
-                  <div className="text-base font-semibold text-gray-900">{kpi.target}</div>
-                </div>
-              ))}
+              </CardContent>
             </div>
           </div>
         </div>

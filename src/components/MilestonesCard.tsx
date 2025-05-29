@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Milestones } from '@/types/oracle';
 import { formatCurrency } from '@/lib/utils';
-import { CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { CheckCircle2, Clock, AlertCircle, Calendar, Target } from 'lucide-react';
 
 interface MilestonesCardProps {
   milestones?: Milestones;
@@ -12,165 +12,213 @@ interface MilestonesCardProps {
 const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
   if (!milestones) return null;
 
-  const getStatusIcon = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+        return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
       case 'in-progress':
-        return <Clock className="w-4 h-4 text-blue-500" />;
+        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
       default:
-        return <AlertCircle className="w-4 h-4 text-gray-400" />;
+        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
     }
   };
 
   const getCriticalColor = (importance: string) => {
     switch ((importance || '').toLowerCase()) {
       case 'low':
-        return {
-          border: 'border-emerald-300/20',
-          bg: 'bg-emerald-400/5',
-          badge: 'bg-emerald-300/10 text-emerald-400',
-          text: 'text-emerald-300',
-        };
+        return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
       case 'medium':
-        return {
-          border: 'border-amber-300/20',
-          bg: 'bg-amber-400/5',
-          badge: 'bg-amber-300/10 text-amber-400',
-          text: 'text-amber-300',
-        };
+        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
       case 'high':
-        return {
-          border: 'border-orange-400/20',
-          bg: 'bg-orange-400/5',
-          badge: 'bg-orange-400/10 text-orange-400',
-          text: 'text-orange-400',
-        };
+        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
       case 'critical':
-        return {
-          border: 'border-rose-400/20',
-          bg: 'bg-rose-400/5',
-          badge: 'bg-rose-400/10 text-rose-400',
-          text: 'text-rose-400',
-        };
+        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
       default:
-        return {
-          border: 'border-amber-300/20',
-          bg: 'bg-amber-400/5',
-          badge: 'bg-amber-300/10 text-amber-400',
-          text: 'text-amber-300',
-        };
+        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
     }
   };
 
   return (
     <Card className="border-none outline-none bg-white shadow-none">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-[#202020] flex items-center gap-3 tracking-tight">
-          <CheckCircle2 className="w-6 h-6 text-[#202020]" /> Milestones
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-8 p-6">
-        {/* Quarterly Milestones */}
-        <div className="space-y-8">
-          {milestones.quarters.map((quarter, idx) => (
-            <div key={idx} className="space-y-4">
-              <div className="flex justify-between items-center mb-2">
-                <h4 className="text-lg font-bold text-[#202020]">{quarter.quarter}</h4>
-                <span className="text-xs text-[#202020] bg-[#E3E7EA] px-3 py-1 rounded-[8px] border border-[#B0B7BC]">Budget: {formatCurrency(quarter.budget, currency)}</span>
-              </div>
-              {/* Objectives */}
-              {Array.isArray(quarter.objectives) && quarter.objectives.length > 0 ? (
-                quarter.objectives.map((objective, i) => (
-                  <div 
-                    key={`obj-${idx}-${i}`}
-                    className="p-4 border border-[#B0B7BC] rounded-[8px] bg-[#CFD2D4] flex flex-col gap-2 shadow-sm"
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      {getStatusIcon(objective.status)}
-                      <span className="text-base font-semibold text-[#202020]">{objective.title}</span>
-                      <span className="px-2 py-0.5 rounded-[8px] text-xs font-bold ml-auto"
-                        style={{ background: 'linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)', color: '#202020', borderRadius: '8px', border: 'none' }}
-                      >
-                        {objective.status.replace('-', ' ').toUpperCase()}
-                      </span>
-                    </div>
-                    <p className="text-sm text-[#202020] leading-relaxed">{objective.description}</p>
-                    {/* Metrics */}
-                    {objective.metrics.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {objective.metrics.map((metric, metricIndex) => (
-                          <div 
-                            key={`metric-${idx}-${i}-${metricIndex}`}
-                            className="px-2 py-1 bg-[#E3E7EA] rounded-[8px] text-xs flex items-center gap-1 border border-[#B0B7BC]"
-                          >
-                            <span className="text-[#202020] font-semibold">{metric.name}:</span>
-                            <span className="text-[#202020] ml-1">
-                              {typeof metric.target === 'number' 
-                                ? formatCurrency(metric.target, currency)
-                                : metric.target}
+      <CardContent className="p-0">
+        <div className="p-6">
+          {/* Header Section */}
+          <div className="rounded-[8px] p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
+                <Target size={18} className="text-[#CFD2D4]" />
+                <span>Milestones</span>
+              </CardTitle>
+            </CardHeader>
+          </div>
+
+          {/* Quarterly Milestones Section */}
+          <div className="rounded-[8px] p-6 mb-8" style={{ background: '#E3E2DFBF' }}>
+            <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+              Quarterly Milestones
+            </h3>
+            <div className="space-y-8">
+              {milestones.quarters.map((quarter, idx) => (
+                <div key={idx} className="space-y-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="text-xl font-semibold" style={{ color: '#161616' }}>{quarter.quarter}</h4>
+                    <span className="px-4 py-2 rounded-[8px] text-sm font-medium" 
+                      style={{ 
+                        background: '#2B2521',
+                        color: '#F8F7F3',
+                        border: '1px solid #B7A694'
+                      }}>
+                      Budget: {formatCurrency(quarter.budget, currency)}
+                    </span>
+                  </div>
+
+                  {/* Objectives */}
+                  {Array.isArray(quarter.objectives) && quarter.objectives.length > 0 ? (
+                    <div className="space-y-4">
+                      {quarter.objectives.map((objective, i) => (
+                        <div 
+                          key={`obj-${idx}-${i}`}
+                          className="p-6 rounded-[8px] border transition-all duration-200"
+                          style={{ 
+                            background: '#F8F8F773',
+                            borderColor: '#20202010',
+                            backgroundImage: "url('/card-bg-9.png')",
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat'
+                          }}
+                        >
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 size={18} className="text-[#2B2521]" />
+                              <span className="text-lg font-semibold" style={{ color: '#161616' }}>{objective.title}</span>
+                            </div>
+                            <span className="px-3 py-1 rounded-full text-sm font-medium ml-auto"
+                              style={{
+                                background: getStatusColor(objective.status).bg,
+                                color: getStatusColor(objective.status).text,
+                                border: `1px solid ${getStatusColor(objective.status).border}`
+                              }}
+                            >
+                              {objective.status.replace('-', ' ').toUpperCase()}
                             </span>
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div className="text-[#202020] italic">No objectives listed for this quarter.</div>
-              )}
-              {/* Key Deliverables */}
-              <div className="pl-2 border-l-4 border-[#B0B7BC] mt-2">
-                <h5 className="text-xs font-semibold text-[#202020] mb-2">Key Deliverables</h5>
-                <ul className="space-y-1">
-                  {quarter.keyDeliverables.map((deliverable, delIndex) => (
-                    <li 
-                      key={`del-${idx}-${delIndex}`}
-                      className="text-sm text-[#202020] flex items-center gap-2"
-                    >
-                      <CheckCircle2 className="w-3 h-3 text-[#202020]" />
-                      {deliverable}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Critical Milestones */}
-        <div>
-          <h4 className="text-lg font-bold text-[#202020] mb-4 flex items-center gap-2 tracking-tight">
-            <AlertCircle className="h-5 w-5 text-[#202020]" /> Critical Milestones
-          </h4>
-          <div className="space-y-4">
-            {milestones.criticalMilestones.map((milestone, index) => {
-              const color = getCriticalColor(milestone.importance);
-              return (
-                <div key={`critical-${index}`} className={`p-4 border border-[#B0B7BC] rounded-[8px] bg-[#CFD2D4] flex flex-col gap-2 shadow-sm`}>
-                  <div className="flex justify-between items-center mb-1">
-                    <h5 className="text-base font-semibold text-[#202020]">{milestone.name}</h5>
-                    <span className="text-xs text-[#202020] bg-[#E3E7EA] px-2 py-0.5 rounded-[8px] border border-[#B0B7BC]"
-                      style={{ background: 'linear-gradient(90deg, #D0C5C0 0%, #CEF0F5 100%)', color: '#202020', borderRadius: '8px', border: 'none' }}
-                    >
-                      {milestone.date}
-                    </span>
-                  </div>
-                  {milestone.importance && (
-                    <span className={`inline-block px-2 py-0.5 rounded-[8px] bg-[#E3E7EA] border border-[#B0B7BC] text-xs font-semibold w-fit text-[#202020]`}>
-                      {milestone.importance}
-                    </span>
-                  )}
-                  {milestone.successCriteria && milestone.successCriteria.length > 0 && (
-                    <ul className="list-disc list-inside text-xs ml-4 mt-1 text-[#202020]">
-                      {milestone.successCriteria.map((crit, i) => (
-                        <li key={i}>{crit}</li>
+                          <p className="text-sm mb-4" style={{ color: '#2B2521' }}>{objective.description}</p>
+                          
+                          {/* Metrics */}
+                          {objective.metrics.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {objective.metrics.map((metric, metricIndex) => (
+                                <div 
+                                  key={`metric-${idx}-${i}-${metricIndex}`}
+                                  className="px-3 py-1.5 rounded-[8px] text-sm flex items-center gap-2"
+                                  style={{ 
+                                    background: '#2B2521',
+                                    color: '#F8F7F3',
+                                    border: '1px solid #B7A694'
+                                  }}
+                                >
+                                  <span className="font-medium">{metric.name}:</span>
+                                  <span>
+                                    {typeof metric.target === 'number' 
+                                      ? formatCurrency(metric.target, currency)
+                                      : metric.target}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       ))}
-                    </ul>
+                    </div>
+                  ) : (
+                    <div className="text-sm italic" style={{ color: '#2B2521' }}>No objectives listed for this quarter.</div>
                   )}
+
+                  {/* Key Deliverables */}
+                  <div className="mt-6 p-4 rounded-[8px]" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+                    <h5 className="text-sm font-medium mb-3" style={{ color: '#F8F7F3' }}>Key Deliverables</h5>
+                    <div className="space-y-2">
+                      {quarter.keyDeliverables.map((deliverable, delIndex) => (
+                        <div 
+                          key={`del-${idx}-${delIndex}`}
+                          className="flex items-center gap-2 p-2 rounded-[4px]"
+                          style={{ background: '#161616' }}
+                        >
+                          <CheckCircle2 size={14} className="text-[#CFD2D4]" />
+                          <span className="text-sm" style={{ color: '#F8F7F3' }}>{deliverable}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          </div>
+
+          {/* Critical Milestones Section */}
+          <div className="rounded-[8px] p-6" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
+                <AlertCircle size={18} className="text-[#CFD2D4]" />
+                <span>Critical Milestones</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="space-y-4 mt-4">
+                {milestones.criticalMilestones.map((milestone, index) => {
+                  const color = getCriticalColor(milestone.importance);
+                  return (
+                    <div 
+                      key={`critical-${index}`} 
+                      className="p-6 rounded-[8px] border transition-all duration-200"
+                      style={{ 
+                        background: '#161616',
+                        borderColor: '#B7A694'
+                      }}
+                    >
+                      <div className="flex justify-between items-center mb-3">
+                        <h5 className="text-lg font-semibold" style={{ color: '#F8F7F3' }}>{milestone.name}</h5>
+                        <span className="px-3 py-1 rounded-full text-sm font-medium"
+                          style={{
+                            background: color.bg,
+                            color: color.text,
+                            border: `1px solid ${color.border}`
+                          }}
+                        >
+                          {milestone.date}
+                        </span>
+                      </div>
+                      {milestone.importance && (
+                        <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-3"
+                          style={{
+                            background: color.bg,
+                            color: color.text,
+                            border: `1px solid ${color.border}`
+                          }}
+                        >
+                          {milestone.importance.toUpperCase()}
+                        </span>
+                      )}
+                      {milestone.successCriteria && milestone.successCriteria.length > 0 && (
+                        <div className="space-y-2 mt-4">
+                          {milestone.successCriteria.map((crit, i) => (
+                            <div 
+                              key={i}
+                              className="flex items-center gap-2 p-2 rounded-[4px]"
+                              style={{ background: '#2B2521' }}
+                            >
+                              <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#D48EA3' }} />
+                              <span className="text-sm" style={{ color: '#F8F7F3' }}>{crit}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
           </div>
         </div>
       </CardContent>

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Timeline } from "@/types/oracle";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Flag, AlertTriangle } from "lucide-react";
+import { Clock, Flag, AlertTriangle, Calendar } from "lucide-react";
 
 interface TimelineCardProps {
   timeline: Timeline;
@@ -11,87 +11,138 @@ const TimelineCard = ({ timeline }: TimelineCardProps) => {
   const getRiskColor = (risk: 'low' | 'medium' | 'high') => {
     switch (risk) {
       case 'low':
-        return 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20';
+        return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
       case 'medium':
-        return 'bg-amber-500/10 text-amber-300 border-amber-500/20';
+        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
       case 'high':
-        return 'bg-rose-500/10 text-rose-300 border-rose-500/20';
+        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
     }
   };
 
   return (
-    <div>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-2xl font-bold flex items-center gap-2 text-[#202020]">
-          <Clock className="w-5 h-5 text-[#202020]" />
-          Project Timeline
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="space-y-6">
-          {/* Total Duration */}
-          <div className="flex items-center justify-between px-4 py-3 rounded-xl border border-[#B0B7BC] mb-2 bg-[#CFD2D4]">
-            <span className="text-base text-[#202020] flex items-center gap-2"><Clock className="w-5 h-5" /> Total Duration</span>
-            <span className="text-base text-[#202020] font-semibold">{timeline.totalDuration}</span>
+    <Card className="border-none outline-none bg-white shadow-none">
+      <CardContent className="p-0">
+        <div className="p-6">
+          {/* Header Section */}
+          <div className="rounded-[8px] p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
+                <Calendar size={18} className="text-[#CFD2D4]" />
+                <span>Project Timeline</span>
+              </CardTitle>
+            </CardHeader>
           </div>
 
-          {/* Phases (as minimal cards, not timeline) */}
-          <div className="space-y-4">
-            {timeline.phases.map((phase, index) => (
-              <Card
-                key={index}
-                className="p-5  bg-white rounded-[8px]  transition-all duration-200 shadow-none"
-              >
-                {/* Phase header */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base text-[#202020] font-semibold">{phase.name}</span>
-                    <span className={`px-3 py-1 rounded-[8px] text-xs font-bold border border-[#B0B7BC] ${
-                      phase.risk === 'low' ? 'bg-[#E3E7EA] text-[#1E7D4B]' :
-                      phase.risk === 'medium' ? 'bg-[#FFF4D6] text-[#B68B00]' :
-                      'bg-[#FDE7E7] text-[#B8001E]'
-                    }`}>{phase.risk.toUpperCase()}</span>
+          {/* Total Duration Card */}
+          <div className="rounded-[8px] p-6 mb-8" style={{ background: '#E3E2DFBF' }}>
+            <div className="flex items-center justify-between p-4 rounded-[8px] border" 
+              style={{ 
+                background: '#F8F8F773',
+                borderColor: '#20202010',
+                backgroundImage: "url('/card-bg-9.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}>
+              <span className="text-lg font-semibold flex items-center gap-2" style={{ color: '#161616' }}>
+                <Clock size={18} className="text-[#2B2521]" />
+                Total Duration
+              </span>
+              <span className="font-['Fustat'] font-normal text-[32px] leading-[36px] tracking-[-0.02em]" style={{ color: '#202020' }}>
+                {timeline.totalDuration}
+              </span>
+            </div>
+          </div>
+
+          {/* Phases Section */}
+          <div className="rounded-[8px] p-6 mb-8" style={{ background: '#E3E2DFBF' }}>
+            <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+              Project Phases
+            </h3>
+            <div className="space-y-4">
+              {timeline.phases.map((phase, index) => (
+                <div
+                  key={index}
+                  className="p-6 rounded-[8px] border transition-all duration-200"
+                  style={{ 
+                    background: '#F8F8F773',
+                    borderColor: '#20202010',
+                    backgroundImage: "url('/card-bg-9.png')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                >
+                  {/* Phase header */}
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg font-semibold" style={{ color: '#161616' }}>{phase.name}</span>
+                      <Badge 
+                        className="px-3 py-1 text-sm font-medium rounded-full"
+                        style={{
+                          background: getRiskColor(phase.risk).bg,
+                          color: getRiskColor(phase.risk).text,
+                          border: `1px solid ${getRiskColor(phase.risk).border}`
+                        }}
+                      >
+                        {phase.risk.toUpperCase()}
+                      </Badge>
+                    </div>
+                    <span className="text-base font-medium" style={{ color: '#2B2521' }}>{phase.duration}</span>
                   </div>
-                  <span className="text-sm text-[#202020]">{phase.duration}</span>
-                </div>
 
-                {/* Tasks as a clean list */}
-                <ul className="space-y-1 mb-3 pl-1">
-                  {phase.tasks.map((task, taskIndex) => (
-                    <li key={taskIndex} className="text-sm text-[#202020] flex items-center">
-                      {task}
-                    </li>
-                  ))}
-                </ul>
+                  {/* Tasks */}
+                  <div className="space-y-2 mb-4">
+                    {phase.tasks.map((task, taskIndex) => (
+                      <div 
+                        key={taskIndex} 
+                        className="flex items-center gap-2 pl-4 py-1.5 rounded-[4px]"
+                        style={{ background: '#2B252110' }}
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#2B2521' }} />
+                        <span className="text-sm" style={{ color: '#2B2521' }}>{task}</span>
+                      </div>
+                    ))}
+                  </div>
 
-                {/* Milestone */}
-                <div className="flex items-center gap-2 text-sm mt-2">
-                  <Flag className="w-4 h-4 text-[#202020]" />
-                  <span className="text-[#202020] font-medium">{phase.milestone}</span>
+                  {/* Milestone */}
+                  <div className="flex items-center gap-2 p-3 rounded-[8px] mt-4" style={{ background: '#2B2521' }}>
+                    <Flag size={16} className="text-[#CFD2D4]" />
+                    <span className="text-sm font-medium" style={{ color: '#F8F7F3' }}>{phase.milestone}</span>
+                  </div>
                 </div>
-              </Card>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* Critical Path */}
+          {/* Critical Path Section */}
           {timeline.criticalPath.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="w-5 h-5 text-[#202020]" />
-                <span className="text-base text-[#202020] font-semibold">Critical Path</span>
-              </div>
-              <ul className="space-y-1">
-                {timeline.criticalPath.map((item, index) => (
-                  <li key={index} className="text-sm text-[#202020] flex items-center">
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            <div className="rounded-[8px] p-6" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
+                  <AlertTriangle size={18} className="text-[#CFD2D4]" />
+                  <span>Critical Path</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="space-y-2 mt-4">
+                  {timeline.criticalPath.map((item, index) => (
+                    <div 
+                      key={index} 
+                      className="flex items-center gap-2 p-3 rounded-[8px]"
+                      style={{ background: '#161616', border: '1px solid #B7A694' }}
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#D48EA3' }} />
+                      <span className="text-sm" style={{ color: '#F8F7F3' }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
             </div>
           )}
         </div>
       </CardContent>
-    </div>
+    </Card>
   );
 };
 
