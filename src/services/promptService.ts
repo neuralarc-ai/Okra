@@ -30,10 +30,22 @@ export const expandPrompt = async (basicPrompt: string): Promise<PromptSuggestio
 
 export const formatExpandedPrompt = (suggestion: PromptSuggestion): string => {
   if (!suggestion) return '';
-  
-  // Combine all summary fields
-  const combined = `${suggestion.title}. ${suggestion.description} ${suggestion.problemSolution} ${suggestion.marketOpportunity}`.replace(/\s+/g, ' ').trim();
-  // Extract the first 2 sentences only
-  const sentences = combined.match(/[^.!?]+[.!?]+/g) || [combined];
-  return sentences.slice(0, 2).join(' ').trim();
+  return [
+    suggestion.title ? `${suggestion.title}\n` : '',
+    suggestion.description ? `\nProblem & Solution:\n${suggestion.description}` : '',
+    suggestion.marketOpportunity ? `\n\nMarket Opportunity:\n${suggestion.marketOpportunity}` : '',
+    suggestion.targetAudience && suggestion.targetAudience.length
+      ? `\n\nWho it's for:\n• ${suggestion.targetAudience.join('\n• ')}`
+      : '',
+    suggestion.uniqueFeatures && suggestion.uniqueFeatures.length
+      ? `\n\nWhat makes it unique:\n• ${suggestion.uniqueFeatures.join('\n• ')}`
+      : '',
+    suggestion.problemSolution && !(suggestion.description || '').includes(suggestion.problemSolution)
+      ? `\n\nAdditional Insight:\n${suggestion.problemSolution}`
+      : ''
+  ]
+    .filter(Boolean)
+    .join('')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }; 

@@ -170,10 +170,12 @@ const Index = () => {
   
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8]">
-      {/* Background */}
-      <div 
-        className="fixed inset-0 bg-[#FBFAF8] z-0"
-      />
+      {/* App Name Header */}
+      <div className="w-full flex justify-center pt-8 pb-2">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1E1E1E] tracking-tight text-center" style={{ fontFamily: 'Fustat' }}>
+          Helium AI
+        </h1>
+      </div>
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         {/* Main content */}
         <div className="flex-1 flex flex-col">
@@ -186,7 +188,7 @@ const Index = () => {
         >
           <div className="text-center mb-2 mt-36">
             <h1 className="text-[54px] font-[600] text-[#1E1E1E] tracking-[-3%]" style={{ fontFamily: 'Fustat' }}>
-                <span className="text-[#1E1E1E]">Welcome to Okra AI</span>
+                <span className="text-[#1E1E1E]">Welcome</span>
             </h1>
             <p className="text-[#202020] text-[20px] mt-1 mb-9">AI Research Analyst for your Products and Services.</p>
           </div>

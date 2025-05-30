@@ -29,7 +29,9 @@ const TrendingPrompts = ({ onSelectPrompt, className = '' }: TrendingPromptsProp
   }, []);
 
   const handleSelectPrompt = (prompt: TrendingPrompt) => {
-    const formattedPrompt = `Problem & Solution:
+    const formattedPrompt = `${prompt.title}
+
+Problem & Solution:
 ${prompt.description}
 
 Market Opportunity:
@@ -60,10 +62,10 @@ What makes it unique:
   }
 
   const backgroundImages = [
-    "bg-[url('/Effect%201.png')]",
-    "bg-[url('/Effect%203.png')]",
-    "bg-[url('/Effect%204.png')]",
-    "bg-[url('/Effect%206.png')]"
+    "bg-[url('/card-bg-10.png')]",
+    "bg-[url('/card-bg-11.png')]",
+    "bg-[url('/card-bg-12.png')]",
+    "bg-[url('/card-bg-13.png')]"
   ];
 
   return (

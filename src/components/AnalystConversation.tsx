@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface AnalystMessage {
   id: number;
-  analyst: 'Emma' | 'Mike' | 'Scott' | 'David';
+  analyst: 'Zane' | 'Mira' | 'Axel' | 'Chloe';
   message: string;
   progressThreshold: number;
   category: 'market' | 'competitors' | 'pricing' | 'forecast' | 'target' | 'risk' | 'conclusion';
@@ -49,41 +49,49 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
   
   // Define analyst personas with their roles, images and visual styles
   const analysts = {
-    Emma: {
-      role: "Data Scientist",
-      specialty: "market research, data analysis, and customer insights",
-      color: "bg-[#9b87f5]/10",
-      border: "border-[#9b87f5]/30",
-      text: "text-white",
-      icon: <Brain size={16} className="text-[#9b87f5]" />,
-      image: "/emma-profile.png"
-    },
-    Mike: {
-      role: "Business Strategist",
-      specialty: "go-to-market strategy, business model, and competitive positioning",
-      color: "bg-[#33C3F0]/10",
-      border: "border-[#33C3F0]/30",
-      text: "text-white",
-      icon: <Network size={16} className="text-[#33C3F0]" />,
-      image: "/mike-profile.png"
-    },
-    Scott: {
-      role: "Financial Analyst",
-      specialty: "financial forecasts, investment, and risk analysis",
-      color: "bg-[#F97316]/10",
-      border: "border-[#F97316]/30",
-      text: "text-white",
-      icon: <DollarSign size={16} className="text-[#F97316]" />,
-      image: "/scott-profile.png"
-    },
-    David: {
-      role: "Manager",
-      specialty: "synthesizing insights, next steps, and overall direction",
+    Zane: {
+      role: "Team Leader",
+      desc: "Assigns tasks to team based on the user input",
+      specialty: "assigning tasks to team based on the user input",
       color: "bg-[#22d3ee]/10",
       border: "border-[#22d3ee]/30",
       text: "text-white",
       icon: <Brain size={16} className="text-[#22d3ee]" />,
-      image: "/manager-profile.png"
+      image: "/zane-profile.png",
+      chatBg: "#D0BBB1"
+    },
+    Mira: {
+      role: "Data Scientist",
+      desc: "Analyzes and interprets complex data to help organizations.",
+      specialty: "analyzing and interpreting complex data to help organizations",
+      color: "bg-[#9b87f5]/10",
+      border: "border-[#9b87f5]/30",
+      text: "text-white",
+      icon: <Brain size={16} className="text-[#9b87f5]" />,
+      image: "/mira-profile.png",
+      chatBg: "#DDE2D7"
+    },
+    Axel: {
+      role: "Business Strategist",
+      desc: "Develops plans to drive growth and achieve long-term goals.",
+      specialty: "developing plans to drive growth and achieve long-term goals",
+      color: "bg-[#33C3F0]/10",
+      border: "border-[#33C3F0]/30",
+      text: "text-white",
+      icon: <Network size={16} className="text-[#33C3F0]" />,
+      image: "/axel-profile.png",
+      chatBg: "#BDAB9752"
+    },
+    Chloe: {
+      role: "Financial Analyst",
+      desc: "Evaluates financial data to guide investment & business decisions.",
+      specialty: "evaluating financial data to guide investment & business decisions",
+      color: "bg-[#F97316]/10",
+      border: "border-[#F97316]/30",
+      text: "text-white",
+      icon: <DollarSign size={16} className="text-[#F97316]" />,
+      image: "/chloe-profile.png",
+      chatBg: "#BFC6CB"
     }
   };
 
@@ -96,8 +104,8 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
       .replace(/\[keyword\]/g, keyTerms.keywords[0] || 'idea');
   };
 
-  // Manager always first, then Emma, Mike, Scott
-  const analystOrder: AnalystMessage["analyst"][] = ["David", "Emma", "Mike", "Scott"];
+  // Manager always first, then Mira, Axel, Chloe
+  const analystOrder: AnalystMessage["analyst"][] = ["Zane", "Mira", "Axel", "Chloe"];
 
   // Define the order of business topics to cover
   const topicOrder: AnalystMessage["category"][] = [
@@ -119,7 +127,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
     // Determine the current analyst and potentially the next
     let currentAnalyst: AnalystMessage["analyst"];
     if (prevMessages.length === 0) {
-      currentAnalyst = "David";
+      currentAnalyst = "Zane";
     } else {
       const lastAnalyst = prevMessages[prevMessages.length - 1].analyst;
       const analystOptions = analystOrder.filter(a => a !== lastAnalyst); // Avoid the same analyst speaking twice in a row
@@ -130,7 +138,7 @@ const AnalystConversation: React.FC<AnalystConversationProps> = ({ progress, use
     const conversationHistory = prevMessages.slice(-3).map((m) => `${m.analyst}: ${m.message.replace(/\s*\[[a-z]+ complete\]$/i, '')}`).join("\n");
 
     const prompt = `
-You are part of a team of business analysts discussing the idea: "${idea}". The team includes David (Manager), Emma (Data Scientist), Mike (Business Strategist), and Scott (Financial Analyst).
+You are part of a team of business analysts discussing the idea: "${idea}". The team includes Zane (Team Leader), Mira (Data Scientist), Axel (Business Strategist), and Chloe (Financial Analyst).
 
 The current topic of discussion is: ${currentTopic}.
 
@@ -172,11 +180,11 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
     const nextTopicIndex = shouldAdvanceTopic ? getNextTopicIndex(lastTopicIndex) : lastTopicIndex;
     const nextTopic = topicOrder[nextTopicIndex];
 
-    // Stop if the last message is a conclusion from David
+    // Stop if the last message is a conclusion from Zane
     if (
       visibleMessages.length > 0 &&
       visibleMessages[visibleMessages.length - 1].category === "conclusion" &&
-      visibleMessages[visibleMessages.length - 1].analyst === "David"
+      visibleMessages[visibleMessages.length - 1].analyst === "Zane"
     ) {
       return;
     }
@@ -197,9 +205,9 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
     setTimeout(() => {
       let nextAnalyst: AnalystMessage["analyst"];
       if (nextTopic === "conclusion") {
-        nextAnalyst = "David";
+        nextAnalyst = "Zane";
       } else if (visibleMessages.length === 0) {
-        nextAnalyst = "David";
+        nextAnalyst = "Zane";
       } else {
         const lastAnalyst = visibleMessages[visibleMessages.length - 1].analyst;
         const analystOptions = analystOrder.filter(a => a !== lastAnalyst);
@@ -228,7 +236,7 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
       {visibleMessages.map((message, idx) => (
         <div 
           key={`${message.id}-${message.analyst}-${idx}`}
-          className={`flex gap-3 mb-4 animate-fadeUp ${message.analyst === 'David' ? 'flex-row-reverse justify-end' : ''}`}
+          className={`flex gap-3 mb-4 animate-fadeUp ${message.analyst === 'Zane' ? 'flex-row-reverse justify-end' : ''}`}
           style={{ animationDuration: '0.5s' }}
         >
           <Avatar className={`h-8 w-8 bg-[#F0EDE9] border border-[#D9D3C7] flex items-center justify-center`}>
@@ -239,15 +247,16 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-[#2B2521]">
+              <span className="font-['Fustat'] font-normal text-[16px] leading-[20px] text-[#202020]">
                 {message.analyst}
               </span>
-              <span className="text-xs text-[#2B2521]/60">
+              <span className="font-['Fustat'] font-normal text-[12px] leading-[16px] text-[#202020]/80">
                 {analysts[message.analyst].role}
               </span>
             </div>
             <div 
-              className={`mt-1 p-3 rounded-lg bg-[#D9D3C7] border border-[#F0EDE9] ${message.analyst === 'David' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg border border-[#F0EDE9] ${message.analyst === 'Zane' ? 'text-right' : ''}`}
+              style={{ background: analysts[message.analyst].chatBg }}
             >
               <p className={`text-sm text-[#2B2521]`}>
                 {message.message.replace(/^([A-Za-z]+):\s*/, '')}
@@ -260,7 +269,7 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
       {typing && (
         <div
           key={`typing-${typing}-${visibleMessages.length}`}
-          className={`flex gap-3 mb-4 animate-fadeUp ${typing === 'David' ? 'flex-row-reverse justify-end' : ''}`}
+          className={`flex gap-3 mb-4 animate-fadeUp ${typing === 'Zane' ? 'flex-row-reverse justify-end' : ''}`}
         >
           <Avatar className={`h-8 w-8 bg-[#F0EDE9] border border-[#D9D3C7] flex items-center justify-center`}>
             <AvatarImage src={analysts[typing].image} alt={typing} />
@@ -270,15 +279,16 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-[#2B2521]">
+              <span className="font-['Fustat'] font-normal text-[16px] leading-[20px] text-[#202020]">
                 {typing}
               </span>
-              <span className="text-xs text-[#2B2521]/60">
+              <span className="font-['Fustat'] font-normal text-[12px] leading-[16px] text-[#202020]/80">
                 {analysts[typing].role}
               </span>
             </div>
             <div 
-              className={`mt-1 p-3 rounded-lg bg-[#D9D3C7] border border-[#F0EDE9] ${typing === 'David' ? 'text-right' : ''}`}
+              className={`mt-1 p-3 rounded-lg border border-[#F0EDE9] ${typing === 'Zane' ? 'text-right' : ''}`}
+              style={{ background: analysts[typing].chatBg }}
             >
               <div className="flex gap-1 items-center h-4 justify-end">
                 <span className="w-2 h-2 bg-[#B7BEAE] rounded-full animate-pulse"></span>

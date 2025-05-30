@@ -15,7 +15,7 @@ const Landing = () => {
           <div className="flex flex-col items-center gap-6 animate-fadeUp">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-5xl md:text-6xl font-extrabold text-[#1E1E1E] tracking-tight text-center">
-                Okra AI
+                Helium AI
               </h1>
             </div>
             <h2 className="text-xl md:text-2xl text-[#222] font-medium text-center max-w-2xl">

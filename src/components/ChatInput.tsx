@@ -184,7 +184,8 @@ const ChatInput = ({
               {/* Analyze Button */}
               <Button
                 type="submit"
-                className="flex items-center gap-2 bg-[#302D2A] text-white hover:bg-[#47423C] font-medium text-base leading-6 px-6 py-4 rounded-md transition-all duration-300 disabled:bg-[#302D2A] disabled:opacity-60"
+                className="flex items-center gap-2 bg-[#302D2A] text-white hover:bg-[#47423C] font-medium text-base leading-6 px-6 py-7
+                 rounded-md transition-all duration-300 disabled:bg-[#302D2A] disabled:opacity-60"
                 disabled={!message.trim() || isAnalyzing}
               >
                 {isAnalyzing ? 'Analyzing...' : (

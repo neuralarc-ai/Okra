@@ -140,19 +140,20 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
             {/* Meet the Analyst Team section */}
             <div className="mb-0">
               <div className="text-[#2B2521] text-base font-semibold mb-2">Meet our analyst team</div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {/* Analyst Avatars and Roles */}
                 {[
-                  { name: 'David', role: 'Manager', img: '/manager-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
-                  { name: 'Emma', role: 'Data Scientist', img: '/emma-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
-                  { name: 'Mike', role: 'Business Strategist', img: '/mike-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
-                  { name: 'Scott', role: 'Financial Analyst', img: '/scott-profile.png', color: 'bg-[#B7BEAE40]', border: 'border-[#B7BEAE]' },
+                  { name: 'Zane', role: 'Team Leader', desc: 'Assigns tasks to team based on the user input', img: '/zane-profile.png' },
+                  { name: 'Mira', role: 'Data Scientist', desc: 'Analyzes and interprets complex data to help organizations.', img: '/mira-profile.png' },
+                  { name: 'Chloe', role: 'Financial Analyst', desc: 'Evaluates financial data to guide investment & business decisions.', img: '/chloe-profile.png' },
+                  { name: 'Axel', role: 'Business Strategist', desc: 'Develops plans to drive growth and achieve long-term goals.', img: '/axel-profile.png' },
                 ].map(a => (
-                  <div key={a.name} className={`flex items-center gap-2 px-2 py-1 border rounded-lg ${a.color} ${a.border}`} style={{ minWidth: 0 }}>
-                    <img src={a.img} alt={a.name} className="w-[72px] h-[72px] rounded-full border border-[#B7BEAE] object-cover" />
-                    <div className="flex flex-col max-w-[268px] min-h-[92px">
-                      <span className="text-base font-semibold text-[#2B2521] truncate">{a.name}</span>
-                      <span className="text-xs text-[#2B2521]/60 whitespace-nowrap">{a.role}</span>
+                  <div key={a.name} className="flex items-center gap-4 px-5 py-4 border border-[#00000021] rounded-xl bg-[#F0EDE9] min-h-[110px] shadow-sm">
+                    <img src={a.img} alt={a.name} className="w-[56px] h-[56px] rounded-full object-cover border border-[#E3E2DF]" />
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-['Fustat'] font-normal text-[16px] leading-[20px] text-[#202020] truncate">{a.name}</span>
+                      <span className="font-['Fustat'] font-normal text-[12px] leading-[16px] text-[#202020] mt-0.5">{a.role}</span>
+                      <span className="font-['Fustat'] font-light text-[10px] leading-[16px] text-[#202020] mt-1">{a.desc}</span>
                     </div>
                   </div>
                 ))}
