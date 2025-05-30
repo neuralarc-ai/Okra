@@ -55,7 +55,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
     <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader className="pb-2">
         <CardTitle className="font-['Fustat'] font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
-          <ChartBar size={24} className="text-[#202020]" />
+          
           Idea Validation Report
         </CardTitle>
       </CardHeader>

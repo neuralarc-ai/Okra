@@ -14,7 +14,18 @@ const Landing = () => {
         <main className="flex-1 flex flex-col items-center justify-center px-4">
           <div className="flex flex-col items-center gap-6 animate-fadeUp">
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-5xl md:text-6xl font-extrabold text-[#1E1E1E] tracking-tight text-center">
+              <h1
+                className="text-center"
+                style={{
+                  fontFamily: 'Fustat',
+                  fontWeight: 500,
+                  fontSize: '32px',
+                  lineHeight: '40px',
+                  letterSpacing: '3%',
+                  verticalAlign: 'middle',
+                  color: '#1E1E1E',
+                }}
+              >
                 Helium AI
               </h1>
             </div>

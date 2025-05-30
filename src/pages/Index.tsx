@@ -72,7 +72,8 @@ const Index = () => {
       const simulateProgress = (onDone: () => void) => {
         const interval = setInterval(() => {
           if (progress < 99) {
-            progress += Math.random() * 8 + 1;
+            // Base increment is 1% per ~900ms, with a little randomization for organic feel
+            progress += 1 + Math.random(); // 1% + up to 1% random
             if (progress > 99) progress = 99;
           } else {
             progress = 99;
@@ -88,7 +89,7 @@ const Index = () => {
             clearInterval(interval);
             onDone();
           }
-        }, 1000);
+        }, 900); // ~90 seconds to reach 99%
         return interval;
       };
       
@@ -171,8 +172,19 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8]">
       {/* App Name Header */}
-      <div className="w-full flex justify-center pt-8 pb-2">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1E1E1E] tracking-tight text-center" style={{ fontFamily: 'Fustat' }}>
+      <div className="w-full flex justify-center pt-20 pb-2">
+        <h1
+          className="text-center"
+          style={{
+            fontFamily: 'Fustat',
+            fontWeight: 500,
+            fontSize: '32px',
+            lineHeight: '40px',
+            letterSpacing: '3%',
+            verticalAlign: 'middle',
+            color: '#1E1E1E',
+          }}
+        >
           Helium AI
         </h1>
       </div>
@@ -186,7 +198,7 @@ const Index = () => {
           className={`flex flex-col items-center w-full'
           }`}
         >
-          <div className="text-center mb-2 mt-36">
+          <div className="text-center mb-2 mt-10">
             <h1 className="text-[54px] font-[600] text-[#1E1E1E] tracking-[-3%]" style={{ fontFamily: 'Fustat' }}>
                 <span className="text-[#1E1E1E]">Welcome</span>
             </h1>

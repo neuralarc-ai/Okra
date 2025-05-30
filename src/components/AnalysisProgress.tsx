@@ -84,20 +84,43 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
               </div>
             </div>
             {/* Progress bar card */}
-            <div className="w-full rounded-2xl bg-[#2B2521] px-8 pt-6 pb-6 mb-8 flex flex-col" style={{minHeight: '110px'}}>
-              <div className="w-full h-2 mb-6 mt-1 rounded-full bg-[#423B36] overflow-hidden">
-                <div
-                  className="h-2 rounded-full"
-                  style={{
-                    width: `${progress}%`,
-                    background: 'linear-gradient(90deg, #5B8EE2 0%, #B7A6D7 60%, #E6A6B7 100%)',
-                    transition: 'width 0.5s cubic-bezier(.4,2,.6,1)',
-                  }}
-                />
-              </div>
-              <div className="flex justify-between items-center w-full">
-                <span className="text-white text-2xl font-normal">Okra AI is researching your idea</span>
-                <span className="text-white text-2xl font-semibold">{progress}%</span>
+            <div
+              className="w-full rounded-[8px] p-4 mb-8"
+              style={{
+                backgroundImage: "url('/Effect2.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                boxShadow: '0 2px 16px 0 rgba(30,30,30,0.07)'
+              }}
+            >
+              <div className="w-full rounded-[8px] bg-[#2B2521] px-8 pt-6 pb-6 flex flex-col" style={{ minHeight: '110px' }}>
+                <div className="w-full h-2 mb-6 mt-1 rounded-full bg-[#423B36] overflow-hidden">
+                  <div
+                    className="h-2 rounded-full"
+                    style={{
+                      width: `${progress}%`,
+                      background: 'linear-gradient(90deg, #3987BE 0%, #D48EA3 60%, #E6A6B7 100%)',
+                      transition: 'width 0.5s cubic-bezier(.4,2,.6,1)',
+                    }}
+                  />
+                </div>
+                <div className="flex justify-between items-center w-full">
+                  <span
+                    className="text-white"
+                    style={{
+                      fontFamily: 'Fustat',
+                      fontWeight: 400,
+                      fontSize: '20px',
+                      lineHeight: '24px',
+                      letterSpacing: '-2%',
+                      verticalAlign: 'middle',
+                    }}
+                  >
+                    Helium AI is researching your idea
+                  </span>
+                  <span className="text-white text-2xl font-semibold" style={{ fontFamily: 'Fustat', fontWeight: 500 }}>{progress}%</span>
+                </div>
               </div>
             </div>
             {/* Analysis steps */}
@@ -125,7 +148,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                         <div style={{color: '#2B2521', display: 'flex', alignItems: 'center'}}>
                           {step.icon}
                         </div>
-                        <span style={{color: '#2B2521', fontSize: '20px', fontWeight: 400}}>
+                        <span style={{color: '#2B2521', fontSize: '19px', fontWeight: 400}}>
                           {step.name}
                         </span>
                       </div>
@@ -149,7 +172,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                   { name: 'Axel', role: 'Business Strategist', desc: 'Develops plans to drive growth and achieve long-term goals.', img: '/axel-profile.png' },
                 ].map(a => (
                   <div key={a.name} className="flex items-center gap-4 px-5 py-4 border border-[#00000021] rounded-xl bg-[#F0EDE9] min-h-[110px] shadow-sm">
-                    <img src={a.img} alt={a.name} className="w-[56px] h-[56px] rounded-full object-cover border border-[#E3E2DF]" />
+                    <img src={a.img} alt={a.name} className="w-[80px] h-[80px] rounded-full object-cover border border-[#E3E2DF]" />
                     <div className="flex flex-col min-w-0">
                       <span className="font-['Fustat'] font-normal text-[16px] leading-[20px] text-[#202020] truncate">{a.name}</span>
                       <span className="font-['Fustat'] font-normal text-[12px] leading-[16px] text-[#202020] mt-0.5">{a.role}</span>

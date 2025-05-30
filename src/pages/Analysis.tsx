@@ -54,7 +54,18 @@ const Analysis = () => {
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8] grain-texture">
       {/* App Name Header */}
       <div className="w-full flex justify-center pt-8 pb-2">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1E1E1E] tracking-tight text-center" style={{ fontFamily: 'Fustat' }}>
+        <h1
+          className="text-center"
+          style={{
+            fontFamily: 'Fustat',
+            fontWeight: 500,
+            fontSize: '32px',
+            lineHeight: '40px',
+            letterSpacing: '3%',
+            verticalAlign: 'middle',
+            color: '#1E1E1E',
+          }}
+        >
           Helium AI
         </h1>
       </div>

@@ -96,8 +96,8 @@ What makes it unique:
   >
     {/* Content sits above the overlay */}
     <div className="relative z-10 flex items-center gap-3 mb-1">
-      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white/80">
-        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#1E342F]">
+      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-[#6B74784D]">
+        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#525D45]">
           <TrendingUp size={20} className="text-white" />
         </span>
       </span>
