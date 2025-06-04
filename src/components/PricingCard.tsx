@@ -141,7 +141,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                   </h4>
                   <div className="flex items-center gap-2">
 
-                    <span className="font-sans font-semibold text-[#000000] bg-gradient-to-r from-[#79685D] to-[#D1C2B8] px-[16px] py-[24px] rounded-full text-[28px] leading-none tracking-normal text-center block"> {formatPriceValue(price.value, currency)}</span>
+                    <span className="font-sans font-semibold text-[#000000] bg-[#9A7D70]  px-[22px] py-[20px] rounded-[8px] text-[28px] leading-none tracking-normal text-center block"> {formatPriceValue(price.value, currency)}</span>
 
                     {isExpanded ? (
                       <ChevronUp className="text-[#2B2521]" />
@@ -194,16 +194,16 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                   data={trendData}
                   margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
                 >
-                  <CartesianGrid stroke="#7D7D7D" />
+                  <CartesianGrid stroke="#3D3732" />
                   <XAxis
                     dataKey="date"
-                    stroke="#CFD2D4"
+                    stroke="#7D7D7D"
                     fontSize={12}
                     tickLine={false}
                     tickMargin={5}
                   />
                   <YAxis
-                    stroke="#CFD2D4"
+                    stroke="#7D7D7D"
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}

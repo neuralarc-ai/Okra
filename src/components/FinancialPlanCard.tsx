@@ -101,11 +101,11 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
       <div className="p-6">
         {/* Monthly Expenses Breakdown */}
         {expenseData.length > 0 && (
-          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundImage: 'url(/card-bg-3.png)' }}>
+          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundColor: '#2B2521' }}>
             <h4 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] align-middle text-white mb-6">Monthly Expenses Breakdown</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Radar Chart Card */}
-              <div className="bg-[#2B2521] rounded-[8px] p-6 flex flex-col items-center justify-center">
+              <div className="bg-[#0000003B] rounded-[8px] p-6 flex flex-col items-center justify-center">
                 <div className="w-full max-w-[500px] h-[355px] mx-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart data={expenseData}>
@@ -136,7 +136,7 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
               </div>
 
               {/* Table Card */}
-              <div className="bg-[#2B2521] rounded-[8px] p-6">
+              <div className="bg-[#0000003B] rounded-[8px] p-6">
                 <h4 className="font-['Fustat'] font-normal text-[22px] leading-[49.04px] tracking-[-0.8%] text-center text-[#DCDCDC] mb-7 mt-5">Monthly expenses by category and total</h4>
                 <div className="space-y-2">
                   {expenseData.map((expense, idx) => (

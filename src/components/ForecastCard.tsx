@@ -78,7 +78,7 @@ const renderCategoryLabel = (props: LabelProps) => {
   const threshold = 120;
   if (widthNum < threshold) {
     return (
-      <text x={xNum - 8} y={yNum + heightNum / 2 + 5} fill="#fff" fontSize={13} fontWeight="500" alignmentBaseline="middle" textAnchor="end">
+      <text x={xNum - 8} y={yNum + heightNum / 2 + 5} fill="#FFFFFF" fontSize={13} fontWeight="500" alignmentBaseline="middle" textAnchor="end">
         {value}
       </text>
     );
@@ -210,7 +210,7 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
 const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
   <Card className="bg-[#2B2521]  shadow-lg">
     <CardHeader className="pb-2">
-      <CardTitle className="text-xl font-medium">
+      <CardTitle className="text-xl font-medium text-white">
         {title} {period ? `(${period})` : ''}
       </CardTitle>
     </CardHeader>
@@ -306,7 +306,7 @@ const convertCurrency = (value: string | number, fromCurrency: string, toCurrenc
 const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
   <Card className="bg-[#2B2521]  shadow-lg">
     <CardHeader className="pb-2">
-      <CardTitle className="text-xl font-medium">
+      <CardTitle className="text-xl font-medium text-white">
         {title} {period ? `(${period})` : ''}
       </CardTitle>
     </CardHeader>

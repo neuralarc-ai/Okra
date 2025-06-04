@@ -169,8 +169,8 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                       key={index}
                       className="p-4 rounded-[8px] border"
                       style={{ 
-                        background: '#161616',
-                        borderColor: '#161616',
+                        background: '#0000003B',
+                        borderColor: '#0000003B',
                       }}
                     >
                       <div className="flex items-center justify-between">

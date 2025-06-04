@@ -336,7 +336,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
         <div className="rounded-2xl p-6 mt-8" style={{ background: '#161616', border: '1px solid #B7A694' }}>
           <CardHeader className="pb-2">
             <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
-              <ChartBar size={18} className="text-[#CFD2D4]" />
+              
               <span>Revenue Streams</span>
             </CardTitle>
           </CardHeader>
@@ -352,7 +352,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                         <Tooltip
                           cursor={false}
                           contentStyle={{ 
-                            background: '#161616',
+                            background: '#E5E0D5',
                             border: '1px solid #B7A694',
                             color: '#F8F7F3',
                             borderRadius: '10px',
@@ -444,7 +444,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                           <span className="text-base font-semibold" style={{ color: '#F8F7F3' }}>{stream.name}</span>
                         </div>
                         <span 
-                          className="text-xs px-3 py-1.5 rounded-full" 
+                          className="text-sm px-6 py-3 rounded-full" 
                           style={{ 
                             background: '#2B2521', 
                             border: '1px solid #B7A694', 
@@ -479,7 +479,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     <div className="text-xs" style={{ color: '#2B2521' }}>{metric.timeframe}</div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="text-xs px-3 py-1 rounded-full border" style={{ background: '#CFD2D4', borderColor: '#B7A694', color: '#161616' }}>{formatMetricValue(metric.name, metric.target, currency)}</div>
+                    <div className="text-sm px-6 py-3 rounded-full border" style={{ background: '#CFD2D4', borderColor: '#B7A694', color: '#161616' }}>{formatMetricValue(metric.name, metric.target, currency)}</div>
                   </div>
                 </div>
                 <div className="mt-2 text-sm" style={{ color: '#2B2521' }}>Current: {metric.current} | Target: {metric.target}</div>

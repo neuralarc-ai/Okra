@@ -232,7 +232,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               backgroundRepeat: 'no-repeat'
             }}
           >
-            <div className="absolute inset-0 bg-[#2B2521" />
+            <div className="absolute inset-0 bg-[#2B2521]" />
             <div className="relative z-10">
               <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#F8F7F3] mb-6">
                 SWOT Analysis
@@ -244,7 +244,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                   { title: 'Opportunities', items: scoreAnalysis.swot.opportunities, color: '#97A487' },
                   { title: 'Threats', items: scoreAnalysis.swot.threats, color: '#B7A694' }
                 ].map((section, index) => (
-                  <div key={index} className="p-4 rounded-[8px] py-8 " style={{ background: '#161616', border: '1px solid #161616' }}>
+                  <div key={index} className="p-4 rounded-[8px] py-8 " style={{ background: '#0000003B', border: '1px solid #0000003B' }}>
                     <h4 className="text-lg font-semibold mb-4 mt-2 mb-"  style={{ color: section.color }}>{section.title}</h4>
                     <ul className="space-y-2">
                       {section.items.map((item, i) => (

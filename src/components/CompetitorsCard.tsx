@@ -121,7 +121,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
         <CardContent className="p-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Pie Chart Card */}
-          <div className="p-6 flex flex-col items-center justify-center" style={{ background: '#161616', borderRadius: '0.5rem' }}>
+          <div className="p-6 flex flex-col items-center justify-center" style={{ background: '#0000003B', borderRadius: '0.5rem' }}>
             <div className="w-full" style={{ minHeight: 300 }}>
               {marketShareData && marketShareData.length >= 2 && (
                 <ResponsiveContainer width="100%" height={380}>
@@ -129,7 +129,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                     <Tooltip
                       cursor={false}
                       contentStyle={{ 
-                        background: '#2B2521',
+                        background: '#E5E0D5',
                         border: '1px solid #B7A694',
                         color: '#F8F7F3',
                         borderRadius: '10px',
