@@ -195,7 +195,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
             {fundingRequirements.fundingSources.map((source, index) => (
               <div 
                 key={`source-${index}`}
-                className="relative p-6 rounded-xl overflow-hidden"
+                className="relative p-6 rounded-[8px] overflow-hidden"
                 style={{
                   backgroundImage: "url('/card-bg-7.png')",
                   backgroundSize: 'cover',
@@ -205,9 +205,9 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
               >
                 <div className="absolute inset-0 bg-[#FFFFFF]/20"></div>
                 <div className="relative z-10 bg-[#FFFFFF59] p-6 rounded-lg">
-                  <div className="flex justify-between items-center  mb-4">
-                    <h5 className="text-[24px] font-fustat  font-medium text-[#202020]">{source.type}</h5>
-                    <span className="px-4 py-2 rounded-full bg-gradient-to-r from-[#332C27] to-[#332C27] text-white text-sm font-medium">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+                    <h5 className="text-[24px] font-fustat font-medium text-[#202020] break-words">{source.type}</h5>
+                    <span className="px-4 py-2 rounded-full bg-gradient-to-r from-[#332C27] to-[#332C27] text-white text-sm font-medium whitespace-nowrap self-start sm:self-auto">
                       {source.likelihood}% likelihood
                     </span>
                   </div>

@@ -20,20 +20,25 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
   };
 
   const getEffectivenessClass = (effectiveness: number) => {
-    if (effectiveness >= 80) return "bg-gradient-to-r from-[#3987BE] to-[#D48EA3]";
-    if (effectiveness >= 60) return "bg-gradient-to-r from-[#D48EA3] to-[#3987BE]";
-    return "bg-gradient-to-r from-[#D48EA3] to-[#3987BE]";
+    return "bg-gradient-to-r from-[#262626] via-[#1E342F] to-[#5D7143]";
   };
 
   return (
     <Card className="border-none outline-none bg-white shadow-none">
-      <CardContent className="p-0">
-        <div className="p-6">
+      <CardContent className="p-2">
+        <div className="px-5">
           {/* Header Section */}
-          <div className="rounded-[8px] p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+          <div className="rounded-[8px]  ">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
-                <ChartBar size={18} className="text-[#CFD2D4]" />
+              <CardTitle className="flex items-center" style={{
+                color: '#000000',
+                fontFamily: 'Fustat',
+                fontWeight: 500,
+                fontSize: '40px',
+                lineHeight: '69px',
+                letterSpacing: '-2%',
+                verticalAlign: 'middle'
+              }}>
                 <span>Go-to-Market Strategy</span>
               </CardTitle>
             </CardHeader>
@@ -41,7 +46,14 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
 
           {/* Strategy Section */}
           <div className="space-y-6">
-            <div className="rounded-[8px] p-6" style={{ background: '#E3E2DFBF' }}>
+            <div className="rounded-[8px] p-6"  style={{ 
+                      background: '#F8F8F773',
+                      borderColor: '#20202010',
+                      backgroundImage: "url('/card-bg-9.png')",
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}>
               <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
                 Strategic Initiatives
               </h3>
@@ -53,7 +65,6 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                     style={{ 
                       background: '#F8F8F773',
                       borderColor: '#20202010',
-                      backgroundImage: "url('/card-bg-9.png')",
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat'
@@ -66,7 +77,7 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                         style={{
                           background: getPriorityColor(item.priority).bg,
                           color: getPriorityColor(item.priority).text,
-                          border: `1px solid ${getPriorityColor(item.priority).border}`
+                          
                         }}
                       >
                         {item.priority.toUpperCase()}
@@ -79,7 +90,15 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
             </div>
 
             {/* Marketing Channels */}
-            <div className="rounded-[8px] p-6" style={{ background: '#E3E2DFBF' }}>
+            <div className="rounded-[8px] p-6 "
+             style={{ 
+                      background: '#F8F8F773',
+                      borderColor: '#20202010',
+                      backgroundImage: "url('/card-bg-9.png')",
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}>
               <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
                 Marketing Channels
               </h3>
@@ -91,20 +110,28 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                     style={{ 
                       background: '#F8F8F773',
                       borderColor: '#20202010',
-                      backgroundImage: "url('/card-bg-9.png')",
+                      
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat'
                     }}
                   >
                     <div className="flex flex-col gap-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-lg font-semibold" style={{ color: '#161616' }}>{channel.name}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs px-3 py-1 rounded-full" style={{ background: '#2B2521', color: '#F8F7F3' }}>
+                      <div className="flex flex-col gap-2">
+                        <span style={{ 
+                          color: '#161616',
+                          fontFamily: 'Fustat',
+                          fontWeight: 500,
+                          fontSize: '21px',
+                          lineHeight: '35px',
+                          letterSpacing: '-0.4%',
+                          verticalAlign: 'middle'
+                        }}>{channel.name}</span>
+                        <div className="flex items-center gap-2 mb-2 mt-2">
+                          <span className="text-xs px-3 py-1 rounded-full" style={{ background: '#AD92814D', color: '#000000' }}>
                             Cost: {channel.cost}
                           </span>
-                          <span className="text-xs px-3 py-1 rounded-full" style={{ background: '#2B2521', color: '#F8F7F3' }}>
+                          <span className="text-xs px-3 py-1 rounded-full" style={{ background: '#AD92814D', color: '#000000' }}>
                             ROI: {channel.timeToROI}
                           </span>
                         </div>
@@ -130,8 +157,8 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
             {/* KPIs Section */}
             <div className="rounded-[8px] p-6" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
-                  <Target size={18} className="text-[#CFD2D4]" />
+                <CardTitle className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em]" style={{ color: '#F8F7F3' }}>
+                  
                   <span>Key Performance Indicators</span>
                 </CardTitle>
               </CardHeader>
@@ -143,15 +170,31 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                       className="p-4 rounded-[8px] border"
                       style={{ 
                         background: '#161616',
-                        borderColor: '#B7A694',
+                        borderColor: '#161616',
                       }}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="text-base font-medium" style={{ color: '#F8F7F3' }}>{kpi.metric}</div>
-                          <div className="text-sm" style={{ color: '#CFD2D4' }}>{kpi.timeframe}</div>
+                          <div style={{
+                            color: '#F8F7F3',
+                            fontFamily: 'Fustat',
+                            fontWeight: 300,
+                            fontSize: '16px',
+                            lineHeight: '28px',
+                            letterSpacing: '0%',
+                            verticalAlign: 'middle'
+                          }}>{kpi.metric}</div>
+                          <div className="text-sm mt-2" style={{ color: '#CFD2D4' }}>{kpi.timeframe}</div>
                         </div>
-                        <div className="text-xl font-semibold" style={{ color: '#F8F7F3' }}>{kpi.target}</div>
+                        <div style={{
+                          color: '#F8F7F3',
+                          fontFamily: 'Fustat',
+                          fontWeight: 500,
+                          fontSize: '24px',
+                          lineHeight: '32px',
+                          letterSpacing: '0%',
+                          verticalAlign: 'middle'
+                        }}>{kpi.target}</div>
                       </div>
                     </div>
                   ))}

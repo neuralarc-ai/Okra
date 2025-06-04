@@ -107,7 +107,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               </svg>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
                 <span className="text-6xl font-bold text-[#F8F7F3]">{score}</span>
-                <span className="mt-2 px-4 py-1 rounded-[8px] text-xs font-medium tracking-wide bg-[#161616] text-[#F8F7F3] border border-[#B7A694]">
+                <span className="mt-2 px-4 py-1 rounded-[8px] text-xs font-medium tracking-wide bg-[#FFFFFF3D] text-[#F8F7F3] border border-[#B7A694]">
                   {scoreAnalysis.category}
                 </span>
               </div>
@@ -115,7 +115,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             {/* Summary */}
             <div className="flex-1 flex flex-col gap-4 min-w-0">
               <div className="flex items-center gap-3">
-                <span className="px-4 py-1 rounded-[8px] text-base font-medium tracking-wide bg-[#161616] text-[#F8F7F3] border border-[#B7A694]">
+                <span className="px-4 py-1 rounded-[8px] text-base font-medium tracking-wide bg-[#FFFFFF] text-[#161616] border border-[#B7A694]">
                   {scoreAnalysis.category} Potential
                 </span>
               </div>
@@ -134,7 +134,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 bg-[#E3E2DFBF]" />
+          <div className="absolute inset-0 bg-[#D8CDBB]" />
           <div className="relative z-10">
             <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
               Key Metrics
@@ -184,7 +184,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 bg-[#E3E2DFBF]" />
+          <div className="absolute inset-0 bg-[#D8CDBB]" />
           <div className="relative z-10">
             <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
               Market Analysis
@@ -207,11 +207,11 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             </div>
 
             {/* Recommendations */}
-            <div className="rounded-[8px] p-6 relative overflow-hidden" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
-              <div className="text-lg font-semibold text-[#F8F7F3] mb-4">Key Recommendations</div>
+            <div className="rounded-[8px] p-6 relative overflow-hidden" style={{ background: '#F8F8F773', border: '1px solid #20202010' }}>
+              <div className="text-lg font-semibold text-[#202020] mb-4">Key Recommendations</div>
               <ul className="space-y-3">
                 {scoreAnalysis.recommendations.map((recommendation, index) => (
-                  <li key={index} className="text-base text-[#F8F7F3] flex items-start gap-3">
+                  <li key={index} className="text-base text-[#202020] flex items-start gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#D48EA3] mt-2 flex-shrink-0" />
                     <span>{recommendation}</span>
                   </li>
@@ -226,26 +226,26 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           <div 
             className="rounded-[8px] p-6 relative overflow-hidden"
             style={{
-              backgroundImage: "url('/card-bg-8.png')",
+              backgroundColor: "#2B2521",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat'
             }}
           >
-            <div className="absolute inset-0 bg-[#2B2521]/90" />
+            <div className="absolute inset-0 bg-[#2B2521" />
             <div className="relative z-10">
               <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#F8F7F3] mb-6">
                 SWOT Analysis
               </h3>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { title: 'Strengths', items: scoreAnalysis.swot.strengths, color: '#A8B0B8' },
                   { title: 'Weaknesses', items: scoreAnalysis.swot.weaknesses, color: '#D48EA3' },
                   { title: 'Opportunities', items: scoreAnalysis.swot.opportunities, color: '#97A487' },
                   { title: 'Threats', items: scoreAnalysis.swot.threats, color: '#B7A694' }
                 ].map((section, index) => (
-                  <div key={index} className="p-5 rounded-[8px]" style={{ background: '#161616', border: '1px solid #B7A694' }}>
-                    <h4 className="text-lg font-semibold mb-4" style={{ color: section.color }}>{section.title}</h4>
+                  <div key={index} className="p-4 rounded-[8px] py-8 " style={{ background: '#161616', border: '1px solid #161616' }}>
+                    <h4 className="text-lg font-semibold mb-4 mt-2 mb-"  style={{ color: section.color }}>{section.title}</h4>
                     <ul className="space-y-2">
                       {section.items.map((item, i) => (
                         <li key={i} className="text-[#F8F7F3] flex items-start gap-2">
@@ -272,7 +272,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               backgroundRepeat: 'no-repeat'
             }}
           >
-            <div className="absolute inset-0 bg-[#E3E2DFBF]" />
+            <div className="absolute inset-0 bg-[#C9C8CE]" />
             <div className="relative z-10">
               <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
                 Market Trends
@@ -300,7 +300,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               backgroundRepeat: 'no-repeat'
             }}
           >
-            <div className="absolute inset-0 bg-[#E3E2DFBF]" />
+            <div className="absolute inset-0 bg-[#D8CDBB]" />
             <div className="relative z-10">
               <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
                 Regulatory & Risks

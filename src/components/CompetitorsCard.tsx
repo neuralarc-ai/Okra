@@ -238,7 +238,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
             }}>
               {/* Section Header */}
               <div 
-                className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-6 py-5 cursor-pointer group"
+                className="flex flex-col md:flex-row md:items-center justify-between gap-2 px-8 py-5 cursor-pointer group"
                 onClick={() => toggleCompetitor(competitor.name)}
               >
                 <div className="flex flex-col gap-0.5">
@@ -256,7 +256,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 </div>
               </div>
               {/* Progress Bar and Metrics */}
-              <div className="px-6 pb-2 flex items-stretch gap-4 h-[120px]">
+              <div className="px-6 pb-2 mb-4 flex items-stretch gap-4 h-[120px]">
                 {/* Progress Bar Card */}
                 <div className="relative px-4 py-3 rounded-lg border border-[#202020]/10 bg-[#F8F8F773] shadow-sm flex-1 flex flex-col justify-center">
                   <div className="w-full space-y-3">
@@ -275,7 +275,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 </div>
 
                 {/* Market Share Card */}
-                <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg border border-[#202020]/10 bg-[#F8F8F7] shadow-sm" style={{ minWidth: '120px' }}>
+                <div className="flex flex-col items-center justify-center px-4 py-3  rounded-lg border border-[#202020]/10 bg-[#F8F8F7] shadow-sm" style={{ minWidth: '120px' }}>
                   <div className="text-xs text-[#2B2521] mb-1">Market Share</div>
                   <div className="font-fustat font-normal text-4xl text-center" style={{ letterSpacing: '0%' }}>
                     {Number(entry.value).toFixed(1)}%
