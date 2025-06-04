@@ -223,7 +223,7 @@ const Index = () => {
 
         {/* Analysis progress display */}
           {isAnalyzing && (
-          <div className="relative z-10 flex justify-center mt-40">
+          <div className="relative z-10 flex justify-center mt-10">
             <AnalysisProgress 
               progress={analysisProgress} 
               source={currentSource} 

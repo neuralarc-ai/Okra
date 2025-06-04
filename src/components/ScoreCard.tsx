@@ -73,8 +73,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           <div className="absolute inset-0 bg-[#2B2521]/90" />
           <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8">
             {/* Arc Progress */}
-            <div className="relative flex flex-col items-center justify-center">
-              <svg height={radius * 2} width={radius * 2} className="block z-10">
+            <div className="relative flex flex-col items-center justify-center overflow-visible">
+              <svg height={radius * 2} width={radius * 2} className="block z-10 overflow-visible">
                 <path
                   d={describeArc(radius, radius, normalizedRadius, arcStartAngle, arcEndAngle)}
                   stroke="#E3E2DF"

@@ -105,7 +105,7 @@ export const generateAnalysis = async (
         - keyMetrics: object with:
           * marketSize: string (e.g., "$120M")
           * growthRate: string (e.g., "14.5% CAGR")
-          * targetAudience: string (e.g., "B2B clients, B2C consumers,  individuals & businesses, B2B Buyers (Importers, Wholesalers, Processors), Initial target VR users")
+          * targetAudience: string (e.g., "B2B clients, B2C consumers,  individuals & businesses, B2B Buyers (Importers, Wholesalers, Processors), Initial target VR users") only 2-3 target audiences
           * initialInvestment: string (e.g., "$85,000")
         - executiveSummary: string (2-3 sentences describing the business idea and its target market)
         - swot: object with:

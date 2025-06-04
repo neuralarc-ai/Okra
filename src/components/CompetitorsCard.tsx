@@ -124,8 +124,8 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
           <div className="p-6 flex flex-col items-center justify-center" style={{ background: '#161616', borderRadius: '0.5rem' }}>
             <div className="w-full" style={{ minHeight: 300 }}>
               {marketShareData && marketShareData.length >= 2 && (
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
+                <ResponsiveContainer width="100%" height={380}>
+                  <PieChart margin={{ top: 30, right: 30, bottom: 30, left: 30 }}>
                     <Tooltip
                       cursor={false}
                       contentStyle={{ 
@@ -149,21 +149,35 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       innerRadius="60%"
                       outerRadius="90%"
                       stroke="#2B2521"
+                      className="overflow-visible"
                       strokeWidth={2}
                       label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
                         const RADIAN = Math.PI / 180;
-                        const radius = 25 + innerRadius + (outerRadius - innerRadius);
-                        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                        const labelRadiusOffset = 30; // Increased offset from 25
+                        // The label's anchor point is calculated from the center of the pie,
+                        // extending beyond the outer radius of the slice.
+                        const effectiveOuterRadius = outerRadius; 
+                        const labelPositionRadius = effectiveOuterRadius + labelRadiusOffset;
+
+                        const x = cx + labelPositionRadius * Math.cos(-midAngle * RADIAN);
+                        const y = cy + labelPositionRadius * Math.sin(-midAngle * RADIAN);
+
+                        let currentTextAnchor = x > cx ? 'start' : 'end';
+                        // If the label is (nearly) vertically aligned with the center, use 'middle' anchor for better centering.
+                        if (Math.abs(x - cx) < 1.0) { // Check if x is very close to cx
+                          currentTextAnchor = 'middle';
+                        }
+
                         return (
                           <text
                             x={x}
                             y={y}
                             fill="#fff"
-                            textAnchor={x > cx ? 'start' : 'end'}
+                            textAnchor={currentTextAnchor}
                             dominantBaseline="central"
                             fontWeight={400}
                             fontSize={14}
+                            className="overflow-visible"
                           >
                             {`${Number(value).toFixed(1)}%`}
                           </text>
