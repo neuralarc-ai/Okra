@@ -172,7 +172,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8]">
       {/* App Name Header */}
-      <div className="w-full flex justify-center pt-20 pb-2">
+      <div className="w-full flex justify-center pt-20 ">
         <h1
           className="text-center"
           style={{
@@ -198,9 +198,17 @@ const Index = () => {
           className={`flex flex-col items-center w-full'
           }`}
         >
-          <div className="text-center mb-2 mt-10">
+          <div className="text-center mb-2 mt-8">
             <h1 className="text-[54px] font-[600] text-[#1E1E1E] tracking-[-3%]" style={{ fontFamily: 'Fustat' }}>
-                <span className="text-[#1E1E1E]">Welcome</span>
+                <span className="text-[#1E1E1E]">
+                  {(() => {
+                    const hour = new Date().getHours();
+                    let greeting = 'Good Morning';
+                    if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
+                    if (hour >= 17) greeting = 'Good Evening';
+                    return `${greeting}, Aniket`;
+                  })()}
+                </span>
             </h1>
             <p className="text-[#202020] text-[20px] mt-1 mb-9">AI Research Analyst for your Products and Services.</p>
           </div>

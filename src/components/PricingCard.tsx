@@ -152,8 +152,13 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                 </div>
                 {/* Collapsed: show only key points */}
                 {!isExpanded && (
-                  <ul className="list-disc list-inside text-sm text-[#2B2521] ml-2 mt-1 space-y-1">
-                    {keyPoints.map((point, i) => <li key={i} className="leading-relaxed">{point}</li>)}
+                  <ul className="text-sm text-[#2B2521] mt-1 space-y-1 pl-5">
+                    {keyPoints.map((point, i) => (
+                      <li key={i} className="relative pl-2 -indent-4">
+                        <span className="absolute left-0">•</span>
+                        <span className="pl-2">{point}</span>
+                      </li>
+                    ))}
                   </ul>
                 )}
                 {/* Expanded: show detailed summary/analysis */}

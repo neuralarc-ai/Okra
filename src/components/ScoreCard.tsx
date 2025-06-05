@@ -147,7 +147,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 { label: 'Initial Investment', value: scoreAnalysis.keyMetrics.initialInvestment }
               ].map((metric, index) => (
                 <div key={index} className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                  <div className="text-sm text-[#202020] mb-2 font-medium">{metric.label}</div>
+                  <div className="text-sm text-[#00000080] mb-2 font-medium">{metric.label}</div>
                   <div className="text-lg font-semibold text-[#202020]">{metric.value}</div>
                 </div>
               ))}
@@ -197,7 +197,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 { label: 'Timing', value: scoreAnalysis.timing.status }
               ].map((metric, index) => (
                 <div key={index} className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                  <div className="text-sm text-[#202020] mb-2 font-medium">{metric.label}</div>
+                  <div className="text-sm text-[#00000080] mb-2 font-medium">{metric.label}</div>
                   <div className="text-lg font-semibold text-[#202020]">
                     {metric.value}
                     {metric.subtext && <span className="text-sm font-normal ml-2">({metric.subtext})</span>}
@@ -211,7 +211,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               <div className="text-lg font-semibold text-[#202020] mb-4">Key Recommendations</div>
               <ul className="space-y-3">
                 {scoreAnalysis.recommendations.map((recommendation, index) => (
-                  <li key={index} className="text-base text-[#202020] flex items-start gap-3">
+                  <li key={index} className="text-lg text-[#202020] flex items-start gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#D48EA3] mt-2 flex-shrink-0" />
                     <span>{recommendation}</span>
                   </li>
@@ -245,10 +245,10 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                   { title: 'Threats', items: scoreAnalysis.swot.threats, color: '#B7A694' }
                 ].map((section, index) => (
                   <div key={index} className="p-4 rounded-[8px] py-8 " style={{ background: '#0000003B', border: '1px solid #0000003B' }}>
-                    <h4 className="text-lg font-semibold mb-4 mt-2 mb-"  style={{ color: section.color }}>{section.title}</h4>
+                    <h4 className="text-[24px] font-semibold mb-4 mt-2 mb-"  style={{ color: section.color }}>{section.title}</h4>
                     <ul className="space-y-2">
                       {section.items.map((item, i) => (
-                        <li key={i} className="text-[#F8F7F3] flex items-start gap-2">
+                        <li key={i} className="text-[#F8F7F3] text-[18px]  flex items-start gap-2">
                           <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ background: section.color }} />
                           <span>{item}</span>
                         </li>
@@ -280,8 +280,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               <div className="space-y-4">
                 {scoreAnalysis.marketTrends.map((trend, i) => (
                   <div key={i} className="p-4 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                    <div className="font-medium text-[#202020] mb-1">{trend.trend}</div>
-                    <div className="text-[#202020]">{trend.impact}</div>
+                    <div className="font-medium text-[24px] text-[#202020] mb-1">{trend.trend}</div>
+                    <div className="text-[18px] text-[#202020]">{trend.impact}</div>
                   </div>
                 ))}
               </div>
@@ -308,8 +308,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               <div className="space-y-4">
                 {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
                   <div key={i} className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                    <div className="font-semibold text-[#202020] mb-2">{risk.risk}</div>
-                    <div className="text-[#202020]">
+                    <div className="font-semibold text-[24px] text-[#202020] mb-2">{risk.risk}</div>
+                    <div className="text-[18px] text-[#202020]">
                       <span className="font-medium">Mitigation:</span> {risk.mitigation}
                     </div>
                   </div>
@@ -337,12 +337,12 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               </h3>
               <div className="space-y-4">
                 <div className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                  <div className="font-semibold text-[#202020] mb-2">Position</div>
-                  <div className="text-[#202020]">{scoreAnalysis.competitivePositioning.position}</div>
+                  <div className="font-semibold text-[24px] text-[#202020] mb-2">Position</div>
+                  <div className="text-[18px] text-[#202020]">{scoreAnalysis.competitivePositioning.position}</div>
                 </div>
                 <div className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                  <div className="font-semibold text-[#202020] mb-2">Market Map</div>
-                  <div className="text-[#202020]">{scoreAnalysis.competitivePositioning.mapDescription}</div>
+                  <div className="font-semibold text-[24px] text-[#202020] mb-2">Market Map</div>
+                  <div className="text-[18px] text-[#202020]">{scoreAnalysis.competitivePositioning.mapDescription}</div>
                 </div>
               </div>
             </div>

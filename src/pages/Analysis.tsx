@@ -38,13 +38,13 @@ const Analysis = () => {
     }
   };
   const handleNewAnalysis = () => {
-    navigate('/app');
+    navigate('/');
   };
 
   React.useEffect(() => {
     if (!result) {
-      // If no result, redirect back to main page
-      navigate("/app");
+      // If no result, redirect back to landing page
+      navigate("/");
     }
   }, [result, navigate]);
 

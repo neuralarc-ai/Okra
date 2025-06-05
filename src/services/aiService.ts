@@ -87,17 +87,36 @@ Make the response creative, specific to the idea, and market-relevant. Don't use
 
     const result = await model.generateContent(prompt);
     const response = result.response;
-    const text = response.text();
+    let text = response.text();
     
-    // Extract JSON from the response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error("Failed to parse AI response");
+    // Clean up the response text
+    text = text.replace(/```(?:json)?\n?|```/g, '') // Remove markdown code blocks
+               .replace(/\n/g, ' ')                  // Replace newlines with spaces
+               .replace(/\s+/g, ' ')                 // Normalize whitespace
+               .trim();
+    
+    // Try to find JSON in the response
+    let jsonMatch;
+    try {
+      // First try to parse the entire response as JSON
+      return JSON.parse(text);
+    } catch (e) {
+      // If that fails, try to extract JSON object
+      jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        console.error('Failed to extract JSON from response:', text);
+        throw new Error("Failed to parse AI response: No valid JSON found");
+      }
+      
+      try {
+        return JSON.parse(jsonMatch[0]);
+      } catch (parseError) {
+        console.error('Failed to parse extracted JSON:', jsonMatch[0]);
+        throw new Error(`Failed to parse AI response: ${parseError.message}`);
+      }
     }
-    
-    return JSON.parse(jsonMatch[0]);
   } catch (error) {
     console.error("Gemini API error:", error);
     throw error;
   }
-}; 
+};
