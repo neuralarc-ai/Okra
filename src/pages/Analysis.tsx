@@ -96,19 +96,19 @@ const Analysis = () => {
                   onClick={e => { 
                     e.stopPropagation(); 
                     if (result) {
-                      const shareText = `Okra AI Analysis of "${userInput}" - Validation Score: ${result.validationScore}/100`;
+                      const shareText = `Helium AI Analysis of "${userInput}" - Validation Score: ${result.validationScore}/100`;
                       if (navigator.share) {
                         navigator.share({
-                          title: 'Okra AI Analysis',
+                          title: 'Helium AI Analysis',
                           text: shareText,
                         }).catch(() => {
                           navigator.clipboard.writeText(
-                            `Okra AI Analysis Results\n\nProduct/Service Idea: "${userInput}"\nValidation Score: ${result.validationScore}/100\n\nSummary: ${result.summary}`
+                            `Helium AI Analysis Results\n\nProduct/Service Idea: "${userInput}"\nValidation Score: ${result.validationScore}/100\n\nSummary: ${result.summary}`
                           );
                         });
                       } else {
                         navigator.clipboard.writeText(
-                          `Okra AI Analysis Results\n\nProduct/Service Idea: "${userInput}"\nValidation Score: ${result.validationScore}/100\n\nSummary: ${result.summary}`
+                          `Helium AI Analysis Results\n\nProduct/Service Idea: "${userInput}"\nValidation Score: ${result.validationScore}/100\n\nSummary: ${result.summary}`
                         );
                       }
                     }

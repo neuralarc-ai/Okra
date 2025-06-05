@@ -18,7 +18,7 @@ const Footer = () => {
         <span className="mx-1 text-gray-500">•</span>
         <button className="underline hover:text-white transition" onClick={() => setEthicsOpen(true)}>Responsible AI</button>
         <span className="mx-1 text-gray-500">•</span>
-        <span className="text-white/80">Copyright 2025. All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;Okra AI, a thing by{' '}
+        <span className="text-white/80"> All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;Helium AI, a thing by{' '}
           <a href="https://neuralarc.ai" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">
             Neural Arc
           </a>
@@ -31,7 +31,7 @@ const Footer = () => {
             <DialogTitle className="text-white">Terms of Use</DialogTitle>
           </DialogHeader>
           <div className="space-y-2 text-sm">
-            <h4 className="text-white font-medium">Welcome to Okra AI</h4>
+            <h4 className="text-white font-medium">Welcome to Helium AI</h4>
             <p>By accessing or using https://okra.neuralpaths.ai (the "Platform"), you agree to be bound by these Terms of Use. If you do not agree, please do not use the Platform.</p>
             <ol className="list-decimal list-inside ml-4 space-y-2">
               <li>
@@ -44,7 +44,7 @@ const Footer = () => {
               </li>
               <li>
                 <span className="text-white/90">Intellectual Property</span>
-                <p>All content, trademarks, and intellectual property on the Platform are owned by Okra AI or its licensors. You may not copy, reproduce, or distribute any part of the Platform without permission.</p>
+                <p>All content, trademarks, and intellectual property on the Platform are owned by Helium AI or its licensors. You may not copy, reproduce, or distribute any part of the Platform without permission.</p>
               </li>
               <li>
                 <span className="text-white/90">Disclaimer of Warranties</span>
@@ -75,7 +75,7 @@ const Footer = () => {
           </DialogHeader>
           <div className="space-y-4 text-sm">
             <p className="text-white/90">Effective Date: May 2, 2025</p>
-            <p>Okra ("Platform," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you visit our Platform, including any AI-based tools or services we provide.</p>
+            <p>Helium ("Platform," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you visit our Platform, including any AI-based tools or services we provide.</p>
             <div className="space-y-2">
               <h4 className="text-white font-medium">1. Information We Collect</h4>
               <p>We may collect the following types of information:</p>

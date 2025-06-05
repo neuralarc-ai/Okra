@@ -54,7 +54,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
 
   // Analysis steps with icons
   const analysisSteps = [
-    { name: 'Market research', icon: <Globe size={16} /> },
+    { name: 'Market research', icon: <Search size={16} /> },
     { name: 'Competitor analysis', icon: <Network size={16} /> },
     { name: 'Target audience', icon: <Users size={16} /> },
     { name: 'Business model validation', icon: <Gauge size={16} /> },
@@ -63,9 +63,9 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
     { name: 'Project timeline', icon: <Clock size={16} /> },
     { name: 'Go-to-market strategy', icon: <Target size={16} /> },
     { name: 'Funding requirements', icon: <DollarSign size={16} /> },
-    { name: 'Financial plan', icon: <Gauge size={16} /> },
+    { name: 'Financial plan', icon: <BarChart size={16} /> },
     { name: 'Milestones', icon: <Calendar size={16} /> },
-    { name: 'Compiling report', icon: <BarChart size={16} /> },
+    { name: 'Compiling report', icon: <Globe size={16} /> },
   ];
 
   return (
