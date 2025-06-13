@@ -55,7 +55,7 @@ const UserMenu = () => {
           </div>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[330px]  p-6 bg-[#38312C] text-white rounded-[12px] shadow-lg border-[1.5px] border-[#404040]" align="end" forceMount>
+      <DropdownMenuContent className="w-[330px]  p-3 bg-[#38312C] text-white rounded-[12px] shadow-lg border-[1.5px] border-[#404040]" align="end" forceMount>
         {user && (
           <>
             <div className="flex items-center space-x-3 mb-4">
@@ -69,7 +69,7 @@ const UserMenu = () => {
             </div>
             <div className="mb-4 p-3 bg-[#2D2623] rounded-lg">
               <div className="flex justify-between items-center mb-2 mt-2">
-                <p className="text-lg font-medium text-white">Token Usage</p>
+                <p className="text-[18px] leading-5 text-white" style={{ fontFamily: 'Fustat', fontWeight: 400, letterSpacing: '0%' }}>Token Usage</p>
                 <div
                   className="px-3 py-1 rounded-full text-[#202020] font-medium text-sm whitespace-nowrap"
                   style={{
@@ -79,9 +79,9 @@ const UserMenu = () => {
                   {tokenUsed.toLocaleString()} / {tokenLimit.toLocaleString()}
                 </div>
               </div>
-              <div className="w-full bg-[#404040] rounded-full h-2.5">
+              <div className="w-full bg-[#404040] rounded-full h-2.5 mb-2 mt-5">
                 <div
-                  className="h-2.5 rounded-full"
+                  className="h-2.5 rounded-full "
                   style={{
                     width: `${tokenPercentage}%`,
                     background: `linear-gradient(to right, #6A67FB, #FF67C4)`,
