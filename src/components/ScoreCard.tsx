@@ -54,7 +54,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   return (
     <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="font-['Fustat'] font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
+        <CardTitle className="font-bold text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
           
           Idea Validation Report
         </CardTitle>
@@ -62,15 +62,14 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
       <CardContent className="space-y-8">
         {/* Score Overview Section */}
         <div 
-          className="rounded-[8px] p-6 relative overflow-hidden"
+          className="rounded-[8px] p-6 relative overflow-hidden flex justify-center"
           style={{
-            backgroundImage: "url('/card-bg-3.png')",
+            backgroundImage: "url('/images/gray-card.png')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 bg-[#2B2521]/90" />
           <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8">
             {/* Arc Progress */}
             <div className="relative flex flex-col items-center justify-center overflow-visible">
@@ -105,21 +104,21 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                   strokeWidth={2}
                 />
               </svg>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-                <span className="text-6xl font-bold text-[#F8F7F3]">{score}</span>
-                <span className="mt-2 px-4 py-1 rounded-[8px] text-xs font-medium tracking-wide bg-[#FFFFFF3D] text-[#F8F7F3] border border-[#B7A694]">
+              <div className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                <span className="text-[68px] font-bold text-[#F8F7F3]">{score}</span>
+                <span className="mt-1 px-4 py-2 rounded-[8px] text-xs font-medium tracking-wide bg-[#FFFFFFBF] text-black">
                   {scoreAnalysis.category}
                 </span>
               </div>
             </div>
             {/* Summary */}
-            <div className="flex-1 flex flex-col gap-4 min-w-0">
+            <div className="flex flex-col h-full justify-center gap-4 min-w-0">
               <div className="flex items-center gap-3">
-                <span className="px-4 py-1 rounded-[8px] text-base font-medium tracking-wide bg-[#FFFFFF] text-[#161616] border border-[#B7A694]">
+                <span className="px-4 py-1 rounded-[8px] text-base font-medium tracking-wide bg-[#FFFFFF] text-black">
                   {scoreAnalysis.category} Potential
                 </span>
               </div>
-              <p className="text-[#F8F7F3] text-xl leading-relaxed font-normal">{summary}</p>
+              <p className="text-black text-lg leading-relaxed font-normal">{summary}</p>
             </div>
           </div>
         </div>
@@ -128,15 +127,14 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         <div 
           className="rounded-[8px] p-6 relative overflow-hidden"
           style={{
-            backgroundImage: "url('/card-bg-8.png')",
+            backgroundImage: "url('/images/green-card.png')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 bg-[#D8CDBB]" />
           <div className="relative z-10">
-            <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+            <h3 className="font-semibold text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
               Key Metrics
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -146,8 +144,8 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 { label: 'Target Audience', value: scoreAnalysis.keyMetrics.targetAudience },
                 { label: 'Initial Investment', value: scoreAnalysis.keyMetrics.initialInvestment }
               ].map((metric, index) => (
-                <div key={index} className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                  <div className="text-sm text-[#00000080] mb-2 font-medium">{metric.label}</div>
+                <div key={index} className="p-5 rounded-[8px] bg-[#FFFFFFBF] border">
+                  <div className="text-sm text-[#00000080] mb-4 font-medium">{metric.label}</div>
                   <div className="text-lg font-semibold text-[#202020]">{metric.value}</div>
                 </div>
               ))}
@@ -158,19 +156,13 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* Executive Summary */}
         <div 
           className="rounded-[8px] p-6 relative overflow-hidden"
-          style={{
-            backgroundImage: "url('/card-bg-9.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
         >
-          <div className="absolute inset-0 bg-[#E3E2DFBF]" />
-          <div className="relative z-10">
-            <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-4">
+          <div className="absolute inset-0 bg-[#E4E4E3]" />
+          <div className="relative z-10 pt-4">
+            <h3 className="font-semibold text-[32px] leading-[36px] tracking-[-0.02em] text-[#000000] mb-6">
               Executive Summary
             </h3>
-            <p className="text-lg text-[#202020] leading-relaxed font-normal">{scoreAnalysis.executiveSummary}</p>
+            <p className="text-xl text-[#000000] leading-relaxed font-normal">{scoreAnalysis.executiveSummary}</p>
           </div>
         </div>
 
@@ -178,15 +170,14 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         <div 
           className="rounded-[8px] p-6 relative overflow-hidden"
           style={{
-            backgroundImage: "url('/card-bg-3.png')",
+            backgroundImage: "url('/images/light-pink.png')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 bg-[#D8CDBB]" />
           <div className="relative z-10">
-            <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+            <h3 className="font-semibold text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
               Market Analysis
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
@@ -196,23 +187,23 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 { label: 'Market Size', value: scoreAnalysis.marketSize.status, subtext: scoreAnalysis.marketSize.trend },
                 { label: 'Timing', value: scoreAnalysis.timing.status }
               ].map((metric, index) => (
-                <div key={index} className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
+                <div key={index} className="p-5 rounded-[8px] bg-[#FFFFFFBF] border border-[#20202010]">
                   <div className="text-sm text-[#00000080] mb-2 font-medium">{metric.label}</div>
                   <div className="text-lg font-semibold text-[#202020]">
                     {metric.value}
-                    {metric.subtext && <span className="text-sm font-normal ml-2">({metric.subtext})</span>}
+                    {metric.subtext && <span className="text-base font-normal ml-2">({metric.subtext})</span>}
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Recommendations */}
-            <div className="rounded-[8px] p-6 relative overflow-hidden" style={{ background: '#F8F8F773', border: '1px solid #20202010' }}>
-              <div className="text-lg font-semibold text-[#202020] mb-4">Key Recommendations</div>
+            <div className="rounded-[8px] p-6 relative overflow-hidden" style={{ background: '#FFFFFFBF', border: '1px solid #20202010' }}>
+              <div className="text-2xl font-medium text-[#202020] mb-4">Key Recommendations</div>
               <ul className="space-y-3">
                 {scoreAnalysis.recommendations.map((recommendation, index) => (
-                  <li key={index} className="text-lg text-[#202020] flex items-start gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#D48EA3] mt-2 flex-shrink-0" />
+                  <li key={index} className="text-xl text-[#202020] flex items-start gap-3 px-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-black mt-3 flex-shrink-0" />
                     <span>{recommendation}</span>
                   </li>
                 ))}
@@ -224,32 +215,25 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
         {/* SWOT Analysis */}
         {scoreAnalysis.swot && (
           <div 
-            className="rounded-[8px] p-6 relative overflow-hidden"
-            style={{
-              backgroundColor: "#2B2521",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
+            className="rounded-[8px] p-6 relative overflow-hidden bg-cover bg-no-repeat bg-[url('/images/pink-card.png')] bg-center"
           >
-            <div className="absolute inset-0 bg-[#2B2521]" />
             <div className="relative z-10">
-              <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#F8F7F3] mb-6">
+              <h3 className="font-semibold text-[32px] leading-[36px] tracking-[-0.02em] text-black mb-6">
                 SWOT Analysis
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { title: 'Strengths', items: scoreAnalysis.swot.strengths, color: '#A8B0B8' },
+                  { title: 'Strengths', items: scoreAnalysis.swot.strengths, color: '#3987BE' },
                   { title: 'Weaknesses', items: scoreAnalysis.swot.weaknesses, color: '#D48EA3' },
                   { title: 'Opportunities', items: scoreAnalysis.swot.opportunities, color: '#97A487' },
-                  { title: 'Threats', items: scoreAnalysis.swot.threats, color: '#B7A694' }
+                  { title: 'Threats', items: scoreAnalysis.swot.threats, color: '#916D5B' }
                 ].map((section, index) => (
-                  <div key={index} className="p-4 rounded-[8px] py-8 " style={{ background: '#0000003B', border: '1px solid #0000003B' }}>
-                    <h4 className="text-[24px] font-semibold mb-4 mt-2 mb-"  style={{ color: section.color }}>{section.title}</h4>
+                  <div key={index} className="p-8 rounded-[8px]" style={{ background: '#FFFFFFBF' }}>
+                    <h4 className="text-[24px] font-medium mb-4 "  style={{ color: section.color }}>{section.title}</h4>
                     <ul className="space-y-2">
                       {section.items.map((item, i) => (
-                        <li key={i} className="text-[#F8F7F3] text-[18px]  flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ background: section.color }} />
+                        <li key={i} className="text-[#000000] text-[18px] font-light flex items-start gap-2 px-3">
+                          <div className="w-[6px] h-[6px] rounded-full mt-[10px] flex-shrink-0 bg-black"/>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -266,22 +250,21 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           <div 
             className="rounded-[8px] p-6 relative overflow-hidden"
             style={{
-              backgroundImage: "url('/card-bg-9.png')",
+              backgroundImage: "url('/images/light-purple.png')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat'
             }}
           >
-            <div className="absolute inset-0 bg-[#C9C8CE]" />
             <div className="relative z-10">
-              <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+              <h3 className="font-semibold text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
                 Market Trends
               </h3>
               <div className="space-y-4">
                 {scoreAnalysis.marketTrends.map((trend, i) => (
-                  <div key={i} className="p-4 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
+                  <div key={i} className="p-6 rounded-[8px] bg-[#FFFFFFBF] border border-[#20202010]">
                     <div className="font-medium text-[24px] text-[#202020] mb-1">{trend.trend}</div>
-                    <div className="text-[18px] text-[#202020]">{trend.impact}</div>
+                    <div className="text-[18px] font-light text-[#202020]">{trend.impact}</div>
                   </div>
                 ))}
               </div>
@@ -294,21 +277,20 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           <div 
             className="rounded-[8px] p-6 relative overflow-hidden"
             style={{
-              backgroundImage: "url('/card-bg-3.png')",
+              backgroundImage: "url('/images/beige-card.png')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat'
             }}
           >
-            <div className="absolute inset-0 bg-[#D8CDBB]" />
             <div className="relative z-10">
-              <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+              <h3 className="font-semibold text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
                 Regulatory & Risks
               </h3>
               <div className="space-y-4">
                 {scoreAnalysis.regulatoryAndRisks.map((risk, i) => (
-                  <div key={i} className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                    <div className="font-semibold text-[24px] text-[#202020] mb-2">{risk.risk}</div>
+                  <div key={i} className="p-5 rounded-[8px] bg-[#FFFFFFBF] border border-[#20202010]">
+                    <div className="font-medium text-[24px] text-[#202020] mb-2">{risk.risk}</div>
                     <div className="text-[18px] text-[#202020]">
                       <span className="font-medium">Mitigation:</span> {risk.mitigation}
                     </div>
@@ -324,24 +306,23 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
           <div 
             className="rounded-[8px] p-6 relative overflow-hidden"
             style={{
-              backgroundImage: "url('/card-bg-8.png')",
+              backgroundImage: "url('/images/cyan-card.png')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat'
             }}
           >
-            <div className="absolute inset-0 bg-[#E3E2DFBF]" />
             <div className="relative z-10">
-              <h3 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
+              <h3 className="font-semibold text-[32px] leading-[36px] tracking-[-0.02em] text-[#202020] mb-6">
                 Competitive Positioning
               </h3>
               <div className="space-y-4">
-                <div className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                  <div className="font-semibold text-[24px] text-[#202020] mb-2">Position</div>
+                <div className="p-5 rounded-[8px] bg-[#FFFFFFBF] border border-[#20202010]">
+                  <div className="font-medium text-[24px] text-[#202020] mb-2">Position</div>
                   <div className="text-[18px] text-[#202020]">{scoreAnalysis.competitivePositioning.position}</div>
                 </div>
-                <div className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#20202010]">
-                  <div className="font-semibold text-[24px] text-[#202020] mb-2">Market Map</div>
+                <div className="p-5 rounded-[8px] bg-[#FFFFFFBF] border border-[#20202010]">
+                  <div className="font-medium text-[24px] text-[#202020] mb-2">Market Map</div>
                   <div className="text-[18px] text-[#202020]">{scoreAnalysis.competitivePositioning.mapDescription}</div>
                 </div>
               </div>

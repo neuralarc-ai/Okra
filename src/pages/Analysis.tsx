@@ -51,7 +51,7 @@ const Analysis = () => {
   if (!result) return null;
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8] grain-texture">
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#F2F0EB] grain-texture">
       {/* App Name Header */}
       <div className="w-full flex justify-center pt-8 pb-2">
         <h1
@@ -71,10 +71,10 @@ const Analysis = () => {
       </div>
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <div className="flex-1 flex flex-col items-center w-full py-8">
-          <div className="w-full max-w-6xl mx-auto px-4">
+          <div className="w-full max-w-[1440px] mx-auto px-12">
           <div className="flex flex-col items-center mb-8 animate-fadeUp w-full">
-            <h2 className="text-3xl font-bold text-black mb-2 tracking-tight">Analysis Results</h2>
-            <p className="text-black text-base max-w-xl text-center">Here are your AI-powered insights and research. Scroll down for detailed breakdowns and actionable recommendations.</p>
+            <h2 className="text-[64px] font-semibold text-black mb-2 tracking-tight">Analysis Results</h2>
+            <p className="text-black text-base font-[300] lg:text-2xl max-w-full text-center">Here are your AI-powered insights and research. Scroll down for detailed breakdowns and actionable recommendations.</p>
           </div>
           {/* Query display section restored from Index.tsx */}
             <div className="mb-8 w-full" onClick={() => setIsQueryExpanded(!isQueryExpanded)}>
@@ -142,15 +142,15 @@ const Analysis = () => {
           </div>
             <div className="w-full animate-fadeUp">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="w-full flex flex-nowrap justify-between mb-6 h-full bg-[#F1F1F1] p-2 rounded-lg">
-                <TabsTrigger value="overview" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Overview</TabsTrigger>
-                <TabsTrigger value="competitors" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Competitors</TabsTrigger>
-                <TabsTrigger value="pricing-revenue" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Pricing & Revenue</TabsTrigger>
-                <TabsTrigger value="forecast" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Forecast</TabsTrigger>
-                <TabsTrigger value="go-to-market" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Go-to-Market</TabsTrigger>
-                <TabsTrigger value="timeline-milestones" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Timeline & Milestones</TabsTrigger>
-                <TabsTrigger value="financial-plan" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Financial Plan</TabsTrigger>
-                <TabsTrigger value="clients-sources" className="text-[#202020] font-normal rounded mx-1 px-3 py-1.5 text-sm data-[state=active]:bg-[#302D2A] data-[state=active]:text-white data-[state=active]:font-medium transition-colors">Clients & Sources</TabsTrigger>
+              <TabsList className="w-full flex overflow-x-scroll flex-nowrap justify-between mb-6 h-fit py-2 bg-[#2B2521]  rounded-[8px]">
+                <TabsTrigger value="overview" className="text-white font-normal rounded mx-1 tracking-wide px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Overview</TabsTrigger>
+                <TabsTrigger value="competitors" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Competitors</TabsTrigger>
+                <TabsTrigger value="pricing-revenue" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Pricing & Revenue</TabsTrigger>
+                <TabsTrigger value="forecast" className="text-white font-normal rounded mx-1 px-3 tracking-normal py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Forecast</TabsTrigger>
+                <TabsTrigger value="go-to-market" className="text-white font-normal rounded mx-1 px-3 tracking-normal py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Go-to-Market</TabsTrigger>
+                <TabsTrigger value="timeline-milestones" className="text-white font-normal rounded tracking-normal mx-1 px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Timeline & Milestones</TabsTrigger>
+                <TabsTrigger value="financial-plan" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Financial Plan</TabsTrigger>
+                <TabsTrigger value="clients-sources" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Clients & Sources</TabsTrigger>
               </TabsList>
               <TabsContent value="overview">
                 {/* Overview: ScoreCard, summary, recommendations */}
