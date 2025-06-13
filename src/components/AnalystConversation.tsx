@@ -247,10 +247,10 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-['Fustat'] font-normal text-[16px] leading-[20px] text-[#202020]">
+              <span className="font-normal text-[16px] leading-[20px] text-[#202020]">
                 {message.analyst}
               </span>
-              <span className="font-['Fustat'] font-normal text-[12px] leading-[16px] text-[#202020]/80">
+              <span className="font-normal text-[12px] leading-[16px] text-[#202020]/80">
                 {analysts[message.analyst].role}
               </span>
             </div>
@@ -279,10 +279,10 @@ Your turn as ${currentAnalyst}: Respond to the previous point or add a new relev
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-['Fustat'] font-normal text-[16px] leading-[20px] text-[#202020]">
+              <span className="font-normal text-[16px] leading-[20px] text-[#202020]">
                 {typing}
               </span>
-              <span className="font-['Fustat'] font-normal text-[12px] leading-[16px] text-[#202020]/80">
+              <span className="font-normal text-[12px] leading-[16px] text-[#202020]/80">
                 {analysts[typing].role}
               </span>
             </div>

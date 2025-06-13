@@ -98,7 +98,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
       <CardHeader className="pb-2">
         <CardTitle className="text-[#202020]" style={{
           fontFamily: 'Fustat',
-          fontWeight: 500,
+          fontWeight: 700,
           fontSize: '40px',
           lineHeight: '69px',
           letterSpacing: '-2%',
@@ -130,18 +130,18 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             return (
               <div
                 key={index}
-                className="p-6 border rounded-2xl bg-[#E3E2DF] border-[#CFD2D4] transition-all duration-200 group"
+                className="p-6 rounded-xl bg-[#E4E4E3] transition-all duration-300 group"
               >
                 <div
                   className="flex justify-between items-center mb-2 cursor-pointer"
                   onClick={() => togglePrice(price.type)}
                 >
-                  <h4 className="text-[24px] font-bold flex items-center gap-2" style={{ color: '#161616' }}>
+                  <h4 className="text-[32px] font-semibold flex items-center gap-2" style={{ color: '#161616' }}>
                     {price.type}
                   </h4>
                   <div className="flex items-center gap-2">
 
-                    <span className="font-sans font-semibold text-[#000000] bg-[#AAAAAA]  px-[22px] py-[20px] rounded-[8px] text-[28px] leading-none tracking-normal text-center block"> {formatPriceValue(price.value, currency)}</span>
+                    <span className="font-semibold text-[#000000] bg-[#B9B6B1] px-[22px] py-[20px] rounded-[8px] text-[28px] leading-none tracking-normal text-center block"> {formatPriceValue(price.value, currency)}</span>
 
                     {isExpanded ? (
                       <ChevronUp className="text-[#2B2521]" />
@@ -152,7 +152,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                 </div>
                 {/* Collapsed: show only key points */}
                 {!isExpanded && (
-                  <ul className="text-sm text-[#2B2521] mt-1 space-y-1 pl-5">
+                  <ul className="text-base text-[#2B2521] mt-1 space-y-1 pl-5">
                     {keyPoints.map((point, i) => (
                       <li key={i} className="relative pl-2 -indent-4">
                         <span className="absolute left-0">•</span>
@@ -192,8 +192,8 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             );
           })}
           {/* Price trends graph */}
-          <div className="space-y-2">
-            <div className="h-[260px] w-full rounded-2xl p-6 border" style={{ background: '#2B2521', borderColor: '#161616' }}>
+          <div className="space-y-4">
+            <div className="min-h-[260px] w-full rounded-2xl p-6 border" style={{ background: '#2B2521', borderColor: '#161616' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={trendData}
@@ -240,7 +240,7 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
             </div>
             <div className="flex flex-row items-center justify-center w-full px-2 text-base mt-4 gap-6">
               {uniquePriceSuggestions.map((ps, idx) => (
-                <div key={ps.type} className="flex items-center gap-2 px-5 py-2 rounded-full border" style={{ background: idx === 0 ? '#D48EA3' : '#3987BE', borderColor: '#161616' }}>
+                <div key={ps.type} className="flex items-center gap-2 px-5 py-2 rounded-[12px]" style={{ background: idx === 0 ? '#D48EA3' : '#3987BE', borderColor: '#161616' }}>
                   <span className="font-semibold text-[#161616]" style={{ color: idx === 0 ? '#161616' : '#F8F7F3' }}>{ps.type}</span>
                 </div>
               ))}

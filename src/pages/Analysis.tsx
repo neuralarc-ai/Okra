@@ -122,7 +122,7 @@ const Analysis = () => {
                 <Button 
                   onClick={e => { e.stopPropagation(); handleNewAnalysis(); }} 
                   variant="ghost" 
-                  className="h-[64px] bg-[#2B2521] text-white hover:bg-[#2B2521]/90 rounded-[4px] px-[27px] py-[16px] flex items-center gap-2"
+                  className="h-[64px] bg-[#2B2521] text-white hover:bg-[#2B2521]/90 hover:text-white duration-300 transition-all ease-in-out rounded-[4px] px-[27px] py-[16px] flex items-center gap-2"
                 >
                   New Analysis
                   <ArrowRight size={20} />
@@ -143,14 +143,14 @@ const Analysis = () => {
             <div className="w-full animate-fadeUp">
             <Tabs defaultValue="overview" className="w-full">
               <TabsList className="w-full flex overflow-x-scroll flex-nowrap justify-between mb-6 h-fit py-2 bg-[#2B2521]  rounded-[8px]">
-                <TabsTrigger value="overview" className="text-white font-normal rounded mx-1 tracking-wide px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Overview</TabsTrigger>
-                <TabsTrigger value="competitors" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Competitors</TabsTrigger>
-                <TabsTrigger value="pricing-revenue" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Pricing & Revenue</TabsTrigger>
-                <TabsTrigger value="forecast" className="text-white font-normal rounded mx-1 px-3 tracking-normal py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Forecast</TabsTrigger>
-                <TabsTrigger value="go-to-market" className="text-white font-normal rounded mx-1 px-3 tracking-normal py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Go-to-Market</TabsTrigger>
-                <TabsTrigger value="timeline-milestones" className="text-white font-normal rounded tracking-normal mx-1 px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Timeline & Milestones</TabsTrigger>
-                <TabsTrigger value="financial-plan" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Financial Plan</TabsTrigger>
-                <TabsTrigger value="clients-sources" className="text-white font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Clients & Sources</TabsTrigger>
+                <TabsTrigger value="overview" className="text-white w-full font-normal rounded mx-1 tracking-wide px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] hover:bg-[#000000]/20 ease-in-out transition-colors duration-300">Overview</TabsTrigger>
+                <TabsTrigger value="competitors" className="text-white w-full font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Competitors</TabsTrigger>
+                <TabsTrigger value="pricing-revenue" className="text-white w-full font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Pricing & Revenue</TabsTrigger>
+                <TabsTrigger value="forecast" className="text-white w-full font-normal rounded mx-1 px-3 tracking-normal py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Forecast</TabsTrigger>
+                <TabsTrigger value="go-to-market" className="text-white w-full font-normal rounded mx-1 px-3 tracking-normal py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Go-to-Market</TabsTrigger>
+                <TabsTrigger value="timeline-milestones" className="text-white w-full font-normal rounded tracking-normal mx-1 px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Timeline & Milestones</TabsTrigger>
+                <TabsTrigger value="financial-plan" className="text-white w-full font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Financial Plan</TabsTrigger>
+                <TabsTrigger value="clients-sources" className="text-white w-full font-normal rounded mx-1 tracking-normal px-3 py-[11px] text-sm data-[state=active]:bg-[#FBFAF8] data-[state=active]:text-[#2B2521] transition-colors">Clients & Sources</TabsTrigger>
               </TabsList>
               <TabsContent value="overview">
                 {/* Overview: ScoreCard, summary, recommendations */}

@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, Target, TrendingUp, Users, DollarSign, ChartBar } from "lucide-react";
 import { ScoreAnalysis } from "@/types/oracle";
 
 interface ScoreCardProps {
@@ -8,26 +7,16 @@ interface ScoreCardProps {
   scoreAnalysis: ScoreAnalysis;
 }
 
-const getScoreCategoryColor = (category: string) => {
-  switch (category) {
-    case "Excellent": return "bg-gradient-to-r from-purple-500/10 to-purple-700/10 text-purple-300 border-purple-500/20";
-    case "Good": return "bg-gradient-to-r from-green-500/10 to-green-700/10 text-green-300 border-green-500/20";
-    case "Fair": return "bg-gradient-to-r from-yellow-500/10 to-yellow-700/10 text-yellow-300 border-yellow-500/20";
-    default: return "bg-gradient-to-r from-gray-500/10 to-gray-700/10 text-gray-300 border-gray-500/20";
-  }
-  };
   
 const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
   // Arc Progress SVG (2/3 circle)
   const radius = 95;
-  const stroke = 14;
+  const stroke = 10;
   const normalizedRadius = radius - stroke / 2;
   const arcStartAngle = 225;
   const arcEndAngle = 495;
   const arcAngle = arcEndAngle - arcStartAngle;
-  const arcLength = (arcAngle / 360) * 2 * Math.PI * normalizedRadius;
   const progress = Math.max(0, Math.min(100, score));
-  const progressLength = (progress / 100) * arcLength;
 
   const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => {
     const a = ((angle - 90) * Math.PI) / 180.0;
@@ -76,16 +65,16 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
               <svg height={radius * 2} width={radius * 2} className="block z-10 overflow-visible">
                 <path
                   d={describeArc(radius, radius, normalizedRadius, arcStartAngle, arcEndAngle)}
-                  stroke="#E3E2DF"
+                  stroke="#FFFFFF"
                   strokeWidth={stroke}
                   fill="none"
                   strokeLinecap="round"
                 />
                 <defs>
-                  <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#A8B0B8" />
-                    <stop offset="50%" stopColor="#D48EA3" />
-                    <stop offset="100%" stopColor="#97A487" />
+                  <linearGradient id="arc-gradient" x1="0" y1="0">
+                    <stop offset="0%" stopColor="#3987BE" />
+                    <stop offset="50%" stopColor="#3987BE" />
+                    <stop offset="100%" stopColor="#D48EA3" />
                   </linearGradient>
                 </defs>
                 <path
@@ -105,7 +94,7 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
                 />
               </svg>
               <div className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-                <span className="text-[68px] font-bold text-[#F8F7F3]">{score}</span>
+                <span className="text-[68px] font-bold text-[#FFFFFF]">{score}</span>
                 <span className="mt-1 px-4 py-2 rounded-[8px] text-xs font-medium tracking-wide bg-[#FFFFFFBF] text-black">
                   {scoreAnalysis.category}
                 </span>
@@ -114,11 +103,11 @@ const ScoreCard = ({ score, summary, scoreAnalysis }: ScoreCardProps) => {
             {/* Summary */}
             <div className="flex flex-col h-full justify-center gap-4 min-w-0">
               <div className="flex items-center gap-3">
-                <span className="px-4 py-1 rounded-[8px] text-base font-medium tracking-wide bg-[#FFFFFF] text-black">
+                <span className="px-4 py-2 rounded-[8px] text-base font-medium tracking-wide bg-[#FFFFFF] text-black">
                   {scoreAnalysis.category} Potential
                 </span>
               </div>
-              <p className="text-black text-lg leading-relaxed font-normal">{summary}</p>
+              <p className="text-black text-base leading-relaxed font-normal mr-20">{summary}</p>
             </div>
           </div>
         </div>
