@@ -24,6 +24,7 @@ import TrendingPrompts from '@/components/TrendingPrompts';
 import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import UserMenu from '@/components/UserMenu';
 
 const Index = () => {
   const [userInput, setUserInput] = useState('');
@@ -177,7 +178,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8]">
       {/* App Name Header */}
-      <div className="w-full flex justify-center pt-20 ">
+      <div className="w-full flex justify-center pt-20 relative">
         <h1
           className="text-center"
           style={{
@@ -192,6 +193,9 @@ const Index = () => {
         >
           Helium AI
         </h1>
+        <div className="absolute top-6 right-8">
+          <UserMenu />
+        </div>
       </div>
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         {/* Main content */}
