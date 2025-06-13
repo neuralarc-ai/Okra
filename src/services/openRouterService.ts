@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { AnalysisResult } from '../types/oracle';
+import { tavilyService } from './tavilyService';
 
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
 
@@ -258,9 +259,19 @@ export const generateAnalysis = async (
     const response = await result.response;
     const text = await response.text();
 
-    return parseAndCleanResponse(text, skipCurrencyCheck);
+    // Parse the initial analysis
+    const initialAnalysis = parseAndCleanResponse(text, skipCurrencyCheck);
+    
+    if (!initialAnalysis) {
+      throw new Error('Failed to parse initial analysis');
+    }
+
+    // Enrich the analysis with real-time market data from Tavily
+    const enrichedAnalysis = await tavilyService.enrichAnalysis(prompt, initialAnalysis);
+
+    return enrichedAnalysis;
   } catch (error) {
-    console.error('Error generating analysis (Gemini):', error);
+    console.error('Error generating analysis:', error);
     throw error;
   }
 };
