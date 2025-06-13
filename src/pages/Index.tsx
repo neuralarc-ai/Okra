@@ -11,7 +11,7 @@ import AnalysisProgress from '@/components/AnalysisProgress';
 import { AnalysisResult } from '@/types/oracle';
 import { generateAnalysis } from '@/services/openRouterService';
 import { toast } from 'sonner';
-import { Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, Share2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { generatePDF } from '@/services/pdfService';
 import TimelineCard from '@/components/TimelineCard';
@@ -24,7 +24,6 @@ import TrendingPrompts from '@/components/TrendingPrompts';
 import Footer from '@/components/Footer';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import UserMenu from '@/components/UserMenu';
 
 const Index = () => {
   const [userInput, setUserInput] = useState('');
@@ -177,13 +176,8 @@ const Index = () => {
   
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8]">
-      {/* User Menu Button */}
-      <div className="absolute top-6 right-6 z-20">
-        <UserMenu />
-      </div>
-
       {/* App Name Header */}
-      <div className="w-full flex justify-center pt-20">
+      <div className="w-full flex justify-center pt-20 ">
         <h1
           className="text-center"
           style={{
@@ -199,75 +193,187 @@ const Index = () => {
           Helium AI
         </h1>
       </div>
-
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         {/* Main content */}
         <div className="flex-1 flex flex-col">
-          {/* Chat container */}
+        {/* Chat container */}
           {!(isAnalyzing || showResults) && (
-            <div className="relative flex flex-col items-center justify-center flex-grow transition-all duration-500 pt-10" ref={inputContainerRef}>
-              <h2 className="font-['Fustat'] font-normal text-[20px] leading-[28px] tracking-[-0.02em] text-center text-[#202020] mt-4 mb-8 max-w-2xl px-4">
-                Your AI-powered business analyst. What are you building next?
-              </h2>
-              <ChatInput onSubmit={handleSubmit} isAnalyzing={isAnalyzing} />
-              <TrendingPrompts onSelectPrompt={handleSelectTrendingPrompt} />
+        <div 
+          ref={inputContainerRef} 
+          className={`flex flex-col items-center w-full'
+          }`}
+        >
+          <div className="text-center mb-2 mt-8">
+            <h1 className="text-[54px] font-[600] text-[#1E1E1E] tracking-[-3%]" style={{ fontFamily: 'Fustat' }}>
+                <span className="text-[#1E1E1E]">
+                  {(() => {
+                    const hour = new Date().getHours();
+                    let greeting = 'Good Morning';
+                    if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
+                    if (hour >= 17) greeting = 'Good Evening';
+                    return `${greeting}, ${userName}`;
+                  })()}
+                </span>
+            </h1>
+            <p className="text-[#202020] text-[20px] mt-1 mb-9">AI Research Analyst for your Products and Services.</p>
+          </div>
+          
+            <ChatInput 
+              onSubmit={handleSubmit} 
+              isAnalyzing={isAnalyzing}
+              initialMessage={userInput}
+            />
+            
+            {/* Add TrendingPrompts component */}
+            <div className="w-full max-w-[1070px] mt-8">
+              <TrendingPrompts 
+                onSelectPrompt={handleSelectTrendingPrompt}
+                className="animate-fadeUp"
+              />
             </div>
+        </div>
           )}
 
-          {(isAnalyzing || showResults) && result && (
-            <div className="p-8 w-full max-w-[1440px] mx-auto">
-              <div className="mb-6 flex justify-between items-center">
-                <h2 className="font-['Fustat'] font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020]">
-                  Analysis of "{rawTitle}"
-                </h2>
-                <div className="flex space-x-4">
-                  <ShareResultsButton result={result} prompt={userInput} />
-                  <Button
-                    variant="outline"
-                    className="border-[#0000001A] bg-[#FFFFFF47] text-[#000000] rounded-lg py-4 flex items-center justify-center gap-2 font-medium transition-colors duration-200 hover:bg-[#FFFFFF47]/80"
-                    onClick={handleDownloadPDF}
-                  >
-                    <Download className="w-5 h-5" />
-                    Download PDF
-                  </Button>
-                </div>
-              </div>
-
-              <AnalysisProgress progress={analysisProgress} source={currentSource} />
-
+        {/* Analysis progress display */}
+          {isAnalyzing && (
+          <div className="relative z-10 flex justify-center mt-10">
+            <AnalysisProgress 
+              progress={analysisProgress} 
+              source={currentSource} 
+                userInput={userInput}
+            />
+            </div>
+          )}
+        
+        {/* Analysis results section */}
+        <div 
+          ref={resultsRef} 
+          className={`${
+            showResults ? 'opacity-100' : 'opacity-0'
+            } transition-all duration-700 ease-in-out relative z-10 mt-12`}
+        >
+            {showResults && result && (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <ScoreCard score={result.validationScore} summary={result.summary} scoreAnalysis={result.scoreAnalysis} />
-                  <CompetitorsCard competitors={result.competitors} />
+                <div className="flex flex-col items-center mb-8 animate-fadeUp">
+                  <div />
+                  <h2 className="text-3xl font-bold text-black mb-2 tracking-tight">Analysis Results</h2>
+                  <p className="text-black text-base max-w-xl text-center">Here are your AI-powered insights and research. Scroll down for detailed breakdowns and actionable recommendations.</p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <PricingCard priceSuggestions={result.priceSuggestions} currency={result.currency} />
-                  <ForecastCard forecast={result.forecasts} />
+            {/* Query display */}
+                <div 
+                  className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-8"
+                  onClick={() => setIsQueryExpanded(!isQueryExpanded)}
+                >
+                  <div className="flex items-center justify-between p-4 bg-black/40 backdrop-blur-md rounded-xl border border-white/10">
+                  <div className="flex-1">
+                      <h3 className="text-sm font-medium text-white">Analyzed Business Idea</h3>
+                      <p className="mt-1 text-sm text-gray line-clamp-1">
+                        {userInput}
+                      </p>
+                  </div>
+                  
+                    <div className="flex items-center gap-2 ml-4">
+                  <Button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownloadPDF();
+                        }}
+                    variant="outline" 
+                    size="sm"
+                    className="flex items-center gap-1 text-white border-white/20 hover:bg-white/10"
+                  >
+                    <Download size={16} />
+                    <span>PDF</span>
+                  </Button>
+                  
+                  <ShareResultsButton result={result} prompt={userInput} />
+                  
+                  <Button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          resetAnalysis();
+                        }}
+                    variant="outline"
+                    size="sm"
+                    className="text-white border-white/20 hover:bg-white/10"
+                  >
+                    New Analysis
+                  </Button>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:bg-white/10"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsQueryExpanded(!isQueryExpanded);
+                        }}
+                      >
+                        {isQueryExpanded ? (
+                          <ChevronUp size={20} />
+                        ) : (
+                          <ChevronDown size={20} />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Expandable Content with Formatted Sections */}
+                  <div 
+                    className={`transition-all duration-300 ${
+                      isQueryExpanded ? 'opacity-100 max-h-[1000px]' : 'opacity-0 max-h-0 overflow-hidden'
+                    }`}
+                  >
+                    <div className="px-6 pb-6">
+                      <div className="w-full h-px bg-white/10 mb-4" />
+                      <div className="whitespace-pre-wrap break-words text-white/90 bg-black/20 rounded-lg p-4 text-base font-normal">{userInput}</div>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <FinancialPlanCard financialPlan={result.financialPlan} currency={result.currency} />
-                  <RevenueModelCard revenueModel={result.revenueModel} currency={result.currency} />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <FundingRequirementsCard fundingRequirements={result.fundingRequirements} currency={result.currency} />
-                  <MilestonesCard milestones={result.milestones} currency={result.currency} />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <GoToMarketCard goToMarket={result.goToMarket} />
-                  <TimelineCard timeline={result.timeline} />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <ClientsCard clients={result.clients} />
-                  <SourcesCard sources={result.sources} />
-                </div>
-              </>
+                {/* Results Grid */}
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <ScoreCard 
+                      score={result.validationScore} 
+                      summary={result.summary}
+                      scoreAnalysis={result.scoreAnalysis}
+                    />
+                    <CompetitorsCard competitors={result.competitors} />
+              </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <PricingCard priceSuggestions={result.priceSuggestions} currency={result.currency} />
+                <ForecastCard forecast={{
+                  ...result.forecasts,
+                  averageCase: (result.forecasts as any).averageCase || result.forecasts.bestCase
+                }} />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <TimelineCard timeline={result.timeline} />
+                    <GoToMarketCard goToMarket={result.goToMarket} />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <RevenueModelCard revenueModel={result.revenueModel} currency={result.currency} />
+                    <MilestonesCard milestones={result.milestones} currency={result.currency} />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <FinancialPlanCard financialPlan={result.financialPlan} currency={result.currency} />
+                    <FundingRequirementsCard fundingRequirements={result.fundingRequirements} currency={result.currency} />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <ClientsCard clients={result.clients} />
+                    <SourcesCard sources={result.sources} />
+              </div>
             </div>
+              </>
           )}
+          </div>
         </div>
         <Footer />
       </div>

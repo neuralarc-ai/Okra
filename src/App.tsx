@@ -48,7 +48,7 @@ const App = () => (
             <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Index />} />
-              <Route path="/spider" element={<Index />} />
+              <Route path="/Helium-AI" element={<Index />} />
               <Route path="/analysis" element={<Analysis />} />
             </Route>
             <Route path="*" element={<NotFound />} />

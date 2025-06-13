@@ -13,11 +13,6 @@ export interface AnalysisResult {
       marketShare: number;
       customers: number;
     };
-    averageCase: {
-      revenue: number;
-      marketShare: number;
-      customers: number;
-    };
   };
   timeline: Timeline;
   goToMarket: GoToMarket;
