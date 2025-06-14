@@ -124,7 +124,7 @@ What makes it unique:
           className={`
             relative flex flex-col cursor-pointer transition-all duration-300
             hover:scale-[1.015] shadow-sm hover:shadow-md 
-            w-[522px] h-[260px] p-6 rounded-lg border border-gray-200
+            w-[522px] h-[260px] p-6 rounded-lg
             ${backgroundImages[index % backgroundImages.length]} bg-cover bg-center
             before:absolute before:inset-0 before:rounded-lg 
             before:bg-gradient-to-t before:from-white/50 before:from-5% before:to-white/10 before:to-70% before:z-0

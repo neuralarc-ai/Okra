@@ -14,6 +14,20 @@ import RevenueModelCard from './RevenueModelCard';
 import SourcesCard from './SourcesCard';
 import { AnalysisResult } from '@/types/oracle';
 
+// Import SVG icons
+import MarketResearchIcon from '@/icons/market-research.svg';
+import CompetitorAnalysisIcon from '@/icons/competitor-analysis.svg';
+import TargetAudienceIcon from '@/icons/target-audience.svg';
+import BusinessModelIcon from '@/icons/business-model.svg';
+import RevenueProjectionsIcon from '@/icons/revenue-projections.svg';
+import RiskAssessmentIcon from '@/icons/risk-assessment.svg';
+import ProjectTimelineIcon from '@/icons/project-timeline.svg';
+import GoToMarketIcon from '@/icons/go-to-market.svg';
+import FundingRequirementsIcon from '@/icons/funding-requirements.svg';
+import FinancialPlanIcon from '@/icons/financial-plan.svg';
+import MilestonesIcon from '@/icons/milestones.svg';
+import CompilingReportIcon from '@/icons/compiling-report.svg';
+
 interface AnalysisProgressProps {
   progress: number;
   source: string;
@@ -54,18 +68,18 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
 
   // Analysis steps with icons
   const analysisSteps = [
-    { name: 'Market research', icon: <Search size={16} /> },
-    { name: 'Competitor analysis', icon: <Network size={16} /> },
-    { name: 'Target audience', icon: <Users size={16} /> },
-    { name: 'Business model validation', icon: <Gauge size={16} /> },
-    { name: 'Revenue projections', icon: <BarChart size={16} /> },
-    { name: 'Risk assessment', icon: <Brain size={16} /> },
-    { name: 'Project timeline', icon: <Clock size={16} /> },
-    { name: 'Go-to-market strategy', icon: <Target size={16} /> },
-    { name: 'Funding requirements', icon: <DollarSign size={16} /> },
-    { name: 'Financial plan', icon: <BarChart size={16} /> },
-    { name: 'Milestones', icon: <Calendar size={16} /> },
-    { name: 'Compiling report', icon: <Globe size={16} /> },
+    { name: 'Market research', icon: '/icons/market-research.svg' },
+    { name: 'Competitor analysis', icon: '/icons/competitor-analysis.svg' },
+    { name: 'Target audience', icon: '/icons/target-audience.svg' },
+    { name: 'Business model validation', icon: '/icons/business-model.svg' },
+    { name: 'Revenue projections', icon: '/icons/revenue-projections.svg' },
+    { name: 'Risk assessment', icon: '/icons/risk-assessment.svg' },
+    { name: 'Project timeline', icon: '/icons/project-timeline.svg' },
+    { name: 'Go-to-market strategy', icon: '/icons/gtm-strategy.svg' },
+    { name: 'Funding requirements', icon: '/icons/funding-requirements.svg' },
+    { name: 'Financial plan', icon: '/icons/financial-plan.svg' },
+    { name: 'Milestones', icon: '/icons/milestones.svg' },
+    { name: 'Compiling report', icon: '/icons/revenue-model.svg' },
   ];
 
   return (
@@ -126,7 +140,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
             {/* Analysis steps */}
             <div className="w-full max-w-[649px] mx-auto">
               {[0,2,4,6,8,10].map((rowIdx) => (
-                <div key={rowIdx} className="flex gap-x-5 mb-4 last:mb-0">
+                <div key={rowIdx} className="flex gap-x-2 mb-2 last:mb-0">
                   {[0,1].map((colIdx) => {
                     const index = rowIdx + colIdx;
                     if (index >= analysisSteps.length) return null;
@@ -137,18 +151,24 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                     return (
                       <div
                         key={step.name}
-                        className="flex items-center gap-4 flex-1"
+                        className="flex items-center gap-2 flex-1"
                         style={{
-                          borderRadius: '4px',
+                          borderRadius: '12px',
                           padding: '16px',
-                          background: isLastActive ? '#F6F6F6' : (isActive ? '#B7BEAE' : '#B7BEAE40'),
-                          border: isLastActive ? '1.5px solid #2B2521' : 'none',
+                          background: isLastActive ? '#B7BEAE40' : (isActive ? '#CCCFC7' : '#B7BEAE40'),
                         }}
                       >
-                        <div style={{color: '#2B2521', display: 'flex', alignItems: 'center'}}>
-                          {step.icon}
+                        <div 
+                          style={{
+                            color: '#2B2521', 
+                            display: 'flex', 
+                            alignItems: 'center',
+                            padding: '4px'
+                          }}
+                        >
+                          <img src={step.icon} alt={step.name} className="w-8 h-8" />
                         </div>
-                        <span style={{color: '#2B2521', fontSize: '19px', fontWeight: 400}}>
+                        <span style={{color: '#2B2521', fontSize: '16px', fontWeight: 400}}>
                           {step.name}
                         </span>
                       </div>
@@ -159,7 +179,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
             </div>
           </div>
           {/* Right: Analyst Conversation */}
-          <div className="flex-1 max-w-2xl p-4 md:p-8 rounded-2xl bg-[#F0EDE9] shadow h-full flex flex-col ">
+          <div className="flex-1 max-w-2xl p-4 md:p-8 rounded-2xl bg-[#F0EDE9] h-full flex flex-col ">
             {/* Meet the Analyst Team section */}
             <div className="mb-0">
               <div className="text-[#2B2521] text-base font-semibold mb-2">Meet our analyst team</div>
@@ -171,8 +191,8 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                   { name: 'Chloe', role: 'Financial Analyst', desc: 'Evaluates financial data to guide investment & business decisions.', img: '/chloe-profile.png' },
                   { name: 'Axel', role: 'Business Strategist', desc: 'Develops plans to drive growth and achieve long-term goals.', img: '/axel-profile.png' },
                 ].map(a => (
-                  <div key={a.name} className="flex items-center gap-4 px-5 py-4 border border-[#00000021] rounded-xl bg-[#F0EDE9] min-h-[110px] shadow-sm">
-                    <img src={a.img} alt={a.name} className="w-[80px] h-[80px] rounded-full object-cover border border-[#E3E2DF]" />
+                  <div key={a.name} className="flex bg-[#FFFFFF] items-center gap-4 px-5 py-4 rounded-xl min-h-[110px]">
+                    <img src={a.img} alt={a.name} className="w-[80px] h-[80px] rounded-full object-cover" />
                     <div className="flex flex-col min-w-0">
                       <span className="font-['Fustat'] font-normal text-[16px] leading-[20px] text-[#202020] truncate">{a.name}</span>
                       <span className="font-['Fustat'] font-normal text-[12px] leading-[16px] text-[#202020] mt-0.5">{a.role}</span>

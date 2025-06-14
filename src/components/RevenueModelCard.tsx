@@ -112,42 +112,58 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
   return (
     <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader>
-        <CardTitle className="text-2xl font-extrabold flex items-center gap-3 tracking-tight" style={{ color: '#161616' }}>
+        <CardTitle className="text-[40px] font-bold flex items-center gap-3 tracking-tight" style={{ color: '#161616' }}>
           Revenue Model
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-8 p-6">
+      <CardContent className="space-y-8 p-6 pt-0">
         {/* Market Analysis Section */}
         {revenueModel.marketAnalysis && (
-          <div className="space-y-4">
-            <h4 className="text-xl font-bold mb-2 tracking-tight" style={{ color: '#161616' }}>Market Analysis</h4>
+          <div className="space-y-4 p-6 bg-[url('/images/light-pink.png')] rounded-lg bg-cover bg-no-repeat bg-center">
+            <h4 className="text-2xl font-semibold mb-2 tracking-tight" style={{ color: '#161616' }}>Market Analysis</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Market Analysis */}
-              <div className="rounded-2xl bg-[#E3E2DF] p-8">
+              <div className="rounded-xl bg-[#FFFFFFBF] p-8">
                 <table className="w-full text-left">
                   <tbody>
                     <tr className="border-b border-[#CFD2D4]">
-                      <td className="font-bold text-[1.35rem] text-[#161616] py-6">TAM</td>
-                      <td className="text-[#161616] text-[1.15rem] text-right py-6">{revenueModel.marketAnalysis.totalAddressableMarket}</td>
+                      <td className="w-full py-6">
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold text-[1.35rem] text-[#161616]">TAM</span>
+                          <span className="text-[#161616] text-[1.15rem] max-w-[60%] text-right">{revenueModel.marketAnalysis.totalAddressableMarket}</span>
+                        </div>
+                      </td>
                     </tr>
                     <tr className="border-b border-[#CFD2D4]">
-                      <td className="font-bold text-[1.35rem] text-[#161616] py-6">SAM</td>
-                      <td className="text-[#161616] text-[1.15rem] text-right py-6">{revenueModel.marketAnalysis.serviceableAddressableMarket}</td>
+                      <td className="w-full py-6">
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold text-[1.35rem] text-[#161616]">SAM</span>
+                          <span className="text-[#161616] text-[1.15rem] max-w-[60%] text-right">{revenueModel.marketAnalysis.serviceableAddressableMarket}</span>
+                        </div>
+                      </td>
                     </tr>
                     <tr className="border-b border-[#CFD2D4]">
-                      <td className="font-bold text-[1.35rem] text-[#161616] py-6">SOM</td>
-                      <td className="text-[#161616] text-[1.15rem] text-right py-6">{revenueModel.marketAnalysis.serviceableObtainableMarket}</td>
+                      <td className="w-full py-6">
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold text-[1.35rem] text-[#161616]">SOM</span>
+                          <span className="text-[#161616] text-[1.15rem] max-w-[60%] text-right">{revenueModel.marketAnalysis.serviceableObtainableMarket}</span>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
-                      <td className="font-bold text-[1.35rem] text-[#161616] py-6">Growth Rate</td>
-                      <td className="text-[#161616] text-[1.15rem] text-right py-6">{revenueModel.marketAnalysis.marketGrowthRate}</td>
+                      <td className="w-full py-6">
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold text-[1.35rem] text-[#161616]">Growth Rate</span>
+                          <span className="text-[#161616] text-[1.15rem] max-w-[60%] text-right">{revenueModel.marketAnalysis.marketGrowthRate}</span>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               {/* Competitive Landscape */}
               {revenueModel.marketAnalysis.competitiveLandscape && (
-                <div className="rounded-2xl bg-[#E3E2DF] p-8">
+                <div className="rounded-xl bg-[#FFFFFFBF] p-8">
                   <div>
                     <div className="font-medium text-[20px] leading-6 tracking-[-0.4%] align-middle text-[#161616] mb-4">Competitive Landscape</div>
                     <hr className="border-t border-[#A8B0B8] mb-8" />
@@ -156,12 +172,12 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                       <div className="flex flex-wrap gap-4">
                         {Array.isArray(revenueModel.marketAnalysis.competitiveLandscape.marketShare)
                           ? revenueModel.marketAnalysis.competitiveLandscape.marketShare.map((share, idx) => (
-                              <span key={idx} className="px-6 py-3 rounded-full font-sans font-light text-[15px] leading-[25px] tracking-normal" style={{ background: '#CFD2D4', color: '#161616' }}>
+                              <span key={idx} className="px-6 py-3 rounded-full font-sans font-medium text-[15px] leading-[25px] tracking-normal" style={{ background: '#E2D4C3', color: '#161616' }}>
                                 {share}
                               </span>
                             ))
                           : (
-                              <span className="px-6 py-3 rounded-full font-sans font-light text-[15px] leading-[25px] tracking-normal" style={{ background: '#CFD2D4', color: '#161616' }}>
+                              <span className="px-6 py-3 rounded-full font-sans font-medium text-[16px] leading-[25px] tracking-normal" style={{ background: '#E2D4C3', color: '#161616' }}>
                                 {revenueModel.marketAnalysis.competitiveLandscape.marketShare}
                               </span>
                             )}
@@ -169,9 +185,9 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     </div>
                     <div className="mb-6">
                       <div className="font-normal text-[24px] leading-7 tracking-[-0.4%] align-middle text-[#161616] mb-3">Competitors</div>
-                      <div className="flex flex-wrap gap-4">
+                      <div className="flex flex-wrap gap-2">
                         {revenueModel.marketAnalysis.competitiveLandscape.competitors?.map((competitor, idx) => (
-                          <span key={idx} className="px-6 py-3 rounded-full font-sans font-light text-[15px] leading-[25px] tracking-normal" style={{ background: '#CFD2D4', color: '#161616' }}>
+                          <span key={idx} className="px-6 py-3 rounded-full font-sans font-medium text-[16px] leading-[25px] tracking-normal" style={{ background: '#E2D4C3', color: '#161616' }}>
                             {competitor}
                           </span>
                         ))}

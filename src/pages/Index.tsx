@@ -176,7 +176,7 @@ const Index = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8]">
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-[#FBFAF8] grain-texture">
       {/* App Name Header */}
       <div className="w-full flex justify-center pt-20 relative">
         <h1
