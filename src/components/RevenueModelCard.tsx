@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RevenueModel } from '@/types/oracle';
 import { ChartBar } from 'lucide-react';
 
-import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip } from 'recharts';
+import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 
 interface RevenueModelCardProps {
   revenueModel?: RevenueModel;
@@ -223,26 +223,26 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
 
         {/* Financial Projections */}
         {revenueModel.financialProjections && (
-          <div className="space-y-4">
-            <h4 className="text-xl font-bold mb-2 tracking-tight" style={{ color: '#161616' }}>Financial Projections</h4>
+          <div className="space-y-4 p-6 bg-[url('/images/cyan-card.png')] bg-cover bg-center bg-no-repeat rounded-lg">
+            <h4 className="text-2xl font-semibold mb-2 tracking-tight" style={{ color: '#161616' }}>Financial Projections</h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Revenue Growth */}
-              <div className="rounded-2xl border p-0 overflow-hidden flex flex-col" style={{ borderColor: '#CFD2D4', background: '#B7BEAE', minHeight: '400px' }}>
+              <div className="rounded-xl borderoverflow-hidden flex flex-col" style={{ background: '#FFFFFFBF', minHeight: '400px' }}>
                 <div className="flex-1">
                   <table className="w-full mt-6 text-left">
                     <tbody>
                       {revenueModel.financialProjections.revenueGrowth && (
                         <>
                           <tr className="border-b" style={{ borderColor: '#CFD2D4' }}>
-                            <td className="px-4 py-2 text-[#202020] font-semibold text-[1.15rem] ">Year 1</td>
+                            <td className="px-4 py-2 text-[#202020] font-medium text-[1.15rem] ">Year 1</td>
                             <td className="px-4 py-2 text-[#161616] text-[1.15rem] text-right">{revenueModel.financialProjections.revenueGrowth?.year1 || 'N/A'}</td>
                           </tr>
                           <tr className="border-b" style={{ borderColor: '#CFD2D4' }}>
-                            <td className="px-4 py-2 text-[#202020] font-semibold text-[1.15rem]">Year 2</td>
+                            <td className="px-4 py-2 text-[#202020] font-medium text-[1.15rem]">Year 2</td>
                             <td className="px-4 py-2 text-[#161616] text-[1.15rem] text-right">{revenueModel.financialProjections.revenueGrowth?.year2 || 'N/A'}</td>
                           </tr>
                           <tr>
-                            <td className="px-4 py-2 text-[#202020] font-semibold text-[1.15rem]">Year 3</td>
+                            <td className="px-4 py-2 text-[#202020] font-medium text-[1.15rem]">Year 3</td>
                             <td className="px-4 py-2 text-[#161616] text-[1.15rem] text-right">{revenueModel.financialProjections.revenueGrowth?.year3 || 'N/A'}</td>
                           </tr>
                         </>
@@ -252,7 +252,7 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                 </div>
                 {revenueModel.financialProjections.revenueGrowth?.assumptions && (
                   <div className="px-4 pb-4 mt-auto">
-                    <div className="text-xs text-white rounded-lg shadow-md" style={{
+                    <div className="text-sm text-white rounded-lg shadow-md" style={{
                       width: '100%',
                       minHeight: '144px',
                       padding: '24px 26px',
@@ -267,8 +267,8 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                 )}
               </div>
               {/* Profit Margins */}
-              <div className="rounded-2xl border p-0 overflow-hidden flex flex-col" style={{ borderColor: '#CFD2D4', background: '#B7BEAE', minHeight: '400px' }}>
-                <div className="px-6 pt-6 pb-2">
+              <div className="rounded-2xl border p-0 overflow-hidden flex flex-col" style={{ background: '#FFFFFFBF', minHeight: '400px' }}>
+                <div className="px-4 pt-6 pb-2">
                   <h5 className="text-2xl font-normal leading-8 tracking-[-0.4%] text-[#161616]">Profit Margins</h5>
                 </div>
                 <div className="flex-1">
@@ -291,9 +291,9 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                 </div>
                 {revenueModel.financialProjections.profitMargins?.improvementStrategy && (
                   <div className="px-4 pb-4 mt-auto">
-                    <div className="text-xs text-white rounded-lg shadow-md" style={{
+                    <div className="text-sm text-white rounded-lg shadow-md" style={{
                       width: '100%',
-                      minHeight: '144px',
+                      minHeight: '168px',
                       padding: '24px 26px',
                       backgroundColor: '#223B35',
                       display: 'flex',
@@ -306,8 +306,8 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                 )}
               </div>
               {/* Break-Even Analysis */}
-              <div className="rounded-2xl border p-0 overflow-hidden flex flex-col" style={{ borderColor: '#CFD2D4', background: '#B7BEAE', minHeight: '400px' }}>
-                <div className="px-6 pt-6 pb-2">
+              <div className="rounded-2xl border p-0 overflow-hidden flex flex-col" style={{ background: '#FFFFFFBF', minHeight: '400px' }}>
+                <div className="px-4 pt-6 pb-2">
                   <h5 className="text-2xl font-normal leading-8 tracking-[-0.4%] text-[#161616]">Break Even</h5>
                 </div>
                 <div className="flex-1">
@@ -330,9 +330,9 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                 </div>
                 {revenueModel.financialProjections.breakEvenAnalysis?.assumptions && (
                   <div className="px-4 pb-4 mt-auto">
-                    <div className="text-xs text-white rounded-lg shadow-md" style={{
+                    <div className="text-sm text-white rounded-lg shadow-md" style={{
                       width: '100%',
-                      minHeight: '144px',
+                      minHeight: '168px',
                       padding: '24px 26px',
                       backgroundColor: '#223B35',
                       display: 'flex',
@@ -349,63 +349,97 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
         )}
 
         {/* Revenue Streams Distribution */}
-        <div className="rounded-2xl p-6 mt-8" style={{ background: '#161616', border: '1px solid #B7A694' }}>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
-              
-              <span>Revenue Streams</span>
+        <div className="rounded-2xl p-6 bg-[url('/images/light-purple.png')] bg-left bg-no-repeat bg-cover">
+          <CardHeader className="p-0">
+            <CardTitle className="text-2xl font-semibold flex items-center">
+              Revenue Streams
             </CardTitle>
           </CardHeader>
-          <CardContent style={{ background: '#2B2521', borderRadius: '1rem' }}>
+          <CardContent className='p-0'>
             <div className="space-y-6">
               {/* Chart and Legend Section */}
-              <div className="mt-4">
-                <div className="flex flex-row items-center justify-center gap-8 w-full">
+              <div className="mt-4 pb-4 bg-[#FFFFFFBF] rounded-lg ">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-8 w-full">
                   {/* Chart on the left */}
-                  <div className="relative flex items-center justify-center" style={{ minHeight: 320, minWidth: 320 }}>
-                    <ResponsiveContainer width={320} height={320}>
+                  <div className="relative flex w-[55%] items-center justify-center mt-6">
+                    <ResponsiveContainer width={420} height={420} className="flex items-center justify-center w-full">
                       <RechartsPieChart>
-                        <Tooltip
-                          cursor={false}
-                          contentStyle={{ 
-                            background: '#E5E0D5',
-                            border: '1px solid #B7A694',
-                            color: '#F8F7F3',
-                            borderRadius: '10px',
-                            padding: '8px 12px',
-                            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
-                          }}
-                          formatter={(value: number) => `${value}%`}
-                        />
+                        {/* Background circles */}
+                        <circle cx="50%" cy="50%" r={80} stroke="#00000050" strokeWidth={1} fill="none" />
+                        <circle cx="50%" cy="50%" r={150} stroke="#00000070" strokeWidth={1} fill="none" />
+
+                        {/* Center circle */}
+                        <circle cx="50%" cy="50%" r={30} fill="#00000025" />
+
+                        {/* Axes */}
+                        <line x1="0%" y1="50%" x2="100%" y2="50%" stroke="#00000070" strokeWidth={1} strokeDasharray="3 3" />
+                        <line x1="50%" y1="0%" x2="50%" y2="100%" stroke="#00000070" strokeWidth={1} strokeDasharray="3 3" />
+                        {/* Positive Y-axis line */}
+                        <line x1="50%" y1="50%" x2="50%" y2="0%" stroke="#00000070" strokeWidth={1} />
+
                         <Pie
                           data={pieData.map((entry, idx) => ({
                             name: entry.name,
                             value: entry.value,
-                            fill: ["#A8B0B8", "#D48EA3", "#97A487"][idx % 3]
+                            fill: ["#D48EA3", "#3987BE", "#A5848E", "#97A487"][idx % 4] // Use 4 colors for 4 segments
                           }))}
                           dataKey="value"
                           nameKey="name"
-                          innerRadius={70}
-                          outerRadius={120}
-                          stroke="#2B2521"
+                          innerRadius={90} // Adjusted for thicker pie
+                          outerRadius={140} // Kept same
+                          stroke="transparent"
                           strokeWidth={2}
-                          label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                          paddingAngle={1.5}
+                          cornerRadius={6}
+                          label={({ value, cx, cy, midAngle, outerRadius, percent }) => {
                             const RADIAN = Math.PI / 180;
-                            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                            const sin = Math.sin(-RADIAN * midAngle);
+                            const cos = Math.cos(-RADIAN * midAngle);
+
+                            const lineOffset = 10; 
+                            const textOffset = 20; 
+                            const boxWidth = 54; // Adjusted for padding
+                            const boxHeight = 29; // Adjusted for padding
+
+                            const sx = cx + (outerRadius) * cos; // Start of line from arc
+                            const sy = cy + (outerRadius) * sin;
+
+                            const ex = cx + (outerRadius + lineOffset) * cos; // End of line
+                            const ey = cy + (outerRadius + lineOffset) * sin;
+
+                            const textX = cx + (outerRadius + textOffset) * cos; // Position for text (before adjustment)
+                            const textY = cy + (outerRadius + textOffset) * sin;
+
+                            // Adjust text and box position for quadrants to avoid overlap and align properly
+                            const isLeft = cos < 0;
+                            const labelBoxX = textX + (isLeft ? -boxWidth - 5 : 5); // 5px offset from line end
+                            const labelBoxY = textY - boxHeight / 2;
+
                             return (
-                              <text
-                                x={x}
-                                y={y}
-                                fill="#fff"
-                                textAnchor="middle"
-                                dominantBaseline="central"
-                                fontWeight={400}
-                                fontSize={14}
-                              >
-                                {`${Number(value).toFixed(1)}%`}
-                              </text>
+                              <g>
+                                <rect
+                                  x={labelBoxX}
+                                  y={labelBoxY}
+                                  width={boxWidth}
+                                  height={boxHeight}
+                                  rx={4} 
+                                  ry={4}
+                                  fill="transparent" 
+                                  stroke="#00000045" 
+                                  strokeWidth={1}
+                                />
+                                <text
+                                  x={labelBoxX + boxWidth / 2} // Center text in box
+                                  y={labelBoxY + boxHeight / 2}
+                                  fill="#0A0A0A"
+                                  textAnchor="middle" // Center text horizontally
+                                  dominantBaseline="middle" // Center text vertically
+                                  fontWeight={500}
+                                  fontSize={14}
+                                >
+                                  {`${(percent * 100).toFixed(0)}%`}
+                                </text>
+                              </g>
                             );
                           }}
                           labelLine={false}
@@ -414,12 +448,12 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                     </ResponsiveContainer>
                   </div>
                   {/* Legend on the right */}
-                  <div className="flex flex-col gap-3 min-w-[180px]">
-                    <h4 className="text-base font-semibold mb-2 mt-4" style={{ color: '#F8F7F3' }}>Revenue Stream Distribution</h4>
+                  <div className="flex flex-col w-[45%] gap-3 min-w-[180px]">
+                    <h4 className="text-base font-semibold mb-2 mt-4">Revenue Stream Distribution</h4>
                     {pieData.map((entry, idx) => (
                       <div 
                         key={entry.name} 
-                        className="flex items-center gap-3 px-4 py-3 rounded-lg border" 
+                        className="flex items-center w-fit gap-3 px-4 py-3 rounded-lg border" 
                         style={{ borderColor: '#FFFFFF10', background: '#2B2521' }}
                       >
                         <span
@@ -440,13 +474,13 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
 
               {/* Revenue Streams List */}
               <div className="mt-8">
-                <h4 className="text-base font-semibold mb-4" style={{ color: '#F8F7F3' }}>Revenue Stream Details</h4>
+                <h4 className="text-lg font-medium mb-4">Revenue Stream Details</h4>
                 <div className="space-y-4">
                   {revenueModel.primaryStreams.map((stream, index) => (
                     <div 
                       key={`stream-${index}`} 
                       className="rounded-xl p-4 group" 
-                      style={{ background: '#2B2521', border: '1px solid #B7A694' }}
+                      style={{ background: '#FFFFFFBF' }}
                     >
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-3">
@@ -454,17 +488,17 @@ const RevenueModelCard = ({ revenueModel, currency }: RevenueModelCardProps) => 
                             className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                             style={{ 
                               backgroundColor: stream.scalability === 'high' ? '#A8B0B8' : 
-                                            stream.scalability === 'medium' ? '#D48EA3' : '#97A487' 
+                              stream.scalability === 'medium' ? '#D48EA3' : '#97A487' 
                             }}
                           />
-                          <span className="text-base font-semibold" style={{ color: '#F8F7F3' }}>{stream.name}</span>
+                          <span className="text-base font-semibold">{stream.name}</span>
                         </div>
                         <span 
-                          className="text-sm px-6 py-3 rounded-full" 
+                          className="text-sm px-6 py-3 rounded-[8px]" 
                           style={{ 
                             background: '#2B2521', 
                             border: '1px solid #B7A694', 
-                            color: '#F8F7F3' 
+                            color: '#FFFFFF' 
                           }}
                         >
                           {stream.recurringType} • {stream.percentage}%
