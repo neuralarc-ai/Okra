@@ -54,7 +54,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
               {milestones.quarters.map((quarter, idx) => (
                 <div
                   key={idx}
-                  className="rounded-[16px] p-6 relative overflow-hidden shadow"
+                  className="rounded-[8px] p-6 relative overflow-hidden shadow"
                   style={{
                     backgroundImage: "url('/Effect 5.png')",
                     backgroundSize: 'cover',
@@ -70,7 +70,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                         background: '#32323440',
                         color: '#FFFFFF',
                       }}>
-                      <span style={{ color: '#CAC9CA', fontSize: '18px' }}> Budget: </span> {formatCurrency(quarter.budget, currency)}
+                      <span style={{ color: '#FFFFFF', fontSize: '18px' }}> Budget: </span> {formatCurrency(quarter.budget, currency)}
                     </span>
                   </div>
                   {/* Objectives */}
@@ -81,7 +81,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                           key={`obj-${idx}-${i}`}
                           className="p-6 rounded-[8px] border transition-all duration-200"
                           style={{
-                            background: '#FFFFFF80',
+                            background: '#FFFFFFBF',
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat'
@@ -151,7 +151,7 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
           </div>
 
           {/* Critical Milestones Section */}
-          <div className="rounded-[8px] p-6" style={{ background: '#2B2521' }}>
+          <div className="rounded-[8px] p-6" style={{ background: '#CDCECB' }}>
             <CardHeader className="pb-2">
               <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
                 <span>Critical Milestones</span>
@@ -166,13 +166,13 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                       key={`critical-${index}`}
                       className="p-6 rounded-[8px] border transition-all duration-200"
                       style={{
-                        background: '#00000040',
+                        background: '#FFFFFFBF',
                         border: 'none'
                       }}
                     >
                       <div className="flex justify-between items-center mb-3">
                         <div className="flex items-center gap-4">
-                          <h5 className="text-lg font-semibold " style={{ color: '#F8F7F3' }}>{milestone.name}</h5>
+                          <h5 className="text-lg font-semibold " style={{ color: '#000000' }}>{milestone.name}</h5>
                           {milestone.importance && (
                             <span className="inline-block px-4 py-1 rounded-full text-sm font-medium"
                               style={{
@@ -203,8 +203,8 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
                               className="flex items-center gap-2 p-2 rounded-[4px]"
 
                             >
-                              <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#FFFFFF' }} />
-                              <span className="text-sm" style={{ color: '#FFFFFF' }}>{crit}</span>
+                              <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#282828' }} />
+                              <span className="text-sm" style={{ color: '#000000' }}>{crit}</span>
                             </div>
                           ))}
                         </div>

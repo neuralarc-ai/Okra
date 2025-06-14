@@ -47,6 +47,11 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
 
   // Build dynamic trend data from priceSuggestions
   const allDates = Array.from(new Set(priceSuggestions.flatMap(ps => (ps.trends || []).map(t => t.date)))).sort();
+  
+  // Debug log to check the data
+  console.log('Price Suggestions:', priceSuggestions);
+  console.log('All Dates:', allDates);
+  
   type TrendEntry = { date: string } & { [type: string]: number | null | string };
   const trendData: TrendEntry[] = allDates.map(date => {
     const entry: TrendEntry = { date };
@@ -56,6 +61,8 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
     });
     return entry;
   });
+  
+  console.log('Generated Trend Data:', trendData);
 
   // Assign a color to each unique price type
   const uniqueTypes = Array.from(new Set(priceSuggestions.map(ps => ps.type)));
@@ -193,7 +200,8 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
           })}
           {/* Price trends graph */}
           <div className="space-y-4">
-            <div className="min-h-[260px] w-full rounded-2xl p-6 border" style={{ background: '#2B2521', borderColor: '#161616' }}>
+            <div className="w-full rounded-2xl p-6 border" style={{ background: '#2B2521', borderColor: '#161616', height: '400px' }}>
+              {trendData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={trendData}
@@ -237,6 +245,11 @@ const PricingCard = ({ priceSuggestions, currency = 'USD' }: PricingCardProps) =
                   ))}
                 </LineChart>
               </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  No trend data available to display
+                </div>
+              )}
             </div>
             <div className="flex flex-row items-center justify-center w-full px-2 text-base mt-4 gap-6">
               {uniquePriceSuggestions.map((ps, idx) => (

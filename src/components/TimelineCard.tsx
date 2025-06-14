@@ -13,9 +13,9 @@ const TimelineCard = ({ timeline }: TimelineCardProps) => {
       case 'low':
         return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
       case 'medium':
-        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
+        return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
       case 'high':
-        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
+        return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
     }
   };
 
@@ -38,8 +38,8 @@ const TimelineCard = ({ timeline }: TimelineCardProps) => {
             style={{
               background: 'linear-gradient(to right, #BEC6B4 13%, #8A9879 41%, #4E5841 100%)',
               
-              // backgroundImage: "url('/card-bg-9.png')",
-              // backgroundSize: 'cover',
+              backgroundImage: "url('background/background-2.png')",
+              backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat'
             }}>
@@ -67,7 +67,7 @@ const TimelineCard = ({ timeline }: TimelineCardProps) => {
               {timeline.phases.map((phase, index) => (
                 <div
                   key={index}
-                  className="p-6 rounded-[8px] border-none transition-all duration-200 bg-[#FFFFFF50]"
+                  className="p-6 rounded-[8px] border-none transition-all duration-200 bg-[#FFFFFFBF]"
 
                 >
                   {/* Phase header */}
@@ -113,7 +113,7 @@ const TimelineCard = ({ timeline }: TimelineCardProps) => {
 
           {/* Critical Path Section */}
           {timeline.criticalPath.length > 0 && (
-            <div className="rounded-[8px] p-3 bg-[#E6E1D9] border-none" >
+            <div className="rounded-[8px] p-3 bg-[#E6E1D9] border-none"  >
               <CardHeader>
                 <CardTitle className="text-xl font-semibold flex items-center gap-1" style={{ color: '#202020' }}>
                   <span>Critical Path</span>

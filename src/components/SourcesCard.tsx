@@ -14,7 +14,7 @@ interface SourcesCardProps {
 const SourcesCard = ({ sources = [] }: SourcesCardProps) => {
   return (
     <Card className="border-none outline-none shadow-none rounded-[8px]" style={{
-      backgroundImage: "url('/card-bg-9.png')",
+      backgroundImage: "url('background/background-4.png')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat'
@@ -50,7 +50,7 @@ const SourcesCard = ({ sources = [] }: SourcesCardProps) => {
             sources.map((source, index) => (
               <div 
                 key={index} 
-                className="p-5 rounded-[8px] bg-[#F8F8F773] border border-[#202020]/10 transition-all duration-200 hover:border-[#202020]/20 hover:bg-[#F8F8F773] group flex flex-col gap-2 shadow-sm"
+                className="p-5 rounded-[8px] bg-[#FFFFFFBF] border border-[#202020]/10 transition-all duration-200 hover:border-[#202020]/20 hover:bg-[#F8F8F773] group flex flex-col gap-2 shadow-sm"
               >
                 <div className="flex items-start justify-between gap-4 mb-1">
                   <h4 className="font-semibold text-[#202020] text-base leading-tight">

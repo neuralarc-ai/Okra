@@ -29,7 +29,7 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
       <CardHeader className="pb-2">
         <CardTitle className="font-['Fustat'] font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center justify-between">
           Target Audience
-          <span className="ml-4 px-6 rounded-[8px] bg-[#878a8b] text-[#202020] font-medium text-[18px] border border-[#202020]/10">
+          <span className="ml-4 px-6  rounded-[8px] border border-[#202020]/10 bg-[#F8F8F7BF] text-[18px] text-[#202020] hover:bg-[#F8F8F7] transition font-medium shadow-sm">
             {clients.length} segments
           </span>
         </CardTitle>
@@ -41,14 +41,14 @@ const ClientsCard = ({ clients = [] }: ClientsCardProps) => {
               key={index}
               className="relative p-6 rounded-[4px] overflow-hidden"
               style={{
-                backgroundImage: "url('/card-bg-8.png')",
+                backgroundImage: "url('background/background-4.png')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
               }}
             >
               <div className="absolute inset-0 bg-[#FFFFFF]/20" />
-              <div className="relative z-10 bg-[#E5E8E2] p-6 rounded-[4px] h-full">
+              <div className="relative z-10 bg-[#FFFFFFBF] p-6 rounded-[8px] h-full">
                 <div className="flex justify-between items-start gap-4 mb-6">
                   <div>
                     <h4 className="font-['Fustat'] font-normal text-[24px] leading-8 text-[#202020] mb-1">
