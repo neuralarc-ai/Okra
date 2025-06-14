@@ -64,6 +64,65 @@ const getProgressGradient = () => {
   return "bg-gradient-to-r from-green-400 via-blue-400 to-pink-400";
 };
 
+// Custom label component for the PieChart
+const CustomPieChartLabel = ({ cx, cy, midAngle, outerRadius, value }) => {
+  const RADIAN = Math.PI / 180;
+  const lineOuterRadius = outerRadius + 20; // Extend line further out
+  const textOuterRadius = outerRadius + 40; // Text position even further
+
+  const startPointX = cx + outerRadius * Math.cos(-midAngle * RADIAN);
+  const startPointY = cy + outerRadius * Math.sin(-midAngle * RADIAN);
+
+  const midPointX = cx + lineOuterRadius * Math.cos(-midAngle * RADIAN);
+  const midPointY = cy + lineOuterRadius * Math.sin(-midAngle * RADIAN);
+
+  const endPointX = cx + textOuterRadius * Math.cos(-midAngle * RADIAN);
+  const endPointY = cy + textOuterRadius * Math.sin(-midAngle * RADIAN);
+
+  // Adjust text anchor based on position to keep the box centered
+  const textAnchor = endPointX > cx ? 'start' : 'end';
+  const labelBoxWidth = 55; // Approximate width of "25%" box
+  const labelBoxHeight = 30; // Approximate height of "25%" box
+
+  const labelX = endPointX + (textAnchor === 'start' ? 5 : -labelBoxWidth - 5); // Add small offset
+  const labelY = endPointY - labelBoxHeight / 2; // Vertically center the box
+
+  return (
+    <g>
+      {/* Line connecting to the label box */}
+      <path
+        d={`M ${startPointX} ${startPointY} L ${midPointX} ${midPointY}`}
+        stroke="#FFFFFF" // White dotted line
+        strokeWidth={1}
+        strokeDasharray="4 4"
+      />
+      {/* Label Box Background */}
+      <rect
+        x={labelX}
+        y={labelY}
+        width={labelBoxWidth}
+        height={labelBoxHeight}
+        rx={5} // Rounded corners
+        ry={5}
+        fill="#29241E" // Dark background from Menu.svg inner circle
+        opacity={0.9} // Slight opacity
+      />
+      {/* Percentage Text */}
+      <text
+        x={labelX + labelBoxWidth / 2}
+        y={labelY + labelBoxHeight / 2}
+        fill="#F8F8F8" // White text
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontWeight={500}
+        fontSize={14}
+      >
+        {`${Number(value).toFixed(0)}%`}
+      </text>
+    </g>
+  );
+};
+
 const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
   const [expandedCompetitor, setExpandedCompetitor] = useState<string | null>(null);
   const marketShareData = getMarketShareData(competitors);
@@ -111,27 +170,31 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
   return (
     <div>
       {/* Chart and Legend Section */}
-      <div className="rounded-[8px] p-6 mb-8" style={{ background: '#2B2521', border: '1px solid #B7A694' }}>
+      <div className="rounded-[8px] p-6 mb-8"  style={{
+              backgroundImage: "url('/background/background-3.png')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}>
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-semibold flex items-center gap-2" style={{ color: '#F8F7F3' }}>
-            <ChartBar size={18} className="text-[#CFD2D4]" />
+          <CardTitle className="text-[40px] font-bold flex items-center gap-2" style={{ color: '#111111' }}>
             <span>Competitive Analysis</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Pie Chart Card */}
-          <div className="p-6 flex flex-col items-center justify-center" style={{ background: '#0000003B', borderRadius: '0.5rem' }}>
-            <div className="w-full" style={{ minHeight: 300 }}>
+          <div className="p-6 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
+            <div className="w-full relative" style={{ minHeight: 380 }}>
               {marketShareData && marketShareData.length >= 2 && (
-                <ResponsiveContainer width="100%" height={380}>
-                  <PieChart margin={{ top: 30, right: 30, bottom: 30, left: 30 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart margin={{ top: 40, right: 30, bottom: 30, left: 30 }}>
                     <Tooltip
                       cursor={false}
                       contentStyle={{ 
                         background: '#E5E0D5',
                         border: '1px solid #B7A694',
-                        color: '#F8F7F3',
+                        color: '#000000',
                         borderRadius: '10px',
                         padding: '8px 12px',
                         boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
@@ -148,58 +211,45 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       nameKey="name"
                       innerRadius="60%"
                       outerRadius="90%"
-                      stroke="#2B2521"
+                      stroke="#ffffff"
                       className="overflow-visible"
                       strokeWidth={2}
-                      label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
-                        const RADIAN = Math.PI / 180;
-                        const labelRadiusOffset = 30; // Increased offset from 25
-                        // The label's anchor point is calculated from the center of the pie,
-                        // extending beyond the outer radius of the slice.
-                        const effectiveOuterRadius = outerRadius; 
-                        const labelPositionRadius = effectiveOuterRadius + labelRadiusOffset;
-
-                        const x = cx + labelPositionRadius * Math.cos(-midAngle * RADIAN);
-                        const y = cy + labelPositionRadius * Math.sin(-midAngle * RADIAN);
-
-                        let currentTextAnchor = x > cx ? 'start' : 'end';
-                        // If the label is (nearly) vertically aligned with the center, use 'middle' anchor for better centering.
-                        if (Math.abs(x - cx) < 1.0) { // Check if x is very close to cx
-                          currentTextAnchor = 'middle';
-                        }
-
-                        return (
-                          <text
-                            x={x}
-                            y={y}
-                            fill="#fff"
-                            textAnchor={currentTextAnchor}
-                            dominantBaseline="central"
-                            fontWeight={400}
-                            fontSize={14}
-                            className="overflow-visible"
-                          >
-                            {`${Number(value).toFixed(1)}%`}
-                          </text>
-                        );
-                      }}
-                      labelLine={{ stroke: '#B7A694', strokeWidth: 1 }}
+                      label={({ value, cx, cy, midAngle, outerRadius }) => (
+                        <CustomPieChartLabel
+                          value={value}
+                          cx={cx}
+                          cy={cy}
+                          midAngle={midAngle}
+                          outerRadius={outerRadius}
+                        />
+                      )}
+                      labelLine={false}
                     />
                   </PieChart>
                 </ResponsiveContainer>
               )}
+              {/* Central circle */}
+              
+              {/* Innermost circle */}
+              <div
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  width: `70px`,
+                  height: `70px`,
+                  backgroundColor: '#8E8E8E',
+                }}
+              ></div>
             </div>
           </div>
 
           {/* Legend Card */}
-          <div className="p-6" style={{ background: '#161616', borderRadius: '0.5rem' }}>
-            <h4 className="text-base font-semibold mt-4 mb-4" style={{ color: '#F8F7F3' }}>Market Share Distribution</h4>
+          <div className="p-6" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
+            <h4 className="text-base font-semibold mt-4 mb-4" style={{ color: '#000000' }}>Market Share Distribution</h4>
             <div className="flex flex-col gap-3">
               {marketShareData && marketShareData.map((entry, idx) => (
                 <div 
                   key={entry.name} 
-                  className="flex items-center justify-between gap-3 px-4 py-3 mb-2 rounded-lg border" 
-                  style={{ borderColor: '#FFFFFF40', background: '#2B2521' }}
+                  className="flex items-center justify-between gap-3 px-4 py-3 mb-2 rounded-lg border border-[#3B3B3B73] bg-white/75" 
                 >
                   <div className="flex items-center gap-3">
                     <span 
@@ -209,11 +259,11 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                         borderColor: '#B7A694' 
                       }}
                     />
-                    <span className="text-base font-medium" style={{ color: '#F8F7F3' }}>
+                    <span className="text-base font-medium" style={{ color: '#000000' }}>
                       {entry.name}
                     </span>
                   </div>
-                  <span className="text-base font-medium" style={{ color: '#F8F7F3' }}>
+                  <span className="text-base font-medium" style={{ color: '#000000' }}>
                     {entry.value}%
                   </span>
                 </div>
@@ -231,7 +281,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
           const isExpanded = expandedCompetitor === competitor.name;
           return (
             <section key={entry.name} className="border-none outline-none shadow-none rounded-[8px]" style={{
-              backgroundImage: "url('/card-bg-9.png')",
+              backgroundImage: "url('/background/background-2.png')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat'

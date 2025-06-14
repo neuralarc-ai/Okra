@@ -207,19 +207,23 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
   );
 };
 
-const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
-  <Card className="bg-[#2B2521]  shadow-lg">
+const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel, summary }: any) => (
+  <Card className="border-none outline-none shadow-none" style={{
+    backgroundImage: "url('/background/background-4.png')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'}}>
     <CardHeader className="pb-2">
       <CardTitle className="text-xl font-medium text-white">
         {title} {period ? `(${period})` : ''}
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <div className="h-[220px] w-full">
+      <div className="h-[220px] w-full p-4 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
-            margin={{ top: 16, right: 16, left: 16, bottom: 16 }}
+            margin={{ top: 16, right: 16, left: 16, bottom: 1 }}
           >
             <defs>
               <linearGradient id="customerBlueGradient" x1="0" y1="0" x2="0" y2="1">
@@ -227,12 +231,12 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
                 <stop offset="100%" stopColor="#79BAE8" stopOpacity={0.2} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#222" />
+           
             <XAxis 
               dataKey="name" 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }}
+              tick={{ fill: '#000000', fontSize: 13, fontWeight: 500 }}
               interval={0}
               height={50}
               padding={{ left: 30, right: 30 }}
@@ -257,20 +261,25 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
           </AreaChart>
         </ResponsiveContainer>
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-4">
-        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-          <h4 className="text-sm font-medium text-white">Best Case</h4>
-          <p className="text-xs text-gray-400">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
+      <div className="grid grid-cols-3 gap-4 mt-4 p-6 bg-[#FFFFFF] rounded-[8px]">
+        <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
+          <h4 className="text-sm font-medium text-black">Best Case</h4>
+          <p className="text-xs text-black">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
         </div>
-        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-          <h4 className="text-sm font-medium text-white">Average Case</h4>
-          <p className="text-xs text-gray-400">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
+        <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
+          <h4 className="text-sm font-medium text-black">Average Case</h4>
+          <p className="text-xs text-black">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
         </div>
-        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-          <h4 className="text-sm font-medium text-white">Worst Case</h4>
-          <p className="text-xs text-gray-400">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
+        <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
+          <h4 className="text-sm font-medium text-black">Worst Case</h4>
+          <p className="text-xs text-black">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
         </div>
       </div>
+      {summary && (
+        <div className="text-sm text-black mt-4 border-t p-3 border-white/10 pt-6 pb-6 bg-[#FFFFFF] rounded-[8px]">
+          <strong>{title.replace(' Forecast', '')} Summary:</strong> {summary}
+        </div>
+      )}
     </CardContent>
   </Card>
 );
@@ -303,15 +312,19 @@ const convertCurrency = (value: string | number, fromCurrency: string, toCurrenc
   return toCurrency === 'USD' ? inUSD : inUSD * rates[toCurrency];
 };
 
-const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel }: any) => (
-  <Card className="bg-[#2B2521]  shadow-lg">
+const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, valueLabel, summary }: any) => (
+  <Card className="border-none outline-none shadow-none" style={{
+    backgroundImage: "url('/background/background-4.png')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'}}>
     <CardHeader className="pb-2">
       <CardTitle className="text-xl font-medium text-white">
         {title} {period ? `(${period})` : ''}
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <div className="h-[220px] w-full">
+    <div className="h-[220px] w-full p-4 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
@@ -323,12 +336,12 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
                 <stop offset="100%" stopColor="#059669" stopOpacity={0.2} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#222" />
+            
             <XAxis 
               dataKey="name" 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }}
+              tick={{ fill: '#000000', fontSize: 13, fontWeight: 500 }}
               interval={0}
               height={50}
               padding={{ left: 30, right: 30 }}
@@ -349,24 +362,29 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
               activeDot={{ r: 8, fill: '#059669', stroke: '#4ade80', strokeWidth: 2 }}
               isAnimationActive={false}
             />
-            <LabelList dataKey="value" position="top" fill="#fff" fontSize={13} fontWeight={500} formatter={valueLabel} />
+            <LabelList dataKey="value" position="top" fill="#000000" fontSize={13} fontWeight={500} formatter={valueLabel} />
           </AreaChart>
         </ResponsiveContainer>
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-4">
-        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-          <h4 className="text-sm font-medium text-white">Best Case</h4>
+      <div className="grid grid-cols-3 gap-4 mt-4 p-6 bg-[#FFFFFF] rounded-[8px]">
+        <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
+          <h4 className="text-sm font-medium text-black">Best Case</h4>
           <p className="text-xs text-gray-400">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
         </div>
-        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-          <h4 className="text-sm font-medium text-white">Average Case</h4>
+        <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
+          <h4 className="text-sm font-medium text-black">Average Case</h4>
           <p className="text-xs text-gray-400">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
         </div>
-        <div className="space-y-1 p-3 border border-white/10 rounded-lg transition-all duration-200 hover:border-white/20 hover:bg-white/5">
-          <h4 className="text-sm font-medium text-white">Worst Case</h4>
+        <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
+          <h4 className="text-sm font-medium text-black">Worst Case</h4>
           <p className="text-xs text-gray-400">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
         </div>
       </div>
+      {summary && (
+        <div className="text-sm text-black mt-4 border-t p-3 border-white/10 pt-6 pb-6 bg-[#FFFFFF] rounded-[8px]">
+          <strong>{title.replace(' Forecast', '')} Summary:</strong> {summary}
+        </div>
+      )}
     </CardContent>
   </Card>
 );
@@ -413,13 +431,8 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         avgCase={avgRevenueFormatted}
         worstCase={worstRevenueFormatted}
         valueLabel={formatValue}
+        summary={forecast.revenueSummary}
       />
-      {/* Revenue Forecast Summary */}
-      {forecast.revenueSummary && (
-        <div className="text-sm text-[#202020] mb-2">
-          <strong>Revenue Summary:</strong> {forecast.revenueSummary}
-        </div>
-      )}
       <ForecastAreaChart
         title="Customer Forecast"
         data={customerData}
@@ -428,13 +441,8 @@ const ForecastCard = ({ forecast }: ForecastCardProps) => {
         avgCase={avgCustomers}
         worstCase={worstCustomers}
         valueLabel={formatValue}
+        summary={forecast.customerSummary}
       />
-      {/* Customer Forecast Summary */}
-      {forecast.customerSummary && (
-        <div className="text-sm text-[#202020]">
-          <strong>Customer Summary:</strong> {forecast.customerSummary}
-        </div>
-      )}
     </div>
   );
 };
