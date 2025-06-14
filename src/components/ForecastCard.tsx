@@ -91,9 +91,9 @@ const renderCategoryLabel = (props: LabelProps) => {
 };
 
 const REVENUE_GRADIENTS = [
-  { id: "revBarBest", from: "#4ade80", to: "#059669" },   // green (Best Case)
-  { id: "revBarAvg", from: "#fbbf24", to: "#ea580c" },    // orange (Average Case)
-  { id: "revBarWorst", from: "#f43f5e", to: "#be123c" },  // red (Worst Case)
+  { id: "revBarBest", from: "#4ade80", to: "#DC92A9" },   // green (Best Case)
+  { id: "revBarAvg", from: "#fbbf24", to: "#DC92A9" },    // orange (Average Case)
+  { id: "revBarWorst", from: "#f43f5e", to: "#DC92A9" },  // red (Worst Case)
 ];
 
 // Custom label renderer for inside-left bar labels
@@ -163,7 +163,7 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: '#fff', fontSize: 13, fontWeight: 500 }}
+                tick={{ fill: '#DC92A9', fontSize: 13, fontWeight: 500 }}
                 interval={0}
                 height={50}
                 padding={{ left: 30, right: 30 }}
@@ -227,8 +227,8 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
           >
             <defs>
               <linearGradient id="customerBlueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#79BAE8" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#79BAE8" stopOpacity={0.2} />
+                <stop offset="0%" stopColor="#97A487" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#97A487" stopOpacity={0.2} />
               </linearGradient>
             </defs>
            
@@ -250,11 +250,11 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
             <Area
               type="monotone"
               dataKey="value"
-              stroke="#2563eb"
+              stroke="#97A487"
               strokeWidth={3}
               fill="url(#customerBlueGradient)"
-              dot={{ r: 6, fill: '#60a5fa', stroke: '#2563eb', strokeWidth: 2 }}
-              activeDot={{ r: 8, fill: '#2563eb', stroke: '#60a5fa', strokeWidth: 2 }}
+              dot={{ r: 6, fill: '#97A487', stroke: '#97A487', strokeWidth: 2 }}
+              activeDot={{ r: 8, fill: '#97A487', stroke: '#97A487', strokeWidth: 2 }}
               isAnimationActive={false}
             />
             <LabelList dataKey="value" position="top" fill="#fff" fontSize={13} fontWeight={500} formatter={valueLabel} />
@@ -333,7 +333,7 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
             <defs>
               <linearGradient id="revenueGreenGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#DC92A9" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#059669" stopOpacity={0.2} />
+                <stop offset="100%" stopColor="#DC92A9" stopOpacity={0.2} />
               </linearGradient>
             </defs>
             
@@ -355,11 +355,11 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
             <Area
               type="monotone"
               dataKey="value"
-              stroke="#4ade80"
+              stroke="#DC92A9"
               strokeWidth={3}
               fill="url(#revenueGreenGradient)"
-              dot={{ r: 6, fill: '#4ade80', stroke: '#059669', strokeWidth: 2 }}
-              activeDot={{ r: 8, fill: '#059669', stroke: '#4ade80', strokeWidth: 2 }}
+              dot={{ r: 6, fill: '#DC92A9', stroke: '#DC92A9', strokeWidth: 2 }}
+              activeDot={{ r: 8, fill: '#DC92A9', stroke: '#DC92A9', strokeWidth: 2 }}
               isAnimationActive={false}
             />
             <LabelList dataKey="value" position="top" fill="#000000" fontSize={13} fontWeight={500} formatter={valueLabel} />
