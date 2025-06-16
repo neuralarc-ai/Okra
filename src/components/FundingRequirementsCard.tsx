@@ -32,29 +32,21 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
   ];
 
   return (
-    <div>
+    <div className='p-6 bg-white rounded-lg'>
       <Card 
-        className="rounded-[8px] p-6 overflow-hidden relative"
-        style={{
-          backgroundImage: "url('/card-bg-5.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: '#1E342F', // Fallback color
-          backgroundBlendMode: 'overlay'
-        }}
+        className="rounded-[8px] p-6 overflow-hidden relative bg-[url('/images/gray-card.png')] bg-center bg-cover bg-no-repeat"
       >
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-white flex items-center gap-3 tracking-tight">
-            <TrendingUp className="h-6 w-6 text-white" /> Funding Requirements
+        <CardHeader className='px-0 pt-0'>
+          <CardTitle className="text-[32px] font-bold text-black flex items-center gap-3 tracking-tight p-0">
+            Funding Requirements
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-10 p-6">
+        <CardContent className="space-y-10 p-0">
           {/* Total Required */}
           {typeof fundingRequirements.totalRequired === 'number' && (
-            <div className="bg-[#FFFFFF]/5 rounded-xl p-6 flex items-center justify-between mb-6">
-              <span className="text-base text-white font-semibold">Total Funding Required</span>
-              <span className="text-3xl font-bold text-[#202020] bg-gradient-to-r from-[#C6AEA3] to-[#8EE3F0] px-16 py-2 rounded-full ">
+            <div className="bg-[#FFFFFFBF] rounded-lg p-6 flex items-center justify-between mb-6">
+              <span className="text-base text-black font-semibold">Total Funding Required</span>
+              <span className="text-3xl font-bold text-[#202020] bg-gradient-to-r from-[#CFD4C9] to-[#97A487] px-16 py-2 rounded-lg ">
                 {formatCurrency(fundingRequirements.totalRequired, currency)}
               </span>
             </div>
@@ -62,8 +54,8 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
 
           {/* Use of Funds */}
           {useOfFundsData.length > 0 && (
-            <div className="bg-[#FFFFFF0D] rounded-[8px] p-6">
-              <h4 className="text-[26px] font-semibold text-white mb-4 flex items-center gap-2 tracking-tight">Use of Funds</h4>
+            <div className="bg-[#FFFFFFBF] rounded-[8px] p-6">
+              <h4 className="text-[26px] font-semibold text-black mb-4 flex items-center gap-2 tracking-tight">Use of Funds</h4>
               <div className="flex flex-col items-center justify-center">
                 <div className="w-full" style={{ height: 400 }}>
                   <ResponsiveContainer width="100%" height="100%">
@@ -79,8 +71,8 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                     >
                       <defs>
                         <linearGradient id="customBarGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#293E39" />
-                          <stop offset="30%" stopColor="#B3BBAD" />
+                          <stop offset="0%" stopColor="#5E6156" />
+                          <stop offset="30%" stopColor="#ADB7A3" />
                           <stop offset="100%" stopColor="#97A487" />
                         </linearGradient>
                       </defs>
@@ -90,7 +82,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                         tickLine={false}
                         tickMargin={10}
                         axisLine={false}
-                        tick={{ fill: 'white', fontSize: 14, }}
+                        tick={{ fill: 'black', fontSize: 14, }}
                         width={150}
                         className="max-w-[100px]"
                       />
@@ -102,7 +94,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                       <Tooltip
                         cursor={false}
                         contentStyle={{
-                          background: '#ffffff',
+                          background: '#FFFFFF',
                           border: 'none',
                           color: '#202020',
                           borderRadius: '10px',
@@ -117,7 +109,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                         radius={5}
                         label={{
                           position: 'right',
-                          fill: 'white',
+                          fill: '#282828',
                           fontSize: 14,
                           fontWeight: 500,
                           formatter: (value: number) => formatCurrency(value, currency)
@@ -133,7 +125,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                 {/* Legend */}
                 <div className="flex flex-wrap justify-center gap-4 mt-4">
                   {useOfFundsData.map((entry, idx) => (
-                    <div key={entry.name} className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full shadow-sm border border-[#202020]/10">
+                    <div key={entry.name} className="flex items-center gap-2 bg-[#282828]/50 px-4 py-2 rounded-lg">
                       
                       <span className="text-xs font-semibold text-[#FFFFFF]">
                         {entry.name} ({formatCurrency(entry.value, currency)})
@@ -152,7 +144,7 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
         <div 
           className="mt-8 rounded-[8px] p-6 relative overflow-hidden"
           style={{
-            backgroundImage: "url('/card-bg-6.png')",
+            backgroundImage: "url('/images/beige-card.png')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -160,17 +152,17 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
         >
           <div className="absolute inset-0 bg-[#D0C3B5]/55 "></div>
           <div className="relative z-10">
-            <h4 className="font-fustat font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] mb-6">Funding Stages</h4>
+            <h4 className="font-fustat font-semibold text-[32px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] mb-2">Funding Stages</h4>
             <div className="flex flex-col gap-6">
               {fundingRequirements.fundingStages.map((stage, index) => (
                 <div 
                   key={`stage-${index}`} 
                   className="relative"
                 >
-                  <div className="flex flex-col gap-2 p-4 bg-[#F8F8F899] rounded-lg">
+                  <div className="flex flex-col gap-2 p-4 bg-[#FFFFFF]/70 rounded-lg">
                     <div className="flex justify-between items-center">
-                      <h5 className="font-fustat font-medium text-[26px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020]">{stage.stage}</h5>
-                      <span className="text-3xl font-bold text-[#FFFFFF] bg-gradient-to-r from-[#79685D] to-[#2B2521] px-12 py-3 rounded-full ">
+                      <h5 className="font-fustat font-medium text-2xl tracking-[-0.02em] align-middle text-[#202020]">{stage.stage}</h5>
+                      <span className="text-3xl font-bold text-[#FFFFFF] bg-[#998876] px-12 py-3 rounded-lg ">
                         {formatCurrency(stage.amount, currency)}
                       </span>
                     </div>
@@ -189,25 +181,18 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
 
       {/* Funding Sources */}
       {(fundingRequirements.fundingSources || []).length > 0 && (
-        <div className="mt-8">
-          <h4 className="font-fustat font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] mb-6">Potential Funding Sources</h4>
+        <div className="mt-8 p-6 bg-[url('/images/light-pink.png')] bg-no-repeat bg-left rounded-lg">
+          <h4 className="font-fustat font-semibold text-[40px] align-middle text-[#202020] mb-6">Potential Funding Sources</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {fundingRequirements.fundingSources.map((source, index) => (
               <div 
                 key={`source-${index}`}
-                className="relative p-6 rounded-[8px] overflow-hidden"
-                style={{
-                  backgroundImage: "url('/card-bg-7.png')",
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                }}
+                className="relative rounded-[8px] overflow-hidden"
               >
-                <div className="absolute inset-0 bg-[#FFFFFF]/20"></div>
-                <div className="relative z-10 bg-[#FFFFFF59] p-6 rounded-lg">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+                <div className="relative z-10 bg-[#FFFFFF]/70 p-6 rounded-lg">
+                  <div className="flex flex-col md:flex-row md:justify-between  gap-2 mb-4">
                     <h5 className="text-[24px] font-fustat font-medium text-[#202020] break-words">{source.type}</h5>
-                    <span className="px-4 py-2 rounded-full bg-gradient-to-r from-[#332C27] to-[#332C27] text-white text-sm font-medium whitespace-nowrap self-start sm:self-auto">
+                    <span className="px-4 py-2 rounded-md bg-[#E6D2C9] h-fit text-black text-base font-semibold whitespace-nowrap self-start sm:self-auto">
                       {source.likelihood}% likelihood
                     </span>
                   </div>
@@ -217,12 +202,12 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                     {/* Pros Section */}
                     <div className="space-y-4">
                       <div className="flex items-center gap-3 pb-2">
-                        <span className="text-2xl font-semibold text-[#028242] tracking-tight">Pros</span>
+                        <span className="text-2xl font-semibold text-[#3987BE] tracking-tight">Pros</span>
                       </div>
                       <ul className="space-y-2 pl-1.5">
                         {(source.pros || []).map((pro, i) => (
                           <li key={`pro-${index}-${i}`} className="flex items-start gap-3 group">
-                            <div className="w-2 h-2 rounded-full bg-[#028242] mt-2.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
+                            <div className="w-2 h-2 rounded-full bg-[#3987BE] mt-2.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
                             <span className="text-[17px] leading-relaxed text-gray-800">{pro}</span>
                           </li>
                         ))}
@@ -232,12 +217,12 @@ const FundingRequirementsCard = ({ fundingRequirements, currency }: FundingRequi
                     {/* Cons Section */}
                     <div className="space-y-4">
                       <div className="flex items-center gap-3 pb-1">
-                        <span className="text-2xl font-semibold text-[#A91414] tracking-tight">Cons</span>
+                        <span className="text-2xl font-semibold text-[#D48EA3] tracking-tight">Cons</span>
                       </div>
                       <ul className="space-y-2 pl-1.5">
                         {(source.cons || []).map((con, i) => (
                           <li key={`con-${index}-${i}`} className="flex items-start gap-3 group">
-                            <div className="w-2 h-2 rounded-full bg-[#A91414] mt-2.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
+                            <div className="w-2 h-2 rounded-full bg-[#D48EA3] mt-2.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
                             <span className="text-[17px] leading-relaxed text-gray-800">{con}</span>
                           </li>
                         ))}

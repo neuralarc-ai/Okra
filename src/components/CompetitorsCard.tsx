@@ -176,8 +176,8 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat'
             }}>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-[40px] font-bold flex items-center gap-2" style={{ color: '#111111' }}>
+        <CardHeader className="pb-2 p-0">
+          <CardTitle className="text-[40px] pb-2 font-bold flex items-center gap-2" style={{ color: '#111111' }}>
             <span>Competitive Analysis</span>
           </CardTitle>
         </CardHeader>
@@ -185,13 +185,13 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Pie Chart Card */}
           <div className="p-6 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
-            <div className="w-full relative" style={{ minHeight: 380 }}>
+            <div className="relative flex items-center justify-center w-full" style={{ height: '420px' }}>
               {marketShareData && marketShareData.length >= 2 && (
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart margin={{ top: 40, right: 30, bottom: 30, left: 30 }}>
+                <ResponsiveContainer width={520} height={420} className="flex items-center justify-center w-full">
+                  <PieChart margin={{ top: 40, right: 30, bottom: 40, left: 30 }}>
                     <Tooltip
                       cursor={false}
-                      contentStyle={{ 
+                      contentStyle={{
                         background: '#E5E0D5',
                         border: '1px solid #B7A694',
                         color: '#000000',
@@ -201,6 +201,55 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       }}
                       formatter={(value: number) => `${value}%`}
                     />
+                    {/* Background circles */}
+                    <circle
+                      cx="50%"
+                      cy="50%"
+                      r={80}
+                      stroke="#00000050"
+                      strokeWidth={1}
+                      fill="none"
+                    />
+                    <circle
+                      cx="50%"
+                      cy="50%"
+                      r={150}
+                      stroke="#00000070"
+                      strokeWidth={1}
+                      fill="none"
+                    />
+
+                    {/* Center circle (now innermost) */}
+                    <circle cx="50%" cy="50%" r={35} fill="#8E8E8E" />
+
+                    {/* Axes */}
+                    <line
+                      x1="0%"
+                      y1="50%"
+                      x2="100%"
+                      y2="50%"
+                      stroke="#00000070"
+                      strokeWidth={1}
+                      strokeDasharray="3 3"
+                    />
+                    <line
+                      x1="50%"
+                      y1="0%"
+                      x2="50%"
+                      y2="100%"
+                      stroke="#00000070"
+                      strokeWidth={1}
+                      strokeDasharray="3 3"
+                    />
+                    {/* Positive Y-axis line */}
+                    <line
+                      x1="50%"
+                      y1="50%"
+                      x2="50%"
+                      y2="0%"
+                      stroke="#00000070"
+                      strokeWidth={1}
+                    />
                     <Pie
                       data={marketShareData.map((entry, idx) => ({
                         name: entry.name,
@@ -209,36 +258,68 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                       }))}
                       dataKey="value"
                       nameKey="name"
-                      innerRadius="60%"
-                      outerRadius="90%"
-                      stroke="#ffffff"
+                      innerRadius={90} // Adjusted for thicker pie
+                      outerRadius={140} // Kept same
+                      stroke="transparent"
                       className="overflow-visible"
                       strokeWidth={2}
-                      label={({ value, cx, cy, midAngle, outerRadius }) => (
-                        <CustomPieChartLabel
-                          value={value}
-                          cx={cx}
-                          cy={cy}
-                          midAngle={midAngle}
-                          outerRadius={outerRadius}
-                        />
-                      )}
+                      paddingAngle={1.5}
+                      cornerRadius={6}
+                      label={({ value, cx, cy, midAngle, outerRadius, percent }) => {
+                        const RADIAN = Math.PI / 180;
+                        const sin = Math.sin(-RADIAN * midAngle);
+                        const cos = Math.cos(-RADIAN * midAngle);
+
+                        const lineOffset = 10;
+                        const textOffset = 26;
+                        const boxWidth = 54;
+                        const boxHeight = 29;
+
+                        const sx = cx + outerRadius * cos;
+                        const sy = cy + outerRadius * sin;
+
+                        const ex = cx + (outerRadius + lineOffset) * cos;
+                        const ey = cy + (outerRadius + lineOffset) * sin;
+
+                        const textX = cx + (outerRadius + textOffset) * cos;
+                        const textY = cy + (outerRadius + textOffset) * sin;
+
+                        const isLeft = cos < 0;
+                        const labelBoxX = textX + (isLeft ? -boxWidth - 5 : 5);
+                        const labelBoxY = textY - boxHeight / 2;
+
+                        return (
+                          <g>
+                            <rect
+                              x={labelBoxX}
+                              y={labelBoxY}
+                              width={boxWidth}
+                              height={boxHeight}
+                              rx={4}
+                              ry={4}
+                              fill="#FFFFFF"
+                              stroke="#00000045"
+                              strokeWidth={1}
+                            />
+                            <text
+                              x={labelBoxX + boxWidth / 2}
+                              y={labelBoxY + boxHeight / 2}
+                              fill="#0A0A0A"
+                              textAnchor="middle"
+                              dominantBaseline="middle"
+                              fontWeight={500}
+                              fontSize={14}
+                            >
+                              {`${(percent * 100).toFixed(0)}%`}
+                            </text>
+                          </g>
+                        );
+                      }}
                       labelLine={false}
                     />
                   </PieChart>
                 </ResponsiveContainer>
               )}
-              {/* Central circle */}
-              
-              {/* Innermost circle */}
-              <div
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full"
-                style={{
-                  width: `70px`,
-                  height: `70px`,
-                  backgroundColor: '#8E8E8E',
-                }}
-              ></div>
             </div>
           </div>
 
@@ -253,7 +334,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 >
                   <div className="flex items-center gap-3">
                     <span 
-                      className="w-4 h-4 rounded block border" 
+                      className="w-4 h-4 rounded block border flex-shrink-0" 
                       style={{ 
                         background: CHART_COLORS[idx % CHART_COLORS.length], 
                         borderColor: '#B7A694' 
@@ -308,7 +389,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
               {/* Progress Bar and Metrics */}
               <div className="px-6 pb-2 mb-4 flex items-stretch gap-4 h-[120px]">
                 {/* Progress Bar Card */}
-                <div className="relative px-4 py-3 rounded-lg border border-[#202020]/10 bg-[#F8F8F773] shadow-sm flex-1 flex flex-col justify-center">
+                <div className="relative px-4 py-3 rounded-lg bg-[#FFFFFFBF] flex-1 flex flex-col justify-center">
                   <div className="w-full space-y-3">
                     <div className="w-full h-2 bg-[#CFD4C9] rounded-full overflow-hidden">
                       <div
@@ -325,7 +406,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 </div>
 
                 {/* Market Share Card */}
-                <div className="flex flex-col items-center justify-center px-4 py-3  rounded-lg border border-[#202020]/10 bg-[#F8F8F7] shadow-sm" style={{ minWidth: '120px' }}>
+                <div className="flex flex-col items-center justify-center px-4 py-3  rounded-lg bg-[#FFFFFFBF]" style={{ minWidth: '120px' }}>
                   <div className="text-xs text-[#2B2521] mb-1">Market Share</div>
                   <div className="font-fustat font-normal text-4xl text-center" style={{ letterSpacing: '0%' }}>
                     {Number(entry.value).toFixed(1)}%
@@ -333,7 +414,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
                 </div>
 
                 {/* Strength Score Card */}
-                <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg border border-[#202020]/10 bg-[#F8F8F7] shadow-sm" style={{ minWidth: '120px' }}>
+                <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-[#FFFFFFBF]" style={{ minWidth: '120px' }}>
                   <div className="text-xs text-[#2B2521] mb-1">Strength Score</div>
                   <div className="font-fustat font-normal text-4xl text-center" style={{ letterSpacing: '0%' }}>
                     {competitor.strengthScore}/100
@@ -342,7 +423,7 @@ const CompetitorsCard = ({ competitors }: CompetitorsCardProps) => {
               </div>
               {/* Expanded Details */}
               {isExpanded && competitor.detailedAnalysis && (
-                <div className="mt-3 pt-3 mx-6 mb-4 rounded-[8px] border-t bg-[#F8F8F773]" style={{ borderColor: '#CFD4C9' }}>
+                <div className="mt-3 py-3 mx-6 mb-4 rounded-[8px] bg-[#FFFFFFBF]">
                   <div className="px-6">
                   <div className="text-base mb-2 font-semibold" style={{ color: '#161616' }}>Summary</div>
                   <div className="text-sm mb-2" style={{ color: '#2B2521', whiteSpace: 'pre-line' }}>

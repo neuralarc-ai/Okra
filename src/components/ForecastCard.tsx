@@ -125,18 +125,15 @@ const ForecastBarChart = ({ data, title, prefix = "", period, bestCase, avgCase,
     fill: `url(#${REVENUE_GRADIENTS[data.length - 1 - idx].id})`,
   }));
 
-  // Calculate the minimum width needed for the 'Worst Case' text
-  const minWidth = 120; // Adjust this value as needed
-
   return (
     <Card className="border-none outline-none bg-white shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-medium">
+        <CardTitle className="text-xl font-medium text-black">
           {title} {period ? `(${period})` : ''}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[220px] w-[600px]">
+        <div className="h-[280px] w-[600px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={dataWithFill}
@@ -214,12 +211,12 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'}}>
     <CardHeader className="pb-2">
-      <CardTitle className="text-xl font-medium text-white">
+      <CardTitle className="text-xl font-medium text-black">
         {title} {period ? `(${period})` : ''}
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <div className="h-[220px] w-full p-4 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
+      <div className="h-[280px] w-full p-4 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
@@ -264,15 +261,15 @@ const ForecastAreaChart = ({ data, title, period, bestCase, avgCase, worstCase, 
       <div className="grid grid-cols-3 gap-4 mt-4 p-6 bg-[#FFFFFF] rounded-[8px]">
         <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
           <h4 className="text-sm font-medium text-black">Best Case</h4>
-          <p className="text-xs text-black">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-600">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
         </div>
         <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
           <h4 className="text-sm font-medium text-black">Average Case</h4>
-          <p className="text-xs text-black">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-700">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
         </div>
         <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
           <h4 className="text-sm font-medium text-black">Worst Case</h4>
-          <p className="text-xs text-black">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-700">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
         </div>
       </div>
       {summary && (
@@ -319,12 +316,12 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'}}>
     <CardHeader className="pb-2">
-      <CardTitle className="text-xl font-medium text-white">
+      <CardTitle className="text-xl font-medium text-black">
         {title} {period ? `(${period})` : ''}
       </CardTitle>
     </CardHeader>
     <CardContent>
-    <div className="h-[220px] w-full p-4 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
+    <div className="h-[280px] w-full p-4 flex flex-col items-center justify-center" style={{ background: '#FFFFFFBF', borderRadius: '0.5rem' }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
@@ -369,15 +366,15 @@ const ForecastLineChart = ({ data, title, period, bestCase, avgCase, worstCase, 
       <div className="grid grid-cols-3 gap-4 mt-4 p-6 bg-[#FFFFFF] rounded-[8px]">
         <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
           <h4 className="text-sm font-medium text-black">Best Case</h4>
-          <p className="text-xs text-gray-400">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-700">{title}: {formatValue(bestCase)} {period ? `(${period})` : ''}</p>
         </div>
         <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
           <h4 className="text-sm font-medium text-black">Average Case</h4>
-          <p className="text-xs text-gray-400">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-700">{title}: {formatValue(avgCase)} {period ? `(${period})` : ''}</p>
         </div>
         <div className="space-y-1 p-3 border border-[#00000040] rounded-lg transition-all duration-200 hover:border-[#00000040]/20 hover:bg-[#00000040]/5">
           <h4 className="text-sm font-medium text-black">Worst Case</h4>
-          <p className="text-xs text-gray-400">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
+          <p className="text-xs text-gray-700">{title}: {formatValue(worstCase)} {period ? `(${period})` : ''}</p>
         </div>
       </div>
       {summary && (
