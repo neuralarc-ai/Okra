@@ -221,7 +221,7 @@ const GoToMarketCard = ({ goToMarket }: GoToMarketCardProps) => {
                           {kpi.timeframe}
                         </div>
                         <div
-                          className="text-[#212121] font-fustat bg-[#AD92814D] px-3 py-1 rounded-full font-semibold text-2xl leading-9 tracking-tight align-middle mt-4"
+                          className="text-[#212121] font-fustat bg-[#AD92814D] px-3 py-1 rounded-full font-semibold text-xl leading-9 tracking-tight align-middle mt-4"
                         >
                           {kpi.target}
                         </div>
