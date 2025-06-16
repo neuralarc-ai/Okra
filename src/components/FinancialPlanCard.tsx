@@ -64,7 +64,7 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
         <div className=" p-6 rounded-lg">
           <div className="rounded-[8px] p-6" style={{ backgroundColor: '#E3E2DFBF' }}>
             <CardHeader className="p-0 mb-3">
-              <CardTitle className="font-fustat font-medium text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
+              <CardTitle className="font-fustat font-bold text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
                 Financial Plan
               </CardTitle>
             </CardHeader>
@@ -73,7 +73,7 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
             <div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {(financialPlan.startupCosts || []).map((cost, index) => (
-                  <div key={`startup-${index}`} className="flex items-center justify-between p-4 rounded-[8px] bg-[#C6AEA399] border border-[#000000]/10 shadow-sm">
+                  <div key={`startup-${index}`} className="flex items-center justify-between p-4 rounded-[8px] bg-[#C6AEA399]">
                     <span className="text-base text-[#000000]  flex items-center px-1 gap-2">
                       {cost.category}
                     </span>
@@ -155,21 +155,21 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
           </div>
         )}
 
-        <div className="bg-[#E3E2DFBF] p-5 rounded-[8px] mt-4">
+        <div className="bg-[url('/images/light-purple.png')] bg-cover bg-left bg-no-repeat p-6 rounded-[8px] mt-4">
           {/* Break-even Analysis */}
           {financialPlan.breakEvenAnalysis && (
             <div>
-              <h4 className="font-['Fustat'] font-medium text-[40px] leading-[69px] tracking-[-2%] align-middle text-[#202020] mb-3">Break-even Analysis</h4>
+              <h4 className="font-semibold text-[32px] leading-[69px] tracking-[-2%] align-middle text-[#202020] mb-2">Break-even Analysis</h4>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 {/* Time to Break-even Card */}
-                <div className="relative rounded-[8px] overflow-hidden" style={{ backgroundImage: "url('/Effect 1.png')", backgroundSize: 'cover' }}>
+                <div className="relative rounded-[8px] overflow-hidden bg-[#FFFFFFBF]">
                   <div className="p-4">
                     <div className="flex items-center gap-2 mb-5">
                       <img src="/icons/hourglass.svg" alt="Time" className="w-10 h-10" />
                       <span className="text-[22px] font-normal text-[#202020]">Time to Break-even</span>
                     </div>
-                    <div className="bg-[#F8F8F773] rounded-[8px] px-8 py-10 text-center">
-                      <span className="font-['Fustat'] font-normal text-[40px] leading-6 tracking-[-1%] text-center align-middle text-gray-900">
+                    <div className="bg-[#000000]/10 rounded-[8px] px-8 py-10 text-center">
+                      <span className="font-['Fustat'] font-normal text-[40px] leading-tight text-center align-middle text-gray-900">
                         {financialPlan.breakEvenAnalysis.timeToBreakEven}
                       </span>
                     </div>
@@ -177,13 +177,13 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
                 </div>
 
                 {/* Monthly Break-even Point Card */}
-                <div className="relative rounded-[8px] overflow-hidden" style={{ backgroundImage: "url('/Effect 1.png')", backgroundSize: 'cover' }}>
-                  <div className="p-4">
+                <div className="relative rounded-[8px] overflow-hidden bg-[#FFFFFFBF]" >
+                  <div className="p-6">
                     <div className="flex items-center gap-2 mb-5">
                       <img src="/icons/calender.svg" alt="Money" className="w-10 h-10" />
                       <span className="text-[22px] font-normal text-[#202020]">Monthly Break-even Point</span>
                     </div>
-                    <div className="bg-[#F8F8F773] rounded-[8px] px-8 py-10 mb-3 text-center">
+                    <div className="bg-[#000000]/10 h-full flex items-center justify-center min-h-[180px] rounded-[8px] px-8 py-10 mb-3 text-center">
                       <span className="font-['Fustat'] font-normal text-[40px] leading-6 tracking-[-1%] text-center align-middle text-gray-900">{formatCurrency(financialPlan.breakEvenAnalysis.monthlyBreakEvenPoint, currency)}</span>
                     </div>
                   </div>
@@ -191,9 +191,9 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
               </div>
               <div className="mt-6">
                 <span className="text-[20px]  text-[#202020]  font-semibold">Key Assumptions:</span>
-                <ul className="space-y-1 mt-6">
+                <ul className="space-y-1 mt-2 px-2">
                   {(financialPlan.breakEvenAnalysis.assumptions || []).map((assumption, index) => (
-                    <li key={`assumption-${index}`} className="text-sm text-[#0000007D] flex items-center gap-2">
+                    <li key={`assumption-${index}`} className="text-base text-[#000000]/70 flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#0000007D]" />
                       {assumption}
                     </li>
@@ -206,16 +206,10 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
           {/* Projected Profit Margin */}
           {typeof financialPlan.projectedProfitMargin === 'number' && (
             <div 
-              className="flex justify-between items-center rounded-[8px] border border-[#202020]/10 px-6 py-8 mt-6 overflow-hidden relative"
-              style={{
-                backgroundImage: "url('/card-bg-4.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
-              }}
+              className="flex bg-[#FFFFFFBF] justify-between items-center rounded-[8px] px-6 py-8 mt-6 overflow-hidden relative"
             >
-              <span className="text-[32px] text-[#202020] font-semibold">Projected Profit Margin</span>
-              <span className="text-[40px] font-semibold text-[#202020] bg-[#F8F8F773] px-4 py-1 rounded-[8px]">
+              <span className="text-3xl text-[#202020] font-semibold">Projected Profit Margin</span>
+              <span className="text-3xl font-semibold text-[#202020] bg-[#E6D0D7] px-5 py-1 rounded-[8px]">
                 {financialPlan.projectedProfitMargin}%
               </span>
             </div>
