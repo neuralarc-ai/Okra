@@ -26,15 +26,15 @@ const MilestonesCard = ({ milestones, currency }: MilestonesCardProps) => {
   const getCriticalColor = (importance: string) => {
     switch ((importance || '').toLowerCase()) {
       case 'low':
-        return { bg: '#97A487', text: '#F8F7F3', border: '#B7A694' };
+        return { bg: '#97A487', text: '#F8F7F3', border: '#97A487' };
       case 'medium':
-        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
+        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#A8B0B8' };
       case 'high':
-        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
+        return { bg: '#D48EA3', text: '#F8F7F3', border: '#D48EA3' };
       case 'critical':
-        return { bg: '#D48EA3', text: '#F8F7F3', border: '#B7A694' };
+        return { bg: '#D48EA3', text: '#F8F7F3', border: '#D48EA3' };
       default:
-        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#B7A694' };
+        return { bg: '#A8B0B8', text: '#F8F7F3', border: '#A8B0B8' };
     }
   };
 
