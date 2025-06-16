@@ -82,7 +82,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate("/spider", { replace: true });
+      navigate("/", { replace: true });
     }
   }, [user, loading, navigate]);
 

@@ -106,10 +106,10 @@ What makes it unique:
   };
 
   const backgroundImages = [
-    "bg-[url('/card-bg-10.png')]",
-    "bg-[url('/card-bg-11.png')]",
-    "bg-[url('/card-bg-12.png')]",
-    "bg-[url('/card-bg-13.png')]"
+    "bg-[url('background/background-1.png')]",
+    "bg-[url('background/background-1.png')]",
+    "bg-[url('background/background-1.png')]",
+    "bg-[url('background/background-1.png')]"
   ];
 
   // Create an array of 4 slots (either skeleton or actual card)
