@@ -263,7 +263,7 @@ const RevenueModelCard = ({
                             (share, idx) => (
                               <span
                                 key={idx}
-                                className="px-6 py-3 rounded-full font-sans font-medium text-[15px] leading-[25px] tracking-normal"
+                                className="px-6 py-3 rounded-md font-medium text-[16px] tracking-normal"
                                 style={{
                                   background: "#E2D4C3",
                                   color: "#161616",
@@ -275,7 +275,7 @@ const RevenueModelCard = ({
                           )
                         ) : (
                           <span
-                            className="px-6 py-3 rounded-full font-sans font-medium text-[16px] leading-[25px] tracking-normal"
+                            className="px-6 py-3 rounded-md font-sans font-medium text-[16px] leading-[25px] tracking-normal"
                             style={{ background: "#E2D4C3", color: "#161616" }}
                           >
                             {
@@ -295,7 +295,7 @@ const RevenueModelCard = ({
                           (competitor, idx) => (
                             <span
                               key={idx}
-                              className="px-6 py-3 rounded-full font-sans font-medium text-[16px] leading-[25px] tracking-normal"
+                              className="px-6 py-3 rounded-md font-sans font-medium text-[16px] leading-[25px] tracking-normal"
                               style={{
                                 background: "#E2D4C3",
                                 color: "#161616",
@@ -579,7 +579,7 @@ const RevenueModelCard = ({
         )}
 
         {/* Revenue Streams Distribution */}
-        <div className="rounded-2xl p-6 bg-[url('/images/light-purple.png')] bg-left bg-no-repeat bg-cover">
+        <div className="rounded-xl p-6 bg-[url('/images/light-purple.png')] bg-left bg-no-repeat bg-cover">
           <CardHeader className="p-0">
             <CardTitle className="text-2xl font-semibold flex items-center">
               Revenue Streams
@@ -593,7 +593,7 @@ const RevenueModelCard = ({
                   {/* Chart on the left */}
                   <div className="relative flex w-[55%] items-center justify-center mt-6">
                     <ResponsiveContainer
-                      width={420}
+                      width={520}
                       height={420}
                       className="flex items-center justify-center w-full"
                     >
@@ -738,17 +738,15 @@ const RevenueModelCard = ({
                         key={entry.name}
                         className="flex items-center w-fit gap-3 px-4 py-3 rounded-lg border"
                         style={{
-                          borderColor: "#FFFFFF10",
-                          background: "#2B2521",
+                          background: "#282828",
                         }}
                       >
                         <span
-                          className="w-4 h-4 rounded block border"
+                          className="w-4 h-4 rounded block"
                           style={{
-                            background: ["#A8B0B8", "#D48EA3", "#97A487"][
-                              idx % 3
+                            background: ["#D48EA3", "#3987BE", "#A5848E", "#97A487"][
+                              idx % 4
                             ],
-                            borderColor: "#B7A694",
                           }}
                         />
                         <span
@@ -765,14 +763,14 @@ const RevenueModelCard = ({
 
               {/* Revenue Streams List */}
               <div className="mt-8">
-                <h4 className="text-lg font-medium mb-4">
+                <h4 className="text-xl font-semibold mb-4">
                   Revenue Stream Details
                 </h4>
                 <div className="space-y-4">
                   {revenueModel.primaryStreams.map((stream, index) => (
                     <div
                       key={`stream-${index}`}
-                      className="rounded-xl p-4 group"
+                      className="rounded-md p-4 group"
                       style={{ background: "#FFFFFFBF" }}
                     >
                       <div className="flex justify-between items-center">
@@ -782,10 +780,10 @@ const RevenueModelCard = ({
                             style={{
                               backgroundColor:
                                 stream.scalability === "high"
-                                  ? "#A8B0B8"
-                                  : stream.scalability === "medium"
                                   ? "#D48EA3"
-                                  : "#97A487",
+                                  : stream.scalability === "medium"
+                                  ? "#3987BE"
+                                  : "#A5848E"
                             }}
                           />
                           <span className="text-base font-semibold">
@@ -795,8 +793,7 @@ const RevenueModelCard = ({
                         <span
                           className="text-sm px-6 py-3 rounded-[8px]"
                           style={{
-                            background: "#2B2521",
-                            border: "1px solid #B7A694",
+                            background: "#282828",
                             color: "#FFFFFF",
                           }}
                         >
@@ -805,8 +802,7 @@ const RevenueModelCard = ({
                       </div>
                       {stream.description && (
                         <div
-                          className="mt-2 text-sm pl-5"
-                          style={{ color: "#CFD2D4" }}
+                          className="mt-2 text-sm pl-5 text-[#28282890]"
                         >
                           {stream.description}
                         </div>
@@ -820,7 +816,7 @@ const RevenueModelCard = ({
         </div>
 
         {/* Key Metrics */}
-        <div className="rounded-2xl p-6 bg-[url('/images/light-yellow.png')] bg-left bg-no-repeat bg-cover">
+        <div className="rounded-xl p-6 bg-[url('/images/light-yellow.png')] bg-left bg-no-repeat bg-cover">
           <h4
             className="text-2xl font-semibold mb-4 tracking-tight"
             style={{ color: "#212121" }}
@@ -831,7 +827,7 @@ const RevenueModelCard = ({
             {revenueModel.metrics.map((metric, index) => (
               <div
                 key={`metric-${index}`}
-                className="border rounded-2xl p-5 group"
+                className="border rounded-md p-5 group"
                 style={{ background: "#FFFFFFBF" }}
               >
                 <div className="flex justify-between items-center">
@@ -848,7 +844,7 @@ const RevenueModelCard = ({
                   </div>
                   <div className="flex items-center gap-2">
                     <div
-                      className="text-sm px-6 py-3 rounded-full border"
+                      className="text-sm px-6 py-3 rounded-lg border"
                       style={{ background: "#C5B496", color: "#161616" }}
                     >
                       {formatMetricValue(metric.name, metric.target, currency)}
