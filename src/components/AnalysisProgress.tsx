@@ -108,8 +108,8 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                 boxShadow: '0 2px 16px 0 rgba(30,30,30,0.07)'
               }}
             >
-              <div className="w-full rounded-[8px] bg-[#2B2521] px-8 pt-6 pb-6 flex flex-col" style={{ minHeight: '110px' }}>
-                <div className="w-full h-2 mb-6 mt-1 rounded-full bg-[#423B36] overflow-hidden">
+              <div className="w-full rounded-[8px] bg-[#FFFFFF] px-8 pt-6 pb-6 flex flex-col" style={{ minHeight: '110px' }}>
+                <div className="w-full h-2 mb-6 mt-1 rounded-full bg-[#E7E7E7] overflow-hidden">
                   <div
                     className="h-2 rounded-full"
                     style={{
@@ -121,7 +121,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                 </div>
                 <div className="flex justify-between items-center w-full">
                   <span
-                    className="text-white"
+                    className="text-[#0A0A0A]"
                     style={{
                       fontFamily: 'Fustat',
                       fontWeight: 400,
@@ -133,7 +133,7 @@ const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ progress, source, u
                   >
                     Helium AI is researching your idea
                   </span>
-                  <span className="text-white text-2xl font-semibold" style={{ fontFamily: 'Fustat', fontWeight: 500 }}>{progress}%</span>
+                  <span className="text-[#0A0A0A] text-2xl font-semibold" style={{ fontFamily: 'Fustat', fontWeight: 500 }}>{progress}%</span>
                 </div>
               </div>
             </div>
