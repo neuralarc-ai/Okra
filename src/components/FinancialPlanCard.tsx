@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FinancialPlan } from '@/types/oracle';
 import { formatCurrency } from '@/lib/utils';
@@ -27,7 +26,7 @@ const RADIAL_COLORS = [
   "#60a5fa", // blue
 ];
 
-const RADAR_COLOR = "#8b7cf6"; // Use a visually distinct app color (purple)
+const RADAR_COLOR = "#8b7cf6"; 
 
 function describeArc(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
   const polarToCartesian = (cx: number, cy: number, r: number, angle: number) => {
@@ -63,8 +62,8 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
       <CardContent className="p-0">
         <div className=" p-6 rounded-lg">
           <div className="rounded-[8px] p-6" style={{ backgroundColor: '#E3E2DFBF' }}>
-            <CardHeader className="p-0 mb-3">
-              <CardTitle className="font-fustat font-bold text-[40px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
+            <CardHeader className="p-0 mb-2">
+              <CardTitle className="font-fustat font-semibold text-[32px] leading-[69px] tracking-[-0.02em] align-middle text-[#202020] flex items-center gap-3">
                 Financial Plan
               </CardTitle>
             </CardHeader>
@@ -101,12 +100,12 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
       <div className="p-6">
         {/* Monthly Expenses Breakdown */}
         {expenseData.length > 0 && (
-          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundColor: '#2B2521' }}>
-            <h4 className="font-['Fustat'] font-medium text-[32px] leading-[36px] tracking-[-0.02em] align-middle text-white mb-6">Monthly Expenses Breakdown</h4>
+          <div className="bg-cover bg-center rounded-[8px] p-6" style={{ backgroundImage: "url('/background/background-3.png')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+            <h4 className="font-['Fustat'] font-semibold text-[32px] leading-[36px] tracking-[-0.02em] align-middle text-[#202020] mb-6">Monthly Expenses Breakdown</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Radar Chart Card */}
-              <div className="bg-[#0000003B] rounded-[8px] p-6 flex flex-col items-center justify-center">
-                <div className="w-full max-w-[500px] h-[355px] mx-auto">
+              <div className="bg-[#FFFFFFBF] rounded-[8px] p-6 flex flex-col items-center justify-center">
+                <div className="w-full max-w-[550px] h-[375px] mx-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart data={expenseData}>
                       <defs>
@@ -117,7 +116,7 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
                         </radialGradient>
                       </defs>
                       <PolarGrid stroke="#8B8B8BAB" />
-                      <PolarAngleAxis dataKey="category" width={100} tick={{ fill: '#8B8B8B', fontSize: 12  }}  />
+                      <PolarAngleAxis dataKey="category" width={100} tick={{ fill: '#202020', fontSize: 12, dy: 10, }} />
                       <Radar
                         dataKey="value"
                         fill="url(#customRadarGradient)"
@@ -136,18 +135,18 @@ const FinancialPlanCard = ({ financialPlan, currency }: FinancialPlanCardProps) 
               </div>
 
               {/* Table Card */}
-              <div className="bg-[#0000003B] rounded-[8px] p-6">
-                <h4 className="font-['Fustat'] font-normal text-[22px] leading-[49.04px] tracking-[-0.8%] text-center text-[#DCDCDC] mb-7 mt-5">Monthly expenses by category and total</h4>
+              <div className="bg-[#FFFFFFBF] rounded-[8px] p-6">
+                <h4 className="font-['Fustat'] font-normal text-[22px] leading-[49.04px] tracking-[-0.8%] text-center text-[#202020] mb-7 mt-5">Monthly expenses by category and total</h4>
                 <div className="space-y-2">
                   {expenseData.map((expense, idx) => (
-                    <div key={expense.category} className="flex justify-between items-center bg-[#2B2521] rounded-[8px] border border-[#FFFFFF25] p-4">
-                      <span className="text-white text-sm">{expense.category}</span>
-                      <span className="text-white text-sm font-semibold">{formatCurrency(expense.value, currency)}</span>
+                    <div key={expense.category} className="flex justify-between items-center bg-[#F8F7F3] rounded-[8px] border border-[#2020201A] p-4">
+                      <span className="text-[#202020] text-sm">{expense.category}</span>
+                      <span className="text-[#202020] text-sm font-semibold">{formatCurrency(expense.value, currency)}</span>
                     </div>
                   ))}
-                  <div className="flex justify-between items-center bg-[#FFFFFF1A] rounded-[8px] border border-[#FFFFFF25] p-4 mt-4">
-                    <span className="text-white text-base font-bold">Total</span>
-                    <span className="text-white text-base font-bold">{formatCurrency(total, currency)}</span>
+                  <div className="flex justify-between items-center bg-[#F8F7F3] rounded-[8px] border border-[#2020201A] p-4 mt-4">
+                    <span className="text-[#202020] text-base font-bold">Total</span>
+                    <span className="text-[#202020] text-base font-bold">{formatCurrency(total, currency)}</span>
                   </div>
                 </div>
               </div>
